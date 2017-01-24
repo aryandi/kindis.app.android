@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_walkthrough"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sangmaneproject.kindis.Walkthrough">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_walkthrough"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="44dp"/>
+
+</RelativeLayout>

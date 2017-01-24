@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#2ab573</color>
+    <color name="colorAccent">#263238</color>
+
+    <color name="whitesolid">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="light_sea_green">#27b7b0</color>
+    <color name="medium_sea_green">#2ab573</color>
+    <color name="white">#fefefe</color>
+    <color name="outer_space">#424242</color>
+    <color name="lapis_lazuli">#3a5898</color>
+    <color name="united_nations_blue">#52abef</color>
+    <color name="vermilion">#dd4b39</color>
+    <color name="manatee">#9b9b9b</color>
+    <color name="safety_orange">#ff6300</color>
+    <color name="medium_jungle_green">#263238</color>
+    <color name="dark_cyan">#009688</color>
+    <color name="verdigris">#4cb5ab</color>
+    <color name="dark_jungle_green">#212121</color>
+    <color name="dark_gray">#afafaf</color>
+    <color name="dim_gray">#626262</color>
+    <color name="timberwolf">#d8d8d8</color>
+    <color name="davy_grey">#5d5b5b</color>
+    <color name="purple_heart">#5f1f97</color>
+    <color name="burnt_sienna">#f37953</color>
+    <color name="ruby">#da1b5c</color>
+    <color name="university_of_california_gold">#b67e2a</color>
+    <color name="jade">#02b57a</color>
+</resources>

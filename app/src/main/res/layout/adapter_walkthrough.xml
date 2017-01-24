@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/walkthrough"
+    android:background="@drawable/bg_walkthrough1">
+
+    <TextView
+        android:id="@+id/title_walkthrough"
+        android:layout_above="@+id/subtitle_walkthrough"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginBottom="16dp"
+        android:text="Musiq interesting things"
+        android:textColor="@color/white"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/subtitle_walkthrough"
+        android:layout_above="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginBottom="42dp"
+        android:text="Let us help you to find exciting things you will love, no matter where you go."
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/btn_skip"
+        android:layout_marginBottom="34dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="SKIP"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:clickable="true"/>
+
+</RelativeLayout>
