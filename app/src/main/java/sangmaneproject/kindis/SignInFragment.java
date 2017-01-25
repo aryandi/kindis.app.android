@@ -1,15 +1,27 @@
 package sangmaneproject.kindis;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class SignInFragment extends Fragment {
+public class SignInFragment extends Fragment implements View.OnFocusChangeListener {
+    EditText email;
+    EditText password;
+    AppBarLayout appBarLayout;
+    TextView forgotPassword;
 
-    public SignInFragment() {
-        // Required empty public constructor
+    public SignInFragment(){}
+
+    public SignInFragment(AppBarLayout appBarLayout) {
+        this.appBarLayout = appBarLayout;
     }
 
     @Override
@@ -17,5 +29,29 @@ public class SignInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_in, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        email = (EditText) view.findViewById(R.id.input_email);
+        password = (EditText) view.findViewById(R.id.input_password);
+        forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
+
+        email.setOnFocusChangeListener(this);
+        password.setOnFocusChangeListener(this);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        appBarLayout.setExpanded(false, true);
     }
 }

@@ -1,13 +1,217 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sangmaneproject.kindis.SignUpFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/medium_jungle_green"
+    tools:context="sangmaneproject.kindis.SignUpFragment"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/layout_sign_up"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:focusableInTouchMode="true">
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/cont_sosmed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_fb"
+                android:layout_marginRight="24dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_twitter"
+                android:layout_marginRight="24dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_gplus"/>
+        </LinearLayout>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Or sign up with your e-mail address"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="FULL NAME"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.EditTextRegular
+            android:id="@+id/input_nama"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="14sp"
+            android:inputType="textPersonName"
+            android:background="@drawable/edittext_normal"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="E-MAIL"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.EditTextRegular
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="14sp"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/edittext_normal"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="PASSWORD"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.ShowHidePasswordEditTextRegular
+            android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="14sp"
+            android:inputType="textPassword"
+            app:additionalTouchTargetSize="44dp"
+            app:tint_color="@color/white"
+            android:background="@drawable/edittext_normal"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_retype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="RE-TYPE PASSWORD"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.ShowHidePasswordEditTextRegular
+            android:id="@+id/input_retype"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="14sp"
+            android:inputType="textPassword"
+            app:additionalTouchTargetSize="44dp"
+            app:tint_color="@color/white"
+            android:background="@drawable/edittext_normal"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:id="@+id/label_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="BIRTHDAY"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <sangmaneproject.kindis.Custom.EditTextRegular
+            android:id="@+id/input_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="14sp"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/edittext_normal"/>
+
+        <sangmaneproject.kindis.Custom.TextViewRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="GENDER"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+        <RadioGroup
+            android:id="@+id/gender"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edittext_normal"
+            android:orientation="horizontal">
+            <sangmaneproject.kindis.Custom.RadioButtonRegular
+                android:id="@+id/male"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="MALE"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:background="@drawable/radiobutton_listener" />
+            <sangmaneproject.kindis.Custom.RadioButtonRegular
+                android:id="@+id/female"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="FEMALE"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:background="@drawable/radiobutton_listener"/>
+        </RadioGroup>
+
+        <sangmaneproject.kindis.Custom.ButtonSemiBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="SIGN UP"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="47dp"
+            android:paddingLeft="47dp"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_rounded"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

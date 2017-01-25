@@ -29,7 +29,11 @@
         <activity
             android:name=".Walkthrough"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".SignInActivity"
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".ForgotPassword"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
