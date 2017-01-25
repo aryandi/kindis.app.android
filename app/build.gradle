@@ -28,6 +28,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    testCompile 'junit:junit:4.12'
     compile 'com.github.scottyab:showhidepasswordedittext:0.8'
+    compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
+    testCompile 'junit:junit:4.12'
 }
