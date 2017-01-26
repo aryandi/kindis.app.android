@@ -18,7 +18,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".SplashScreen"
+            android:name=".view.activity.SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,22 +27,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Walkthrough"
+            android:name=".view.activity.Walkthrough"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".view.activity.SignInActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".ForgotPassword"
+            android:name=".view.activity.ForgotPassword"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".Bismillah"
+            android:name=".view.activity.Bismillah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".Home"
+            android:name=".view.activity.Home"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/HomeTheme">
 
         </activity>
     </application>

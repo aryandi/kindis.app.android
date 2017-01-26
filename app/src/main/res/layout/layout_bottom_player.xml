@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/dark_jungle_green"
+        android:layout_above="@+id/pb"
+        android:orientation="horizontal"
+        android:layout_marginTop="28dp">
+        <ImageButton
+            android:id="@+id/expand"
+            android:layout_width="58dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_arrow_up"
+            android:background="@android:color/transparent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="12dp">
+            <sangmaneproject.kindis.utils.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ketika Sendiri"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+            <sangmaneproject.kindis.utils.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Snada | Jagalah Hati Volume 3"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/button_circle">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_play"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dim_gray"
+        android:layout_alignParentBottom="true"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"/>
+</RelativeLayout>

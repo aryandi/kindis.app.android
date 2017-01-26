@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="sangmaneproject.kindis.Home">
+    tools:context="sangmaneproject.kindis.view.activity.Home">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -18,13 +18,6 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                app:layout_collapseMode="pin"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/dark_jungle_green" />
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager_home"
                 android:layout_width="match_parent"
@@ -52,10 +45,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
 
 </android.support.design.widget.CoordinatorLayout>

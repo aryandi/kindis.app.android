@@ -31,4 +31,5 @@ dependencies {
     compile 'com.github.scottyab:showhidepasswordedittext:0.8'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
     testCompile 'junit:junit:4.12'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
