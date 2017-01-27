@@ -42,9 +42,9 @@
         <activity
             android:name=".view.activity.Home"
             android:label="@string/title_activity_home"
-            android:theme="@style/HomeTheme">
-
-        </activity>
+            android:theme="@style/HomeTheme"></activity>
+        <activity android:name=".view.activity.Player"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabIndicatorColor="@color/medium_sea_green"
-                app:tabMode="fixed"
+                app:tabMode="scrollable"
                 app:paddingEnd="0dp"
                 app:paddingStart="0dp"
                 app:tabGravity="center" />

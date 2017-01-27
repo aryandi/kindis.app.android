@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -24,6 +27,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     FragmentTransaction transaction;
 
     Fragment musiqFragment;
+    ImageButton expand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         transaction = getSupportFragmentManager().beginTransaction();
 
         initBottomAction();
+
+        expand = (ImageButton) findViewById(R.id.btn_expand);
+        expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, Player.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
