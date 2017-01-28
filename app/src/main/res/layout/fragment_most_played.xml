@@ -13,7 +13,7 @@
         android:paddingBottom="16dp"
         tools:context="sangmaneproject.kindis.view.fragment.MostPlayed">
 
-        <sangmaneproject.kindis.utils.TextViewBold
+        <sangmaneproject.kindis.custom.TextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <sangmaneproject.kindis.utils.TextViewBold
+        <sangmaneproject.kindis.custom.TextViewBold
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

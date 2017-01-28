@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
-    <sangmaneproject.kindis.utils.TextViewBold
+    <sangmaneproject.kindis.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textSize="36sp"
         android:textColor="@color/white"/>
 
-    <sangmaneproject.kindis.utils.TextViewSemiBold
+    <sangmaneproject.kindis.custom.TextViewSemiBold
         android:id="@+id/subtitle"
         android:layout_below="@+id/title"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:text="is now on Kindis !"
         android:textColor="@color/white"/>
 
-    <sangmaneproject.kindis.utils.ButtonSemiBold
+    <sangmaneproject.kindis.custom.ButtonSemiBold
         android:layout_below="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

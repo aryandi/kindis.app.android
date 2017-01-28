@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_bismillah" />
 
-    <sangmaneproject.kindis.utils.TextViewRegular
+    <sangmaneproject.kindis.custom.TextViewRegular
         android:id="@+id/label_bismillah"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:textSize="14sp"
         android:textColor="@color/white"/>
 
-    <sangmaneproject.kindis.utils.ButtonSemiBold
+    <sangmaneproject.kindis.custom.ButtonSemiBold
         android:id="@+id/btn_enter"
         android:layout_below="@+id/label_bismillah"
         android:layout_width="wrap_content"

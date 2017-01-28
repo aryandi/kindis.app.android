@@ -27,13 +27,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true">
-            <sangmaneproject.kindis.utils.TextViewRegular
+            <sangmaneproject.kindis.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"
                 android:text="Playlist"/>
-            <sangmaneproject.kindis.utils.TextViewBold
+            <sangmaneproject.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -138,13 +138,13 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_marginTop="16dp">
-            <sangmaneproject.kindis.utils.TextViewBold
+            <sangmaneproject.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ini Judul Lagu"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
-            <sangmaneproject.kindis.utils.TextViewRegular
+            <sangmaneproject.kindis.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Artist Penyanyi"

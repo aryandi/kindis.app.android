@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.utils;
+package sangmaneproject.kindis.custom;
 
 import android.content.Context;
 import android.graphics.Typeface;

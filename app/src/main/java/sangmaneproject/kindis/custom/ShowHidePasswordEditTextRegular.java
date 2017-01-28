@@ -1,24 +1,25 @@
-package sangmaneproject.kindis.utils;
+package sangmaneproject.kindis.custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
+
+import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
 /**
  * Created by DELL on 1/25/2017.
  */
 
-public class TextViewRegular extends TextView {
-    public TextViewRegular(Context context) {
+public class ShowHidePasswordEditTextRegular extends ShowHidePasswordEditText {
+    public ShowHidePasswordEditTextRegular(Context context) {
         super(context);
         setFont();
     }
-    public TextViewRegular(Context context, AttributeSet attrs) {
+    public ShowHidePasswordEditTextRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setFont();
     }
-    public TextViewRegular(Context context, AttributeSet attrs, int defStyle) {
+    public ShowHidePasswordEditTextRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setFont();
     }

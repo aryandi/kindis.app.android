@@ -22,13 +22,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="12dp">
-            <sangmaneproject.kindis.utils.TextViewBold
+            <sangmaneproject.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ketika Sendiri"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
-            <sangmaneproject.kindis.utils.TextViewRegular
+            <sangmaneproject.kindis.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Snada | Jagalah Hati Volume 3"

@@ -89,6 +89,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
+            Intent intent = new Intent(Home.this, Search.class);
+            startActivity(intent);
             return true;
         }
 

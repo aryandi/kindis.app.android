@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sangmaneproject.kindis.view.activity.Search"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/dark_jungle_green"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="38dp"/>
+        <sangmaneproject.kindis.custom.EditTextSemiBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:hint="Search"
+            android:inputType="textFilter"
+            android:background="@android:color/transparent"
+            android:textColorHint="@color/dim_gray"/>
+    </LinearLayout>
+</RelativeLayout>

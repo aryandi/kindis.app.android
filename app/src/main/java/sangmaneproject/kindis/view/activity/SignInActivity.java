@@ -39,8 +39,6 @@ public class SignInActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new SignInFragment(appBarLayout), "Sign In");

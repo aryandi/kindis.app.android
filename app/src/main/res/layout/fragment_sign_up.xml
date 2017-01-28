@@ -39,7 +39,7 @@
                 android:src="@drawable/ic_gplus"/>
         </LinearLayout>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.EditTextRegular
+        <sangmaneproject.kindis.custom.EditTextRegular
             android:id="@+id/input_nama"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -71,7 +71,7 @@
             android:inputType="textPersonName"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.EditTextRegular
+        <sangmaneproject.kindis.custom.EditTextRegular
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -93,7 +93,7 @@
             android:inputType="textEmailAddress"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.ShowHidePasswordEditTextRegular
+        <sangmaneproject.kindis.custom.ShowHidePasswordEditTextRegular
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -117,7 +117,7 @@
             app:tint_color="@color/white"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_retype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.ShowHidePasswordEditTextRegular
+        <sangmaneproject.kindis.custom.ShowHidePasswordEditTextRegular
             android:id="@+id/input_retype"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -141,7 +141,7 @@
             app:tint_color="@color/white"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:id="@+id/label_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.utils.EditTextRegular
+        <sangmaneproject.kindis.custom.EditTextRegular
             android:id="@+id/input_birthday"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -160,10 +160,10 @@
             android:paddingTop="13dp"
             android:paddingBottom="13dp"
             android:textSize="14sp"
-            android:inputType="textEmailAddress"
+            android:textIsSelectable="true"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.utils.TextViewRegular
+        <sangmaneproject.kindis.custom.TextViewRegular
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -178,17 +178,19 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/edittext_normal"
             android:orientation="horizontal">
-            <sangmaneproject.kindis.utils.RadioButtonRegular
+            <sangmaneproject.kindis.custom.RadioButtonRegular
                 android:id="@+id/male"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="MALE"
+                android:textColor="@color/black"
                 android:button="@null"
                 android:gravity="center"
                 android:textSize="14sp"
+                android:checked="true"
                 android:background="@drawable/radiobutton_listener" />
-            <sangmaneproject.kindis.utils.RadioButtonRegular
+            <sangmaneproject.kindis.custom.RadioButtonRegular
                 android:id="@+id/female"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -200,7 +202,8 @@
                 android:background="@drawable/radiobutton_listener"/>
         </RadioGroup>
 
-        <sangmaneproject.kindis.utils.ButtonSemiBold
+        <sangmaneproject.kindis.custom.ButtonSemiBold
+            android:id="@+id/btn_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
