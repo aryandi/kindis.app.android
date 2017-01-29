@@ -38,12 +38,14 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/btn_play"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:background="@drawable/button_circle">
         <ImageView
+            android:id="@+id/ic_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

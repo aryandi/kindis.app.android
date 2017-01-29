@@ -15,10 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
+import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.view.fragment.Musiq;
 
@@ -28,6 +31,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     Fragment musiqFragment;
     ImageButton expand;
+
+    RelativeLayout btnPlay;
+    ImageView icPlay;
+    Boolean isPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +56,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
+        btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
+        icPlay = (ImageView) findViewById(R.id.ic_play);
+
         transaction = getSupportFragmentManager().beginTransaction();
 
+        initBottomPlayer();
         initBottomAction();
 
         expand = (ImageButton) findViewById(R.id.btn_expand);
@@ -124,6 +135,27 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void initFragment(){
         musiqFragment = new Musiq();
+    }
+
+    private void initBottomPlayer(){
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isPlaying){
+                    icPlay.setImageResource(R.drawable.ic_pause);
+                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+                    intent.setAction(PlayerService.ACTION_PLAY);
+                    startService(intent);
+                    isPlaying = true;
+                }else {
+                    icPlay.setImageResource(R.drawable.ic_play);
+                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+                    intent.setAction(PlayerService.ACTION_PAUSE);
+                    startService(intent);
+                    isPlaying = false;
+                }
+            }
+        });
     }
 
     private void initBottomAction(){
