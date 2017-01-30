@@ -1,21 +1,28 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -35,6 +42,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     RelativeLayout btnPlay;
     ImageView icPlay;
     Boolean isPlaying = false;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
         icPlay = (ImageView) findViewById(R.id.ic_play);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
 
         transaction = getSupportFragmentManager().beginTransaction();
 

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
     
     <LinearLayout
@@ -57,6 +58,8 @@
         android:id="@+id/pb"
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
         android:background="@color/dim_gray"
         android:layout_alignParentBottom="true"
         style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"/>
