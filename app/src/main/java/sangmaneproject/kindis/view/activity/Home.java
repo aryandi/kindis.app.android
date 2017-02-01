@@ -24,17 +24,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.view.fragment.Musiq;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     AHBottomNavigation bottomNavigation;
     FragmentTransaction transaction;
+    SessionHelper sessionHelper;
 
     Fragment musiqFragment;
     ImageButton expand;
@@ -43,6 +46,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ImageView icPlay;
     Boolean isPlaying = false;
     ProgressBar progressBar;
+
+    //sidebar
+    TextView fullname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +73,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
         icPlay = (ImageView) findViewById(R.id.ic_play);
         progressBar = (ProgressBar) findViewById(R.id.pb);
+        sessionHelper = new SessionHelper();
+
+        //sidebar
+        fullname = (TextView) findViewById(R.id.fullname);
 
         transaction = getSupportFragmentManager().beginTransaction();
 
         initBottomPlayer();
         initBottomAction();
+        initSidebar();
 
         expand = (ImageButton) findViewById(R.id.btn_expand);
         expand.setOnClickListener(new View.OnClickListener() {
@@ -189,5 +200,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         bottomNavigation.setCurrentItem(0);
         transaction.replace(R.id.cont_home, musiqFragment);
         transaction.commit();
+    }
+
+    private void initSidebar(){
+        fullname.setText(sessionHelper.getPreferences(getApplicationContext(), "fullname"));
     }
 }

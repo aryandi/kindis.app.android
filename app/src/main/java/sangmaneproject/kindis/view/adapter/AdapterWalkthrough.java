@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.SessionHelper;
+import sangmaneproject.kindis.view.activity.Home;
 import sangmaneproject.kindis.view.activity.SignInActivity;
 
 /**
@@ -18,11 +20,14 @@ import sangmaneproject.kindis.view.activity.SignInActivity;
 
 public class AdapterWalkthrough extends PagerAdapter {
     Context mContext;
+    SessionHelper sessionHelper;
+
     private LayoutInflater layoutInflater;
 
     public AdapterWalkthrough(Context context) {
         this.mContext = context;
         this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        sessionHelper = new SessionHelper();
     }
 
     private int[] img = new int[]{
@@ -48,7 +53,7 @@ public class AdapterWalkthrough extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.adapter_walkthrough, container, false);
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.walkthrough);
         TextView title = (TextView) view.findViewById(R.id.title_walkthrough);
@@ -61,8 +66,13 @@ public class AdapterWalkthrough extends PagerAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, SignInActivity.class);
-                mContext.startActivity(intent);
+                if (sessionHelper.getPreferences(mContext, "status").equals("1")){
+                    Intent intent = new Intent(mContext, Home.class);
+                    mContext.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(mContext, SignInActivity.class);
+                    mContext.startActivity(intent);
+                }
             }
         });
 

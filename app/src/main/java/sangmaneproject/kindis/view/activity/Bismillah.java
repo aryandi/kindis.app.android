@@ -31,4 +31,9 @@ public class Bismillah extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
 }
