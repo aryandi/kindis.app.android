@@ -47,11 +47,16 @@ public class Musiq extends Fragment {
         adapterMusiqSlider = new AdapterMusiqSlider(getActivity());
 
         tabLayout.setupWithViewPager(viewPager);
-        setupViewPager(viewPager);
 
         imageSlider.setAdapter(adapterMusiqSlider);
         indicator.setViewPager(imageSlider);
         adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupViewPager(viewPager);
     }
 
     private void setupViewPager(ViewPager viewPager) {

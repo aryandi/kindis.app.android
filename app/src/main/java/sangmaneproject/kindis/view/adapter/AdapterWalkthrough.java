@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.view.activity.Home;
+import sangmaneproject.kindis.view.activity.Bismillah;
 import sangmaneproject.kindis.view.activity.SignInActivity;
 
 /**
@@ -67,7 +67,7 @@ public class AdapterWalkthrough extends PagerAdapter {
             @Override
             public void onClick(View view) {
                 if (sessionHelper.getPreferences(mContext, "status").equals("1")){
-                    Intent intent = new Intent(mContext, Home.class);
+                    Intent intent = new Intent(mContext, Bismillah.class);
                     mContext.startActivity(intent);
                 }else {
                     Intent intent = new Intent(mContext, SignInActivity.class);

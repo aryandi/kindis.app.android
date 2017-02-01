@@ -26,7 +26,7 @@ public class Bismillah extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Bismillah.this, Home.class);
+                Intent intent = new Intent(Bismillah.this, Main.class);
                 startActivity(intent);
             }
         });

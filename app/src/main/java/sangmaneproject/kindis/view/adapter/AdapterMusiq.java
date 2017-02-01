@@ -40,7 +40,7 @@ public class AdapterMusiq extends FragmentPagerAdapter {
     }
 
     /*public View getTabView(int position) {
-        View tab = LayoutInflater.from(Home.this).inflate(R.layout.custom_tabview, null);
+        View tab = LayoutInflater.from(Main.this).inflate(R.layout.custom_tabview, null);
         TextView tv = (TextView) tab.findViewById(R.id.custom_text);
         tv.setText(mFragmentTitleList.get(position));
         return tab;
