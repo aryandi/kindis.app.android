@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="sangmaneproject.kindis.view.fragment.Privacy">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:background="@drawable/background_profile">
+        <ImageButton
+            android:id="@+id/btn_drawer"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_drawer"
+            android:background="@android:color/transparent"/>
+        <sangmaneproject.kindis.custom.TextViewSemiBold
+            android:id="@+id/title"
+            android:layout_toRightOf="@+id/btn_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:text="Privacy Policy"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+    </LinearLayout>
+
+</LinearLayout>

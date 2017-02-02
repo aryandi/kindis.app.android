@@ -18,8 +18,12 @@ import android.widget.TextView;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
+import sangmaneproject.kindis.view.fragment.FAQ;
 import sangmaneproject.kindis.view.fragment.Home;
+import sangmaneproject.kindis.view.fragment.Notification;
+import sangmaneproject.kindis.view.fragment.Privacy;
 import sangmaneproject.kindis.view.fragment.Profile;
+import sangmaneproject.kindis.view.fragment.Terms;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;
@@ -27,6 +31,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     Fragment profileFragment;
     Fragment homeFragment;
+    Fragment notifFragment;
+    Fragment faqFragment;
+    Fragment privacyFragment;
+    Fragment termsFragment;
 
     ImageButton expand;
 
@@ -39,6 +47,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView fullname;
     LinearLayout menuHome;
     LinearLayout menuProfile;
+    LinearLayout menuNotif;
+    TextView menuFAQ;
+    TextView menuPrivacy;
+    TextView menuTerms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +61,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
+        notifFragment = new Notification(drawer);
+        faqFragment = new FAQ(drawer);
+        privacyFragment = new Privacy(drawer);
+        termsFragment = new Terms(drawer);
 
         btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
         icPlay = (ImageView) findViewById(R.id.ic_play);
@@ -59,6 +75,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         fullname = (TextView) findViewById(R.id.fullname);
         menuHome = (LinearLayout) findViewById(R.id.menu_home);
         menuProfile = (LinearLayout) findViewById(R.id.menu_profile);
+        menuNotif = (LinearLayout) findViewById(R.id.menu_notif);
+        menuFAQ = (TextView) findViewById(R.id.menu_faq);
+        menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
+        menuTerms = (TextView) findViewById(R.id.menu_terms);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_main, homeFragment);
@@ -109,7 +129,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     private void initSidebar(){
         fullname.setText(sessionHelper.getPreferences(getApplicationContext(), "fullname"));
         menuHome.setOnClickListener(this);
+        menuNotif.setOnClickListener(this);
         menuProfile.setOnClickListener(this);
+        menuFAQ.setOnClickListener(this);
+        menuPrivacy.setOnClickListener(this);
+        menuTerms.setOnClickListener(this);
     }
 
     @Override
@@ -117,8 +141,16 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.menu_home){
             transaction.replace(R.id.cont_main, homeFragment);
+        }else if (view.getId() == R.id.menu_notif){
+            transaction.replace(R.id.cont_main, notifFragment);
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);
+        }else if (view.getId() == R.id.menu_faq){
+            transaction.replace(R.id.cont_main, faqFragment);
+        }else if (view.getId() == R.id.menu_privacy){
+            transaction.replace(R.id.cont_main, privacyFragment);
+        }else if (view.getId() == R.id.menu_terms){
+            transaction.replace(R.id.cont_main, termsFragment);
         }
         transaction.addToBackStack(null);
         transaction.commit();
