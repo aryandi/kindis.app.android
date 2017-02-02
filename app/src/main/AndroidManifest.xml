@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
             android:name=".PlayerService"
             android:enabled="true"
@@ -47,8 +46,10 @@
         <activity
             android:name=".view.activity.Player"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Search"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".view.activity.Search"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.adapter.AdapterGenre"></activity>
     </application>
 
 </manifest>

@@ -34,20 +34,142 @@
             android:background="@android:color/transparent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/photo"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:src="@drawable/bg_sign_in"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"/>
+        
+        <ImageButton
+            android:layout_toRightOf="@+id/photo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="72dp"
+            android:layout_marginLeft="-16dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/button_circle_black"
+            android:src="@drawable/ic_edit" />
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/body_profile"
         android:layout_below="@+id/profile_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background">
+        android:background="@drawable/background"
+        android:paddingTop="40dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:orientation="vertical">
 
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="FULL NAME"
+            android:textColor="@color/white"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.EditTextRegular
+                android:id="@+id/input_nama"
+                android:layout_toLeftOf="@+id/edit_nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:inputType="textPersonName"
+                android:text="James"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:textCursorDrawable="@null"/>
+            <ImageButton
+                android:id="@+id/edit_nama"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_edit"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="E-MAIL"
+            android:textColor="@color/white"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.EditTextRegular
+                android:id="@+id/input_email"
+                android:layout_toLeftOf="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="mail@email.com"
+                android:inputType="textEmailAddress"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:textCursorDrawable="@null"/>
+            <ImageButton
+                android:id="@+id/edit_email"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_edit"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="E-MAIL"
+            android:textColor="@color/white"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.EditTextRegular
+                android:id="@+id/input_password"
+                android:layout_toLeftOf="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="mail@email.com"
+                android:inputType="textPassword"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:textCursorDrawable="@null"/>
+            <ImageButton
+                android:id="@+id/edit_password"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_edit"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <sangmaneproject.kindis.custom.ButtonSemiBold
+            android:id="@+id/btn_logout"
+            android:layout_marginTop="32dp"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:text="SIGN OUT"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/button_rounded_darkgray"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
     <sangmaneproject.kindis.custom.ButtonSemiBold

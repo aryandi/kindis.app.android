@@ -67,6 +67,29 @@ public class VolleyHelper {
         addToRequestQueue(request);
     }
 
+    public void get(String url, final HttpListener<String> listener){
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        listener.onReceive(true, SUCCESS, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof NoConnectionError){
+                            listener.onReceive(false, NO_CONNECTION, null);
+                        }else {
+                            listener.onReceive(false, error.toString(), null);
+                        }
+                    }
+                }
+        );
+        request.setRetryPolicy(retryPolicy);
+        request.setTag(url);
+        addToRequestQueue(request);
+    }
     private <T> void addToRequestQueue(Request<T> request) {
         getRequestQueue().add(request);
     }

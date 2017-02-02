@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/adapter_genre"
+    android:layout_width="96dp"
+    android:layout_height="96dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/background_genre"
+    tools:context="sangmaneproject.kindis.view.adapter.AdapterGenre">
+
+    <ImageView
+        android:id="@+id/ic_genre"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_search"/>
+    <View
+        android:layout_above="@+id/title_genre"
+        android:layout_width="24dp"
+        android:layout_height="2dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/medium_sea_green"
+        android:layout_marginBottom="6dp"/>
+    <sangmaneproject.kindis.custom.TextViewSemiBold
+        android:id="@+id/title_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:text="POP"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"/>
+</RelativeLayout>

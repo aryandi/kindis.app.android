@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.SessionHelper;
 
 public class SplashScreen extends AppCompatActivity {
+    SessionHelper sessionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,8 @@ public class SplashScreen extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.activity_splash_screen);
 
+        sessionHelper = new SessionHelper();
+
         new Handler().postDelayed(new Runnable() {
 
 			/*
@@ -33,8 +37,13 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, Walkthrough.class);
-                startActivity(i);
+                if (sessionHelper.getPreferences(getApplicationContext(), "status").equals("1")){
+                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                    startActivity(i);
+                }else {
+                    Intent i = new Intent(SplashScreen.this, Walkthrough.class);
+                    startActivity(i);
+                }
 
                 // close this activity
                 finish();

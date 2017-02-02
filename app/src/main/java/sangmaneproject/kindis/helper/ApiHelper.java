@@ -6,7 +6,8 @@ package sangmaneproject.kindis.helper;
 
 public class ApiHelper {
     public static String BASE_URL = "http://api.kindis.co/";
-    public static String REGISTER = BASE_URL+"sign/register";
-    public static String LOGIN = BASE_URL+"sign/login";
-    public static String PROFILE = BASE_URL+"profile/info";
+    public static String REGISTER = BASE_URL + "sign/register";
+    public static String LOGIN = BASE_URL + "sign/login";
+    public static String PROFILE = BASE_URL + "profile/info";
+    public static String GENRE_LIST = BASE_URL + "genre/list";
 }

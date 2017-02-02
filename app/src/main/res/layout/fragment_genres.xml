@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sangmaneproject.kindis.view.fragment.Genres">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:fillViewport="true">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context="sangmaneproject.kindis.view.fragment.Genres"
+        android:background="@drawable/background"
+        android:padding="16dp">
 
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listview_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -20,14 +20,12 @@ import sangmaneproject.kindis.view.activity.SignInActivity;
 
 public class AdapterWalkthrough extends PagerAdapter {
     Context mContext;
-    SessionHelper sessionHelper;
 
     private LayoutInflater layoutInflater;
 
     public AdapterWalkthrough(Context context) {
         this.mContext = context;
         this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
-        sessionHelper = new SessionHelper();
     }
 
     private int[] img = new int[]{
@@ -66,13 +64,8 @@ public class AdapterWalkthrough extends PagerAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sessionHelper.getPreferences(mContext, "status").equals("1")){
-                    Intent intent = new Intent(mContext, Bismillah.class);
-                    mContext.startActivity(intent);
-                }else {
-                    Intent intent = new Intent(mContext, SignInActivity.class);
-                    mContext.startActivity(intent);
-                }
+                Intent intent = new Intent(mContext, SignInActivity.class);
+                mContext.startActivity(intent);
             }
         });
 
