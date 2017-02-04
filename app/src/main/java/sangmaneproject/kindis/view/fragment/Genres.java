@@ -68,6 +68,7 @@ public class Genres extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 if (status){
                     Log.d("genrelistt", response);
+                    listGenre.clear();
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONArray result = object.getJSONArray("result");
