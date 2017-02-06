@@ -18,12 +18,12 @@ import android.widget.TextView;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.view.fragment.FAQ;
+import sangmaneproject.kindis.view.fragment.navigationview.FAQ;
 import sangmaneproject.kindis.view.fragment.Home;
 import sangmaneproject.kindis.view.fragment.Notification;
-import sangmaneproject.kindis.view.fragment.Privacy;
+import sangmaneproject.kindis.view.fragment.navigationview.Privacy;
 import sangmaneproject.kindis.view.fragment.Profile;
-import sangmaneproject.kindis.view.fragment.Terms;
+import sangmaneproject.kindis.view.fragment.navigationview.Terms;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;

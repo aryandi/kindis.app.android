@@ -8,7 +8,7 @@
                 android:angle="180"
                 android:type="radial"
                 android:centerX="100%"
-                android:gradientRadius="100%"/>
+                android:gradientRadius="100%p"/>
         </shape>
     </item>
 </selector>

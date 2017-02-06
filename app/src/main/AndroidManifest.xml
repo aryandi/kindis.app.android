@@ -20,11 +20,7 @@
         <activity
             android:name=".view.activity.SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".view.activity.Walkthrough"
@@ -49,6 +45,14 @@
         <activity
             android:name=".view.activity.Search"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.activity.Detail"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

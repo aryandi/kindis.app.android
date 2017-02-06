@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="sangmaneproject.kindis.view.fragment.Privacy">
+    tools:context="sangmaneproject.kindis.view.fragment.navigationview.Privacy">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background">
-
+        <WebView
+            android:id="@+id/view_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"/>
     </LinearLayout>
 
 </LinearLayout>

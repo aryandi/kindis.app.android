@@ -10,4 +10,7 @@ public class ApiHelper {
     public static String LOGIN = BASE_URL + "sign/login";
     public static String PROFILE = BASE_URL + "profile/info";
     public static String GENRE_LIST = BASE_URL + "genre/list";
+    public static String TERMS = BASE_URL + "statics/page/terms_of_use";
+    public static String PRIVACY = BASE_URL + "statics/page/privacy_policy";
+    public static String FAQ = BASE_URL + "statics/page/faq";
 }
