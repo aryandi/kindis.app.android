@@ -1,23 +1,35 @@
 package sangmaneproject.kindis.view.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
+import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.view.activity.Player;
 import sangmaneproject.kindis.view.activity.Search;
 
 /**
@@ -30,6 +42,15 @@ public class Home extends Fragment implements View.OnClickListener {
     Fragment musiqFragment;
     ImageButton btnDrawer;
     ImageButton btnSearch;
+
+    //bottom player
+    ImageButton expand;
+    RelativeLayout btnPlay;
+    ImageView icPlay;
+    Boolean isPlaying = false;
+    ProgressBar progressBar;
+    int duration;
+    int progress;
 
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
@@ -52,6 +73,12 @@ public class Home extends Fragment implements View.OnClickListener {
 
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnSearch = (ImageButton) view.findViewById(R.id.btn_search);
+
+        //bottom player
+        expand = (ImageButton) view.findViewById(R.id.btn_expand);
+        btnPlay = (RelativeLayout) view.findViewById(R.id.btn_play);
+        icPlay = (ImageView) view.findViewById(R.id.ic_play);
+        progressBar = (ProgressBar) view.findViewById(R.id.pb);
 
         musiqFragment = new Musiq();
 
@@ -77,6 +104,8 @@ public class Home extends Fragment implements View.OnClickListener {
 
         btnDrawer.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
+
+        bottomPlayer();
     }
 
     @Override
@@ -94,6 +123,53 @@ public class Home extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         super.onResume();
     }
+
+    private void bottomPlayer(){
+        progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#21b684")));
+        expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Player.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isPlaying){
+                    icPlay.setImageResource(R.drawable.ic_pause);
+                    Intent intent = new Intent(getActivity(), PlayerService.class);
+                    intent.setAction(PlayerActionHelper.ACTION_PLAY);
+                    getActivity().startService(intent);
+                    isPlaying = true;
+                }else {
+                    icPlay.setImageResource(R.drawable.ic_play);
+                    Intent intent = new Intent(getActivity(), PlayerService.class);
+                    intent.setAction(PlayerActionHelper.ACTION_PAUSE);
+                    getActivity().startService(intent);
+                    isPlaying = false;
+                }
+            }
+        });
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
+            progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
+            Log.d("kontolreceiver", "Got message: " + duration + " : " + progress);
+            /*progressBar.setMax(duration);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setProgress(progress);
+                }
+            });*/
+        }
+    };
 }

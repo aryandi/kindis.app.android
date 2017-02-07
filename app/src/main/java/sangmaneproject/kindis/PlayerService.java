@@ -6,17 +6,13 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.io.IOException;
 
+import sangmaneproject.kindis.helper.PlayerActionHelper;
+
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener{
-    public static final String ACTION_TOGGLE_PLAYBACK = "com.example.android.musicplayer.action.TOGGLE_PLAYBACK";
-    public static final String ACTION_PLAY = "com.example.android.musicplayer.action.PLAY";
-    public static final String ACTION_PAUSE = "com.example.android.musicplayer.action.PAUSE";
-    public static final String ACTION_STOP = "com.example.android.musicplayer.action.STOP";
-    public static final String ACTION_SKIP = "com.example.android.musicplayer.action.SKIP";
-    public static final String ACTION_REWIND = "com.example.android.musicplayer.action.REWIND";
-    public static final String ACTION_URL = "com.example.android.musicplayer.action.URL";
     MediaPlayer mediaPlayer = null;
 
     public PlayerService() {
@@ -41,14 +37,23 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (intent.getAction().equals(ACTION_PLAY)){
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
             onPrepared(mediaPlayer);
         }
 
-        if (intent.getAction().equals(ACTION_PAUSE)){
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
             mediaPlayer.pause();
+            updatesProgressBar(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
         }
 
+        /*while (mediaPlayer.isPlaying()){
+            updatesProgressBar(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }*/
         return START_STICKY;
     }
 
@@ -60,5 +65,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
+    }
+
+
+
+    private void updatesProgressBar(int duration, int current) {
+        Log.d("kontolsender", duration + " : " + current);
+        Intent intent = new Intent(PlayerActionHelper.BROADCAST);
+        intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
+        intent.putExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, current);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
