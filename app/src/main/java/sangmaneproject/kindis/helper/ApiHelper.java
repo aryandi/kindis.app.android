@@ -13,4 +13,5 @@ public class ApiHelper {
     public static String TERMS = BASE_URL + "statics/page/terms_of_use";
     public static String PRIVACY = BASE_URL + "statics/page/privacy_policy";
     public static String FAQ = BASE_URL + "statics/page/faq";
+    public static String DETAIL_GENRE = BASE_URL + "genre/items?genre_id=";
 }

@@ -2,6 +2,7 @@ package sangmaneproject.kindis.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.view.activity.Detail;
 import sangmaneproject.kindis.view.holder.Item;
 import sangmaneproject.kindis.view.holder.ItemGenre;
 
@@ -39,7 +42,17 @@ public class AdapterGenre extends RecyclerView.Adapter<ItemGenre> {
     public void onBindViewHolder(ItemGenre holder, int position) {
         dataGenre = listGenre.get(position);
         TextView title = holder.title;
+        RelativeLayout click = holder.click;
         title.setText(dataGenre.get("title"));
+
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Detail.class);
+                intent.putExtra("uid", dataGenre.get("uid"));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -15,13 +15,42 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/htab_collapse_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:background="@drawable/bg_sign_in"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@drawable/background"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="200dp"
+                android:src="@drawable/bg_sign_in"
+                android:scaleType="centerCrop"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:contentInsetLeft="0dp"
+                android:contentInsetStart="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:layout_gravity="top">
+                <sangmaneproject.kindis.custom.TextViewSemiBold
+                    android:id="@+id/title_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:visibility="invisible"
+                    android:text="Ini Adalah Judul Playlist Ini lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+                    android:textSize="20sp"/>
+            </android.support.v7.widget.Toolbar>
+            <RelativeLayout
+                android:id="@+id/cont_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="exitUntilCollapsed">
                 <sangmaneproject.kindis.custom.TextViewBold
                     android:id="@+id/title_detail"
                     android:layout_width="match_parent"
@@ -36,6 +65,7 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="?attr/actionBarSize"/>
                 <sangmaneproject.kindis.custom.TextViewRegular
+                    android:id="@+id/description"
                     android:layout_below="@+id/title_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,30 +74,22 @@
                     android:textSize="14sp"
                     android:textColor="@color/white"/>
             </RelativeLayout>
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                android:contentInsetLeft="0dp"
-                android:contentInsetStart="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                android:layout_gravity="top"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/cont_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        app:layout_anchor="@+id/htab_collapse_toolbar"
+        app:layout_anchor="@+id/htab_appbar"
         app:layout_anchorGravity="bottom|center">
         <sangmaneproject.kindis.custom.ButtonSemiBold
             android:layout_width="108dp"
