@@ -4,21 +4,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.TimedText;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import java.io.IOException;
 
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
-import sangmaneproject.kindis.view.activity.Bismillah;
-import sangmaneproject.kindis.view.activity.SplashScreen;
-import sangmaneproject.kindis.view.activity.Walkthrough;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
     MediaPlayer mediaPlayer = null;
@@ -40,6 +35,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             e.printStackTrace();
         }
         mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.prepareAsync();
     }
 
@@ -56,6 +52,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
             new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             updateProgressBar();
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_SEEK)){
+            mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
         }
 
         return START_STICKY;
@@ -79,10 +79,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                while (mediaPlayer.getCurrentPosition() < mediaPlayer.getDuration()){
-                    if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
-                        sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
-                    }
+                while (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
+                    sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -96,7 +94,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        sendBroadcest(100, 100);
+        sendBroadcest(mp.getDuration(), mp.getDuration());
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
     }
 

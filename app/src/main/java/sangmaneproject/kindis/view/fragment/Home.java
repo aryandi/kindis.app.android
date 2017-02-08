@@ -1,15 +1,12 @@
 package sangmaneproject.kindis.view.fragment;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -125,18 +122,18 @@ public class Home extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
+        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
+            icPlay.setImageResource(R.drawable.ic_pause);
+        }else {
+            icPlay.setImageResource(R.drawable.ic_play);
+        }
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         super.onResume();
     }
 
     private void bottomPlayer(){
         //progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#21b684")));
-
-        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
-            icPlay.setImageResource(R.drawable.ic_pause);
-        }else {
-            icPlay.setImageResource(R.drawable.ic_play);
-        }
 
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
