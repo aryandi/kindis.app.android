@@ -133,8 +133,6 @@ public class Home extends Fragment implements View.OnClickListener {
     }
 
     private void bottomPlayer(){
-        //progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#21b684")));
-
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

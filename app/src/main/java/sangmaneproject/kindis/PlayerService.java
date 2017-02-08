@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -17,7 +16,6 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
     MediaPlayer mediaPlayer = null;
-    Handler mHandler;
 
     public PlayerService() {
     }
@@ -25,7 +23,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onCreate() {
         super.onCreate();
-        mHandler = new Handler();
         String song = "https://s3-ap-southeast-1.amazonaws.com/kindis.co/single/2017/01/15/Seventeen/transcoder/hls_de356622f70fd59b8e5e9341288692c1.m3u8";
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -35,7 +32,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             e.printStackTrace();
         }
         mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.prepareAsync();
     }
 
@@ -70,8 +66,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
         if (mediaPlayer.isPlaying()){
+            Log.d("playerservice", "onprepared");
             sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
             updateProgressBar();
+            mediaPlayer.setOnCompletionListener(this);
         }
     }
 
@@ -81,6 +79,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             protected String doInBackground(Void... params) {
                 while (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
                     sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+                    Log.d("playerservice", "updateprogres");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -94,6 +93,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        Log.d("playerservice", "onCompleted");
         sendBroadcest(mp.getDuration(), mp.getDuration());
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
     }
