@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.view.fragment;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,6 +31,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.activity.Player;
 import sangmaneproject.kindis.view.activity.Search;
 
@@ -47,7 +50,6 @@ public class Home extends Fragment implements View.OnClickListener {
     ImageButton expand;
     RelativeLayout btnPlay;
     ImageView icPlay;
-    Boolean isPlaying = false;
     ProgressBar progressBar;
     int duration;
     int progress;
@@ -128,7 +130,14 @@ public class Home extends Fragment implements View.OnClickListener {
     }
 
     private void bottomPlayer(){
-        progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#21b684")));
+        //progressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#21b684")));
+
+        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
+            icPlay.setImageResource(R.drawable.ic_pause);
+        }else {
+            icPlay.setImageResource(R.drawable.ic_play);
+        }
+
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,18 +149,18 @@ public class Home extends Fragment implements View.OnClickListener {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isPlaying){
+                if (!new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
+                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "true");
                     icPlay.setImageResource(R.drawable.ic_pause);
                     Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PLAY);
                     getActivity().startService(intent);
-                    isPlaying = true;
                 }else {
+                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "false");
                     icPlay.setImageResource(R.drawable.ic_play);
                     Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PAUSE);
                     getActivity().startService(intent);
-                    isPlaying = false;
                 }
             }
         });
@@ -163,13 +172,14 @@ public class Home extends Fragment implements View.OnClickListener {
             duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
             progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
             Log.d("kontolreceiver", "Got message: " + duration + " : " + progress);
-            /*progressBar.setMax(duration);
-            getActivity().runOnUiThread(new Runnable() {
+
+            progressBar.setMax(duration);
+            progressBar.post(new Runnable() {
                 @Override
                 public void run() {
                     progressBar.setProgress(progress);
                 }
-            });*/
+            });
         }
     };
 }

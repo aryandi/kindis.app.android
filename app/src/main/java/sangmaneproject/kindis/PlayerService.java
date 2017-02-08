@@ -4,16 +4,25 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.TimedText;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 
 import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.view.activity.Bismillah;
+import sangmaneproject.kindis.view.activity.SplashScreen;
+import sangmaneproject.kindis.view.activity.Walkthrough;
 
-public class PlayerService extends Service implements MediaPlayer.OnPreparedListener{
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
     MediaPlayer mediaPlayer = null;
+    Handler mHandler;
 
     public PlayerService() {
     }
@@ -21,7 +30,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mHandler = new Handler();
         String song = "https://s3-ap-southeast-1.amazonaws.com/kindis.co/single/2017/01/15/Seventeen/transcoder/hls_de356622f70fd59b8e5e9341288692c1.m3u8";
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -39,21 +48,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
             onPrepared(mediaPlayer);
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
             mediaPlayer.pause();
-            updatesProgressBar(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            updateProgressBar();
         }
 
-        /*while (mediaPlayer.isPlaying()){
-            updatesProgressBar(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
         return START_STICKY;
     }
 
@@ -65,11 +69,38 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
+        if (mediaPlayer.isPlaying()){
+            sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            updateProgressBar();
+        }
     }
 
+    private void updateProgressBar(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                while (mediaPlayer.getCurrentPosition() < mediaPlayer.getDuration()){
+                    if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
+                        sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        }.execute();
+    }
 
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        sendBroadcest(100, 100);
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+    }
 
-    private void updatesProgressBar(int duration, int current) {
+    private void sendBroadcest(int duration, int current) {
         Log.d("kontolsender", duration + " : " + current);
         Intent intent = new Intent(PlayerActionHelper.BROADCAST);
         intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
