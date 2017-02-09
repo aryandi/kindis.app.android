@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
 
 public class Bismillah extends AppCompatActivity {
     Button enter;
@@ -30,6 +31,8 @@ public class Bismillah extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
     }
 
     @Override

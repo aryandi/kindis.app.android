@@ -124,6 +124,9 @@ public class Player extends AppCompatActivity {
                     seekBar.setProgress(progress);
                 }
             });
+            if (progress==duration){
+                icPlay.setImageResource(R.drawable.ic_play);
+            }
         }
     };
 

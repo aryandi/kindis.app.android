@@ -166,7 +166,7 @@ public class Home extends Fragment implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
             progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
-            Log.d("kontolreceiver", "Got message: " + duration + " : " + progress);
+            Log.d("homereceiver", "Got message: " + duration + " : " + progress);
 
             progressBar.setMax(duration);
             progressBar.post(new Runnable() {
@@ -175,6 +175,10 @@ public class Home extends Fragment implements View.OnClickListener {
                     progressBar.setProgress(progress);
                 }
             });
+
+            if (progress==duration){
+                icPlay.setImageResource(R.drawable.ic_play);
+            }
         }
     };
 }
