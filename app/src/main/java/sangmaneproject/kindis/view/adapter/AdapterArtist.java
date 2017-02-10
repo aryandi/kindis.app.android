@@ -1,24 +1,24 @@
 package sangmaneproject.kindis.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.view.activity.DetailArtist;
 import sangmaneproject.kindis.view.holder.Item;
 
 /**
@@ -48,8 +48,11 @@ public class AdapterArtist extends RecyclerView.Adapter<Item> {
         ImageView imageView = holder.imageView;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
+        LinearLayout click = holder.click;
 
         dataArtist = listArtist.get(position);
+
+        final String uid = dataArtist.get("uid");
 
         Glide.with(context)
                 .load(ApiHelper.BASE_URL_IMAGE+dataArtist.get("image"))
@@ -60,10 +63,25 @@ public class AdapterArtist extends RecyclerView.Adapter<Item> {
                 .into(imageView);
         title.setText(dataArtist.get("name"));
         subTitle.setText("Artist");
+
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), DetailArtist.class);
+                intent.putExtra("uid", uid);
+                intent.putExtra("type", "artist");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return listArtist.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

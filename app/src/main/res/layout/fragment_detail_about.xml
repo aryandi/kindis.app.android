@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="sangmaneproject.kindis.view.fragment.detail.DetailAbout">
+
+    <sangmaneproject.kindis.custom.TextViewBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:text="About"
+        android:layout_gravity="center_horizontal"/>
+
+    <sangmaneproject.kindis.custom.TextViewRegular
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="Ini adalah deskripsi mengenai artis ini. Spielberg’s blockbuster, “Minority Report”, is set in the year 2054. The future – at least according to a team of MIT futurologists, hired by the cinematic genius – is the captive of embarrassingly personalized and disturbingly intrusive."
+        android:gravity="center_horizontal"/>
+
+</LinearLayout>

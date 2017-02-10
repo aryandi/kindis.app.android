@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment.navigationview;
+package sangmaneproject.kindis.view.fragment.bottomnavigation;
 
 
 import android.os.Bundle;

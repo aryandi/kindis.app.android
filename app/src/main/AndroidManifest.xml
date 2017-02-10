@@ -50,8 +50,13 @@
         <activity
             android:name=".view.activity.Search"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Detail"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".view.activity.Detail"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".view.activity.DetailArtist"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.adapter.AdapterNotification"></activity>
     </application>
 
 </manifest>

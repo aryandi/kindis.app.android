@@ -31,6 +31,7 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.activity.Player;
 import sangmaneproject.kindis.view.activity.Search;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.Musiq;
 
 /**
  * A simple {@link Fragment} subclass.
