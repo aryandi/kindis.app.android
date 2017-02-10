@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment;
+package sangmaneproject.kindis.view.fragment.signin;
 
 
 import android.app.DatePickerDialog;

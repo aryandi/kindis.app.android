@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.view.fragment.SignInFragment;
-import sangmaneproject.kindis.view.fragment.SignUpFragment;
+import sangmaneproject.kindis.view.fragment.signin.SignInFragment;
+import sangmaneproject.kindis.view.fragment.signin.SignUpFragment;
 
 public class SignInActivity extends AppCompatActivity {
     TabLayout tabLayout;

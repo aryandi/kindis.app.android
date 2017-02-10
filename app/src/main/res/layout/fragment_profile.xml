@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="sangmaneproject.kindis.view.fragment.Profile">
+    tools:context="sangmaneproject.kindis.view.fragment.navigationview.Profile">
 
     <RelativeLayout
         android:id="@+id/profile_header"

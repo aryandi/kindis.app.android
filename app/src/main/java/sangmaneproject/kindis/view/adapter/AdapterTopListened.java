@@ -1,12 +1,21 @@
 package sangmaneproject.kindis.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.view.holder.Item;
 
 /**
@@ -14,11 +23,14 @@ import sangmaneproject.kindis.view.holder.Item;
  */
 
 public class AdapterTopListened extends RecyclerView.Adapter<Item> {
-    private int[] img = new int[]{
-            R.drawable.bg_sign_in, R.drawable.bg_sign_in, R.drawable.bg_sign_in
-    };
+    Context context;
+    ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> dataSinggle;
 
-    public AdapterTopListened (){}
+    public AdapterTopListened (Context context, ArrayList<HashMap<String, String>> listAlbum){
+        this.context = context;
+        this.listAlbum = listAlbum;
+    }
 
 
     @Override
@@ -31,11 +43,23 @@ public class AdapterTopListened extends RecyclerView.Adapter<Item> {
     @Override
     public void onBindViewHolder(Item holder, int position) {
         ImageView imageView = holder.imageView;
-        imageView.setImageResource(img[position]);
+        TextView title = holder.title;
+        TextView subTitle = holder.subtitle;
+        dataSinggle = listAlbum.get(position);
+
+        Glide.with(context)
+                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
+                .thumbnail( 0.1f )
+                .placeholder(R.drawable.ic_default_img)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(imageView);
+        title.setText(dataSinggle.get("title"));
+        subTitle.setText(dataSinggle.get("description"));
     }
 
     @Override
     public int getItemCount() {
-        return img.length;
+        return listAlbum.size();
     }
 }

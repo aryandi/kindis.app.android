@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.view.fragment.Home;
-import sangmaneproject.kindis.view.fragment.Notification;
-import sangmaneproject.kindis.view.fragment.Profile;
+import sangmaneproject.kindis.view.fragment.navigationview.Home;
+import sangmaneproject.kindis.view.fragment.navigationview.Notification;
+import sangmaneproject.kindis.view.fragment.navigationview.Profile;
 import sangmaneproject.kindis.view.fragment.navigationview.FAQ;
 import sangmaneproject.kindis.view.fragment.navigationview.Privacy;
 import sangmaneproject.kindis.view.fragment.navigationview.Terms;

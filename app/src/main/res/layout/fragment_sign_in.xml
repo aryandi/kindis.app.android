@@ -7,7 +7,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.fragment.SignInFragment">
+    tools:context="sangmaneproject.kindis.view.fragment.signin.SignInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

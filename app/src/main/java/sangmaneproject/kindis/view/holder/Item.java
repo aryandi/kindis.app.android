@@ -13,8 +13,8 @@ import sangmaneproject.kindis.R;
 
 public class Item extends RecyclerView.ViewHolder {
     public ImageView imageView;
-    TextView title;
-    TextView subtitle;
+    public TextView title;
+    public TextView subtitle;
     public Item(View itemView) {
         super(itemView);
         this.imageView = (ImageView) itemView.findViewById(R.id.image);

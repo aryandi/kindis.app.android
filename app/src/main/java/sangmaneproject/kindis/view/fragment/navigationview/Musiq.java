@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment;
+package sangmaneproject.kindis.view.fragment.navigationview;
 
 
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.view.adapter.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
+import sangmaneproject.kindis.view.fragment.musiq.Genres;
+import sangmaneproject.kindis.view.fragment.musiq.MostPlayed;
+import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
 
 /**
  * A simple {@link Fragment} subclass.

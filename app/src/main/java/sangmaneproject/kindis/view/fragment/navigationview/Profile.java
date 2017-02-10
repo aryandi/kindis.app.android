@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment;
+package sangmaneproject.kindis.view.fragment.navigationview;
 
 
 import android.content.Context;

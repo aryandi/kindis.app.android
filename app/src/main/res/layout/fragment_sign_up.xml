@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.fragment.SignUpFragment"
+    tools:context="sangmaneproject.kindis.view.fragment.signin.SignUpFragment"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <LinearLayout
