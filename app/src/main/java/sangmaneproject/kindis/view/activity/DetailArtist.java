@@ -15,14 +15,14 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.adapter.AdapterMusiq;
+import sangmaneproject.kindis.view.adapter.AdapterDetailArtist;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 
 public class DetailArtist extends AppCompatActivity {
     ViewPager imageSlider;
     Toolbar toolbar;
-    AdapterMusiq adapter;
+    AdapterDetailArtist adapter;
     CircleIndicator indicator;
 
     @Override
@@ -44,7 +44,7 @@ public class DetailArtist extends AppCompatActivity {
             }
         });
 
-        adapter = new AdapterMusiq(getSupportFragmentManager());
+        adapter = new AdapterDetailArtist(getSupportFragmentManager());
 
         getDetail();
     }

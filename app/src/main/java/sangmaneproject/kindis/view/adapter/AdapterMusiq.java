@@ -1,48 +1,60 @@
 package sangmaneproject.kindis.view.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.view.fragment.musiq.Genres;
+import sangmaneproject.kindis.view.fragment.musiq.MostPlayed;
+import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
 
 /**
  * Created by vincenttp on 1/26/2017.
  */
 
 public class AdapterMusiq extends FragmentStatePagerAdapter {
-    private final List<Fragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
+    Context context;
+    int mNumOfTabs;
+    private String[] title = {"MOST PLAYED", "RECENTLY ADDED", "GENRES"};
 
-    public AdapterMusiq(FragmentManager manager) {
+    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs) {
         super(manager);
+        this.context = context;
+        this.mNumOfTabs = mNumOfTabs;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragmentList.get(position);
+        switch (position) {
+            case 0:
+                //Fragement for Android Tab
+                return new MostPlayed();
+            case 1:
+                //Fragment for Ios Tab
+                return new RecentlyAdded();
+            case 2:
+                //Fragment for Windows Tab
+                return new Genres();
+            default:
+                return null;
+        }
     }
 
     @Override
     public int getCount() {
-        return mFragmentList.size();
+        return mNumOfTabs;
     }
 
-    public void addFragment(Fragment fragment, String title) {
-        mFragmentList.add(fragment);
-        mFragmentTitleList.add(title);
+    public View getTabView(int position) {
+        View v = LayoutInflater.from(context).inflate(R.layout.item_tab, null);
+        TextView tv = (TextView) v.findViewById(R.id.title_tab);
+        tv.setText(title[position]);
+        return v;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mFragmentTitleList.get(position);
-    }
-
-    /*public View getTabView(int position) {
-        View tab = LayoutInflater.from(Main.this).inflate(R.layout.custom_tabview, null);
-        TextView tv = (TextView) tab.findViewById(R.id.custom_text);
-        tv.setText(mFragmentTitleList.get(position));
-        return tab;
-    }*/
 }

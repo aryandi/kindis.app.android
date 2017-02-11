@@ -14,9 +14,6 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.view.adapter.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
-import sangmaneproject.kindis.view.fragment.musiq.Genres;
-import sangmaneproject.kindis.view.fragment.musiq.MostPlayed;
-import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,26 +44,40 @@ public class Musiq extends Fragment {
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator);
 
+        //imageslider
         adapterMusiqSlider = new AdapterMusiqSlider(getActivity());
-
-        tabLayout.setupWithViewPager(viewPager);
-
         imageSlider.setAdapter(adapterMusiqSlider);
         indicator.setViewPager(imageSlider);
         adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+
+        //tab
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.addTab(tabLayout.newTab().setText("MOST PLAYED"));
+        tabLayout.addTab(tabLayout.newTab().setText("RECENTLY ADDED"));
+        tabLayout.addTab(tabLayout.newTab().setText("GENRES"));
+
+        AdapterMusiq adapter = new AdapterMusiq(getFragmentManager(), getContext(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+        tabLayout.setupWithViewPager(viewPager);
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab.setCustomView(adapter.getTabView(i));
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setupViewPager(viewPager);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    /*private void setupViewPager(ViewPager viewPager) {
         AdapterMusiq adapter = new AdapterMusiq(getFragmentManager());
         adapter.addFragment(new MostPlayed(), "Most Played");
         adapter.addFragment(new RecentlyAdded(), "Recently Added");
         adapter.addFragment(new Genres(), "Genres");
         viewPager.setAdapter(adapter);
-    }
+        viewPager.setOffscreenPageLimit(3);
+    }*/
 }
