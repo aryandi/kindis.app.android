@@ -45,11 +45,12 @@ public class AdapterGenre extends RecyclerView.Adapter<ItemGenre> {
         RelativeLayout click = holder.click;
         title.setText(dataGenre.get("title"));
 
+        final String uid = dataGenre.get("uid");
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Detail.class);
-                intent.putExtra("uid", dataGenre.get("uid"));
+                intent.putExtra("uid", uid);
                 context.startActivity(intent);
             }
         });
@@ -59,44 +60,4 @@ public class AdapterGenre extends RecyclerView.Adapter<ItemGenre> {
     public int getItemCount() {
         return listGenre.size();
     }
-    /*Context context;
-    ArrayList<HashMap<String, String>> listGenre;
-    HashMap<String, String> dataGenre;
-    LayoutInflater inflater;
-    ImageView icon;
-    TextView title;
-
-    public AdapterGenre(Context context, ArrayList<HashMap<String, String>> listGenre) {
-        this.context = context;
-        this.listGenre = listGenre;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        return listGenre.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.adapter_genre, viewGroup, false);
-        icon = (ImageView) view.findViewById(R.id.ic_genre);
-        title = (TextView) view.findViewById(R.id.title_genre);
-
-        dataGenre = listGenre.get(i);
-
-        title.setText(dataGenre.get("title"));
-
-        return view;
-    }*/
 }

@@ -56,7 +56,7 @@ public class Musiq extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("RECENTLY ADDED"));
         tabLayout.addTab(tabLayout.newTab().setText("GENRES"));
 
-        AdapterMusiq adapter = new AdapterMusiq(getFragmentManager(), getContext(), tabLayout.getTabCount());
+        AdapterMusiq adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);

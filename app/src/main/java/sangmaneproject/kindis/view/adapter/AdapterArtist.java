@@ -57,7 +57,6 @@ public class AdapterArtist extends RecyclerView.Adapter<Item> {
         Glide.with(context)
                 .load(ApiHelper.BASE_URL_IMAGE+dataArtist.get("image"))
                 .thumbnail( 0.1f )
-                .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);

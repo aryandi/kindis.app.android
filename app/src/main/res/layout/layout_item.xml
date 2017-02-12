@@ -10,6 +10,7 @@
         android:id="@+id/image"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:src="@drawable/ic_default_img"
         android:scaleType="centerCrop"/>
     <sangmaneproject.kindis.custom.TextViewBold
         android:id="@+id/title"

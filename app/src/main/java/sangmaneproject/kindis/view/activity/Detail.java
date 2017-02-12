@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -94,6 +95,7 @@ public class Detail extends AppCompatActivity {
             public void onReceive(boolean status, String message, String response) {
                 if (status){
                     try {
+                        Log.d("DetailResponse", response);
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
