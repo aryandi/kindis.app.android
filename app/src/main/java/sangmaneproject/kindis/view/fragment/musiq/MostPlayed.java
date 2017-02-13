@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.view.fragment.musiq;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,6 +24,7 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterTopListened;
@@ -39,6 +43,9 @@ public class MostPlayed extends Fragment {
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
 
+    LinearLayout body, emptyState;
+    Button refresh;
+    ProgressDialog loading;
     public MostPlayed() {
         // Required empty public constructor
     }
@@ -60,15 +67,43 @@ public class MostPlayed extends Fragment {
         recyclerViewTopListened.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewArtist.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        getJSON();
+        emptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        body = (LinearLayout) view.findViewById(R.id.body);
+        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        loading = new ProgressDialog(getActivity());
+
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loading.setMessage("Loading. Please wait...");
+
+        setLayout();
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLayout();
+            }
+        });
+    }
+
+    private void setLayout(){
+        if (new CheckConnection().isInternetAvailable(getContext())){
+            getJSON();
+            body.setVisibility(View.VISIBLE);
+            emptyState.setVisibility(View.GONE);
+        }else {
+            body.setVisibility(View.GONE);
+            emptyState.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getJSON(){
+        loading.show();
         listAlbum.clear();
         listArtist.clear();
-        new VolleyHelper().get(ApiHelper.HOME, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.MUSIQ, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
@@ -109,6 +144,8 @@ public class MostPlayed extends Fragment {
                         e.printStackTrace();
                     }
                 }else {
+                    body.setVisibility(View.GONE);
+                    emptyState.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }

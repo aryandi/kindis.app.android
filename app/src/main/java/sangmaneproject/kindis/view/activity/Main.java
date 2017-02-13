@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
@@ -35,6 +36,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     LinearLayout menuHome;
     LinearLayout menuProfile;
     LinearLayout menuNotif;
+    LinearLayout menuPremium;
     TextView menuFAQ;
     TextView menuPrivacy;
     TextView menuTerms;
@@ -59,6 +61,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuHome = (LinearLayout) findViewById(R.id.menu_home);
         menuProfile = (LinearLayout) findViewById(R.id.menu_profile);
         menuNotif = (LinearLayout) findViewById(R.id.menu_notif);
+        menuPremium = (LinearLayout) findViewById(R.id.menu_premium);
         menuFAQ = (TextView) findViewById(R.id.menu_faq);
         menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
         menuTerms = (TextView) findViewById(R.id.menu_terms);
@@ -83,6 +86,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         fullname.setText(sessionHelper.getPreferences(getApplicationContext(), "fullname"));
         menuHome.setOnClickListener(this);
         menuNotif.setOnClickListener(this);
+        menuPremium.setOnClickListener(this);
         menuProfile.setOnClickListener(this);
         menuFAQ.setOnClickListener(this);
         menuPrivacy.setOnClickListener(this);
@@ -96,6 +100,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             transaction.replace(R.id.cont_main, homeFragment);
         }else if (view.getId() == R.id.menu_notif){
             transaction.replace(R.id.cont_main, notifFragment);
+        }else if(view.getId() == R.id.menu_premium) {
+            Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);
         }else if (view.getId() == R.id.menu_faq){

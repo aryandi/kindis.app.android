@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.view.fragment.musiq;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,7 @@ import java.util.Map;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.controller.ProfileInfo;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.activity.Bismillah;
 import sangmaneproject.kindis.view.adapter.AdapterGenre;
@@ -37,6 +41,9 @@ public class Genres extends Fragment {
     VolleyHelper volleyHelper;
     ArrayList<HashMap<String, String>> listGenre = new ArrayList<HashMap<String, String>>();
     AdapterGenre adapterGenre;
+    LinearLayout emptyState;
+    Button refresh;
+    ProgressDialog loading;
 
     public Genres() {
         // Required empty public constructor
@@ -57,16 +64,41 @@ public class Genres extends Fragment {
         volleyHelper = new VolleyHelper();
         gridView = (RecyclerView) view.findViewById(R.id.listview_genre);
         gridView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        emptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        loading = new ProgressDialog(getActivity());
 
-        getListGenre();
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loading.setMessage("Loading. Please wait...");
+
+        setLayout();
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLayout();
+            }
+        });
+    }
+
+    private void setLayout(){
+        if (new CheckConnection().isInternetAvailable(getContext())){
+            getListGenre();
+            gridView.setVisibility(View.VISIBLE);
+            emptyState.setVisibility(View.GONE);
+        }else {
+            gridView.setVisibility(View.GONE);
+            emptyState.setVisibility(View.VISIBLE);
+        }
     }
 
     void getListGenre(){
-
+        loading.show();
         volleyHelper.get(ApiHelper.GENRE_LIST, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    loading.dismiss();
                     Log.d("genrelistt", response);
                     listGenre.clear();
                     try {

@@ -1,44 +1,59 @@
 <android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sangmaneproject.kindis.view.fragment.musiq.MostPlayed">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/background"
-        android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingBottom="16dp"
-        tools:context="sangmaneproject.kindis.view.fragment.musiq.MostPlayed">
+        android:layout_height="match_parent">
 
-        <sangmaneproject.kindis.custom.TextViewBold
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="TOP LISTENED"
-            android:textColor="@color/white"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_top_listened"
-            android:layout_marginTop="16dp"
+        <LinearLayout
+            android:id="@+id/empty_state"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <include
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                layout="@layout/layout_empty_state"/>
+        </LinearLayout>
 
-        <sangmaneproject.kindis.custom.TextViewBold
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="ARTISTS"
-            android:textColor="@color/white"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_artist"
-            android:layout_marginTop="16dp"
+        <LinearLayout
+            android:id="@+id/body"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/background"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="16dp">
 
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ALBUM"
+                android:textColor="@color/white"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_top_listened"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ARTISTS"
+                android:textColor="@color/white"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_artist"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

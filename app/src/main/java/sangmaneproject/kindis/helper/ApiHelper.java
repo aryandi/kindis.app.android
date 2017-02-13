@@ -15,7 +15,9 @@ public class ApiHelper {
     public static String PRIVACY = BASE_URL + "statics/page/privacy_policy";
     public static String FAQ = BASE_URL + "statics/page/faq";
     public static String DETAIL_GENRE = BASE_URL + "genre/items?genre_id=";
-    public static String HOME = BASE_URL + "home";
+    public static String MUSIQ = BASE_URL + "home?channel_id=1";
     public static String ITEM_ARTIST = BASE_URL + "artist/items?artist_id=";
     public static String NOTIFICATION = BASE_URL + "notification/list";
+    public static String FORGOT = BASE_URL + "sign/password_recovery";
+    public static String SEARCH = BASE_URL + "search?q=";
 }

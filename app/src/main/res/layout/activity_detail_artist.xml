@@ -20,34 +20,33 @@
             android:minHeight="?attr/actionBarSize"
             android:background="@drawable/background"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    android:contentInsetLeft="0dp"
-                    android:contentInsetStart="0dp"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetStart="0dp"
-                    android:layout_gravity="top">
-                    <sangmaneproject.kindis.custom.TextViewSemiBold
-                        android:id="@+id/title_toolbar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:visibility="invisible"
-                        android:text="Ini Adalah Judul Playlist Ini lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
-                        android:textSize="20sp"/>
-                </android.support.v7.widget.Toolbar>
-
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:contentInsetLeft="0dp"
+                android:contentInsetStart="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:layout_gravity="top">
+                <sangmaneproject.kindis.custom.TextViewSemiBold
+                    android:id="@+id/title_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:visibility="invisible"
+                    android:textSize="20sp"/>
+            </android.support.v7.widget.Toolbar>
+            <RelativeLayout
+                android:id="@+id/cont_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize">
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager_slider"
-                    android:layout_below="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -62,13 +61,47 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/background"
+            android:paddingTop="45dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="16dp">
 
-    </LinearLayout>
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ALBUM"
+                android:textColor="@color/white"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_album"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="SONGS"
+                android:textColor="@color/white"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_songs"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
     <LinearLayout
         android:id="@+id/cont_floating_button"
         android:layout_width="wrap_content"

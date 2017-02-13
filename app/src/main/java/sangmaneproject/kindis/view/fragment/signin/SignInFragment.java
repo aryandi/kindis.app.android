@@ -116,6 +116,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
+                            new SessionHelper().setPreferences(getContext(), "token", result.getString("token"));
                             new ProfileInfo(getContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(getActivity(), Bismillah.class);
                             startActivity(intent);

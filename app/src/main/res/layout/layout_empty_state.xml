@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingTop="64dp"
+    android:paddingBottom="64dp"
+    android:background="@drawable/background_emptystate">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_emptystate" />
+
+    <sangmaneproject.kindis.custom.TextViewSemiBold
+        android:layout_marginTop="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/dark_gray"
+        android:text="Something’s Wrong" />
+
+    <sangmaneproject.kindis.custom.TextViewRegular
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:gravity="center"
+        android:text="Your connection might be interrupted. Please try refreshing."/>
+
+    <sangmaneproject.kindis.custom.ButtonSemiBold
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_rounded"
+        android:text="REFRESH"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
+</LinearLayout>

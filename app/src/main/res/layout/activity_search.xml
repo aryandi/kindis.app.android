@@ -8,6 +8,7 @@
     android:background="@drawable/background">
 
     <LinearLayout
+        android:id="@+id/cont_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
@@ -20,14 +21,103 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_back"
             android:background="@android:color/transparent"
-            android:layout_marginRight="38dp"/>
+            android:layout_marginRight="38dp" />
         <sangmaneproject.kindis.custom.EditTextSemiBold
+            android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:hint="Search"
-            android:inputType="textFilter"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
             android:background="@android:color/transparent"
             android:textColorHint="@color/dim_gray"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/cont_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp">
+
+        <LinearLayout
+            android:id="@+id/cont_result"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="Showing results for "/>
+
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:id="@+id/keyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/jungle_green"
+                android:text="Maher"/>
+        </LinearLayout>
+
+        //album
+        <LinearLayout
+            android:id="@+id/cont_album"
+            android:visibility="gone"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="ALBUM"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        //single
+        <LinearLayout
+            android:id="@+id/cont_single"
+            android:visibility="gone"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="SINGLES"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        //artist
+        <LinearLayout
+            android:id="@+id/cont_artist"
+            android:visibility="gone"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="ARTISTS"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

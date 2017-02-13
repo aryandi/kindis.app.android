@@ -1,15 +1,24 @@
 package sangmaneproject.kindis.view.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
@@ -22,9 +31,17 @@ import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 public class DetailArtist extends AppCompatActivity {
     ViewPager imageSlider;
     Toolbar toolbar;
-    AdapterDetailArtist adapter;
     CircleIndicator indicator;
+    LinearLayout contFloatingButton;
+    AppBarLayout appBarLayout;
+    TextView titleToolbar;
+    RelativeLayout contLabel;
 
+    AdapterDetailArtist adapter;
+
+    RecyclerView listViewAlbum;
+
+    ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +50,16 @@ public class DetailArtist extends AppCompatActivity {
         imageSlider = (ViewPager) findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) findViewById(R.id.indicator);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
+        appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
+        titleToolbar = (TextView) findViewById(R.id.title_toolbar);
+        contLabel = (RelativeLayout) findViewById(R.id.cont_label);
+        listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +67,32 @@ public class DetailArtist extends AppCompatActivity {
             }
         });
 
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            int scrollRange = -1;
+            boolean isShow = false;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    contLabel.setVisibility(View.INVISIBLE);
+                    contFloatingButton.setVisibility(View.INVISIBLE);
+                    titleToolbar.setVisibility(View.VISIBLE);
+                    isShow = true;
+                } else if (isShow) {
+                    contLabel.setVisibility(View.VISIBLE);
+                    contFloatingButton.setVisibility(View.VISIBLE);
+                    titleToolbar.setVisibility(View.INVISIBLE);
+                    isShow = false;
+                }
+            }
+        });
+
         adapter = new AdapterDetailArtist(getSupportFragmentManager());
 
+        listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         getDetail();
     }
 
@@ -70,6 +117,7 @@ public class DetailArtist extends AppCompatActivity {
                             adapter.addFragment(new DetailAbout(), "Genres");
                             imageSlider.setAdapter(adapter);
 
+                            titleToolbar.setText(summary.getString("name"));
                             indicator.setViewPager(imageSlider);
                             adapter.registerDataSetObserver(indicator.getDataSetObserver());
                         } catch (JSONException e) {

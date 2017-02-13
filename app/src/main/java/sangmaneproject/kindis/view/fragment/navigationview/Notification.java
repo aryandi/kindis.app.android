@@ -68,6 +68,7 @@ public class Notification extends Fragment implements View.OnClickListener {
     }
 
     private void getListNotification(){
+        listNotif.clear();
         new VolleyHelper().get(ApiHelper.NOTIFICATION, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
