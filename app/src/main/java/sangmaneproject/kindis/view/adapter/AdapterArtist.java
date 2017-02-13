@@ -67,6 +67,7 @@ public class AdapterArtist extends RecyclerView.Adapter<Item> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context.getApplicationContext(), DetailArtist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
                 intent.putExtra("type", "artist");
                 context.startActivity(intent);

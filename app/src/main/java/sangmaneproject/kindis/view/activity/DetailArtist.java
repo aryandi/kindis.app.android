@@ -67,6 +67,8 @@ public class DetailArtist extends AppCompatActivity {
             }
         });
 
+        listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
             boolean isShow = false;
@@ -120,6 +122,7 @@ public class DetailArtist extends AppCompatActivity {
                             titleToolbar.setText(summary.getString("name"));
                             indicator.setViewPager(imageSlider);
                             adapter.registerDataSetObserver(indicator.getDataSetObserver());
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -20,4 +20,5 @@ public class ApiHelper {
     public static String NOTIFICATION = BASE_URL + "notification/list";
     public static String FORGOT = BASE_URL + "sign/password_recovery";
     public static String SEARCH = BASE_URL + "search?q=";
+    public static String SINGLE_GENRE = BASE_URL + "single/list_by_genre?genre_id=";
 }

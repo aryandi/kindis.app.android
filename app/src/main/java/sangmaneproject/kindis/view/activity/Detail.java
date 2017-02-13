@@ -3,6 +3,8 @@ package sangmaneproject.kindis.view.activity;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -13,12 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 public class Detail extends AppCompatActivity {
     AppBarLayout appBarLayout;
@@ -29,6 +36,9 @@ public class Detail extends AppCompatActivity {
     TextView titleDetail;
     TextView description;
 
+    RecyclerView listViewSong;
+    AdapterSong adapterSong;
+    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +52,7 @@ public class Detail extends AppCompatActivity {
         titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
         titleDetail = (TextView) findViewById(R.id.title_detail);
         description = (TextView) findViewById(R.id.description);
+        listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,7 +65,10 @@ public class Detail extends AppCompatActivity {
             }
         });
 
+        listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
         getDetail();
+        getSong();
 
         titleToolbar.setVisibility(View.INVISIBLE);
 
@@ -109,6 +123,36 @@ public class Detail extends AppCompatActivity {
                     }
                 }else {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getSong(){
+        new VolleyHelper().get(ApiHelper.SINGLE_GENRE + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray result = object.getJSONArray("result");
+                        for (int i=0; i<result.length(); i++){
+                            JSONObject data = result.getJSONObject(i);
+                            HashMap<String, String> map = new HashMap<String, String>();
+                            map.put("uid", data.optString("uid"));
+                            map.put("title", data.optString("title"));
+                            map.put("file", data.optString("file"));
+                            map.put("image", data.optString("image"));
+                            map.put("year", data.optString("year"));
+                            listSong.add(map);
+                        }
+
+                        adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                        listViewSong.setAdapter(adapterSong);
+                        listViewSong.setNestedScrollingEnabled(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

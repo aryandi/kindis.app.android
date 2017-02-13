@@ -24,6 +24,7 @@
             android:orientation="vertical"
             android:paddingTop="12dp">
             <sangmaneproject.kindis.custom.TextViewBold
+                android:id="@+id/title_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ketika Sendiri"

@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -51,6 +52,7 @@ public class Home extends Fragment implements View.OnClickListener {
     ProgressBar progressBar;
     int duration;
     int progress;
+    TextView title;
 
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
@@ -79,6 +81,7 @@ public class Home extends Fragment implements View.OnClickListener {
         btnPlay = (RelativeLayout) view.findViewById(R.id.btn_play);
         icPlay = (ImageView) view.findViewById(R.id.ic_play);
         progressBar = (ProgressBar) view.findViewById(R.id.pb);
+        title = (TextView) view.findViewById(R.id.title_player);
 
         musiqFragment = new Musiq();
 
@@ -104,8 +107,6 @@ public class Home extends Fragment implements View.OnClickListener {
 
         btnDrawer.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
-
-        bottomPlayer();
     }
 
     @Override
@@ -129,11 +130,14 @@ public class Home extends Fragment implements View.OnClickListener {
             icPlay.setImageResource(R.drawable.ic_play);
         }
 
+        bottomPlayer();
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         super.onResume();
     }
 
     private void bottomPlayer(){
+        title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

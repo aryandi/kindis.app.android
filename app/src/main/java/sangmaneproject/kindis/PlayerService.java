@@ -21,26 +21,22 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        String song = "https://s3-ap-southeast-1.amazonaws.com/kindis.co/single/2017/01/15/Seventeen/transcoder/hls_de356622f70fd59b8e5e9341288692c1.m3u8";
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(song);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.prepareAsync();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        if (intent.getAction().equals(PlayerActionHelper.UPDATE_RESOURCE)){
+            if (mediaPlayer != null){
+                mediaPlayer.stop();
+            }
+            startMediaPlayer();
+        }
+
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
-            onPrepared(mediaPlayer);
-            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+            if (mediaPlayer == null){
+                startMediaPlayer();
+            }else {
+                onPrepared(mediaPlayer);
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+            }
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
@@ -104,5 +100,20 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
         intent.putExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, current);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void startMediaPlayer(){
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
+        try {
+            mediaPlayer.setDataSource(song);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.prepareAsync();
+        onPrepared(mediaPlayer);
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
     }
 }
