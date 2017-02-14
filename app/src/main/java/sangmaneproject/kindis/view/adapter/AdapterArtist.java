@@ -38,7 +38,7 @@ public class AdapterArtist extends RecyclerView.Adapter<Item> {
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
         Item item= new Item(view);
         return item;
     }

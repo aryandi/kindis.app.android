@@ -28,7 +28,7 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
-import sangmaneproject.kindis.view.adapter.AdapterTopListened;
+import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 
 public class Search extends AppCompatActivity {
     ImageButton back, clear;
@@ -43,7 +43,7 @@ public class Search extends AppCompatActivity {
 
     RecyclerView listViewAlbum, listViewArtist, listViewSingle;
 
-    AdapterTopListened adapterAlbum;
+    AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
 
     TextView keywords;
@@ -161,7 +161,7 @@ public class Search extends AppCompatActivity {
                                     listAlbum.add(map);
                                 }
                                 contAlbum.setVisibility(View.VISIBLE);
-                                adapterAlbum = new AdapterTopListened(getApplicationContext(), listAlbum);
+                                adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(true);
                             }

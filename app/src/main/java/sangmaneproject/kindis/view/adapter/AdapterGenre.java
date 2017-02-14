@@ -51,6 +51,7 @@ public class AdapterGenre extends RecyclerView.Adapter<ItemGenre> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, Detail.class);
                 intent.putExtra("uid", uid);
+                intent.putExtra("type", "genre");
                 context.startActivity(intent);
             }
         });

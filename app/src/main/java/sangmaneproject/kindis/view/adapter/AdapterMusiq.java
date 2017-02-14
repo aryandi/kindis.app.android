@@ -20,12 +20,14 @@ import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
 public class AdapterMusiq extends FragmentStatePagerAdapter {
     Context context;
     int mNumOfTabs;
+    String json;
     private String[] title = {"MOST PLAYED", "RECENTLY ADDED", "GENRES"};
 
-    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs) {
+    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs, String json) {
         super(manager);
         this.context = context;
         this.mNumOfTabs = mNumOfTabs;
+        this.json = json;
     }
 
     @Override
@@ -33,13 +35,13 @@ public class AdapterMusiq extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 //Fragement for Android Tab
-                return new MostPlayed();
+                return new MostPlayed(json);
             case 1:
                 //Fragment for Ios Tab
-                return new RecentlyAdded();
+                return new RecentlyAdded(json);
             case 2:
                 //Fragment for Windows Tab
-                return new Genres();
+                return new Genres(json);
             default:
                 return null;
         }

@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.controller.SongPlay;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.holder.ItemSong;
@@ -42,7 +43,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         RelativeLayout click = holder.click;
         dataSong = listSong.get(position);
 
-        final String file = dataSong.get("file");
+        final String uid = dataSong.get("uid");
         final String titles = dataSong.get("title");
         final String subTitles = dataSong.get("year");
 
@@ -52,12 +53,13 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new PlayerSessionHelper().setPreferences(context, "file", file);
-                new PlayerSessionHelper().setPreferences(context, "title", titles);
+                /*new PlayerSessionHelper().setPreferences(context, "title", titles);
                 new PlayerSessionHelper().setPreferences(context, "year", subTitles);
                 Intent intent = new Intent(context, PlayerService.class);
                 intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
-                context.startService(intent);
+                context.startService(intent);*/
+
+                new SongPlay(context).execute(uid);
             }
         });
     }

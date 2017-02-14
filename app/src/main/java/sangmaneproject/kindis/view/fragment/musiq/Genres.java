@@ -41,12 +41,11 @@ public class Genres extends Fragment {
     VolleyHelper volleyHelper;
     ArrayList<HashMap<String, String>> listGenre = new ArrayList<HashMap<String, String>>();
     AdapterGenre adapterGenre;
-    LinearLayout emptyState;
-    Button refresh;
-    ProgressDialog loading;
 
-    public Genres() {
-        // Required empty public constructor
+
+    String json;
+    public Genres(String json) {
+        this.json = json;
     }
 
 
@@ -64,61 +63,28 @@ public class Genres extends Fragment {
         volleyHelper = new VolleyHelper();
         gridView = (RecyclerView) view.findViewById(R.id.listview_genre);
         gridView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        emptyState = (LinearLayout) view.findViewById(R.id.empty_state);
-        refresh = (Button) view.findViewById(R.id.btn_refresh);
-        loading = new ProgressDialog(getActivity());
 
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
-
-        setLayout();
-
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setLayout();
-            }
-        });
-    }
-
-    private void setLayout(){
-        if (new CheckConnection().isInternetAvailable(getContext())){
-            getListGenre();
-            gridView.setVisibility(View.VISIBLE);
-            emptyState.setVisibility(View.GONE);
-        }else {
-            gridView.setVisibility(View.GONE);
-            emptyState.setVisibility(View.VISIBLE);
-        }
+        getListGenre();
     }
 
     void getListGenre(){
-        loading.show();
-        volleyHelper.get(ApiHelper.GENRE_LIST, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
-                if (status){
-                    loading.dismiss();
-                    Log.d("genrelistt", response);
-                    listGenre.clear();
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        JSONArray result = object.getJSONArray("result");
-                        for (int i=0; i<result.length(); i++){{
-                            JSONObject data = result.getJSONObject(i);
-                            HashMap<String, String> map = new HashMap<String, String>();
-                            map.put("uid", data.optString("uid"));
-                            map.put("title", data.optString("title"));
-                            map.put("image", data.optString("image"));
-                            listGenre.add(map);
-                        }}
-                        adapterGenre = new AdapterGenre(getContext(), listGenre);
-                        gridView.setAdapter(adapterGenre);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        listGenre.clear();
+        try {
+            JSONObject object = new JSONObject(json);
+            JSONObject result = object.getJSONObject("result");
+            JSONArray genre = result.getJSONArray("genre");
+            for (int i=0; i<genre.length(); i++){{
+                JSONObject data = genre.getJSONObject(i);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("uid", data.optString("uid"));
+                map.put("title", data.optString("title"));
+                map.put("image", data.optString("image"));
+                listGenre.add(map);
+            }}
+            adapterGenre = new AdapterGenre(getContext(), listGenre);
+            gridView.setAdapter(adapterGenre);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

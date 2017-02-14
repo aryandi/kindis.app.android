@@ -10,10 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +39,7 @@ public class Detail extends AppCompatActivity {
     TextView titleToolbar;
     TextView titleDetail;
     TextView description;
+    ImageView backDrop;
 
     RecyclerView listViewSong;
     AdapterSong adapterSong;
@@ -52,6 +57,7 @@ public class Detail extends AppCompatActivity {
         titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
         titleDetail = (TextView) findViewById(R.id.title_detail);
         description = (TextView) findViewById(R.id.description);
+        backDrop = (ImageView) findViewById(R.id.backdrop);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
@@ -67,8 +73,13 @@ public class Detail extends AppCompatActivity {
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-        getDetail();
-        getSong();
+        if (getIntent().getStringExtra("type").equals("genre")){
+            String url = ApiHelper.DETAIL_GENRE+getIntent().getStringExtra("uid");
+            getDetail(url);
+        }else if (getIntent().getStringExtra("type").equals("album")){
+            String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
+            getDetail(url);
+        }
 
         titleToolbar.setVisibility(View.INVISIBLE);
 
@@ -102,8 +113,7 @@ public class Detail extends AppCompatActivity {
         return true;
     }
 
-    private void getDetail(){
-        String url = ApiHelper.DETAIL_GENRE+getIntent().getStringExtra("uid");
+    private void getDetail(String url){
         new VolleyHelper().get(url, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
@@ -117,6 +127,20 @@ public class Detail extends AppCompatActivity {
                             titleToolbar.setText(summary.getString("title"));
                             titleDetail.setText(summary.getString("title"));
                             description.setText(summary.getString("description"));
+
+                            Glide.with(getApplicationContext())
+                                    .load(ApiHelper.BASE_URL_IMAGE+summary.getString("image"))
+                                    .thumbnail( 0.1f )
+                                    .placeholder(R.drawable.ic_default_img)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .centerCrop()
+                                    .into(backDrop);
+
+                            if (getIntent().getStringExtra("type").equals("genre")){
+                                getSong();
+                            }else if (getIntent().getStringExtra("type").equals("album")){
+                                getListSong(result.getJSONArray("single").toString());
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -141,9 +165,6 @@ public class Detail extends AppCompatActivity {
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("uid", data.optString("uid"));
                             map.put("title", data.optString("title"));
-                            map.put("file", data.optString("file"));
-                            map.put("image", data.optString("image"));
-                            map.put("year", data.optString("year"));
                             listSong.add(map);
                         }
 
@@ -156,5 +177,24 @@ public class Detail extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getListSong(String json){
+        try {
+            JSONArray single = new JSONArray(json);
+            for (int i=0; i < single.length(); i++){
+                JSONObject data = single.getJSONObject(i);
+                JSONObject summary = data.getJSONObject("summary");
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("uid", summary.optString("uid"));
+                map.put("title", summary.optString("title"));
+                listSong.add(map);
+            }
+            adapterSong = new AdapterSong(getApplicationContext(), listSong);
+            listViewSong.setAdapter(adapterSong);
+            listViewSong.setNestedScrollingEnabled(true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

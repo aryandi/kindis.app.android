@@ -35,7 +35,8 @@
         <activity
             android:name=".view.activity.SignInActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:noHistory="true"/>
         <activity
             android:name=".view.activity.ForgotPassword"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

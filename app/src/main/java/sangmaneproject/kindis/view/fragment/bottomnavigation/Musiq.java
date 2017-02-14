@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.view.fragment.bottomnavigation;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,9 +10,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.CheckConnection;
+import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
 
@@ -23,6 +30,10 @@ public class Musiq extends Fragment {
     ViewPager viewPager;
     ViewPager imageSlider;
     AdapterMusiqSlider adapterMusiqSlider;
+
+    LinearLayout emptyState;
+    Button refresh;
+    ProgressDialog loading;
 
     public Musiq() {
         // Required empty public constructor
@@ -56,15 +67,22 @@ public class Musiq extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("RECENTLY ADDED"));
         tabLayout.addTab(tabLayout.newTab().setText("GENRES"));
 
-        AdapterMusiq adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
-        tabLayout.setupWithViewPager(viewPager);
+        emptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        loading = new ProgressDialog(getActivity());
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loading.setMessage("Loading. Please wait...");
 
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            tab.setCustomView(adapter.getTabView(i));
-        }
+        setLayout();
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLayout();
+            }
+        });
+
+        getJSON();
     }
 
     @Override
@@ -72,12 +90,37 @@ public class Musiq extends Fragment {
         super.onResume();
     }
 
-    /*private void setupViewPager(ViewPager viewPager) {
-        AdapterMusiq adapter = new AdapterMusiq(getFragmentManager());
-        adapter.addFragment(new MostPlayed(), "Most Played");
-        adapter.addFragment(new RecentlyAdded(), "Recently Added");
-        adapter.addFragment(new Genres(), "Genres");
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
-    }*/
+    private void setLayout(){
+        if (new CheckConnection().isInternetAvailable(getContext())){
+            getJSON();
+            viewPager.setVisibility(View.VISIBLE);
+            emptyState.setVisibility(View.GONE);
+        }else {
+            viewPager.setVisibility(View.GONE);
+            emptyState.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void getJSON(){
+        loading.show();
+        new VolleyHelper().get(ApiHelper.MUSIQ, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
+                if (status){
+                    AdapterMusiq adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response);
+                    viewPager.setAdapter(adapter);
+                    viewPager.setOffscreenPageLimit(3);
+                    tabLayout.setupWithViewPager(viewPager);
+
+                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                        TabLayout.Tab tab = tabLayout.getTabAt(i);
+                        tab.setCustomView(adapter.getTabView(i));
+                    }
+                }else {
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

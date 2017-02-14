@@ -21,6 +21,7 @@
             android:background="@drawable/background"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
+                android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/bg_sign_in"
