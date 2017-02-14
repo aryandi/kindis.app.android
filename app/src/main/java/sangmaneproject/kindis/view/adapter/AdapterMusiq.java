@@ -3,7 +3,7 @@ package sangmaneproject.kindis.view.adapter;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
  * Created by vincenttp on 1/26/2017.
  */
 
-public class AdapterMusiq extends FragmentStatePagerAdapter {
+public class AdapterMusiq extends FragmentPagerAdapter {
     Context context;
     int mNumOfTabs;
     String json;

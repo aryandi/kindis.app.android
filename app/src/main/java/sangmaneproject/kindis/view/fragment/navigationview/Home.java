@@ -32,16 +32,23 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.activity.Player;
 import sangmaneproject.kindis.view.activity.Search;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.Infaq;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Musiq;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.Playlist;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.Taklim;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home extends Fragment implements View.OnClickListener {
+public class Home extends Fragment implements View.OnClickListener, AHBottomNavigation.OnTabSelectedListener {
     DrawerLayout drawer;
     AHBottomNavigation bottomNavigation;
-    FragmentTransaction transaction;
+
     Fragment musiqFragment;
+    Fragment taklimFragment;
+    Fragment infaqFragment;
+    Fragment playlistFragment;
+
     ImageButton btnDrawer;
     ImageButton btnSearch;
 
@@ -52,7 +59,7 @@ public class Home extends Fragment implements View.OnClickListener {
     ProgressBar progressBar;
     int duration;
     int progress;
-    TextView title;
+    TextView title, titleToolbar;
 
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
@@ -71,10 +78,10 @@ public class Home extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         bottomNavigation = (AHBottomNavigation) view.findViewById(R.id.bottom_navigation);
-        transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnSearch = (ImageButton) view.findViewById(R.id.btn_search);
+        titleToolbar = (TextView) view.findViewById(R.id.title);
 
         //bottom player
         expand = (ImageButton) view.findViewById(R.id.btn_expand);
@@ -84,6 +91,9 @@ public class Home extends Fragment implements View.OnClickListener {
         title = (TextView) view.findViewById(R.id.title_player);
 
         musiqFragment = new Musiq();
+        taklimFragment = new Taklim();
+        infaqFragment = new Infaq();
+        playlistFragment = new Playlist();
 
         AHBottomNavigationItem musiq = new AHBottomNavigationItem(R.string.musiq, R.drawable.ic_explore, R.color.white);
         AHBottomNavigationItem taklim = new AHBottomNavigationItem(R.string.taklim, R.drawable.ic_taklim, R.color.white);
@@ -100,8 +110,10 @@ public class Home extends Fragment implements View.OnClickListener {
         bottomNavigation.setInactiveColor(Color.parseColor("#626262"));
         bottomNavigation.setForceTint(true);
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-
+        bottomNavigation.setOnTabSelectedListener(this);
         bottomNavigation.setCurrentItem(0);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_home, musiqFragment);
         transaction.commit();
 
@@ -186,4 +198,32 @@ public class Home extends Fragment implements View.OnClickListener {
             }
         }
     };
+
+    @Override
+    public boolean onTabSelected(int position, boolean wasSelected) {
+        FragmentTransaction transactionBottomNavigation = getActivity().getSupportFragmentManager().beginTransaction();
+        switch (position){
+            case 0:
+                titleToolbar.setText("Explore Musiq");
+                transactionBottomNavigation.replace(R.id.cont_home, musiqFragment);
+                transactionBottomNavigation.commit();
+                break;
+            case 1:
+                titleToolbar.setText("Explore Taklim");
+                transactionBottomNavigation.replace(R.id.cont_home, taklimFragment);
+                transactionBottomNavigation.commit();
+                break;
+            case 2:
+                titleToolbar.setText("Infaq");
+                transactionBottomNavigation.replace(R.id.cont_home, infaqFragment);
+                transactionBottomNavigation.commit();
+                break;
+            case 3:
+                titleToolbar.setText("Playlist");
+                transactionBottomNavigation.replace(R.id.cont_home, playlistFragment);
+                transactionBottomNavigation.commit();
+                break;
+        }
+        return true;
+    }
 }

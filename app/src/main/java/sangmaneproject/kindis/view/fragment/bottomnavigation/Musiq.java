@@ -30,6 +30,7 @@ public class Musiq extends Fragment {
     ViewPager viewPager;
     ViewPager imageSlider;
     AdapterMusiqSlider adapterMusiqSlider;
+    AdapterMusiq adapter;
 
     LinearLayout emptyState;
     Button refresh;
@@ -81,8 +82,6 @@ public class Musiq extends Fragment {
                 setLayout();
             }
         });
-
-        getJSON();
     }
 
     @Override
@@ -108,7 +107,7 @@ public class Musiq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 if (status){
-                    AdapterMusiq adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response);
+                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response);
                     viewPager.setAdapter(adapter);
                     viewPager.setOffscreenPageLimit(3);
                     tabLayout.setupWithViewPager(viewPager);
