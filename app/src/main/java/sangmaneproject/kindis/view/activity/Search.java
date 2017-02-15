@@ -29,6 +29,7 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
+import sangmaneproject.kindis.view.adapter.AdapterSongVertical;
 
 public class Search extends AppCompatActivity {
     ImageButton back, clear;
@@ -45,6 +46,7 @@ public class Search extends AppCompatActivity {
 
     AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
+    AdapterSongVertical adapterSongVertical;
 
     TextView keywords;
 
@@ -179,6 +181,9 @@ public class Search extends AppCompatActivity {
                                     listAlbum.add(map);
                                 }
                                 contSingle.setVisibility(View.VISIBLE);
+                                adapterSongVertical = new AdapterSongVertical(getApplicationContext(), listSingle);
+                                listViewSingle.setAdapter(adapterSongVertical);
+                                listViewSingle.setNestedScrollingEnabled(true);
                             }
 
                             JSONArray artist = result.getJSONArray("artist");

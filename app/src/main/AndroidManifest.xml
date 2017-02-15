@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="sangmaneproject.kindis.PlayerService"
+            android:name=".PlayerService"
             android:enabled="true"
             android:exported="true" />
 
@@ -34,9 +34,9 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".view.activity.SignInActivity"
+            android:noHistory="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:noHistory="true"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".view.activity.ForgotPassword"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -60,6 +60,7 @@
         <activity
             android:name=".view.activity.DetailArtist"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.adapter.AdapterSongVertical"></activity>
     </application>
 
 </manifest>

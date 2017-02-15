@@ -17,11 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -43,6 +46,7 @@ import sangmaneproject.kindis.view.fragment.bottomnavigation.Taklim;
 public class Home extends Fragment implements View.OnClickListener, AHBottomNavigation.OnTabSelectedListener {
     DrawerLayout drawer;
     AHBottomNavigation bottomNavigation;
+    FrameLayout contHome;
 
     Fragment musiqFragment;
     Fragment taklimFragment;
@@ -60,6 +64,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
     int duration;
     int progress;
     TextView title, titleToolbar;
+    LinearLayout contBottomPlayer;
 
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
@@ -78,6 +83,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
         super.onViewCreated(view, savedInstanceState);
 
         bottomNavigation = (AHBottomNavigation) view.findViewById(R.id.bottom_navigation);
+        contHome = (FrameLayout) view.findViewById(R.id.cont_home);
 
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnSearch = (ImageButton) view.findViewById(R.id.btn_search);
@@ -89,6 +95,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
         icPlay = (ImageView) view.findViewById(R.id.ic_play);
         progressBar = (ProgressBar) view.findViewById(R.id.pb);
         title = (TextView) view.findViewById(R.id.title_player);
+        contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
 
         musiqFragment = new Musiq();
         taklimFragment = new Taklim();
@@ -149,6 +156,15 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
     }
 
     private void bottomPlayer(){
+        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
+            contBottomPlayer.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 112, 0, 0);
+            contHome.setLayoutParams(params);
+        }
         title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,9 +230,10 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
                 transactionBottomNavigation.commit();
                 break;
             case 2:
-                titleToolbar.setText("Infaq");
+                /*titleToolbar.setText("Infaq");
                 transactionBottomNavigation.replace(R.id.cont_home, infaqFragment);
-                transactionBottomNavigation.commit();
+                transactionBottomNavigation.commit();*/
+                Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
                 break;
             case 3:
                 titleToolbar.setText("Playlist");

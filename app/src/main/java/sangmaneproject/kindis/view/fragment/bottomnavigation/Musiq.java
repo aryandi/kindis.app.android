@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class Musiq extends Fragment {
     AdapterMusiqSlider adapterMusiqSlider;
     AdapterMusiq adapter;
 
-    LinearLayout emptyState;
+    NestedScrollView emptyState;
     Button refresh;
     ProgressDialog loading;
 
@@ -65,10 +66,10 @@ public class Musiq extends Fragment {
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setText("MOST PLAYED"));
-        tabLayout.addTab(tabLayout.newTab().setText("RECENTLY ADDED"));
+        tabLayout.addTab(tabLayout.newTab().setText("RECENTLY"));
         tabLayout.addTab(tabLayout.newTab().setText("GENRES"));
 
-        emptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
         loading = new ProgressDialog(getActivity());
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -107,7 +108,8 @@ public class Musiq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 if (status){
-                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response);
+                    String[] title = {"MOST PLAYED","RECENTLY","GENRES"};
+                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
                     viewPager.setAdapter(adapter);
                     viewPager.setOffscreenPageLimit(3);
                     tabLayout.setupWithViewPager(viewPager);

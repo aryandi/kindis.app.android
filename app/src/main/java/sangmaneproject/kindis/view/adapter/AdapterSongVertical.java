@@ -1,7 +1,8 @@
 package sangmaneproject.kindis.view.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +19,17 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
-import sangmaneproject.kindis.view.activity.Detail;
 import sangmaneproject.kindis.view.holder.Item;
 
-/**
- * Created by vincenttp on 1/27/2017.
- */
-
-public class AdapterAlbum extends RecyclerView.Adapter<Item> {
+public class AdapterSongVertical extends RecyclerView.Adapter<Item> {
     Context context;
-    ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> dataSinggle;
+    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> dataSong;
 
-    public AdapterAlbum(Context context, ArrayList<HashMap<String, String>> listAlbum){
+    public AdapterSongVertical(Context context, ArrayList<HashMap<String, String>> listSong){
         this.context = context;
-        this.listAlbum = listAlbum;
+        this.listSong = listSong;
     }
-
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,33 +44,21 @@ public class AdapterAlbum extends RecyclerView.Adapter<Item> {
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
         LinearLayout click = holder.click;
-        dataSinggle = listAlbum.get(position);
+        dataSong = listSong.get(position);
 
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
+                .load(ApiHelper.BASE_URL_IMAGE+dataSong.get("image"))
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
-        title.setText(dataSinggle.get("title"));
-        subTitle.setText(dataSinggle.get("description"));
-
-        final String uid = dataSinggle.get("uid");
-        click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Detail.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid", uid);
-                intent.putExtra("type", "album");
-                context.startActivity(intent);
-            }
-        });
+        title.setText(dataSong.get("title"));
+        subTitle.setText(dataSong.get("description"));
     }
 
     @Override
     public int getItemCount() {
-        return listAlbum.size();
+        return listSong.size();
     }
 }

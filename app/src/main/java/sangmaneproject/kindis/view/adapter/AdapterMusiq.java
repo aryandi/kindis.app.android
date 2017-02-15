@@ -21,13 +21,14 @@ public class AdapterMusiq extends FragmentPagerAdapter {
     Context context;
     int mNumOfTabs;
     String json;
-    private String[] title = {"MOST PLAYED", "RECENTLY ADDED", "GENRES"};
+    String[] title;
 
-    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs, String json) {
+    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs, String json, String[] title) {
         super(manager);
         this.context = context;
         this.mNumOfTabs = mNumOfTabs;
         this.json = json;
+        this.title = title;
     }
 
     @Override
