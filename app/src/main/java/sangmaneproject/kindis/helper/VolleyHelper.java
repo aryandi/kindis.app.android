@@ -9,6 +9,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import sangmaneproject.kindis.ApplicationMain;
@@ -53,7 +57,15 @@ public class VolleyHelper {
                         if (error instanceof NoConnectionError) {
                             listener.onReceive(false, NO_CONNECTION, null);
                         } else {
-                            listener.onReceive(false, error.toString(), null);
+                            try {
+                                String responseBody = new String( error.networkResponse.data, "utf-8" );
+                                JSONObject jsonObject = new JSONObject( responseBody );
+                                listener.onReceive(true, SUCCESS, jsonObject.toString());
+                            } catch ( JSONException e ) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }){
@@ -81,7 +93,15 @@ public class VolleyHelper {
                         if (error instanceof NoConnectionError){
                             listener.onReceive(false, NO_CONNECTION, null);
                         }else {
-                            listener.onReceive(false, error.toString(), null);
+                            try {
+                                String responseBody = new String( error.networkResponse.data, "utf-8" );
+                                JSONObject jsonObject = new JSONObject( responseBody );
+                                listener.onReceive(true, SUCCESS, jsonObject.toString());
+                            } catch ( JSONException e ) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

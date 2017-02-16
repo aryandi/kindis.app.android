@@ -2,6 +2,7 @@ package sangmaneproject.kindis.view.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
@@ -12,11 +13,11 @@ import sangmaneproject.kindis.R;
 
 public class ItemFAQ extends RecyclerView.ViewHolder {
     public TextView title;
-    public TextView subTitle;
+    public WebView subTitle;
 
     public ItemFAQ(View itemView) {
         super(itemView);
         this.title = (TextView) itemView.findViewById(R.id.title_faq);
-        this.subTitle = (TextView) itemView.findViewById(R.id.subtitle_faq);
+        this.subTitle = (WebView) itemView.findViewById(R.id.subtitle_faq);
     }
 }

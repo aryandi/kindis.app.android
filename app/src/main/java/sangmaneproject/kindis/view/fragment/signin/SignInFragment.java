@@ -33,9 +33,9 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     EditText email;
     EditText password;
     AppBarLayout appBarLayout;
-    TextView forgotPassword;
+    TextView forgotPassword, errorMessage;
     Button login;
-    LinearLayout errorMessage;
+    LinearLayout contErrorMessage;
     VolleyHelper volleyHelper;
     ProgressDialog loading;
 
@@ -59,8 +59,9 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         email = (EditText) view.findViewById(R.id.input_email);
         password = (EditText) view.findViewById(R.id.input_password);
         forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
+        errorMessage = (TextView) view.findViewById(R.id.error_message);
         login = (Button) view.findViewById(R.id.btn_login);
-        errorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
+        contErrorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
         volleyHelper = new VolleyHelper();
         loading = new ProgressDialog(getActivity());
 
@@ -121,7 +122,8 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                             Intent intent = new Intent(getActivity(), Bismillah.class);
                             startActivity(intent);
                         }else {
-                            errorMessage.setVisibility(View.VISIBLE);
+                            contErrorMessage.setVisibility(View.VISIBLE);
+                            errorMessage.setText(object.getString("message"));
                             email.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));
                         }
                     } catch (JSONException e) {
@@ -129,7 +131,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                     }
                 }else {
                     loading.dismiss();
-                    errorMessage.setVisibility(View.VISIBLE);
+                    contErrorMessage.setVisibility(View.VISIBLE);
                     if(android.os.Build.VERSION.SDK_INT >= 21){
                         email.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));
                     } else {

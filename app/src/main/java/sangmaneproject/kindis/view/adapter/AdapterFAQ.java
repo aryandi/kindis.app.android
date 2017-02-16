@@ -7,12 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.view.holder.Item;
 import sangmaneproject.kindis.view.holder.ItemFAQ;
 
@@ -36,12 +38,24 @@ public class AdapterFAQ extends RecyclerView.Adapter<ItemFAQ> {
     @Override
     public void onBindViewHolder(ItemFAQ holder, int position) {
         TextView title = holder.title;
-        TextView subTitle = holder.subTitle;
+        final WebView subTitle = holder.subTitle;
+        String style = "<style type=\"text/css\">\n" +
+                "@font-face {\n" +
+                "    font-family: MyFont;\n" +
+                "    src: url(\"file:///android_asset/CitrixSans-Regular.ttf\")\n" +
+                "}\n" +
+                "body {\n" +
+                "    font-family: MyFont;\n" +
+                "    font-size: 14px;\n" +
+                "}\n" +
+                "</style>";
+        subTitle.setBackgroundColor(0x00000000);
 
         dataFAQ = listFAQ.get(position);
+        String html = style+"<font color='white'>"+dataFAQ.get("subtitle")+"</font>";
 
         title.setText(dataFAQ.get("title")+" ?");
-        subTitle.setText(dataFAQ.get("subtitle"));
+        subTitle.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
     }
 
     @Override

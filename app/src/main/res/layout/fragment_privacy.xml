@@ -33,8 +33,7 @@
         <WebView
             android:id="@+id/view_privacy"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </LinearLayout>
