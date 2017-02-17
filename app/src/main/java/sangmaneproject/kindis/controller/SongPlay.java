@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class SongPlay extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        Map<String, String> param = new HashMap<String, String>();
+        /*Map<String, String> param = new HashMap<String, String>();
         param.put("single_id", params[0]);
         param.put("token", new SessionHelper().getPreferences(context, "token"));
 
@@ -35,7 +37,39 @@ public class SongPlay extends AsyncTask<String, Void, String> {
                     Log.d("songplayresponse", response);
                 }
             }
+        });*/
+        String token = null;
+        try {
+            token = URLEncoder.encode(new SessionHelper().getPreferences(context, "token"), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String url = ApiHelper.ITEM_SINGLE_GET+params[0]+ApiHelper.TOKEN+token;
+        Log.d("songplayurl", url);
+        new VolleyHelper().get(url, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("songplayresponse", response);
+                }else {
+
+                }
+            }
         });
         return null;
+    }
+
+    private void refreshToken(){
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("token", new SessionHelper().getPreferences(context, "token"));
+
+        new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("songplayresponse", response);
+                }
+            }
+        });
     }
 }

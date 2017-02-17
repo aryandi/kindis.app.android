@@ -7,6 +7,7 @@ package sangmaneproject.kindis.helper;
 public class ApiHelper {
     public static final String BASE_URL = "http://api.stg.kindis.co/";
     public static final String BASE_URL_IMAGE = "http://cdn.kindis.co";
+    public static final String TOKEN = "&token=";
 
     public static final String REGISTER = BASE_URL + "sign/register";
     public static final String LOGIN = BASE_URL + "sign/login";
@@ -21,10 +22,12 @@ public class ApiHelper {
     public static final String ITEM_ARTIST = BASE_URL + "artist/items?artist_id=";
     public static final String ITEM_ALBUM = BASE_URL + "album/items?album_id=";
     public static final String ITEM_SINGLE = BASE_URL + "single/items";
+    public static final String ITEM_SINGLE_GET = BASE_URL + "single/items?single_id=";
     public static final String NOTIFICATION = BASE_URL + "notification/list";
     public static final String FORGOT = BASE_URL + "sign/password_recovery";
     public static final String SEARCH = BASE_URL + "search?q=";
     public static final String SINGLE_GENRE = BASE_URL + "single/list_by_genre?genre_id=";
     public static final String PLAYLIST = BASE_URL + "playlist/user";
     public static final String CREATE_PLAYLIST = BASE_URL + "playlist/create";
+    public static final String REFRESH_TOKEN = BASE_URL + "sign/refresh_token";
 }

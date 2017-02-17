@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class Musiq extends Fragment {
         loading.setMessage("Loading. Please wait...");
 
         if (responses != null){
+            Log.d("responses", responses);
             adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
             viewPager.setAdapter(adapter);
             viewPager.setOffscreenPageLimit(3);
