@@ -37,6 +37,9 @@ public class Musiq extends Fragment {
     Button refresh;
     ProgressDialog loading;
 
+    String[] title = {"MOST PLAYED","RECENTLY","GENRES"};
+    String responses = null;
+
     public Musiq() {
         // Required empty public constructor
     }
@@ -75,7 +78,19 @@ public class Musiq extends Fragment {
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loading.setMessage("Loading. Please wait...");
 
-        setLayout();
+        if (responses != null){
+            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
+            viewPager.setAdapter(adapter);
+            viewPager.setOffscreenPageLimit(3);
+            tabLayout.setupWithViewPager(viewPager);
+
+            for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                tab.setCustomView(adapter.getTabView(i));
+            }
+        }else {
+            setLayout();
+        }
 
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +123,7 @@ public class Musiq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 if (status){
-                    String[] title = {"MOST PLAYED","RECENTLY","GENRES"};
+                    responses = response;
                     adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
                     viewPager.setAdapter(adapter);
                     viewPager.setOffscreenPageLimit(3);

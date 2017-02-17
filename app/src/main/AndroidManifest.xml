@@ -60,7 +60,8 @@
         <activity
             android:name=".view.activity.DetailArtist"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.adapter.AdapterSongVertical"></activity>
+        <activity android:name=".view.adapter.AdapterSongVertical" />
+        <activity android:name=".view.adapter.AdapterPlaylist"></activity>
     </application>
 
 </manifest>
