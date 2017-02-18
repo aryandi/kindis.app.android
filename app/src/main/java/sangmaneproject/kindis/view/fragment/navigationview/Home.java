@@ -63,7 +63,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
     ProgressBar progressBar;
     int duration;
     int progress;
-    TextView title, titleToolbar;
+    TextView title, titleToolbar, artist;
     LinearLayout contBottomPlayer;
 
     public Home(DrawerLayout drawer) {
@@ -95,6 +95,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
         icPlay = (ImageView) view.findViewById(R.id.ic_play);
         progressBar = (ProgressBar) view.findViewById(R.id.pb);
         title = (TextView) view.findViewById(R.id.title_player);
+        artist = (TextView) view.findViewById(R.id.artist_player);
         contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
 
         musiqFragment = new Musiq();
@@ -166,6 +167,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
             contHome.setLayoutParams(params);
         }
         title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
+        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "album"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

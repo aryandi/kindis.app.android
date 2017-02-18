@@ -8,35 +8,44 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.helper.VolleyHelper;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
     MediaPlayer mediaPlayer = null;
+    String file;
 
     public PlayerService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent.getAction().equals(PlayerActionHelper.UPDATE_RESOURCE)){
-            if (mediaPlayer != null){
-                mediaPlayer.stop();
-            }
-            startMediaPlayer();
+            startMediaPlayer(intent.getStringExtra("single_id"));
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
-            if (mediaPlayer == null){
-                startMediaPlayer();
-            }else {
-                onPrepared(mediaPlayer);
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
-            }
+            onPrepared(mediaPlayer);
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
@@ -102,9 +111,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void startMediaPlayer(){
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    private void playMediaPlayer(){
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+        }
         String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
         try {
             mediaPlayer.setDataSource(song);
@@ -115,5 +126,35 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaPlayer.prepareAsync();
         onPrepared(mediaPlayer);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+    }
+
+    private void startMediaPlayer(String singgleId){
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("single_id", singgleId);
+
+        new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("songplayresponse", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            if (!result.getString("file").equals("null")){
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
+                                playMediaPlayer();
+                            }else {
+                                Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }

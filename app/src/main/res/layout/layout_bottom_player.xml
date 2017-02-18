@@ -31,6 +31,7 @@
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
             <sangmaneproject.kindis.custom.TextViewRegular
+                android:id="@+id/artist_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Snada | Jagalah Hati Volume 3"

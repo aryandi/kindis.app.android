@@ -1,11 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="sangmaneproject.kindis.view.fragment.navigationview.Notification">
 
     <LinearLayout
+        android:id="@+id/cont_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
@@ -29,10 +29,21 @@
 
     <ListView
         android:id="@+id/listview"
+        android:layout_below="@id/cont_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
         android:divider="@null"
         android:dividerHeight="0dp"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_below="@id/cont_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <include android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            layout="@layout/layout_empty_state"/>
+    </LinearLayout>
+</RelativeLayout>

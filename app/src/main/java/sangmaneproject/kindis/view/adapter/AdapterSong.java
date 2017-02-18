@@ -59,7 +59,12 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                 intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
                 context.startService(intent);*/
 
-                new SongPlay(context).execute(uid);
+                //new SongPlay(context).execute(uid);
+
+                Intent intent = new Intent(context, PlayerService.class);
+                intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                intent.putExtra("single_id", uid);
+                context.startService(intent);
             }
         });
     }
