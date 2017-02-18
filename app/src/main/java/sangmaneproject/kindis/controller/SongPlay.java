@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ public class SongPlay extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        /*Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<String, String>();
         param.put("single_id", params[0]);
         param.put("token", new SessionHelper().getPreferences(context, "token"));
 
@@ -37,8 +35,9 @@ public class SongPlay extends AsyncTask<String, Void, String> {
                     Log.d("songplayresponse", response);
                 }
             }
-        });*/
-        String token = null;
+        });
+
+        /*String token = null;
         try {
             token = URLEncoder.encode(new SessionHelper().getPreferences(context, "token"), "utf-8");
         } catch (UnsupportedEncodingException e) {
@@ -55,7 +54,7 @@ public class SongPlay extends AsyncTask<String, Void, String> {
 
                 }
             }
-        });
+        });*/
         return null;
     }
 

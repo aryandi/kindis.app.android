@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.view.fragment.bottomnavigation;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,9 +26,9 @@ import java.util.Map;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
 
 /**
@@ -41,6 +42,10 @@ public class Playlist extends Fragment {
     RecyclerView listViewPlaylist;
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
     AdapterPlaylist adapterPlaylist;
+
+    LinearLayout contEmptyState;
+    Button refresh;
+    ProgressDialog loading;
 
     public Playlist() {
         // Required empty public constructor
@@ -64,8 +69,14 @@ public class Playlist extends Fragment {
         listViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
         listViewPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
+        contEmptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        loading = new ProgressDialog(getActivity());
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loading.setMessage("Loading. Please wait...");
+
         if (listPlaylist.isEmpty()){
-            getPlaylist();
+            setLayout();
         }else {
             adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
             listViewPlaylist.setAdapter(adapterPlaylist);
@@ -82,9 +93,17 @@ public class Playlist extends Fragment {
                 }
             }
         });
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLayout();
+            }
+        });
     }
 
     private void getPlaylist(){
+        loading.show();
         Map<String, String> param = new HashMap<String, String>();
         param.put("token", new SessionHelper().getPreferences(getContext(), "token"));
 
@@ -93,6 +112,7 @@ public class Playlist extends Fragment {
         new VolleyHelper().post(ApiHelper.PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
@@ -148,9 +168,20 @@ public class Playlist extends Fragment {
                         e.printStackTrace();
                     }
                 }else {
-
+                    getPlaylist();
                 }
             }
         });
+    }
+
+    private void setLayout(){
+        if (new CheckConnection().isInternetAvailable(getContext())){
+            getPlaylist();
+            listViewPlaylist.setVisibility(View.VISIBLE);
+            contEmptyState.setVisibility(View.GONE);
+        }else {
+            listViewPlaylist.setVisibility(View.GONE);
+            contEmptyState.setVisibility(View.VISIBLE);
+        }
     }
 }

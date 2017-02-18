@@ -16,6 +16,17 @@
             layout="@layout/layout_create_playlist"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <include
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            layout="@layout/layout_empty_state"/>
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_playlist"
         android:layout_width="match_parent"

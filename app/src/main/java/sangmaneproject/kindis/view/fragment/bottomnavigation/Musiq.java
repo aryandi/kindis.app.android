@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
@@ -125,16 +127,26 @@ public class Musiq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 if (status){
-                    responses = response;
-                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
-                    viewPager.setAdapter(adapter);
-                    viewPager.setOffscreenPageLimit(3);
-                    tabLayout.setupWithViewPager(viewPager);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            responses = response;
+                            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
+                            viewPager.setAdapter(adapter);
+                            viewPager.setOffscreenPageLimit(3);
+                            tabLayout.setupWithViewPager(viewPager);
 
-                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                        TabLayout.Tab tab = tabLayout.getTabAt(i);
-                        tab.setCustomView(adapter.getTabView(i));
+                            for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                                tab.setCustomView(adapter.getTabView(i));
+                            }
+                        }else {
+                            setLayout();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                 }else {
                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
