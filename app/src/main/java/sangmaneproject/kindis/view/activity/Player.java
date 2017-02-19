@@ -29,7 +29,7 @@ public class Player extends AppCompatActivity {
     ViewPager viewPager;
     AdapterListSong adapterListSong;
     RelativeLayout btnPlay;
-    TextView txtDuration, txtProgress;
+    TextView txtDuration, txtProgress, title, subtitle;
     AppCompatSeekBar seekBar;
 
     int duration, progress;
@@ -45,8 +45,12 @@ public class Player extends AppCompatActivity {
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
         txtDuration = (TextView) findViewById(R.id.duration);
         txtProgress = (TextView) findViewById(R.id.current_time);
+        title = (TextView) findViewById(R.id.title);
+        subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
+        title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
+        subtitle.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
