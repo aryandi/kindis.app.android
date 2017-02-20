@@ -24,7 +24,7 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
 public class Player extends AppCompatActivity {
-    ImageButton hide;
+    ImageButton hide, btnNext, btnBack;
     ImageView icPlay;
     ViewPager viewPager;
     AdapterListSong adapterListSong;
@@ -40,6 +40,8 @@ public class Player extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
+        btnNext = (ImageButton) findViewById(R.id.btn_next);
+        btnBack = (ImageButton) findViewById(R.id.btn_back);
         icPlay = (ImageView) findViewById(R.id.btn_play);
         viewPager = (ViewPager) findViewById(R.id.list_player);
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
@@ -49,8 +51,6 @@ public class Player extends AppCompatActivity {
         subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
-        title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
-        subtitle.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,12 +105,36 @@ public class Player extends AppCompatActivity {
                 startService(intent);
             }
         });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Player.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.ACTION_SKIP);
+                startService(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Player.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.ACTION_REWIND);
+                startService(intent);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
+        subtitle.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
+
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -131,6 +155,14 @@ public class Player extends AppCompatActivity {
             if (progress==duration){
                 icPlay.setImageResource(R.drawable.ic_play);
             }
+        }
+    };
+
+    private BroadcastReceiver receiverBroadcastInfo = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            title.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_TITLE));
+            subtitle.setText(PlayerActionHelper.BROADCAST_SUBTITLE);
         }
     };
 

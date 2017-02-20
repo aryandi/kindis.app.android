@@ -81,6 +81,29 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             songPlaylist = intent.getStringArrayListExtra("list_uid");
         }
 
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_SKIP)){
+            playlistPosition = playlistPosition+1;
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+
+            if (playlistPosition < songPlaylist.size()){
+                new getSongResource().execute(songPlaylist.get(playlistPosition));
+            }
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_REWIND)){
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+
+            if (playlistPosition!=0){
+                playlistPosition = playlistPosition - 1;
+                new getSongResource().execute(songPlaylist.get(playlistPosition));
+            }
+        }
         return START_STICKY;
     }
 
@@ -92,7 +115,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onPrepared(MediaPlayer mp) {
         mp.start();
-        mp.setOnErrorListener(this);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
         if (mp.isPlaying()){
             Log.d("playerservice", "onprepared");
@@ -126,6 +148,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (cekSizePlaylist()){
             sendBroadcest(100, 100);
             new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            mp.release();
+            stopSelf();
         }
     }
 
@@ -134,9 +158,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
         Log.d("playerservice", "error");
         Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
-        mediaPlayer.reset();
 
-        cekSizePlaylist();
+        if (cekSizePlaylist()){
+            mediaPlayer.reset();
+        }
 
         return false;
     }
@@ -146,6 +171,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Intent intent = new Intent(PlayerActionHelper.BROADCAST);
         intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
         intent.putExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, current);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void sendBroadcestInfo(String title, String subtitle) {
+        Intent intent = new Intent(PlayerActionHelper.BROADCAST_INFO);
+        intent.putExtra(PlayerActionHelper.BROADCAST_TITLE, title);
+        intent.putExtra(PlayerActionHelper.BROADCAST_SUBTITLE, subtitle);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -160,6 +192,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.prepareAsync();
+        mediaPlayer.setOnErrorListener(this);
     }
 
     private class getSongResource extends AsyncTask<String, Void, String>{
@@ -182,6 +215,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
+                                    sendBroadcestInfo(result.getString("title"), result.getString("album"));
                                     mediaPlayer.reset();
                                     playMediaPlayer();
                                 }else {

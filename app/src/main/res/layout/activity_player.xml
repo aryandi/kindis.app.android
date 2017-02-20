@@ -72,6 +72,7 @@
             android:src="@drawable/ic_shuffle"
             android:layout_marginRight="36dp"/>
         <ImageButton
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -88,6 +89,7 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="24dp">
         <ImageButton
+            android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
