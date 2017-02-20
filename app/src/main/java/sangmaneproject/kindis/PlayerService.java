@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ import sangmaneproject.kindis.helper.VolleyHelper;
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     MediaPlayer mediaPlayer = null;
     boolean isDataSources = false;
+    ArrayList<String> songPlaylist = new ArrayList<>();
+    int playlistPosition = 0;
 
     public PlayerService() {
     }
@@ -34,7 +37,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        ///mediaPlayer.setOnErrorListener(this);
+        //mediaPlayer.setOnErrorListener(this);
     }
 
     @Override
@@ -68,6 +71,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
         }
 
+        if (intent.getAction().equals(PlayerActionHelper.PLAY_MULTYSOURCE)){
+            playlistPosition = 0;
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            new getSongResource().execute(intent.getStringExtra("single_id"));
+            songPlaylist = intent.getStringArrayListExtra("list_uid");
+        }
+
         return START_STICKY;
     }
 
@@ -77,14 +90,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        mediaPlayer.start();
+    public void onPrepared(MediaPlayer mp) {
+        mp.start();
+        mp.setOnErrorListener(this);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
-        if (mediaPlayer.isPlaying()){
+        if (mp.isPlaying()){
             Log.d("playerservice", "onprepared");
-            sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            sendBroadcest(mp.getDuration(), mp.getCurrentPosition());
             updateProgressBar();
-            mediaPlayer.setOnCompletionListener(this);
+            mp.setOnCompletionListener(this);
         }
     }
 
@@ -109,8 +123,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onCompletion(MediaPlayer mp) {
         Log.d("playerservice", "onCompleted");
-        sendBroadcest(100, 100);
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+        if (cekSizePlaylist()){
+            sendBroadcest(100, 100);
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+        }
     }
 
     @Override
@@ -119,6 +135,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Log.d("playerservice", "error");
         Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
         mediaPlayer.reset();
+
+        cekSizePlaylist();
+
         return false;
     }
 
@@ -141,7 +160,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.prepareAsync();
-        onPrepared(mediaPlayer);
     }
 
     private class getSongResource extends AsyncTask<String, Void, String>{
@@ -169,6 +187,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                                    cekSizePlaylist();
                                 }
                             }
                         } catch (JSONException e) {
@@ -180,6 +199,19 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 }
             });
             return null;
+        }
+    }
+
+    private boolean cekSizePlaylist(){
+        if (playlistPosition < songPlaylist.size()){
+            Log.d("playlistPosition", ""+playlistPosition);
+            Log.d("playlistPosition", ""+playlistPosition);
+            Log.d("playlistPosition", ""+songPlaylist.size());
+            new getSongResource().execute(songPlaylist.get(playlistPosition));
+            playlistPosition++;
+            return false;
+        }else {
+            return true;
         }
     }
 }

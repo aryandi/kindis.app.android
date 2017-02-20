@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,8 +28,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
@@ -40,10 +44,13 @@ public class Detail extends AppCompatActivity {
     TextView titleDetail;
     TextView description;
     ImageView backDrop;
+    Button btnPlayAll;
 
     RecyclerView listViewSong;
     AdapterSong adapterSong;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+    ArrayList<String> songPlaylist = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,7 @@ public class Detail extends AppCompatActivity {
         titleDetail = (TextView) findViewById(R.id.title_detail);
         description = (TextView) findViewById(R.id.description);
         backDrop = (ImageView) findViewById(R.id.backdrop);
+        btnPlayAll = (Button) findViewById(R.id.btn_play_all);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
@@ -103,6 +111,17 @@ public class Detail extends AppCompatActivity {
                     titleToolbar.setVisibility(View.INVISIBLE);
                     isShow = false;
                 }
+            }
+        });
+
+        btnPlayAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Detail.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+                intent.putExtra("single_id", songPlaylist.get(0));
+                intent.putExtra("list_uid", songPlaylist);
+                startService(intent);
             }
         });
     }
@@ -157,6 +176,7 @@ public class Detail extends AppCompatActivity {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    Log.d("DetailgetSong", response);
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONArray result = object.getJSONArray("result");
@@ -166,6 +186,7 @@ public class Detail extends AppCompatActivity {
                             map.put("uid", data.optString("uid"));
                             map.put("title", data.optString("title"));
                             listSong.add(map);
+                            songPlaylist.add(data.optString("uid"));
                         }
 
                         adapterSong = new AdapterSong(getApplicationContext(), listSong);

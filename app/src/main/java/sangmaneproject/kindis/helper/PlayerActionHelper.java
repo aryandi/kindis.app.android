@@ -17,4 +17,5 @@ public class PlayerActionHelper {
     public static final String BROADCAST_MAX_DURATION = "max_duration";
     public static final String BROADCAST_CURRENT_DURATION = "current_duration";
     public static final String UPDATE_RESOURCE = "update_resource";
+    public static final String PLAY_MULTYSOURCE = "play_multysource";
 }
