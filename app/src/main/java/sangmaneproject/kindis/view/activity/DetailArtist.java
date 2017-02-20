@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +26,7 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterDetailArtist;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
@@ -38,6 +41,7 @@ public class DetailArtist extends AppCompatActivity {
     RelativeLayout contLabel;
 
     AdapterDetailArtist adapter;
+    AdapterAlbum adapterAlbum;
 
     RecyclerView listViewAlbum;
 
@@ -110,18 +114,34 @@ public class DetailArtist extends AppCompatActivity {
                 @Override
                 public void onReceive(boolean status, String message, String response) {
                     if (status){
+                        Log.d("responseartist", response);
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONObject result = object.getJSONObject("result");
                             JSONObject summary = result.getJSONObject("summary");
 
-                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), summary.getString("description")), "Recently Added");
+                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), "No Description from API"), "Recently Added");
                             adapter.addFragment(new DetailAbout(), "Genres");
                             imageSlider.setAdapter(adapter);
 
                             titleToolbar.setText(summary.getString("name"));
                             indicator.setViewPager(imageSlider);
                             adapter.registerDataSetObserver(indicator.getDataSetObserver());
+
+                            JSONArray album = result.getJSONArray("album");
+                            if (album.length()>=1){
+                                for (int i=0; i<album.length(); i++){
+                                    JSONObject data = album.getJSONObject(i);
+                                    JSONObject smry = data.getJSONObject("summary");
+                                    HashMap<String, String> map = new HashMap<String, String>();
+                                    map.put("uid", smry.getString("uid"));
+                                    map.put("title", smry.getString("title"));
+                                    listAlbum.add(map);
+                                }
+                                adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
+                                listViewAlbum.setAdapter(adapterAlbum);
+                                listViewAlbum.setNestedScrollingEnabled(true);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();

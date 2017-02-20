@@ -22,10 +22,9 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 
-public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener{
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     MediaPlayer mediaPlayer = null;
-    String file;
-    boolean next = false;
+    boolean isDataSources = false;
 
     public PlayerService() {
     }
@@ -35,16 +34,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
-        Log.d("songresource", song);
-        try {
-            mediaPlayer.setDataSource(song);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.prepareAsync();
-        onPrepared(mediaPlayer);
+        ///mediaPlayer.setOnErrorListener(this);
     }
 
     @Override
@@ -54,14 +44,17 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             //startMediaPlayer(intent.getStringExtra("single_id"));
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
-                mediaPlayer.release();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             }
             new getSongResource().execute(intent.getStringExtra("single_id"));
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
-            onPrepared(mediaPlayer);
-            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+            if (isDataSources){
+                onPrepared(mediaPlayer);
+            }else {
+                playMediaPlayer();
+            }
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
@@ -116,24 +109,17 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onCompletion(MediaPlayer mp) {
         Log.d("playerservice", "onCompleted");
-        sendBroadcest(mp.getDuration(), mp.getDuration());
+        sendBroadcest(100, 100);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-        /*if (next){
-            *//*mp.reset();
-            String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
-            try {
-                mediaPlayer.setDataSource(song);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mp.prepareAsync();
-            onPrepared(mp);*//*
-            playMediaPlayer();
-        }else {
-            Log.d("playerservice", "onCompleted");
-            sendBroadcest(mp.getDuration(), mp.getDuration());
-            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-        }*/
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+        Log.d("playerservice", "error");
+        Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
+        mediaPlayer.reset();
+        return false;
     }
 
     private void sendBroadcest(int duration, int current) {
@@ -145,6 +131,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void playMediaPlayer(){
+        isDataSources = true;
         String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
         Log.d("songresource", song);
         try {
@@ -177,53 +164,22 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
-                                    //playMediaPlayer();
-
-                                    next = true;
-                                    mediaPlayer.stop();
-                                    mediaPlayer.release();
-                                    onCompletion(mediaPlayer);
+                                    mediaPlayer.reset();
+                                    playMediaPlayer();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
+                                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
                                 }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                            Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             });
             return null;
         }
-    }
-
-    private void startMediaPlayer(String singgleId){
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("single_id", singgleId);
-
-        new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
-                if (status){
-                    Log.d("songplayresponse", response);
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            JSONObject result = object.getJSONObject("result");
-                            if (!result.getString("file").equals("null")){
-                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
-                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
-                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
-                                playMediaPlayer();
-                            }else {
-                                Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 }
