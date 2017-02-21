@@ -20,6 +20,7 @@ import java.util.HashMap;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
+import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
 
 
 /**
@@ -28,12 +29,15 @@ import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 public class MostPlayed extends Fragment {
     AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
+    AdapterPlaylist adapterPlaylist;
 
     RecyclerView recyclerViewTopListened;
     RecyclerView recyclerViewArtist;
+    RecyclerView recyclerViewPlaylist;
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
 
     String json;
     public MostPlayed(String json) {
@@ -53,9 +57,11 @@ public class MostPlayed extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewTopListened = (RecyclerView) view.findViewById(R.id.rv_top_listened);
         recyclerViewArtist = (RecyclerView) view.findViewById(R.id.rv_artist);
+        recyclerViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
 
         recyclerViewTopListened.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewArtist.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         getJSON();
     }
@@ -98,6 +104,19 @@ public class MostPlayed extends Fragment {
                 adapterArtist = new AdapterArtist(getContext(), listArtist);
                 recyclerViewArtist.setAdapter(adapterArtist);
                 recyclerViewArtist.setNestedScrollingEnabled(false);
+
+                JSONArray playlist = result.getJSONArray("playlist");
+                for (int i=0; i<playlist.length(); i++){
+                    JSONObject data = playlist.getJSONObject(i);
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("playlist_id", data.optString("uid"));
+                    map.put("title", data.optString("playlist_name"));
+                    listPlaylist.add(map);
+                }
+
+                adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
+                recyclerViewPlaylist.setAdapter(adapterPlaylist);
+                recyclerViewPlaylist.setNestedScrollingEnabled(true);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -33,6 +33,8 @@ public class ApiHelper {
 
     public static final String PLAYLIST = BASE_URL + "playlist/user";
     public static final String CREATE_PLAYLIST = BASE_URL + "playlist/create";
+    public static final String ITEM_PLAYLIST = BASE_URL + "playlist/items?playlist_id=";
+
     public static final String REFRESH_TOKEN = BASE_URL + "sign/refresh_token";
 
     public static final String UPDATE_PROFILE = BASE_URL + "profile/update_info";

@@ -88,6 +88,10 @@ public class Detail extends AppCompatActivity {
         }else if (getIntent().getStringExtra("type").equals("album")){
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
+        }else if (getIntent().getStringExtra("type").equals("playlist")){
+            /*String url = ApiHelper.ITEM_PLAYLIST+getIntent().getStringExtra("uid");
+            getDetail(url);*/
+            getDetailPlaylist();
         }
 
         titleToolbar.setVisibility(View.INVISIBLE);
@@ -177,6 +181,46 @@ public class Detail extends AppCompatActivity {
                     }
                 }else {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getDetailPlaylist(){
+        String url = ApiHelper.ITEM_PLAYLIST+getIntent().getStringExtra("uid");
+        new VolleyHelper().get(url, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("DetailResponse", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            JSONObject playlist = result.getJSONObject("playlist");
+                            titleToolbar.setText(playlist.getString("playlist_name"));
+                            titleDetail.setText(playlist.getString("playlist_name"));
+
+                            JSONArray singles = playlist.getJSONArray("singles");
+                            for (int i=0; i<singles.length(); i++){
+                                JSONObject data = singles.getJSONObject(i);
+                                HashMap<String, String> map = new HashMap<String, String>();
+                                map.put("uid", data.optString("single_id"));
+                                map.put("title", data.optString("title"));
+                                listSong.add(map);
+                                songPlaylist.add(data.optString("single_id"));
+                            }
+
+                            adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                            listViewSong.setAdapter(adapterSong);
+                            listViewSong.setNestedScrollingEnabled(true);
+                        }else {
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

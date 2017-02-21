@@ -39,5 +39,19 @@
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="PLAYLIST"
+            android:textColor="@color/white"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_playlist"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
