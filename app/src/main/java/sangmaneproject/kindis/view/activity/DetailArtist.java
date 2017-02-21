@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -97,8 +99,8 @@ public class DetailArtist extends AppCompatActivity {
         });
 
         adapter = new AdapterDetailArtist(getSupportFragmentManager());
-
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        listViewAlbum.setNestedScrollingEnabled(true);
         getDetail();
     }
 
@@ -106,6 +108,15 @@ public class DetailArtist extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.search){
+            Intent intent = new Intent(this, Search.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getDetail(){

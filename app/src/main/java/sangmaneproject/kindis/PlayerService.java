@@ -82,25 +82,28 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_SKIP)){
-            playlistPosition = playlistPosition+1;
-            if (mediaPlayer.isPlaying()){
-                mediaPlayer.stop();
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-            }
-
+            Log.d("Positionsebelum", playlistPosition+" : "+songPlaylist.size());
             if (playlistPosition < songPlaylist.size()){
-                new getSongResource().execute(songPlaylist.get(playlistPosition));
+                //playlistPosition = playlistPosition+1;
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                }
+                Log.d("Positionsebelum", playlistPosition+" : "+songPlaylist.size());
+                new getSongResource().execute(songPlaylist.get(playlistPosition+1));
             }
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_REWIND)){
-            if (mediaPlayer.isPlaying()){
-                mediaPlayer.stop();
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-            }
-
+            Log.d("backsong", "true");
             if (playlistPosition!=0){
+                Log.d("backsong", "back");
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                }
                 playlistPosition = playlistPosition - 1;
+                Log.d("backsong", playlistPosition+" : "+songPlaylist.size());
                 new getSongResource().execute(songPlaylist.get(playlistPosition));
             }
         }
@@ -117,7 +120,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mp.start();
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
         if (mp.isPlaying()){
-            Log.d("playerservice", "onprepared");
             sendBroadcest(mp.getDuration(), mp.getCurrentPosition());
             updateProgressBar();
             mp.setOnCompletionListener(this);
@@ -130,7 +132,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             protected String doInBackground(Void... params) {
                 while (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
                     sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
-                    Log.d("playerservice", "updateprogres");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -167,7 +168,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void sendBroadcest(int duration, int current) {
-        Log.d("kontolsender", duration + " : " + current);
         Intent intent = new Intent(PlayerActionHelper.BROADCAST);
         intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
         intent.putExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, current);
@@ -216,6 +216,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
                                     sendBroadcestInfo(result.getString("title"), result.getString("album"));
+                                    Log.d("titlesongplay", result.getString("title"));
                                     mediaPlayer.reset();
                                     playMediaPlayer();
                                 }else {
@@ -223,6 +224,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
                                     cekSizePlaylist();
                                 }
+                            }else {
+                                Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

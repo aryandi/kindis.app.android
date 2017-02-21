@@ -9,7 +9,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -142,7 +141,6 @@ public class Player extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
             progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
-            Log.d("playerreceiver", "Got message: " + duration + " : " + progress);
             txtDuration.setText(getTimeString(duration));
             txtProgress.setText(getTimeString(progress));
             seekBar.setMax(duration);

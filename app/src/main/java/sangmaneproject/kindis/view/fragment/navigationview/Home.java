@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -201,7 +200,6 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
         public void onReceive(Context context, Intent intent) {
             duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
             progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
-            Log.d("homereceiver", "Got message: " + duration + " : " + progress);
 
             progressBar.setMax(duration);
             progressBar.post(new Runnable() {

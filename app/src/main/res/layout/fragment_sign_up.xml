@@ -15,6 +15,7 @@
         android:paddingTop="16dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
+        android:paddingBottom="16dp"
         android:focusableInTouchMode="true">
 
         <LinearLayout

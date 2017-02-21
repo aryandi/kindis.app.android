@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -117,6 +118,7 @@ public class Detail extends AppCompatActivity {
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("single_id", songPlaylist.get(0));
                 Intent intent = new Intent(Detail.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                 intent.putExtra("single_id", songPlaylist.get(0));
@@ -130,6 +132,15 @@ public class Detail extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.search){
+            Intent intent = new Intent(this, Search.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getDetail(String url){
@@ -171,6 +182,7 @@ public class Detail extends AppCompatActivity {
         });
     }
 
+    //from genre
     private void getSong(){
         new VolleyHelper().get(ApiHelper.SINGLE_GENRE + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
             @Override
@@ -200,6 +212,7 @@ public class Detail extends AppCompatActivity {
         });
     }
 
+    //from album
     private void getListSong(String json){
         try {
             JSONArray single = new JSONArray(json);
@@ -210,6 +223,7 @@ public class Detail extends AppCompatActivity {
                 map.put("uid", summary.optString("uid"));
                 map.put("title", summary.optString("title"));
                 listSong.add(map);
+                songPlaylist.add(summary.optString("uid"));
             }
             adapterSong = new AdapterSong(getApplicationContext(), listSong);
             listViewSong.setAdapter(adapterSong);
