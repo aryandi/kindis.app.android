@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class MostPlayed extends Fragment {
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
 
     String json;
+    TextView labelPlaylist;
     public MostPlayed(String json) {
         this.json = json;
     }
@@ -58,6 +60,7 @@ public class MostPlayed extends Fragment {
         recyclerViewTopListened = (RecyclerView) view.findViewById(R.id.rv_top_listened);
         recyclerViewArtist = (RecyclerView) view.findViewById(R.id.rv_artist);
         recyclerViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
+        labelPlaylist = (TextView) view.findViewById(R.id.label_playlist);
 
         recyclerViewTopListened.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewArtist.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -113,7 +116,8 @@ public class MostPlayed extends Fragment {
                     map.put("title", data.optString("playlist_name"));
                     listPlaylist.add(map);
                 }
-
+                labelPlaylist.setVisibility(View.VISIBLE);
+                recyclerViewPlaylist.setVisibility(View.VISIBLE);
                 adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
                 recyclerViewPlaylist.setAdapter(adapterPlaylist);
                 recyclerViewPlaylist.setNestedScrollingEnabled(true);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/adapter_banner_empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sangmaneproject.kindis.view.adapter.AdapterBannerEmpty">
+
+    <ImageView
+        android:id="@+id/image_musiq_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_sign_in"
+        android:scaleType="centerCrop"/>
+
+    <sangmaneproject.kindis.custom.TextViewBold
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="KINDIS"
+        android:textSize="36sp"
+        android:textColor="@color/white"/>
+</RelativeLayout>

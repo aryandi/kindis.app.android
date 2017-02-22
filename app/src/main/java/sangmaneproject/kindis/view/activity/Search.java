@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -143,7 +144,9 @@ public class Search extends AppCompatActivity {
         new VolleyHelper().get(ApiHelper.SEARCH+keyword, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                Log.d("searchresponsestatus", ""+status);
                 if (status){
+                    Log.d("searchresponse", response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
@@ -207,6 +210,7 @@ public class Search extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

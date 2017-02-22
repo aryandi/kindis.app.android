@@ -99,8 +99,10 @@ public class VolleyHelper {
                                 listener.onReceive(true, SUCCESS, jsonObject.toString());
                             } catch ( JSONException e ) {
                                 e.printStackTrace();
+                                listener.onReceive(false, "Something Error", "");
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
+                                listener.onReceive(false, "Something Error", "");
                             }
                         }
                     }

@@ -149,13 +149,6 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
             icPlay.setImageResource(R.drawable.ic_play);
         }
 
-        bottomPlayer();
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
-        super.onResume();
-    }
-
-    private void bottomPlayer(){
         if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -165,6 +158,14 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
             params.setMargins(0, 112, 0, 0);
             contHome.setLayoutParams(params);
         }
+
+        bottomPlayer();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
+        super.onResume();
+    }
+
+    private void bottomPlayer(){
         title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
         artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "album"));
         expand.setOnClickListener(new View.OnClickListener() {

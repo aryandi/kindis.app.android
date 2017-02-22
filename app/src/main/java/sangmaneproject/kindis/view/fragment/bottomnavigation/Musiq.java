@@ -23,6 +23,7 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.view.adapter.AdapterBannerEmpty;
 import sangmaneproject.kindis.view.adapter.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
 
@@ -33,7 +34,9 @@ public class Musiq extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
+
     AdapterMusiqSlider adapterMusiqSlider;
+    AdapterBannerEmpty adapterBannerEmpty;
     AdapterMusiq adapter;
 
     NestedScrollView emptyState;
@@ -43,6 +46,7 @@ public class Musiq extends Fragment {
     String[] title = {"MOST PLAYED","RECENTLY","GENRES"};
     String responses = null;
 
+    CircleIndicator indicator;
     public Musiq() {
         // Required empty public constructor
     }
@@ -61,13 +65,7 @@ public class Musiq extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
-        CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator);
-
-        //imageslider
-        adapterMusiqSlider = new AdapterMusiqSlider(getActivity());
-        imageSlider.setAdapter(adapterMusiqSlider);
-        indicator.setViewPager(imageSlider);
-        adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+        indicator = (CircleIndicator) view.findViewById(R.id.indicator);
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -80,6 +78,9 @@ public class Musiq extends Fragment {
         loading = new ProgressDialog(getActivity());
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loading.setMessage("Loading. Please wait...");
+
+
+        getBanner();
 
         if (responses != null){
             Log.d("responses", responses);
@@ -149,6 +150,30 @@ public class Musiq extends Fragment {
 
                 }else {
                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getBanner(){
+        new VolleyHelper().get(ApiHelper.ADS_BANNER, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            adapterMusiqSlider = new AdapterMusiqSlider(getActivity());
+                            imageSlider.setAdapter(adapterMusiqSlider);
+                            indicator.setViewPager(imageSlider);
+                            adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+                        }else {
+                            adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                            imageSlider.setAdapter(adapterBannerEmpty);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

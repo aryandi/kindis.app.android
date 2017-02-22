@@ -26,10 +26,9 @@ import sangmaneproject.kindis.view.activity.SignInActivity;
 public class Profile extends Fragment implements View.OnClickListener {
     DrawerLayout drawer;
     ImageButton btnDrawer;
-    Button btnLogout;
-    ImageButton btnNama;
-    ImageButton btnEmail;
-    ImageButton btnPassword;
+    ImageButton btnLogout;
+    Button btnEdit;
+    Button btnSave;
 
     EditText inputNama;
     EditText inputEmail;
@@ -55,10 +54,9 @@ public class Profile extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
-        btnLogout = (Button) view.findViewById(R.id.btn_logout);
-        btnNama = (ImageButton) view.findViewById(R.id.edit_nama);
-        btnEmail = (ImageButton) view.findViewById(R.id.edit_email);
-        btnPassword = (ImageButton) view.findViewById(R.id.edit_password);
+        btnLogout = (ImageButton) view.findViewById(R.id.btn_logout);
+        btnEdit = (Button) view.findViewById(R.id.btn_edit);
+        btnSave = (Button) view.findViewById(R.id.btn_save);
 
         inputNama = (EditText) view.findViewById(R.id.input_nama);
         inputEmail = (EditText) view.findViewById(R.id.input_email);
@@ -77,9 +75,7 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         btnDrawer.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
-        btnNama.setOnClickListener(this);
-        btnEmail.setOnClickListener(this);
-        btnPassword.setOnClickListener(this);
+        btnEdit.setOnClickListener(this);
     }
 
     @Override
@@ -88,24 +84,25 @@ public class Profile extends Fragment implements View.OnClickListener {
             case R.id.btn_drawer:
                 drawer.openDrawer(GravityCompat.START);
                 break;
-            case R.id.edit_nama:
+            case R.id.btn_edit:
                 inputNama.setEnabled(true);
+                inputEmail.setEnabled(true);
                 inputNama.setFocusable(true);
+                inputPassword.setEnabled(true);
                 inputNama.setSelection(inputNama.getText().length());
                 imm.showSoftInput(inputNama, InputMethodManager.SHOW_IMPLICIT);
+                btnSave.setVisibility(View.VISIBLE);
                 break;
-            case R.id.edit_email:
-                inputEmail.setEnabled(true);
+            /*case R.id.edit_email:
                 inputEmail.setFocusable(true);
                 inputEmail.setSelection(inputEmail.getText().length());
                 imm.showSoftInput(inputEmail, InputMethodManager.SHOW_IMPLICIT);
                 break;
             case R.id.edit_password:
-                inputPassword.setEnabled(true);
                 inputPassword.setFocusable(true);
                 inputPassword.setSelection(inputPassword.getText().length());
                 imm.showSoftInput(inputPassword, InputMethodManager.SHOW_IMPLICIT);
-                break;
+                break;*/
             case R.id.btn_logout:
                 sessionHelper.setPreferences(getContext(), "status", "0");
                 Intent intent = new Intent(getActivity(), SignInActivity.class);
