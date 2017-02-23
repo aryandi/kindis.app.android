@@ -53,6 +53,8 @@ public class ProfileInfo extends AsyncTask<String, Void, String> {
                             sessionHelper.setPreferences(context, "user_id", result.optString("user_id"));
                             sessionHelper.setPreferences(context, "email", result.optString("email"));
                             sessionHelper.setPreferences(context, "fullname", result.optString("fullname"));
+                            sessionHelper.setPreferences(context, "birth_date", result.optString("birth_date"));
+                            sessionHelper.setPreferences(context, "gender", result.optString("gender"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

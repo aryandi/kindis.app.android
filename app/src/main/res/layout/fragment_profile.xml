@@ -16,6 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_drawer"
             android:background="@android:color/transparent"/>
+
         <sangmaneproject.kindis.custom.TextViewSemiBold
             android:id="@+id/title"
             android:layout_toRightOf="@+id/btn_drawer"
@@ -26,7 +27,7 @@
             android:textSize="20sp"
             android:textColor="@color/white"/>
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btn_riwayat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,10 +35,17 @@
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
+            android:background="@android:color/transparent"/>-->
+
+        <ImageButton
+            android:id="@+id/btn_menu"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_songlis"
             android:layout_alignParentRight="true"
             android:background="@android:color/transparent"/>
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btn_logout"
             android:layout_below="@+id/btn_riwayat"
             android:layout_width="wrap_content"
@@ -47,7 +55,7 @@
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:layout_alignParentRight="true"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"/>-->
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/photo"
@@ -80,19 +88,6 @@
         android:paddingRight="24dp"
         android:orientation="vertical">
 
-        <sangmaneproject.kindis.custom.ButtonSemiBold
-            android:id="@+id/btn_edit"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="132dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_rounded_gray"
-            app:paddingEnd="0dp"
-            app:paddingStart="0dp"
-            android:textSize="12sp"
-            android:text="Edit"
-            android:textColor="@color/white"/>
-
         <sangmaneproject.kindis.custom.TextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,32 +98,38 @@
         <sangmaneproject.kindis.custom.EditTextRegular
             android:id="@+id/input_nama"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
             android:textSize="14sp"
-            android:textColor="@color/white"
             android:inputType="textPersonName"
-            android:text="James"
-            android:background="@android:color/transparent"
-            android:textCursorDrawable="@null"/>
+            android:enabled="false"
+            android:background="@drawable/edittext_normal"/>
 
         <sangmaneproject.kindis.custom.TextViewBold
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:text="E-MAIL"
+            android:text="BIRTHDAY"
             android:textColor="@color/white"/>
 
         <sangmaneproject.kindis.custom.EditTextRegular
-            android:id="@+id/input_email"
+            android:id="@+id/input_birthday"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
             android:textSize="14sp"
-            android:textColor="@color/white"
-            android:text="mail@email.com"
-            android:inputType="textEmailAddress"
-            android:background="@android:color/transparent"
-            android:textCursorDrawable="@null"/>
+            android:textIsSelectable="true"
+            android:enabled="false"
+            android:background="@drawable/edittext_normal"/>
 
 
         <sangmaneproject.kindis.custom.TextViewBold
@@ -136,27 +137,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:text="PASSWORD"
+            android:text="GENDER"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.custom.EditTextRegular
-            android:id="@+id/input_password"
+        <RadioGroup
+            android:id="@+id/gender"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            android:text="mail@email.com"
-            android:inputType="textPassword"
-            android:background="@android:color/transparent"
-            android:textCursorDrawable="@null"/>
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edittext_normal"
+            android:orientation="horizontal">
+            <sangmaneproject.kindis.custom.RadioButtonRegular
+                android:id="@+id/male"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="MALE"
+                android:textColor="@color/black"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:enabled="false"
+                android:background="@drawable/radiobutton_listener" />
+            <sangmaneproject.kindis.custom.RadioButtonRegular
+                android:id="@+id/female"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="FEMALE"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:enabled="false"
+                android:background="@drawable/radiobutton_listener"/>
+        </RadioGroup>
 
         <sangmaneproject.kindis.custom.ButtonSemiBold
             android:id="@+id/btn_save"
-            android:visibility="gone"
             android:layout_marginTop="32dp"
             android:layout_width="160dp"
             android:layout_height="40dp"
-            android:text="SAVE"
+            android:text="EDIT"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:background="@drawable/button_rounded_darkgray"
