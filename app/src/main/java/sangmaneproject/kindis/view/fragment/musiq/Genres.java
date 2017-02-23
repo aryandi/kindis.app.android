@@ -1,20 +1,14 @@
 package sangmaneproject.kindis.view.fragment.musiq;
 
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,14 +16,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.controller.ProfileInfo;
-import sangmaneproject.kindis.helper.ApiHelper;
-import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.activity.Bismillah;
 import sangmaneproject.kindis.view.adapter.AdapterGenre;
 
 

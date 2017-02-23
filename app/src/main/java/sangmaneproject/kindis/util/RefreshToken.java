@@ -1,7 +1,6 @@
-package sangmaneproject.kindis.controller;
+package sangmaneproject.kindis.util;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
 

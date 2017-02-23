@@ -11,8 +11,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -23,13 +25,9 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import java.util.HashMap;
-
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.controller.RefreshToken;
-import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.RefreshToken;
 import sangmaneproject.kindis.view.activity.SignInActivity;
 
 /**
@@ -109,11 +107,21 @@ public class Profile extends Fragment implements View.OnClickListener {
             case R.id.btn_drawer:
                 drawer.openDrawer(GravityCompat.START);
                 break;
-            /*case R.id.btn_logout:
-                sessionHelper.setPreferences(getContext(), "status", "0");
-                Intent intent = new Intent(getActivity(), SignInActivity.class);
-                startActivity(intent);
-                break;*/
+            case R.id.btn_menu:
+                PopupMenu popup = new PopupMenu(getActivity(), btnMenu);
+                popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                     public boolean onMenuItemClick(MenuItem item) {
+                                                         if (item.getItemId()==R.id.logout){
+                                                             sessionHelper.setPreferences(getContext(), "status", "0");
+                                                             Intent intent = new Intent(getActivity(), SignInActivity.class);
+                                                             startActivity(intent);
+                                                         }
+                                                         return true;
+                                                     }
+                                                 });
+                popup.show();
+                break;
             case R.id.btn_save:
                 if (isEditButton){
                     inputNama.setEnabled(true);
@@ -136,6 +144,7 @@ public class Profile extends Fragment implements View.OnClickListener {
                     //loading.show();
                     saveProfileInfo();
                 }
+                break;
         }
     }
 
@@ -164,6 +173,8 @@ public class Profile extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+
 
     private void calenderDialog(){
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),

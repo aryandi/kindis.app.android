@@ -1,5 +1,7 @@
 package sangmaneproject.kindis.helper;
 
+import android.util.Log;
+
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -59,6 +61,7 @@ public class VolleyHelper {
                         } else {
                             try {
                                 String responseBody = new String( error.networkResponse.data, "utf-8" );
+                                Log.d("volleyresponse", responseBody);
                                 JSONObject jsonObject = new JSONObject( responseBody );
                                 listener.onReceive(true, SUCCESS, jsonObject.toString());
                             } catch ( JSONException e ) {

@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import sangmaneproject.kindis.controller.ProfileInfo;
+import sangmaneproject.kindis.util.ProfileInfo;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;

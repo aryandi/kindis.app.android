@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.controller;
+package sangmaneproject.kindis.util;
 
 import android.content.Context;
 import android.content.Intent;

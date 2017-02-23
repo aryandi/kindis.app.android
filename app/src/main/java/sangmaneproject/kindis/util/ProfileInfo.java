@@ -1,10 +1,8 @@
-package sangmaneproject.kindis.controller;
+package sangmaneproject.kindis.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,11 +10,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.activity.Bismillah;
 
 /**
  * Created by DELL on 2/1/2017.
