@@ -290,7 +290,7 @@ public class Detail extends AppCompatActivity {
         adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
             @Override
             public void onClick(String uid) {
-                new DialogPlaylist(Detail.this, dialogPlaylis).showDialog();
+                new DialogPlaylist(Detail.this, dialogPlaylis, uid).showDialog();
             }
         });
     }

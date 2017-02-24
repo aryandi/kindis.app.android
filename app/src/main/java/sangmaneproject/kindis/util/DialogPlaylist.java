@@ -2,15 +2,11 @@ package sangmaneproject.kindis.util;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +20,7 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
+import sangmaneproject.kindis.view.adapter.AdapterInsertItemPlaylist;
 
 /**
  * Created by DELL on 2/24/2017.
@@ -34,12 +30,14 @@ public class DialogPlaylist {
     Activity activity;
     Dialog dialog;
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
-    AdapterPlaylist adapterPlaylist;
+    AdapterInsertItemPlaylist adapterPlaylist;
     RecyclerView listViewPlaylist;
+    String uidSingle;
 
-    public DialogPlaylist(Activity activity, Dialog dialog) {
+    public DialogPlaylist(Activity activity, Dialog dialog, String uidSingle) {
         this.activity = activity;
         this.dialog = dialog;
+        this.uidSingle = uidSingle;
     }
 
     public void showDialog(){
@@ -78,7 +76,7 @@ public class DialogPlaylist {
                                 listPlaylist.add(map);
                             }
 
-                            adapterPlaylist = new AdapterPlaylist(activity, listPlaylist);
+                            adapterPlaylist = new AdapterInsertItemPlaylist(activity, listPlaylist, uidSingle, dialog);
                             listViewPlaylist.setAdapter(adapterPlaylist);
                             listViewPlaylist.setNestedScrollingEnabled(true);
 
