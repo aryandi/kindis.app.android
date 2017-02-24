@@ -92,8 +92,6 @@ public class Detail extends AppCompatActivity {
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
         }else if (getIntent().getStringExtra("type").equals("playlist")){
-            /*String url = ApiHelper.ITEM_PLAYLIST+getIntent().getStringExtra("uid");
-            getDetail(url);*/
             getDetailPlaylist();
         }
 
@@ -287,11 +285,21 @@ public class Detail extends AppCompatActivity {
     }
 
     private void onClickMenuSong(){
-        adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
-            @Override
-            public void onClick(String uid) {
-                new DialogPlaylist(Detail.this, dialogPlaylis, uid).showDialog();
-            }
-        });
+        String isMyPlaylist = ""+getIntent().getStringExtra("isMyPlaylist");
+        if (isMyPlaylist.equals("true")){
+            adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+                @Override
+                public void onClick(String uid) {
+
+                }
+            });
+        }else {
+            adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+                @Override
+                public void onClick(String uid) {
+                    new DialogPlaylist(Detail.this, dialogPlaylis, uid).showDialog();
+                }
+            });
+        }
     }
 }

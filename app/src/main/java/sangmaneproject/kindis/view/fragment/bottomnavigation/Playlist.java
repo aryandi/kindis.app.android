@@ -78,7 +78,7 @@ public class Playlist extends Fragment {
         if (listPlaylist.isEmpty()){
             setLayout();
         }else {
-            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
+            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
             listViewPlaylist.setAdapter(adapterPlaylist);
             listViewPlaylist.setNestedScrollingEnabled(true);
         }
@@ -127,7 +127,7 @@ public class Playlist extends Fragment {
                                 listPlaylist.add(map);
                             }
 
-                            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
+                            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
                             listViewPlaylist.setAdapter(adapterPlaylist);
                             listViewPlaylist.setNestedScrollingEnabled(true);
                         }else {

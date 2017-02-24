@@ -118,7 +118,7 @@ public class MostPlayed extends Fragment {
                 }
                 labelPlaylist.setVisibility(View.VISIBLE);
                 recyclerViewPlaylist.setVisibility(View.VISIBLE);
-                adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist);
+                adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "false");
                 recyclerViewPlaylist.setAdapter(adapterPlaylist);
                 recyclerViewPlaylist.setNestedScrollingEnabled(true);
             }

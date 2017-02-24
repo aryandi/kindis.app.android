@@ -110,7 +110,6 @@ public class DetailArtist extends AppCompatActivity {
 
         adapter = new AdapterDetailArtist(getSupportFragmentManager());
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        listViewAlbum.setNestedScrollingEnabled(true);
         getDetail();
     }
 

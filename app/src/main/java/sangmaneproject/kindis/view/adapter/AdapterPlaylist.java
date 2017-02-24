@@ -20,10 +20,12 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     Context context;
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> dataPlaylis;
+    String isMyPlaylist;
 
-    public AdapterPlaylist (Context context, ArrayList<HashMap<String, String>> listPlaylist){
+    public AdapterPlaylist (Context context, ArrayList<HashMap<String, String>> listPlaylist, String isMyPlaylist){
         this.context = context;
         this.listPlaylist = listPlaylist;
+        this.isMyPlaylist = isMyPlaylist;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
                 intent.putExtra("type", "playlist");
+                intent.putExtra("isMyPlaylist", isMyPlaylist);
                 context.startActivity(intent);
             }
         });
