@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -28,8 +29,10 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterDetailArtist;
+import sangmaneproject.kindis.view.adapter.AdapterSong;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 
@@ -44,10 +47,15 @@ public class DetailArtist extends AppCompatActivity {
 
     AdapterDetailArtist adapter;
     AdapterAlbum adapterAlbum;
+    AdapterSong adapterSong;
 
     RecyclerView listViewAlbum;
+    RecyclerView listViewSong;
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+
+    Dialog dialogPlaylis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +69,7 @@ public class DetailArtist extends AppCompatActivity {
         titleToolbar = (TextView) findViewById(R.id.title_toolbar);
         contLabel = (RelativeLayout) findViewById(R.id.cont_label);
         listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
+        listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,6 +83,7 @@ public class DetailArtist extends AppCompatActivity {
         });
 
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
@@ -148,10 +158,28 @@ public class DetailArtist extends AppCompatActivity {
                                     map.put("uid", smry.getString("uid"));
                                     map.put("title", smry.getString("title"));
                                     listAlbum.add(map);
+
+                                    JSONArray single = data.getJSONArray("single");
+                                    if (single.length()>0){
+                                        for (int j=0; j<single.length(); j++){
+                                            JSONObject song = single.getJSONObject(j);
+                                            HashMap<String, String> maps = new HashMap<String, String>();
+                                            maps.put("uid", song.optString("uid"));
+                                            maps.put("title", song.optString("title"));
+                                            listSong.add(maps);
+                                        }
+                                    }
                                 }
+
                                 adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(true);
+
+                                adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                                listViewSong.setAdapter(adapterSong);
+                                listViewSong.setNestedScrollingEnabled(true);
+
+                                onClickMenuSong();
                             }
 
                         } catch (JSONException e) {
@@ -163,5 +191,14 @@ public class DetailArtist extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void onClickMenuSong(){
+        adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+            @Override
+            public void onClick(String uid) {
+                new DialogPlaylist(DetailArtist.this, dialogPlaylis, uid).showDialog();
+            }
+        });
     }
 }
