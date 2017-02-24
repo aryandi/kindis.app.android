@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -34,6 +35,7 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 public class Detail extends AppCompatActivity {
@@ -51,6 +53,7 @@ public class Detail extends AppCompatActivity {
     AdapterSong adapterSong;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     ArrayList<String> songPlaylist = new ArrayList<>();
+    Dialog dialogPlaylis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +217,8 @@ public class Detail extends AppCompatActivity {
                             adapterSong = new AdapterSong(getApplicationContext(), listSong);
                             listViewSong.setAdapter(adapterSong);
                             listViewSong.setNestedScrollingEnabled(true);
+
+                            onClickMenuSong();
                         }else {
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
                             finish();
@@ -248,6 +253,8 @@ public class Detail extends AppCompatActivity {
                         adapterSong = new AdapterSong(getApplicationContext(), listSong);
                         listViewSong.setAdapter(adapterSong);
                         listViewSong.setNestedScrollingEnabled(true);
+
+                        onClickMenuSong();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -272,8 +279,19 @@ public class Detail extends AppCompatActivity {
             adapterSong = new AdapterSong(getApplicationContext(), listSong);
             listViewSong.setAdapter(adapterSong);
             listViewSong.setNestedScrollingEnabled(true);
+
+            onClickMenuSong();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void onClickMenuSong(){
+        adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+            @Override
+            public void onClick(String uid) {
+                new DialogPlaylist(Detail.this, dialogPlaylis).showDialog();
+            }
+        });
     }
 }

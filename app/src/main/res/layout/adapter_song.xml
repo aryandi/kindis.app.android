@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/adapter_song"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="12dp"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:paddingTop="12dp"
     android:background="@android:color/transparent"
     tools:context="sangmaneproject.kindis.view.adapter.AdapterSong">
 
-    <sangmaneproject.kindis.custom.TextViewBold
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/adapter_song"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:text="Mengejar Sorga"/>
+        android:layout_toLeftOf="@+id/btn_menu">
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:text="Mengejar Sorga"/>
 
-    <sangmaneproject.kindis.custom.TextViewRegular
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:textSize="12sp"
-        android:textColor="@color/dark_gray"
-        android:text="Snada | Jagalah Hati Volume 3 "/>
+        <sangmaneproject.kindis.custom.TextViewRegular
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:textSize="12sp"
+            android:textColor="@color/dark_gray"
+            android:text="Snada | Jagalah Hati Volume 3 "/>
+    </RelativeLayout>
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_menu"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_songlis"
         android:background="@android:color/transparent"

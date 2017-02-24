@@ -69,7 +69,6 @@
             android:name=".view.activity.DetailArtist"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.adapter.AdapterBannerEmpty"></activity>
     </application>
 
 </manifest>

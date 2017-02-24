@@ -25,6 +25,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.HashMap;
+
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.util.RefreshToken;
@@ -201,12 +203,13 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         Log.d("profileinfo", "Nama : "+inputNama.getText()+"\nTTL : "+inputBirtday.getText()+"\nGender : "+gender);
 
-        new RefreshToken(getContext(), new RefreshToken.OnFetchFinishedListener() {
-            @Override
-            public void onFetchFinished(String token) {
+        new RefreshToken(getContext()).getToken(new SessionHelper().getPreferences(getContext(), "token"), new RefreshToken.OnFetchFinishedListener() {
 
+            @Override
+            public void onFetchFinished(Boolean status, String token) {
+                Log.d("konssss","status : "+status+"\nToken : "+token);
             }
-        }).execute();
+        });
 
         /*HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getContext(), "user_id"));
