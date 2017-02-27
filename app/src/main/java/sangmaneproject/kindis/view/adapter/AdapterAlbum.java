@@ -61,7 +61,7 @@ public class AdapterAlbum extends RecyclerView.Adapter<Item> {
                 .into(imageView);
         Log.d("imageadapteralbum", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
         title.setText(dataSinggle.get("title"));
-        subTitle.setText(dataSinggle.get("description"));
+        subTitle.setText(dataSinggle.get("year"));
 
         final String uid = dataSinggle.get("uid");
         click.setOnClickListener(new View.OnClickListener() {

@@ -27,6 +27,8 @@
             android:layout_height="wrap_content"/>
 
         <sangmaneproject.kindis.custom.TextViewBold
+            android:id="@+id/label_artist"
+            android:visibility="gone"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,6 +38,20 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_artist"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="SINGLE"
+            android:textColor="@color/white"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_single"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

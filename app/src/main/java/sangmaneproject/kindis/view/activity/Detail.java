@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +35,8 @@ import java.util.HashMap;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
-import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.DialogPlaylist;
@@ -127,7 +127,7 @@ public class Detail extends AppCompatActivity {
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("single_id", songPlaylist.get(0));
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                 Intent intent = new Intent(Detail.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                 intent.putExtra("single_id", songPlaylist.get(0));
@@ -217,7 +217,7 @@ public class Detail extends AppCompatActivity {
                                 songPlaylist.add(data.optString("single_id"));
                             }
 
-                            adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                            adapterSong = new AdapterSong(Detail.this, listSong);
                             listViewSong.setAdapter(adapterSong);
                             listViewSong.setNestedScrollingEnabled(true);
 
@@ -253,7 +253,7 @@ public class Detail extends AppCompatActivity {
                             songPlaylist.add(data.optString("uid"));
                         }
 
-                        adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                        adapterSong = new AdapterSong(Detail.this, listSong);
                         listViewSong.setAdapter(adapterSong);
                         listViewSong.setNestedScrollingEnabled(true);
 
@@ -279,7 +279,7 @@ public class Detail extends AppCompatActivity {
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }
-            adapterSong = new AdapterSong(getApplicationContext(), listSong);
+            adapterSong = new AdapterSong(Detail.this, listSong);
             listViewSong.setAdapter(adapterSong);
             listViewSong.setNestedScrollingEnabled(true);
 
@@ -296,7 +296,7 @@ public class Detail extends AppCompatActivity {
                 @Override
                 public void onClick(final String uid, ImageButton imageButton) {
                     PopupMenu popup = new PopupMenu(getApplicationContext(), imageButton);
-                    popup.getMenuInflater().inflate(R.menu.playlist, popup.getMenu());
+                    popup.getMenuInflater().inflate(R.menu.list_playlist, popup.getMenu());
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getItemId()==R.id.delete){

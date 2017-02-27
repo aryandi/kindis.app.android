@@ -1,10 +1,12 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +22,11 @@ import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
-public class Player extends AppCompatActivity {
-    ImageButton hide, btnNext, btnBack;
+public class Player extends AppCompatActivity implements View.OnClickListener {
+    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu;
     ImageView icPlay;
     ViewPager viewPager;
     AdapterListSong adapterListSong;
@@ -31,6 +34,9 @@ public class Player extends AppCompatActivity {
     TextView txtDuration, txtProgress, title, subtitle;
     AppCompatSeekBar seekBar;
 
+    Dialog dialogPlaylis;
+
+    int index;
     int duration, progress;
 
     @Override
@@ -41,6 +47,8 @@ public class Player extends AppCompatActivity {
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
         btnBack = (ImageButton) findViewById(R.id.btn_back);
+        btnLooping = (ImageButton) findViewById(R.id.btn_looping);
+        btnMenu = (ImageButton) findViewById(R.id.btn_songlis);
         icPlay = (ImageView) findViewById(R.id.btn_play);
         viewPager = (ViewPager) findViewById(R.id.list_player);
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
@@ -50,6 +58,8 @@ public class Player extends AppCompatActivity {
         subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
+        index = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index"));
+
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +67,7 @@ public class Player extends AppCompatActivity {
             }
         });
 
-        adapterListSong = new AdapterListSong(getApplicationContext());
+        adapterListSong = new AdapterListSong(getApplicationContext(), Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index")));
         viewPager.setAdapter(adapterListSong);
 
         if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
@@ -105,6 +115,13 @@ public class Player extends AppCompatActivity {
             }
         });
 
+        if (index == 1){
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
+            btnNext.setEnabled(false);
+        }
+
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +139,9 @@ public class Player extends AppCompatActivity {
                 startService(intent);
             }
         });
+
+        btnLooping.setOnClickListener(this);
+        btnMenu.setOnClickListener(this);
     }
 
     @Override
@@ -134,6 +154,36 @@ public class Player extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
+        String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+        if (isLooping.equals("true")){
+            btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        }else {
+            btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_looping){
+            String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+            if (isLooping.equals("true")){
+                btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isLooping", "false");
+
+                Intent intent = new Intent(Player.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.ACTION_LOOPING);
+                startService(intent);
+            }else{
+                btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isLooping", "true");
+
+                Intent intent = new Intent(Player.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.ACTION_LOOPING);
+                startService(intent);
+            }
+        }else if (view.getId() == R.id.btn_songlis){
+            new DialogPlaylist(Player.this, dialogPlaylis, new PlayerSessionHelper().getPreferences(getApplicationContext(), "uid")).showDialog();
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

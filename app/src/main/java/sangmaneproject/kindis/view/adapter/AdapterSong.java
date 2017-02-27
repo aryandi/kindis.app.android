@@ -1,6 +1,6 @@
 package sangmaneproject.kindis.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,15 +16,16 @@ import java.util.HashMap;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.view.holder.ItemSong;
 
 public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
-    Context context;
+    Activity context;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> dataSong;
     private OnClickMenuListener onClickMenuListener;
 
-    public AdapterSong (Context context, ArrayList<HashMap<String, String>> listSong){
+    public AdapterSong(Activity context, ArrayList<HashMap<String, String>> listSong){
         this.context = context;
         this.listSong = listSong;
     }
@@ -54,6 +55,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new PlayerSessionHelper().setPreferences(context, "index", "1");
                 Intent intent = new Intent(context, PlayerService.class);
                 intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
                 intent.putExtra("single_id", uid);
@@ -72,6 +74,11 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     @Override
     public int getItemCount() {
         return listSong.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     public void setOnClickMenuListener(OnClickMenuListener onClickMenuListener){

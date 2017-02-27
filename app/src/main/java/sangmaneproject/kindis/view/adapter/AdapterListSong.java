@@ -16,19 +16,19 @@ import sangmaneproject.kindis.R;
 public class AdapterListSong extends PagerAdapter {
     Context mContext;
     private LayoutInflater layoutInflater;
+    int index;
 
-    public AdapterListSong(Context context) {
+    public AdapterListSong(Context context, int index) {
         this.mContext = context;
+        this.index = index;
         this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
     }
 
-    private int[] img = new int[]{
-            R.drawable.bg_sign_in, R.drawable.bg_sign_in, R.drawable.bg_sign_in
-    };
+
 
     @Override
     public int getCount() {
-        return img.length;
+        return index;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AdapterListSong extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.adapter_list_song, container, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.item_list_song);
-        imageView.setImageResource(img[position]);
+        imageView.setImageResource(R.drawable.bg_sign_in);
 
         container.addView(view);
 

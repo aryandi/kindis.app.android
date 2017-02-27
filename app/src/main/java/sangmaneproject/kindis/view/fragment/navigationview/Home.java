@@ -199,6 +199,7 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            contBottomPlayer.setVisibility(View.VISIBLE);
             duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
             progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
 

@@ -96,8 +96,9 @@
             android:src="@drawable/ic_next"
             android:layout_marginRight="36dp"/>
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_looping"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_repeat"
             android:background="@android:color/transparent"/>
     </LinearLayout>
@@ -125,12 +126,11 @@
         android:layout_below="@+id/cont_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="24dp"
         android:paddingRight="24dp">
         <ImageButton
             android:id="@+id/btn_songlis"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_songlis"
             android:background="@android:color/transparent"/>

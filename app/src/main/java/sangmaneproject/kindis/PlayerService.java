@@ -26,6 +26,7 @@ import sangmaneproject.kindis.helper.VolleyHelper;
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     MediaPlayer mediaPlayer = null;
     boolean isDataSources = false;
+
     ArrayList<String> songPlaylist = new ArrayList<>();
     int playlistPosition = 0;
 
@@ -107,6 +108,14 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 new getSongResource().execute(songPlaylist.get(playlistPosition));
             }
         }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+                onPrepared(mediaPlayer);
+            }
+        }
+
         return START_STICKY;
     }
 
@@ -117,6 +126,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+        String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+        Log.d("islooping", isLooping);
+        if (isLooping.equals("true")){
+            mp.setLooping(true);
+        }else {
+            mp.setLooping(false);
+        }
         mp.start();
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
         if (mp.isPlaying()){
@@ -201,7 +217,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         protected String doInBackground(String... params) {
             Map<String, String> param = new HashMap<String, String>();
             param.put("single_id", params[0]);
-
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "uid", params[0]);
             new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
                 @Override
                 public void onReceive(boolean status, String message, String response) {
@@ -244,8 +260,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             Log.d("playlistPosition", ""+playlistPosition);
             Log.d("playlistPosition", ""+playlistPosition);
             Log.d("playlistPosition", ""+songPlaylist.size());
-            new getSongResource().execute(songPlaylist.get(playlistPosition));
             playlistPosition++;
+            new getSongResource().execute(songPlaylist.get(playlistPosition));
             return false;
         }else {
             return true;

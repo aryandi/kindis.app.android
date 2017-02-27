@@ -13,6 +13,7 @@ public class PlayerActionHelper {
     public static final String ACTION_REWIND = "com.example.android.musicplayer.action.REWIND";
     public static final String ACTION_URL = "com.example.android.musicplayer.action.URL";
     public static final String ACTION_SEEK = "change_progress";
+    public static final String ACTION_LOOPING = "looping";
 
     public static final String BROADCAST = "player";
     public static final String BROADCAST_MAX_DURATION = "max_duration";

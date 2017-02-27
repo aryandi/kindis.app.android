@@ -157,6 +157,7 @@ public class DetailArtist extends AppCompatActivity {
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put("uid", smry.getString("uid"));
                                     map.put("title", smry.getString("title"));
+                                    map.put("year", smry.getString("title"));
                                     listAlbum.add(map);
 
                                     JSONArray single = data.getJSONArray("single");
@@ -175,7 +176,7 @@ public class DetailArtist extends AppCompatActivity {
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(false);
 
-                                adapterSong = new AdapterSong(getApplicationContext(), listSong);
+                                adapterSong = new AdapterSong(DetailArtist.this, listSong);
                                 listViewSong.setAdapter(adapterSong);
                                 listViewSong.setNestedScrollingEnabled(true);
 
