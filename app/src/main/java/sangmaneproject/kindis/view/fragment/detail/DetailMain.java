@@ -48,8 +48,6 @@ public class DetailMain extends Fragment {
 
         Glide.with(getContext())
                 .load(ApiHelper.BASE_URL_IMAGE+img)
-                .thumbnail( 0.1f )
-                .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(image);

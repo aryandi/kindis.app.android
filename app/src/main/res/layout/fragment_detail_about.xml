@@ -14,6 +14,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <sangmaneproject.kindis.custom.TextViewRegular
+        android:id="@+id/txt_about"
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
         android:layout_marginLeft="40dp"
         android:textSize="14sp"
         android:textColor="@color/white"
-        android:text="Ini adalah deskripsi mengenai artis ini. Spielberg’s blockbuster, “Minority Report”, is set in the year 2054. The future – at least according to a team of MIT futurologists, hired by the cinematic genius – is the captive of embarrassingly personalized and disturbingly intrusive."
         android:gravity="center_horizontal"/>
 
 </LinearLayout>

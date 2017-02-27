@@ -3,6 +3,7 @@ package sangmaneproject.kindis.view.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class AdapterAlbum extends RecyclerView.Adapter<Item> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
+        Log.d("imageadapteralbum", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
         title.setText(dataSinggle.get("title"));
         subTitle.setText(dataSinggle.get("description"));
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> dataPlaylis;
     String isMyPlaylist;
+    private OnClickMenuListener onClickMenuListener;
 
     public AdapterPlaylist (Context context, ArrayList<HashMap<String, String>> listPlaylist, String isMyPlaylist){
         this.context = context;
@@ -39,10 +41,22 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     public void onBindViewHolder(ItemPlaylist holder, int position) {
         TextView title = holder.title;
         RelativeLayout click = holder.click;
+        final ImageButton menu = holder.menu;
         dataPlaylis = listPlaylist.get(position);
         title.setText(dataPlaylis.get("title"));
 
         final String uid = dataPlaylis.get("playlist_id");
+
+        if (isMyPlaylist.equals("true")){
+            menu.setVisibility(View.VISIBLE);
+            menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickMenuListener.onClick(uid, menu);
+                }
+            });
+        }
+
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,5 +73,13 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     @Override
     public int getItemCount() {
         return listPlaylist.size();
+    }
+
+    public void setOnClickMenuListener(OnClickMenuListener onClickMenuListener){
+        this.onClickMenuListener = onClickMenuListener;
+    }
+
+    public interface OnClickMenuListener{
+        void onClick(String uid, ImageButton button);
     }
 }

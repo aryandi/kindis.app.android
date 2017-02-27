@@ -2,18 +2,23 @@ package sangmaneproject.kindis.view.fragment.bottomnavigation;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,12 +34,14 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.view.activity.SignInActivity;
 import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
+import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Playlist extends Fragment {
+public class Playlist extends Fragment implements View.OnClickListener {
     LinearLayout contCreatePlaylist;
     EditText inputPlaylist;
     Button btnCreate;
@@ -44,6 +51,8 @@ public class Playlist extends Fragment {
     AdapterPlaylist adapterPlaylist;
 
     LinearLayout contEmptyState;
+    LinearLayout contPlaylist;
+    TextView createNewPlaylist;
     Button refresh;
     ProgressDialog loading;
 
@@ -70,18 +79,12 @@ public class Playlist extends Fragment {
         listViewPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         contEmptyState = (LinearLayout) view.findViewById(R.id.empty_state);
+        contPlaylist = (LinearLayout) view.findViewById(R.id.cont_list);
+        createNewPlaylist = (TextView) view.findViewById(R.id.create_new_playlist);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
         loading = new ProgressDialog(getActivity());
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loading.setMessage("Loading. Please wait...");
-
-        if (listPlaylist.isEmpty()){
-            setLayout();
-        }else {
-            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
-            listViewPlaylist.setAdapter(adapterPlaylist);
-            listViewPlaylist.setNestedScrollingEnabled(true);
-        }
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,30 @@ public class Playlist extends Fragment {
                 setLayout();
             }
         });
+
+        createNewPlaylist.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.create_new_playlist){
+            contPlaylist.setVisibility(View.GONE);
+            contCreatePlaylist.setVisibility(View.VISIBLE);
+            listPlaylist.clear();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (listPlaylist.isEmpty()){
+            setLayout();
+        }else {
+            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
+            listViewPlaylist.setAdapter(adapterPlaylist);
+            listViewPlaylist.setNestedScrollingEnabled(true);
+            menuPlaylist();
+        }
     }
 
     private void getPlaylist(){
@@ -127,12 +154,14 @@ public class Playlist extends Fragment {
                                 listPlaylist.add(map);
                             }
 
+                            contPlaylist.setVisibility(View.VISIBLE);
                             adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
                             listViewPlaylist.setAdapter(adapterPlaylist);
                             listViewPlaylist.setNestedScrollingEnabled(true);
+                            menuPlaylist();
                         }else {
                             contCreatePlaylist.setVisibility(View.VISIBLE);
-                            listViewPlaylist.setVisibility(View.GONE);
+                            contPlaylist.setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -158,7 +187,8 @@ public class Playlist extends Fragment {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             contCreatePlaylist.setVisibility(View.GONE);
-                            listViewPlaylist.setVisibility(View.VISIBLE);
+                            contPlaylist.setVisibility(View.VISIBLE);
+                            inputPlaylist.setText("");
                             getPlaylist();
                         }else {
                             Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
@@ -177,11 +207,57 @@ public class Playlist extends Fragment {
     private void setLayout(){
         if (new CheckConnection().isInternetAvailable(getContext())){
             getPlaylist();
-            listViewPlaylist.setVisibility(View.VISIBLE);
+            contPlaylist.setVisibility(View.VISIBLE);
             contEmptyState.setVisibility(View.GONE);
         }else {
-            listViewPlaylist.setVisibility(View.GONE);
+            contPlaylist.setVisibility(View.GONE);
             contEmptyState.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void menuPlaylist(){
+        adapterPlaylist.setOnClickMenuListener(new AdapterPlaylist.OnClickMenuListener() {
+            @Override
+            public void onClick(final String uid, ImageButton button) {
+                PopupMenu popup = new PopupMenu(getActivity(), button);
+                popup.getMenuInflater().inflate(R.menu.playlist, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId()==R.id.delete){
+                            deletePlaylist(uid);
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
+    }
+
+    private void deletePlaylist(String uid){
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", new SessionHelper().getPreferences(getContext(), "user_id"));
+        param.put("playlist_id", uid);
+
+        new VolleyHelper().post(ApiHelper.DELETE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                Log.d("deleteplaylistresponse", response);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            listPlaylist.clear();
+                            getPlaylist();
+                            Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        }else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }

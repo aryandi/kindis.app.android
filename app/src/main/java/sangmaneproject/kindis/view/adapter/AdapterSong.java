@@ -41,7 +41,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         TextView title = holder.title;
         TextView subTitle = holder.subTitle;
         RelativeLayout click = holder.click;
-        ImageButton btnMenu = holder.btnMenu;
+        final ImageButton btnMenu = holder.btnMenu;
         dataSong = listSong.get(position);
 
         final String uid = dataSong.get("uid");
@@ -64,7 +64,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickMenuListener.onClick(uid);
+                onClickMenuListener.onClick(uid, btnMenu);
             }
         });
     }
@@ -79,6 +79,6 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     }
 
     public interface OnClickMenuListener{
-        void onClick(String uid);
+        void onClick(String uid, ImageButton imageButton);
     }
 }

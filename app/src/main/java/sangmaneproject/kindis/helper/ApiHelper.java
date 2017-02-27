@@ -35,6 +35,8 @@ public class ApiHelper {
     public static final String CREATE_PLAYLIST = BASE_URL + "playlist/create";
     public static final String ITEM_PLAYLIST = BASE_URL + "playlist/items?playlist_id=";
     public static final String INSERT_ITEM_PLAYLIST = BASE_URL + "playlist/insert_item";
+    public static final String REMOVE_ITEM_PLAYLIST = BASE_URL + "playlist/remove_item";
+    public static final String DELETE_PLAYLIST = BASE_URL + "playlist/delete";
 
     public static final String REFRESH_TOKEN = BASE_URL + "sign/refresh_token";
 

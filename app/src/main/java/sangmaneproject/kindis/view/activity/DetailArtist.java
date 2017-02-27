@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -140,8 +141,8 @@ public class DetailArtist extends AppCompatActivity {
                             JSONObject result = object.getJSONObject("result");
                             JSONObject summary = result.getJSONObject("summary");
 
-                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), "No Description from API"), "Recently Added");
-                            adapter.addFragment(new DetailAbout(), "Genres");
+                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), summary.getString("label")), "Recently Added");
+                            adapter.addFragment(new DetailAbout(summary.getString("about")), "Genres");
                             imageSlider.setAdapter(adapter);
 
                             titleToolbar.setText(summary.getString("name"));
@@ -172,7 +173,7 @@ public class DetailArtist extends AppCompatActivity {
 
                                 adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
                                 listViewAlbum.setAdapter(adapterAlbum);
-                                listViewAlbum.setNestedScrollingEnabled(true);
+                                listViewAlbum.setNestedScrollingEnabled(false);
 
                                 adapterSong = new AdapterSong(getApplicationContext(), listSong);
                                 listViewSong.setAdapter(adapterSong);
@@ -195,7 +196,7 @@ public class DetailArtist extends AppCompatActivity {
     private void onClickMenuSong(){
         adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
             @Override
-            public void onClick(String uid) {
+            public void onClick(String uid, ImageButton imageButton) {
                 new DialogPlaylist(DetailArtist.this, dialogPlaylis, uid).showDialog();
             }
         });

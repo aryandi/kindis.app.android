@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,7 +35,9 @@ import java.util.HashMap;
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
@@ -187,6 +191,7 @@ public class Detail extends AppCompatActivity {
         });
     }
 
+    //from playlist
     private void getDetailPlaylist(){
         String url = ApiHelper.ITEM_PLAYLIST+getIntent().getStringExtra("uid");
         new VolleyHelper().get(url, new VolleyHelper.HttpListener<String>() {
@@ -289,17 +294,56 @@ public class Detail extends AppCompatActivity {
         if (isMyPlaylist.equals("true")){
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
-                public void onClick(String uid) {
-
+                public void onClick(final String uid, ImageButton imageButton) {
+                    PopupMenu popup = new PopupMenu(getApplicationContext(), imageButton);
+                    popup.getMenuInflater().inflate(R.menu.playlist, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId()==R.id.delete){
+                                removeFromPlaylist(uid);
+                            }
+                            return true;
+                        }
+                    });
+                    popup.show();
                 }
             });
         }else {
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
-                public void onClick(String uid) {
+                public void onClick(String uid, ImageButton imageButton) {
                     new DialogPlaylist(Detail.this, dialogPlaylis, uid).showDialog();
                 }
             });
         }
+    }
+
+    private void removeFromPlaylist(String uid){
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", new SessionHelper().getPreferences(getApplicationContext(), "user_id"));
+        param.put("playlist_id", getIntent().getStringExtra("uid"));
+        param.put("songs", "["+uid+"]");
+
+        new VolleyHelper().post(ApiHelper.REMOVE_ITEM_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            listSong.clear();
+                            getDetailPlaylist();
+                        }else {
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

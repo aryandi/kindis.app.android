@@ -27,10 +27,26 @@
             layout="@layout/layout_empty_state"/>
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_playlist"
+    <LinearLayout
+        android:id="@+id/cont_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <sangmaneproject.kindis.custom.TextViewBold
+                android:id="@+id/create_new_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:paddingTop="16dp"
+                android:paddingLeft="16dp"
+                android:textColor="@color/white"
+                android:clickable="true"
+                android:text="Create New Playlist"/>
 
-    </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+
 </RelativeLayout>
