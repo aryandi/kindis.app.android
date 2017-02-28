@@ -1,6 +1,5 @@
 package sangmaneproject.kindis.util;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +65,13 @@ public class BottomPlayerActivity extends AppCompatActivity {
 
         if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
+        }
+
+        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "current_pos"));
+            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "duration"));
+            progressBar.setMax(dur);
+            progressBar.setProgress(pos);
         }
     }
 

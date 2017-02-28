@@ -126,7 +126,8 @@
         android:layout_below="@+id/cont_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="24dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
         <ImageButton
             android:id="@+id/btn_songlis"
             android:layout_width="?attr/actionBarSize"
@@ -140,30 +141,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
             android:layout_marginTop="16dp">
             <sangmaneproject.kindis.custom.TextViewBold
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ini Judul Lagu"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center"
                 android:textSize="18sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
             <sangmaneproject.kindis.custom.TextViewRegular
                 android:id="@+id/subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Artist Penyanyi"
                 android:textSize="14sp"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <ImageButton
             android:id="@+id/btn_add"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_add_circle"
             android:background="@android:color/transparent"/>
     </RelativeLayout>
 

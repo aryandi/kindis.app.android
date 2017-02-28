@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +39,6 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.BottomPlayerActivity;
-import sangmaneproject.kindis.util.BottomPlayerFragment;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
@@ -132,6 +130,7 @@ public class Detail extends BottomPlayerActivity {
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                 Intent intent = new Intent(Detail.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);

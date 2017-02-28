@@ -64,6 +64,13 @@ public class BottomPlayerFragment extends Fragment {
         if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
         }
+
+        if (new PlayerSessionHelper().getPreferences(getContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "current_pos"));
+            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "duration"));
+            progressBar.setMax(dur);
+            progressBar.setProgress(pos);
+        }
     }
 
     public void bottomPlayer(){

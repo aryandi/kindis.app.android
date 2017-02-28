@@ -1,7 +1,5 @@
 package sangmaneproject.kindis;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -67,6 +65,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             mediaPlayer.pause();
             sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
             new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "pause", "true");
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "current_pos", ""+mediaPlayer.getCurrentPosition());
             updateProgressBar();
         }
 
@@ -85,30 +85,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_SKIP)){
-            Log.d("Positionsebelum", playlistPosition+" : "+songPlaylist.size());
-            if (playlistPosition < songPlaylist.size()){
-                //playlistPosition = playlistPosition+1;
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                Log.d("Positionsebelum", playlistPosition+" : "+songPlaylist.size());
-                new getSongResource().execute(songPlaylist.get(playlistPosition+1));
-            }
+            playNext();
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_REWIND)){
-            Log.d("backsong", "true");
-            if (playlistPosition!=0){
-                Log.d("backsong", "back");
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                playlistPosition = playlistPosition - 1;
-                Log.d("backsong", playlistPosition+" : "+songPlaylist.size());
-                new getSongResource().execute(songPlaylist.get(playlistPosition));
-            }
+            playBack();
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
@@ -137,7 +118,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
         mp.start();
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "pause", "false");
         if (mp.isPlaying()){
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "duration", ""+mp.getDuration());
             sendBroadcest(mp.getDuration(), mp.getCurrentPosition());
             updateProgressBar();
             mp.setOnCompletionListener(this);
@@ -164,8 +147,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onCompletion(MediaPlayer mp) {
         Log.d("playerservice", "onCompleted");
+
         if (cekSizePlaylist()){
-            sendBroadcest(100, 100);
+            playNext();
+        }else {
+            Log.d("playerservice", "false");
+            sendBroadcest(mp.getDuration(), mp.getDuration());
             new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             mp.release();
             stopSelf();
@@ -174,15 +161,21 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-        Log.d("playerservice", "error");
-        Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
+        if (i!=-38){
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+            Log.d("playerservice", "error "+i);
+            Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
 
-        if (cekSizePlaylist()){
-            mediaPlayer.reset();
+            if (cekSizePlaylist()){
+                playNext();
+            }else {
+                mediaPlayer.reset();
+            }
+
+            return false;
+        }else {
+            return true;
         }
-
-        return false;
     }
 
     private void sendBroadcest(int duration, int current) {
@@ -203,6 +196,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         isDataSources = true;
         String song = new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").replace(" ", "%20");
         Log.d("songresource", song);
+
+        mediaPlayer.reset();
         try {
             mediaPlayer.setDataSource(song);
         } catch (IOException e) {
@@ -217,6 +212,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         @Override
         protected String doInBackground(String... params) {
+            Log.d("playerservice", "getSongResource");
             Map<String, String> param = new HashMap<String, String>();
             param.put("single_id", params[0]);
             new PlayerSessionHelper().setPreferences(getApplicationContext(), "uid", params[0]);
@@ -235,12 +231,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
                                     sendBroadcestInfo(result.getString("title"), result.getString("album"));
                                     Log.d("titlesongplay", result.getString("title"));
-                                    mediaPlayer.reset();
                                     playMediaPlayer();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-                                    cekSizePlaylist();
+                                    if (cekSizePlaylist()){
+                                        playNext();
+                                    }
                                 }
                             }else {
                                 Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
@@ -257,16 +254,82 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
     }
 
+    private void getSongResources (String uid){
+        Log.d("playerservice", "getSongResource");
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("single_id", uid);
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "uid", uid);
+        new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("songplayresponse", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            if (!result.getString("file").equals("null")){
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
+                                sendBroadcestInfo(result.getString("title"), result.getString("album"));
+                                Log.d("titlesongplay", result.getString("title"));
+                                playMediaPlayer();
+                            }else {
+                                Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                                if (cekSizePlaylist()){
+                                    playNext();
+                                }
+                            }
+                        }else {
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                        Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
     private boolean cekSizePlaylist(){
-        if (playlistPosition < songPlaylist.size()){
-            Log.d("playlistPosition", ""+playlistPosition);
-            Log.d("playlistPosition", ""+playlistPosition);
-            Log.d("playlistPosition", ""+songPlaylist.size());
-            playlistPosition++;
-            new getSongResource().execute(songPlaylist.get(playlistPosition));
-            return false;
-        }else {
+        if (playlistPosition < songPlaylist.size()-1){
             return true;
+        }else {
+            return false;
         }
+    }
+
+    private void playNext(){
+        Log.d("playerservice", "playNext");
+        Log.d("playerservice", ""+playlistPosition);
+
+        playlistPosition++;
+
+        Log.d("playerservice", ""+playlistPosition);
+        Log.d("playerservice", ""+songPlaylist.size());
+
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+        getSongResources(songPlaylist.get(playlistPosition));
+    }
+
+    private void playBack(){
+        Log.d("playerservice", "playNext");
+        Log.d("playerservice", ""+playlistPosition);
+
+        playlistPosition--;
+
+        Log.d("playerservice", ""+playlistPosition);
+        Log.d("playerservice", ""+songPlaylist.size());
+
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+        getSongResources(songPlaylist.get(playlistPosition));
     }
 }

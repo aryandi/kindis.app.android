@@ -160,6 +160,23 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         }else {
             btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
         }
+
+        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "current_pos"));
+            seekBar.setProgress(pos);
+            txtProgress.setText(getTimeString(pos));
+        }
+
+        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").isEmpty()){
+            title.setText("No Song");
+            subtitle.setText("");
+            txtProgress.setText(getTimeString(0));
+            txtDuration.setText(getTimeString(0));
+        }else {
+            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "duration"));
+            seekBar.setMax(dur);
+            txtDuration.setText(getTimeString(dur));
+        }
     }
 
     @Override

@@ -44,8 +44,6 @@ public class SplashScreen extends AppCompatActivity {
                     Intent i = new Intent(SplashScreen.this, Walkthrough.class);
                     startActivity(i);
                 }
-
-                // close this activity
                 finish();
             }
         }, 1000);

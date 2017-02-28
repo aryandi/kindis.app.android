@@ -27,14 +27,16 @@
                 android:id="@+id/title_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ketika Sendiri"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
             <sangmaneproject.kindis.custom.TextViewRegular
                 android:id="@+id/artist_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Snada | Jagalah Hati Volume 3"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/dark_gray"
                 android:textSize="12sp"/>
         </LinearLayout>

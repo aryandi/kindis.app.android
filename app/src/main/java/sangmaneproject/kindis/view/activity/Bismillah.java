@@ -33,6 +33,7 @@ public class Bismillah extends AppCompatActivity {
         });
 
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "pause", "false");
     }
 
     @Override
