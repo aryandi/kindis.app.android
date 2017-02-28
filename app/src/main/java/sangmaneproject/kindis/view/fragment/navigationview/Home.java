@@ -13,6 +13,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 import sangmaneproject.kindis.view.activity.Player;
 import sangmaneproject.kindis.view.activity.Search;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Infaq;
@@ -42,10 +47,11 @@ import sangmaneproject.kindis.view.fragment.bottomnavigation.Taklim;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home extends Fragment implements View.OnClickListener, AHBottomNavigation.OnTabSelectedListener {
+public class Home extends BottomPlayerFragment implements View.OnClickListener, AHBottomNavigation.OnTabSelectedListener {
     DrawerLayout drawer;
     AHBottomNavigation bottomNavigation;
     FrameLayout contHome;
+    TextView titleToolbar;
 
     Fragment musiqFragment;
     Fragment taklimFragment;
@@ -54,16 +60,6 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
 
     ImageButton btnDrawer;
     ImageButton btnSearch;
-
-    //bottom player
-    ImageButton expand;
-    RelativeLayout btnPlay;
-    ImageView icPlay;
-    ProgressBar progressBar;
-    int duration;
-    int progress;
-    TextView title, titleToolbar, artist;
-    LinearLayout contBottomPlayer;
 
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
@@ -87,15 +83,6 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnSearch = (ImageButton) view.findViewById(R.id.btn_search);
         titleToolbar = (TextView) view.findViewById(R.id.title);
-
-        //bottom player
-        expand = (ImageButton) view.findViewById(R.id.btn_expand);
-        btnPlay = (RelativeLayout) view.findViewById(R.id.btn_play);
-        icPlay = (ImageView) view.findViewById(R.id.ic_play);
-        progressBar = (ProgressBar) view.findViewById(R.id.pb);
-        title = (TextView) view.findViewById(R.id.title_player);
-        artist = (TextView) view.findViewById(R.id.artist_player);
-        contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
 
         musiqFragment = new Musiq();
         taklimFragment = new Taklim();
@@ -143,79 +130,31 @@ public class Home extends Fragment implements View.OnClickListener, AHBottomNavi
 
     @Override
     public void onResume() {
-        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
-            icPlay.setImageResource(R.drawable.ic_pause);
-        }else {
-            icPlay.setImageResource(R.drawable.ic_play);
-        }
 
         if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
-            contBottomPlayer.setVisibility(View.GONE);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(0, 112, 0, 0);
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            switch (metrics.densityDpi){
+                case DisplayMetrics.DENSITY_MEDIUM :
+                    params.setMargins(0, 56, 0, 0);
+                    break;
+                case DisplayMetrics.DENSITY_HIGH :
+                    params.setMargins(0, 80, 0, 0);
+                    break;
+                case DisplayMetrics.DENSITY_XHIGH:
+                    params.setMargins(0, 112, 0, 0);
+                    break;
+                default:
+                    params.setMargins(0, 112, 0, 0);
+                    break;
+            }
             contHome.setLayoutParams(params);
         }
-
-        bottomPlayer();
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         super.onResume();
     }
-
-    private void bottomPlayer(){
-        title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
-        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "album"));
-        expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Player.class);
-                startActivity(intent);
-            }
-        });
-
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
-                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "true");
-                    icPlay.setImageResource(R.drawable.ic_pause);
-                    Intent intent = new Intent(getActivity(), PlayerService.class);
-                    intent.setAction(PlayerActionHelper.ACTION_PLAY);
-                    getActivity().startService(intent);
-                }else {
-                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "false");
-                    icPlay.setImageResource(R.drawable.ic_play);
-                    Intent intent = new Intent(getActivity(), PlayerService.class);
-                    intent.setAction(PlayerActionHelper.ACTION_PAUSE);
-                    getActivity().startService(intent);
-                }
-            }
-        });
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            contBottomPlayer.setVisibility(View.VISIBLE);
-            duration = intent.getIntExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, 100);
-            progress = intent.getIntExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, 0);
-
-            progressBar.setMax(duration);
-            progressBar.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setProgress(progress);
-                }
-            });
-
-            if (progress==duration){
-                icPlay.setImageResource(R.drawable.ic_play);
-            }
-        }
-    };
 
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {

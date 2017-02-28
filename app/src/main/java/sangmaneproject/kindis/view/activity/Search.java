@@ -30,12 +30,13 @@ import java.util.HashMap;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerActivity;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
-public class Search extends AppCompatActivity {
+public class Search extends BottomPlayerActivity {
     ImageButton back, clear;
     EditText search;
     InputMethodManager imm;
@@ -56,10 +57,13 @@ public class Search extends AppCompatActivity {
     Dialog dialogPlaylis;
     ProgressDialog loading;
 
+    public Search(){
+        layout = R.layout.activity_search;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
 
         back = (ImageButton) findViewById(R.id.back);
         clear = (ImageButton) findViewById(R.id.btn_clear);

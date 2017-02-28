@@ -30,6 +30,7 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerActivity;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterDetailArtist;
@@ -37,7 +38,7 @@ import sangmaneproject.kindis.view.adapter.AdapterSong;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 
-public class DetailArtist extends AppCompatActivity {
+public class DetailArtist extends BottomPlayerActivity {
     ViewPager imageSlider;
     Toolbar toolbar;
     CircleIndicator indicator;
@@ -57,10 +58,14 @@ public class DetailArtist extends AppCompatActivity {
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
 
     Dialog dialogPlaylis;
+
+    public DetailArtist(){
+        layout = R.layout.activity_detail_artist;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_artist);
 
         imageSlider = (ViewPager) findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) findViewById(R.id.indicator);

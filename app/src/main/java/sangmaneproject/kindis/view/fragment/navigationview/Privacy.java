@@ -21,11 +21,12 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Privacy extends Fragment {
+public class Privacy extends BottomPlayerFragment {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     WebView viewPrivacy;

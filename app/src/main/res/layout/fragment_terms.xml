@@ -1,11 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="sangmaneproject.kindis.view.fragment.navigationview.Terms">
 
     <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
@@ -27,6 +27,8 @@
             android:textColor="@color/white"/>
     </LinearLayout>
     <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="58dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <WebView
@@ -36,4 +38,14 @@
             android:background="@drawable/background"/>
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/cont_bottom_player"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true">
+        <include
+            layout="@layout/layout_bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

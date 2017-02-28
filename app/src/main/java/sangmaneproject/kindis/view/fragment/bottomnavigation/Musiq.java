@@ -169,8 +169,10 @@ public class Musiq extends Fragment {
                             indicator.setViewPager(imageSlider);
                             adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
                         }else {
-                            adapterBannerEmpty = new AdapterBannerEmpty(getContext());
-                            imageSlider.setAdapter(adapterBannerEmpty);
+                            if (getActivity()!=null){
+                                adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                                imageSlider.setAdapter(adapterBannerEmpty);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

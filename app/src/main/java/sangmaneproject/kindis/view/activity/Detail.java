@@ -39,10 +39,12 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerActivity;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
-public class Detail extends AppCompatActivity {
+public class Detail extends BottomPlayerActivity {
     AppBarLayout appBarLayout;
     LinearLayout contFloatingButton;
     RelativeLayout contLabel;
@@ -59,10 +61,13 @@ public class Detail extends AppCompatActivity {
     ArrayList<String> songPlaylist = new ArrayList<>();
     Dialog dialogPlaylis;
 
+    public Detail(){
+        layout = R.layout.activity_detail;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);

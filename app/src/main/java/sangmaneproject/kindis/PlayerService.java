@@ -1,5 +1,7 @@
 package sangmaneproject.kindis;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;

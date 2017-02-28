@@ -25,12 +25,13 @@ import java.util.HashMap;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 import sangmaneproject.kindis.view.adapter.AdapterFAQ;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FAQ extends Fragment {
+public class FAQ extends BottomPlayerFragment {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     ArrayList<HashMap<String, String>> listFAQ = new ArrayList<>();

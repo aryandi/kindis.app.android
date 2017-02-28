@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                 new PlayerSessionHelper().setPreferences(context, "index", "1");
                 Intent intent = new Intent(context, PlayerService.class);
                 intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);

@@ -3,6 +3,7 @@ package sangmaneproject.kindis.view.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,19 @@ public class AdapterWalkthrough extends PagerAdapter {
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.walkthrough);
         TextView title = (TextView) view.findViewById(R.id.title_walkthrough);
         TextView btn = (TextView) view.findViewById(R.id.btn_skip);
+        TextView subTitle = (TextView) view.findViewById(R.id.subtitle_walkthrough);
+
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        switch (metrics.densityDpi){
+            case DisplayMetrics.DENSITY_MEDIUM :
+                title.setTextSize(22);
+                subTitle.setTextSize(10);
+                break;
+            case DisplayMetrics.DENSITY_HIGH :
+                title.setTextSize(24);
+                subTitle.setTextSize(12);
+                break;
+        }
 
         layout.setBackgroundResource(img[position]);
         title.setText(titles[position]);

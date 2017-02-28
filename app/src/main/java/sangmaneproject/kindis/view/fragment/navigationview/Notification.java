@@ -27,12 +27,13 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 import sangmaneproject.kindis.view.adapter.AdapterNotification;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Notification extends Fragment implements View.OnClickListener {
+public class Notification extends BottomPlayerFragment implements View.OnClickListener {
     ArrayList<HashMap<String, String>> listNotif = new ArrayList<>();
     AdapterNotification adapterNotification;
     DrawerLayout drawer;

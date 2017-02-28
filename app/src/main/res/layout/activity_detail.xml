@@ -79,7 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/background">
+        android:background="@drawable/background"
+        android:paddingBottom="58dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,6 +93,18 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/cont_bottom_player"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true">
+        <include
+            layout="@layout/layout_bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/cont_floating_button"

@@ -22,11 +22,12 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BottomPlayerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Terms extends Fragment {
+public class Terms extends BottomPlayerFragment {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     WebView viewTerms;
