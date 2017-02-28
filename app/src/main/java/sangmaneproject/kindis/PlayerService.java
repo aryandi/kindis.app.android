@@ -312,6 +312,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Log.d("playerservice", ""+playlistPosition);
         Log.d("playerservice", ""+songPlaylist.size());
 
+
         if (mediaPlayer.isPlaying()){
             mediaPlayer.stop();
         }
