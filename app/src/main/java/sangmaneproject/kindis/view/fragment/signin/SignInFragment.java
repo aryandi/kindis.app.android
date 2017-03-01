@@ -63,10 +63,9 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         login = (Button) view.findViewById(R.id.btn_login);
         contErrorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
         volleyHelper = new VolleyHelper();
-        loading = new ProgressDialog(getActivity());
-
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
+        loading = new ProgressDialog(getActivity(), R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
 
         email.setOnFocusChangeListener(this);
         password.setOnFocusChangeListener(this);

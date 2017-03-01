@@ -187,7 +187,7 @@ public class Detail extends BottomPlayerActivity {
                                 getSong();
                             }else if (getIntent().getStringExtra("type").equals("album")){
                                 json = result.getJSONArray("single").toString();
-                                getListSong(result.getJSONArray("single").toString());
+                                getListSong(result.getJSONArray("single").toString(), summary.getString("title"));
                             }
                         }
                     } catch (JSONException e) {
@@ -223,6 +223,7 @@ public class Detail extends BottomPlayerActivity {
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("uid", data.optString("single_id"));
                                 map.put("title", data.optString("title"));
+                                map.put("subtitle", data.optString("album"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -260,6 +261,7 @@ public class Detail extends BottomPlayerActivity {
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("uid", data.optString("uid"));
                             map.put("title", data.optString("title"));
+                            map.put("subtitle", data.optString("description"));
                             listSong.add(map);
                             songPlaylist.add(data.optString("uid"));
                         }
@@ -278,7 +280,7 @@ public class Detail extends BottomPlayerActivity {
     }
 
     //from album
-    private void getListSong(String json){
+    private void getListSong(String json, String subtitle){
         try {
             JSONArray single = new JSONArray(json);
             for (int i=0; i < single.length(); i++){
@@ -287,6 +289,7 @@ public class Detail extends BottomPlayerActivity {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("uid", summary.optString("uid"));
                 map.put("title", summary.optString("title"));
+                map.put("subtitle", subtitle);
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }

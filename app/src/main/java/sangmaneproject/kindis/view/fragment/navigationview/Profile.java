@@ -24,12 +24,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.util.RefreshToken;
+import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.activity.SignInActivity;
 
 /**
@@ -82,9 +87,9 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         sessionHelper = new SessionHelper();
-        loading = new ProgressDialog(getActivity());
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
+        loading = new ProgressDialog(getActivity(), R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
 
         inputNama.setText(sessionHelper.getPreferences(getContext(), "fullname"));
         inputBirtday.setText(sessionHelper.getPreferences(getContext(), "birth_date"));
@@ -113,15 +118,15 @@ public class Profile extends Fragment implements View.OnClickListener {
                 PopupMenu popup = new PopupMenu(getActivity(), btnMenu);
                 popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                                     public boolean onMenuItemClick(MenuItem item) {
-                                                         if (item.getItemId()==R.id.logout){
-                                                             sessionHelper.setPreferences(getContext(), "status", "0");
-                                                             Intent intent = new Intent(getActivity(), SignInActivity.class);
-                                                             startActivity(intent);
-                                                         }
-                                                         return true;
-                                                     }
-                                                 });
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId()==R.id.logout){
+                            sessionHelper.setPreferences(getContext(), "status", "0");
+                            Intent intent = new Intent(getActivity(), SignInActivity.class);
+                            startActivity(intent);
+                        }
+                        return true;
+                    }
+                });
                 popup.show();
                 break;
             case R.id.btn_save:
@@ -136,14 +141,13 @@ public class Profile extends Fragment implements View.OnClickListener {
                     btnSave.setText("SAVE");
                     isEditButton = false;
                 }else {
+                    isEditButton = true;
                     inputNama.setEnabled(false);
                     inputBirtday.setEnabled(false);
                     male.setEnabled(false);
                     female.setEnabled(false);
 
                     btnSave.setText("EDIT");
-                    isEditButton = true;
-                    //loading.show();
                     saveProfileInfo();
                 }
                 break;
@@ -194,7 +198,8 @@ public class Profile extends Fragment implements View.OnClickListener {
     }
 
     private void saveProfileInfo(){
-        String gender;
+        loading.show();
+        final String gender;
         if (male.isChecked()){
             gender = "male";
         }else {
@@ -203,27 +208,31 @@ public class Profile extends Fragment implements View.OnClickListener {
 
         Log.d("profileinfo", "Nama : "+inputNama.getText()+"\nTTL : "+inputBirtday.getText()+"\nGender : "+gender);
 
-        new RefreshToken(getContext()).getToken(new SessionHelper().getPreferences(getContext(), "token"), new RefreshToken.OnFetchFinishedListener() {
-
-            @Override
-            public void onFetchFinished(Boolean status, String token) {
-                Log.d("konssss","status : "+status+"\nToken : "+token);
-            }
-        });
-
-        /*HashMap<String, String> param = new HashMap<>();
+        HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getContext(), "user_id"));
         param.put("fullname", inputNama.getText().toString());
         param.put("birth_date", inputBirtday.getText().toString());
         param.put("gender", gender);
-        param.put("token", sessionHelper.getPreferences(getContext(), "token"));
 
         new VolleyHelper().post(ApiHelper.UPDATE_PROFILE, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 Log.d("update_profile", response);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        if (object.getBoolean("status")){
+                            sessionHelper.setPreferences(getContext(), "fullname", inputNama.getText().toString());
+                            sessionHelper.setPreferences(getContext(), "birth_date", inputBirtday.getText().toString());
+                            sessionHelper.setPreferences(getContext(), "gender", gender.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        });*/
+        });
     }
 }

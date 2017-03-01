@@ -130,7 +130,7 @@ public class BottomPlayerFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             icPlay.setImageResource(R.drawable.ic_pause);
             title.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_TITLE));
-            artist.setText(PlayerActionHelper.BROADCAST_SUBTITLE);
+            artist.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_SUBTITLE));
         }
     };
 }

@@ -64,9 +64,9 @@ public class Notification extends BottomPlayerFragment implements View.OnClickLi
 
         contEmptyState = (LinearLayout) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
-        loading = new ProgressDialog(getActivity());
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
+        loading = new ProgressDialog(getActivity(), R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
 
         btnDrawer.setOnClickListener(this);
 

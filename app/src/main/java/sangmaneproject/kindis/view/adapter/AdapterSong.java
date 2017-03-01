@@ -52,7 +52,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
 
         final String uid = dataSong.get("uid");
         final String titles = dataSong.get("title");
-        final String subTitles = dataSong.get("year");
+        final String subTitles = dataSong.get("subtitle");
 
         title.setText(titles);
         subTitle.setText(subTitles);

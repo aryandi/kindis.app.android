@@ -2,7 +2,6 @@ package sangmaneproject.kindis.view.fragment.bottomnavigation;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,9 +33,7 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.activity.SignInActivity;
 import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
-import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,9 +79,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
         contPlaylist = (LinearLayout) view.findViewById(R.id.cont_list);
         createNewPlaylist = (TextView) view.findViewById(R.id.create_new_playlist);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
-        loading = new ProgressDialog(getActivity());
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
+        loading = new ProgressDialog(getActivity(), R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

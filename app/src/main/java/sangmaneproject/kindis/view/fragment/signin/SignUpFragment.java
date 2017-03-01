@@ -67,7 +67,11 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         super.onViewCreated(view, savedInstanceState);
 
         volleyHelper = new VolleyHelper();
-        loading = new ProgressDialog(getActivity());
+
+        loading = new ProgressDialog(getActivity(), R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
+
         tabLayout = (TabLayout) getActivity().findViewById(R.id.htab_tabs);
 
         fullname = (EditText) view.findViewById(R.id.input_nama);
@@ -121,9 +125,6 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                 }
             }
         });
-
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.setMessage("Loading. Please wait...");
     }
 
     @Override

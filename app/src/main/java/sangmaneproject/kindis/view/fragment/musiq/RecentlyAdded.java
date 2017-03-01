@@ -97,6 +97,7 @@ public class RecentlyAdded extends Fragment {
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("uid", data.optString("uid"));
                     map.put("title", data.optString("title"));
+                    map.put("subtitle", "");
                     listSong.add(map);
                 }
                 adapterSong = new AdapterSong(getActivity(), listSong, "", null);

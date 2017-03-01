@@ -22,9 +22,11 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.ParseJsonPlaylist;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     MediaPlayer mediaPlayer = null;
+    ParseJsonPlaylist parseJsonPlaylist;
     boolean isDataSources = false;
 
     ArrayList<String> songPlaylist = new ArrayList<>();
@@ -38,19 +40,29 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        //mediaPlayer.setOnErrorListener(this);
+
+        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
+        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
+            songPlaylist = new ArrayList<>();;
+        }else {
+            songPlaylist = parseJsonPlaylist.getSongPlaylist();
+
+            if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+                playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
+            }
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent.getAction().equals(PlayerActionHelper.UPDATE_RESOURCE)){
-            //startMediaPlayer(intent.getStringExtra("single_id"));
+            songPlaylist = new ArrayList<>();
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             }
-            new getSongResource().execute(intent.getStringExtra("single_id"));
+            getSongResources(intent.getStringExtra("single_id"));
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
@@ -80,7 +92,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 mediaPlayer.stop();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             }
-            new getSongResource().execute(intent.getStringExtra("single_id"));
+            getSongResources(intent.getStringExtra("single_id"));
             songPlaylist = intent.getStringArrayListExtra("list_uid");
         }
 
@@ -90,7 +102,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 mediaPlayer.stop();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
             }
-            new getSongResource().execute(intent.getStringExtra("single_id"));
+            getSongResources(intent.getStringExtra("single_id"));
             songPlaylist = intent.getStringArrayListExtra("list_uid");
         }
 
@@ -120,6 +132,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public void onPrepared(MediaPlayer mp) {
         String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "playlistPosition", ""+playlistPosition);
         Log.d("islooping", isLooping);
         if (isLooping.equals("true")){
             mp.setLooping(true);
@@ -219,52 +232,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaPlayer.setOnErrorListener(this);
     }
 
-    private class getSongResource extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... params) {
-            Log.d("playerservice", "getSongResource");
-            Map<String, String> param = new HashMap<String, String>();
-            param.put("single_id", params[0]);
-            new PlayerSessionHelper().setPreferences(getApplicationContext(), "uid", params[0]);
-            new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    if (status){
-                        Log.d("songplayresponse", response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.getBoolean("status")){
-                                JSONObject result = object.getJSONObject("result");
-                                if (!result.getString("file").equals("null")){
-                                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
-                                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
-                                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
-                                    sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
-                                    Log.d("titlesongplay", result.getString("title"));
-                                    playMediaPlayer();
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
-                                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-                                    if (cekSizePlaylist()){
-                                        playNext();
-                                    }
-                                }
-                            }else {
-                                Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-                            Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });
-            return null;
-        }
-    }
-
     private void getSongResources (String uid){
         Log.d("playerservice", "getSongResource");
         Map<String, String> param = new HashMap<String, String>();
@@ -281,6 +248,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                             JSONObject result = object.getJSONObject("result");
                             if (!result.getString("file").equals("null")){
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "subtitle", result.getString("album"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
                                 sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);

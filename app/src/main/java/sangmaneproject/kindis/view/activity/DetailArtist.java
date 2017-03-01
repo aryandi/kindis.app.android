@@ -173,6 +173,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                                     map.put("uid", smry.getString("uid"));
                                     map.put("title", smry.getString("title"));
                                     map.put("year", smry.getString("title"));
+                                    map.put("image", smry.getString("image"));
                                     listAlbum.add(map);
 
                                     JSONArray single = data.getJSONArray("single");
@@ -182,6 +183,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                                             HashMap<String, String> maps = new HashMap<String, String>();
                                             maps.put("uid", song.optString("uid"));
                                             maps.put("title", song.optString("title"));
+                                            maps.put("subtitle", smry.getString("title"));
                                             listSong.add(maps);
                                             songPlaylist.add(song.optString("uid"));
                                         }
