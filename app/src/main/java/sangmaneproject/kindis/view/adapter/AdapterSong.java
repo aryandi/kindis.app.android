@@ -23,12 +23,16 @@ import sangmaneproject.kindis.view.holder.ItemSong;
 public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     Activity context;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+    ArrayList<String> songPlaylist;
     HashMap<String, String> dataSong;
     private OnClickMenuListener onClickMenuListener;
+    String type;
 
-    public AdapterSong(Activity context, ArrayList<HashMap<String, String>> listSong){
+    public AdapterSong(Activity context, ArrayList<HashMap<String, String>> listSong, String type, ArrayList<String> songPlaylist){
         this.context = context;
         this.listSong = listSong;
+        this.type = type;
+        this.songPlaylist = songPlaylist;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     }
 
     @Override
-    public void onBindViewHolder(ItemSong holder, int position) {
+    public void onBindViewHolder(ItemSong holder, final int position) {
         TextView title = holder.title;
         TextView subTitle = holder.subTitle;
         RelativeLayout click = holder.click;
@@ -57,11 +61,21 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
-                new PlayerSessionHelper().setPreferences(context, "index", "1");
-                Intent intent = new Intent(context, PlayerService.class);
-                intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
-                intent.putExtra("single_id", uid);
-                context.startService(intent);
+                new PlayerSessionHelper().setPreferences(context, "uid", uid);
+                if (type.equals("list")){
+                    Intent intent = new Intent(context, PlayerService.class);
+                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                    intent.putExtra("single_id", uid);
+                    intent.putExtra("position", position);
+                    intent.putExtra("list_uid", songPlaylist);
+                    context.startService(intent);
+                }else {
+                    new PlayerSessionHelper().setPreferences(context, "index", "1");
+                    Intent intent = new Intent(context, PlayerService.class);
+                    intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                    intent.putExtra("single_id", uid);
+                    context.startService(intent);
+                }
             }
         });
 

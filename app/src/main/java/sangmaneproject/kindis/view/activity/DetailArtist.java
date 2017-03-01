@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,8 +27,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.relex.circleindicator.CircleIndicator;
+import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.helper.PlayerActionHelper;
+import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.BottomPlayerActivity;
 import sangmaneproject.kindis.util.DialogPlaylist;
@@ -38,7 +41,7 @@ import sangmaneproject.kindis.view.adapter.AdapterSong;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 
-public class DetailArtist extends BottomPlayerActivity {
+public class DetailArtist extends BottomPlayerActivity implements View.OnClickListener {
     ViewPager imageSlider;
     Toolbar toolbar;
     CircleIndicator indicator;
@@ -46,6 +49,7 @@ public class DetailArtist extends BottomPlayerActivity {
     AppBarLayout appBarLayout;
     TextView titleToolbar;
     RelativeLayout contLabel;
+    Button btnPlayAll;
 
     AdapterDetailArtist adapter;
     AdapterAlbum adapterAlbum;
@@ -56,8 +60,10 @@ public class DetailArtist extends BottomPlayerActivity {
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+    ArrayList<String> songPlaylist = new ArrayList<>();
 
     Dialog dialogPlaylis;
+    String json;
 
     public DetailArtist(){
         layout = R.layout.activity_detail_artist;
@@ -74,6 +80,7 @@ public class DetailArtist extends BottomPlayerActivity {
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
         titleToolbar = (TextView) findViewById(R.id.title_toolbar);
         contLabel = (RelativeLayout) findViewById(R.id.cont_label);
+        btnPlayAll = (Button) findViewById(R.id.btn_play_all);
         listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
@@ -117,6 +124,8 @@ public class DetailArtist extends BottomPlayerActivity {
         adapter = new AdapterDetailArtist(getSupportFragmentManager());
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         getDetail();
+
+        btnPlayAll.setOnClickListener(this);
     }
 
     @Override
@@ -155,6 +164,7 @@ public class DetailArtist extends BottomPlayerActivity {
                             adapter.registerDataSetObserver(indicator.getDataSetObserver());
 
                             JSONArray album = result.getJSONArray("album");
+                            json = album.toString();
                             if (album.length()>=1){
                                 for (int i=0; i<album.length(); i++){
                                     JSONObject data = album.getJSONObject(i);
@@ -173,6 +183,7 @@ public class DetailArtist extends BottomPlayerActivity {
                                             maps.put("uid", song.optString("uid"));
                                             maps.put("title", song.optString("title"));
                                             listSong.add(maps);
+                                            songPlaylist.add(song.optString("uid"));
                                         }
                                     }
                                 }
@@ -181,7 +192,7 @@ public class DetailArtist extends BottomPlayerActivity {
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(false);
 
-                                adapterSong = new AdapterSong(DetailArtist.this, listSong);
+                                adapterSong = new AdapterSong(DetailArtist.this, listSong, "", null);
                                 listViewSong.setAdapter(adapterSong);
                                 listViewSong.setNestedScrollingEnabled(true);
 
@@ -206,5 +217,19 @@ public class DetailArtist extends BottomPlayerActivity {
                 new DialogPlaylist(DetailArtist.this, dialogPlaylis, uid).showDialog();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+        Log.d("kontoljson", json);
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
+        new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", "artist");
+        Intent intent = new Intent(DetailArtist.this, PlayerService.class);
+        intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+        intent.putExtra("single_id", songPlaylist.get(0));
+        intent.putExtra("list_uid", songPlaylist);
+        startService(intent);
     }
 }

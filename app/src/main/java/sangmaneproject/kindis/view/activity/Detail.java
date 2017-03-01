@@ -227,7 +227,7 @@ public class Detail extends BottomPlayerActivity {
                                 songPlaylist.add(data.optString("single_id"));
                             }
 
-                            adapterSong = new AdapterSong(Detail.this, listSong);
+                            adapterSong = new AdapterSong(Detail.this, listSong, "", null);
                             listViewSong.setAdapter(adapterSong);
                             listViewSong.setNestedScrollingEnabled(true);
 
@@ -264,7 +264,7 @@ public class Detail extends BottomPlayerActivity {
                             songPlaylist.add(data.optString("uid"));
                         }
 
-                        adapterSong = new AdapterSong(Detail.this, listSong);
+                        adapterSong = new AdapterSong(Detail.this, listSong, "", null);
                         listViewSong.setAdapter(adapterSong);
                         listViewSong.setNestedScrollingEnabled(true);
 
@@ -290,7 +290,7 @@ public class Detail extends BottomPlayerActivity {
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }
-            adapterSong = new AdapterSong(Detail.this, listSong);
+            adapterSong = new AdapterSong(Detail.this, listSong, "", null);
             listViewSong.setAdapter(adapterSong);
             listViewSong.setNestedScrollingEnabled(true);
 

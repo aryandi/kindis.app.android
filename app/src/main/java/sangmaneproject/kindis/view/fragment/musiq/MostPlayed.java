@@ -127,7 +127,7 @@ public class MostPlayed extends Fragment {
                     map.put("title", data.optString("title"));
                     listSong.add(map);
                 }
-                adapterSong = new AdapterSong(getActivity(), listSong);
+                adapterSong = new AdapterSong(getActivity(), listSong, "", null);
                 recyclerViewSong.setAdapter(adapterSong);
                 recyclerViewSong.setNestedScrollingEnabled(true);
                 onClickMenuSong();

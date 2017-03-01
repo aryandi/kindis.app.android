@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -199,7 +198,7 @@ public class Search extends BottomPlayerActivity {
                                     listSingle.add(map);
                                 }
                                 contSingle.setVisibility(View.VISIBLE);
-                                adapterSong = new AdapterSong(Search.this, listSingle);
+                                adapterSong = new AdapterSong(Search.this, listSingle, "", null);
                                 listViewSingle.setAdapter(adapterSong);
                                 listViewSingle.setNestedScrollingEnabled(true);
                                 onClickMenuSong();

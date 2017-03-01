@@ -123,6 +123,7 @@
         app:layout_anchor="@+id/htab_appbar"
         app:layout_anchorGravity="bottom|center">
         <sangmaneproject.kindis.custom.ButtonSemiBold
+            android:id="@+id/btn_play_all"
             android:layout_width="108dp"
             android:layout_height="40dp"
             android:text="PLAY"

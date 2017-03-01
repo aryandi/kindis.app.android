@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,7 +25,7 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
-public class Player extends AppCompatActivity implements View.OnClickListener {
+public class Player extends AppCompatActivity implements View.OnClickListener{
     ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList;
     ImageView icPlay;
     ViewPager viewPager;

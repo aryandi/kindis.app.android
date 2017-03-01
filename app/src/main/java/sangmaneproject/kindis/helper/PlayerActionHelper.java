@@ -25,4 +25,5 @@ public class PlayerActionHelper {
 
     public static final String UPDATE_RESOURCE = "update_resource";
     public static final String PLAY_MULTYSOURCE = "play_multysource";
+    public static final String PLAY_PLAYLIST = "play_playlist";
 }
