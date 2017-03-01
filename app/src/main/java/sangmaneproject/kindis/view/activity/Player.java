@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,7 +28,7 @@ import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
 public class Player extends AppCompatActivity implements View.OnClickListener {
-    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu;
+    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList;
     ImageView icPlay;
     ViewPager viewPager;
     AdapterListSong adapterListSong;
@@ -36,7 +38,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
 
     Dialog dialogPlaylis;
 
-    int index;
+    int index, playlistPosition;
     int duration, progress;
 
     @Override
@@ -49,6 +51,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         btnBack = (ImageButton) findViewById(R.id.btn_back);
         btnLooping = (ImageButton) findViewById(R.id.btn_looping);
         btnMenu = (ImageButton) findViewById(R.id.btn_songlis);
+        btnList = (ImageButton) findViewById(R.id.btn_list);
         icPlay = (ImageView) findViewById(R.id.btn_play);
         viewPager = (ViewPager) findViewById(R.id.list_player);
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
@@ -57,6 +60,16 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         title = (TextView) findViewById(R.id.title);
         subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+
+        /*DisplayMetrics metrics = getResources().getDisplayMetrics();
+        switch (metrics.densityDpi){
+            case DisplayMetrics.DENSITY_MEDIUM :
+                viewPager.getLayoutParams().height = 180;
+                break;
+            case DisplayMetrics.DENSITY_HIGH :
+                viewPager.getLayoutParams().height = 272;
+                break;
+        }*/
 
         index = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index"));
 
@@ -120,6 +133,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
             btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
             btnNext.setEnabled(false);
+        }else {
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
         }
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +158,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
 
         btnLooping.setOnClickListener(this);
         btnMenu.setOnClickListener(this);
+        btnList.setOnClickListener(this);
     }
 
     @Override
@@ -200,6 +217,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
             }
         }else if (view.getId() == R.id.btn_songlis){
             new DialogPlaylist(Player.this, dialogPlaylis, new PlayerSessionHelper().getPreferences(getApplicationContext(), "uid")).showDialog();
+        }else if (view.getId() == R.id.btn_list){
+            Intent intent = new Intent(this, ListSongPlayer.class);
+            startActivity(intent);
         }
     }
 
@@ -228,6 +248,23 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             title.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_TITLE));
             subtitle.setText(PlayerActionHelper.BROADCAST_SUBTITLE);
+            playlistPosition = intent.getIntExtra(PlayerActionHelper.BROADCAST_POSITION, 0);
+
+            if (playlistPosition == 0){
+                btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                btnBack.setEnabled(false);
+            }else {
+                btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                btnBack.setEnabled(true);
+            }
+
+            if (playlistPosition == (index-1)){
+                btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                btnNext.setEnabled(false);
+            }else {
+                btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                btnNext.setEnabled(true);
+            }
         }
     };
 

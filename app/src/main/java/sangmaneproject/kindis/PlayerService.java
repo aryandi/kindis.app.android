@@ -185,10 +185,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void sendBroadcestInfo(String title, String subtitle) {
+    private void sendBroadcestInfo(String title, String subtitle, int playistPos) {
         Intent intent = new Intent(PlayerActionHelper.BROADCAST_INFO);
         intent.putExtra(PlayerActionHelper.BROADCAST_TITLE, title);
         intent.putExtra(PlayerActionHelper.BROADCAST_SUBTITLE, subtitle);
+        intent.putExtra(PlayerActionHelper.BROADCAST_POSITION, playistPos);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -229,7 +230,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
-                                    sendBroadcestInfo(result.getString("title"), result.getString("album"));
+                                    sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                     Log.d("titlesongplay", result.getString("title"));
                                     playMediaPlayer();
                                 }else {
@@ -272,7 +273,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
-                                sendBroadcestInfo(result.getString("title"), result.getString("album"));
+                                sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                 Log.d("titlesongplay", result.getString("title"));
                                 playMediaPlayer();
                             }else {

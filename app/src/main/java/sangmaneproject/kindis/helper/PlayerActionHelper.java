@@ -21,6 +21,7 @@ public class PlayerActionHelper {
     public static final String BROADCAST_INFO = "broadcast_info";
     public static final String BROADCAST_TITLE = "title";
     public static final String BROADCAST_SUBTITLE = "subtitle";
+    public static final String BROADCAST_POSITION = "position";
 
     public static final String UPDATE_RESOURCE = "update_resource";
     public static final String PLAY_MULTYSOURCE = "play_multysource";

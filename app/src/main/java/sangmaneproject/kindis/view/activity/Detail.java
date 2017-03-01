@@ -59,6 +59,7 @@ public class Detail extends BottomPlayerActivity {
     ArrayList<String> songPlaylist = new ArrayList<>();
     Dialog dialogPlaylis;
 
+    String json;
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -131,7 +132,10 @@ public class Detail extends BottomPlayerActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+                Log.d("kontoljson", json);
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
                 Intent intent = new Intent(Detail.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                 intent.putExtra("single_id", songPlaylist.get(0));
@@ -182,6 +186,7 @@ public class Detail extends BottomPlayerActivity {
                             if (getIntent().getStringExtra("type").equals("genre")){
                                 getSong();
                             }else if (getIntent().getStringExtra("type").equals("album")){
+                                json = result.getJSONArray("single").toString();
                                 getListSong(result.getJSONArray("single").toString());
                             }
                         }
@@ -212,6 +217,7 @@ public class Detail extends BottomPlayerActivity {
                             titleDetail.setText(playlist.getString("playlist_name"));
 
                             JSONArray singles = playlist.getJSONArray("singles");
+                            json = singles.toString();
                             for (int i=0; i<singles.length(); i++){
                                 JSONObject data = singles.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
@@ -248,6 +254,7 @@ public class Detail extends BottomPlayerActivity {
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONArray result = object.getJSONArray("result");
+                        json = result.toString();
                         for (int i=0; i<result.length(); i++){
                             JSONObject data = result.getJSONObject(i);
                             HashMap<String, String> map = new HashMap<String, String>();
