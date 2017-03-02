@@ -77,7 +77,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
 
     public void bottomPlayer(){
         title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
-        artist.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "album"));
+        artist.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -75,7 +75,7 @@ public class BottomPlayerFragment extends Fragment {
 
     public void bottomPlayer(){
         title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
-        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "album"));
+        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

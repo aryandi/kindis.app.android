@@ -20,6 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/white"
             android:text="Mengejar Sorga"/>
 
@@ -30,6 +32,8 @@
             android:layout_below="@+id/title"
             android:textSize="12sp"
             android:textColor="@color/dark_gray"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="Snada | Jagalah Hati Volume 3 "/>
     </RelativeLayout>
 

@@ -81,7 +81,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         });
 
-        adapterListSong = new AdapterListSong(getApplicationContext(), Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index")));
+        adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
         viewPager.setAdapter(adapterListSong);
 
         if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
@@ -223,6 +223,26 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         }
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+        intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+        intent.putExtra("position", position);
+        intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+        startService(intent);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -284,25 +304,5 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 .append(String.format("%02d", seconds));
 
         return buf.toString();
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-        intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-        intent.putExtra("position", position);
-        intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-        startService(intent);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
     }
 }

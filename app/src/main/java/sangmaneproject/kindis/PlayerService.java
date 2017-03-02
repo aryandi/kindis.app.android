@@ -248,7 +248,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                             JSONObject result = object.getJSONObject("result");
                             if (!result.getString("file").equals("null")){
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "title", result.getString("title"));
-                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "subtitle", result.getString("album"));
+                                new PlayerSessionHelper().setPreferences(getApplicationContext(), "subtitle", result.getString("artist") +" | "+result.getString("album"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "album", result.getString("album"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "file", result.getString("file"));
                                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "image", result.getString("image"));

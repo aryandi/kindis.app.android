@@ -1,6 +1,7 @@
 package sangmaneproject.kindis.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,14 +22,13 @@ public class ParseJsonPlaylist {
 
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     ArrayList<String> songPlaylist = new ArrayList<>();
+    ArrayList<String> imgList = new ArrayList<>();
 
     public ParseJsonPlaylist(Context context){
         this.context = context;
         type = new PlayerSessionHelper().getPreferences(context, "type");
         json = new PlayerSessionHelper().getPreferences(context, "json");
-    }
-
-    public void setPlaylist(){
+        Log.d("ParseJsonPlaylist", type+" : "+json);
         if (type.equals("album")){
             try {
                 JSONArray single = new JSONArray(json);
@@ -42,6 +42,7 @@ public class ParseJsonPlaylist {
                     map.put("subtitle", "");
                     listSong.add(map);
                     songPlaylist.add(summary.optString("uid"));
+                    imgList.add(summary.optString("image"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -88,12 +89,14 @@ public class ParseJsonPlaylist {
     }
 
     public ArrayList<HashMap<String, String>> getListSong(){
-        setPlaylist();
         return listSong;
     }
 
     public ArrayList<String> getSongPlaylist(){
-        setPlaylist();
         return songPlaylist;
+    }
+
+    public ArrayList<String> getImageList(){
+        return imgList;
     }
 }

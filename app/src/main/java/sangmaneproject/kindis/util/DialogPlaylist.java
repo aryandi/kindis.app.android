@@ -56,7 +56,7 @@ public class DialogPlaylist {
 
     private void getPlaylist(){
         Map<String, String> param = new HashMap<String, String>();
-        param.put("token", new SessionHelper().getPreferences(activity, "token"));
+        param.put("uid", new SessionHelper().getPreferences(activity, "user_id"));
 
         new VolleyHelper().post(ApiHelper.PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override

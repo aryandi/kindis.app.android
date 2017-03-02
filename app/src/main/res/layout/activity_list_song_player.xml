@@ -42,13 +42,13 @@
                 android:text="Fresh Indie"/>
         </LinearLayout>
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btn_list"
             android:layout_width="59dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_queue"
             android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"/>-->
     </RelativeLayout>
 
     <ScrollView
@@ -110,10 +110,12 @@
                     android:src="@drawable/ic_songlis"
                     android:background="@android:color/transparent"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"/>
             </RelativeLayout>
 
             <sangmaneproject.kindis.custom.TextViewBold
+                android:id="@+id/label_play_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -126,44 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/cont_single"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-                <RelativeLayout
-                    android:id="@+id/adapter_song"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/btn_menu">
-                    <sangmaneproject.kindis.custom.TextViewBold
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/white"
-                        android:text="Mengejar Sorga"/>
-
-                    <sangmaneproject.kindis.custom.TextViewRegular
-                        android:id="@+id/subtitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/title"
-                        android:textSize="12sp"
-                        android:textColor="@color/dark_gray"
-                        android:text="Snada | Jagalah Hati Volume 3 "/>
-                </RelativeLayout>
-
-                <ImageButton
-                    android:id="@+id/btn_menu"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_songlis"
-                    android:background="@android:color/transparent"
-                    android:layout_centerVertical="true"/>
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
