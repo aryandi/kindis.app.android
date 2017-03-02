@@ -5,13 +5,8 @@ package sangmaneproject.kindis.helper;
  */
 
 public class PlayerActionHelper {
-    public static final String ACTION_TOGGLE_PLAYBACK = "com.example.android.musicplayer.action.TOGGLE_PLAYBACK";
     public static final String ACTION_PLAY = "com.example.android.musicplayer.action.PLAY";
     public static final String ACTION_PAUSE = "com.example.android.musicplayer.action.PAUSE";
-    public static final String ACTION_STOP = "com.example.android.musicplayer.action.STOP";
-    public static final String ACTION_SKIP = "com.example.android.musicplayer.action.SKIP";
-    public static final String ACTION_REWIND = "com.example.android.musicplayer.action.REWIND";
-    public static final String ACTION_URL = "com.example.android.musicplayer.action.URL";
     public static final String ACTION_SEEK = "change_progress";
     public static final String ACTION_LOOPING = "looping";
 

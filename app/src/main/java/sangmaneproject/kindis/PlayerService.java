@@ -106,13 +106,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             songPlaylist = intent.getStringArrayListExtra("list_uid");
         }
 
-        if (intent.getAction().equals(PlayerActionHelper.ACTION_SKIP)){
+        /*if (intent.getAction().equals(PlayerActionHelper.ACTION_SKIP)){
             playNext();
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_REWIND)){
             playBack();
-        }
+        }*/
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
             if (mediaPlayer.isPlaying()){

@@ -63,6 +63,7 @@ public class ParseJsonPlaylist {
                                 maps.put("subtitle", "");
                                 listSong.add(maps);
                                 songPlaylist.add(song.optString("uid"));
+                                imgList.add(song.optString("image"));
                             }
                         }
                     }
@@ -81,6 +82,7 @@ public class ParseJsonPlaylist {
                     map.put("subtitle", data.optString("description"));
                     listSong.add(map);
                     songPlaylist.add(data.optString("uid"));
+                    imgList.add(data.optString("image"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -90,13 +90,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             icPlay.setImageResource(R.drawable.ic_play_large);
         }
 
-        if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
-            if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
-                playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
-                viewPager.setCurrentItem(playlistPosition, true);
-            }
-        }
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -170,6 +163,13 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             seekBar.setMax(dur);
             txtDuration.setText(getTimeString(dur));
         }
+
+        if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
+            if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+                playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
+                viewPager.setCurrentItem(playlistPosition, true);
+            }
+        }
     }
 
     @Override
@@ -211,15 +211,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         }else if (view.getId() == R.id.btn_back){
+            viewPager.setCurrentItem(playlistPosition-1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
-            Intent intent = new Intent(Player.this, PlayerService.class);
-            intent.setAction(PlayerActionHelper.ACTION_REWIND);
-            startService(intent);
         }else if (view.getId() == R.id.btn_next){
+            viewPager.setCurrentItem(playlistPosition+1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
-            Intent intent = new Intent(Player.this, PlayerService.class);
-            intent.setAction(PlayerActionHelper.ACTION_SKIP);
-            startService(intent);
         }
     }
 

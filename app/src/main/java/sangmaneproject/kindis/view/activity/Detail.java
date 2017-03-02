@@ -223,7 +223,7 @@ public class Detail extends BottomPlayerActivity {
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("uid", data.optString("single_id"));
                                 map.put("title", data.optString("title"));
-                                map.put("subtitle", data.optString("album"));
+                                map.put("subtitle", data.optString("artist"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -261,7 +261,7 @@ public class Detail extends BottomPlayerActivity {
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("uid", data.optString("uid"));
                             map.put("title", data.optString("title"));
-                            map.put("subtitle", data.optString("description"));
+                            map.put("subtitle", data.optString("artist"));
                             listSong.add(map);
                             songPlaylist.add(data.optString("uid"));
                         }
