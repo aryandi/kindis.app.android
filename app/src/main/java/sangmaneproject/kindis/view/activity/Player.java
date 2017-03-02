@@ -26,6 +26,7 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.DialogPlaylist;
 import sangmaneproject.kindis.util.ParseJsonPlaylist;
+import sangmaneproject.kindis.util.ZoomOutPageTransformer;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
 public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -83,6 +84,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
         viewPager.setAdapter(adapterListSong);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
             icPlay.setImageResource(R.drawable.ic_pause_large);
