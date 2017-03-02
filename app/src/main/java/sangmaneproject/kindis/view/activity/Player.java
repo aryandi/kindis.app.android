@@ -11,21 +11,24 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.DialogPlaylist;
+import sangmaneproject.kindis.util.ParseJsonPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
-public class Player extends AppCompatActivity implements View.OnClickListener{
+public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList;
     ImageView icPlay;
     ViewPager viewPager;
@@ -35,6 +38,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     AppCompatSeekBar seekBar;
 
     Dialog dialogPlaylis;
+    ParseJsonPlaylist parseJsonPlaylist;
 
     int index, playlistPosition;
     int duration, progress;
@@ -43,6 +47,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -60,6 +66,13 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
         index = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index"));
+
+        /*DisplayMetrics metrics = getResources().getDisplayMetrics();
+        switch (metrics.densityDpi){
+            case DisplayMetrics.DENSITY_HIGH :
+                viewPager.getLayoutParams().height = 260;
+                break;
+        }*/
 
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +93,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
             if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
                 playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
+                viewPager.setCurrentItem(playlistPosition, true);
             }
         }
 
@@ -119,6 +133,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         btnMenu.setOnClickListener(this);
         btnList.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
+
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override
@@ -268,5 +284,25 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 .append(String.format("%02d", seconds));
 
         return buf.toString();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+        intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+        intent.putExtra("position", position);
+        intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+        startService(intent);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

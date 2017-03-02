@@ -49,7 +49,6 @@ public class AdapterListSong extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        //((ViewPager) container).removeView((ImageView) object);
         container.removeView((View) object);
     }
 }

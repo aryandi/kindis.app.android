@@ -129,9 +129,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
     private void getPlaylist(){
         loading.show();
         Map<String, String> param = new HashMap<String, String>();
-        param.put("token", new SessionHelper().getPreferences(getContext(), "token"));
-
-        Log.d("tokenn", new SessionHelper().getPreferences(getContext(), "token"));
+        param.put("uid", new SessionHelper().getPreferences(getContext(), "user_id"));
 
         new VolleyHelper().post(ApiHelper.PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
