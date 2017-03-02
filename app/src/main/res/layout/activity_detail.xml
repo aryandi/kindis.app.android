@@ -26,6 +26,10 @@
                 android:layout_height="200dp"
                 android:src="@drawable/bg_sign_in"
                 android:scaleType="centerCrop"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#20000000"/>
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
