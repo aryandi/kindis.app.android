@@ -11,14 +11,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
@@ -43,6 +41,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     int index, playlistPosition;
     int duration, progress;
+
+    boolean isChangeViewPager = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +172,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 viewPager.setCurrentItem(playlistPosition, true);
             }
         }
+
+        isChangeViewPager = true;
     }
 
     @Override
@@ -223,17 +225,18 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
     public void onPageSelected(int position) {
-        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-        intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-        intent.putExtra("position", position);
-        intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-        startService(intent);
+        if (isChangeViewPager){
+            Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+            intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+            intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+            intent.putExtra("position", position);
+            intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+            startService(intent);
+        }
     }
 
     @Override
@@ -287,6 +290,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                 btnNext.setEnabled(true);
             }
+
+            viewPager.setCurrentItem(playlistPosition, true);
         }
     };
 
