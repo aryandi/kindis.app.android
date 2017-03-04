@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -112,16 +113,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         });
 
-        if (index == 1){
-            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
-            btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
-            btnBack.setEnabled(false);
-            btnNext.setEnabled(false);
-        }else if (playlistPosition == 0){
-            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
-            btnBack.setEnabled(false);
-        }
-
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btnLooping.setOnClickListener(this);
@@ -138,7 +129,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
         subtitle.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "subtitle"));
-
+        if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+            playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
@@ -168,9 +161,22 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
             if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
-                playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
                 viewPager.setCurrentItem(playlistPosition, true);
             }
+        }
+
+        Log.d("kontolll", playlistPosition+" : "+index);
+        if (index == 1){
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
+            btnNext.setEnabled(false);
+        }else if (playlistPosition == 0){
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
+        }else if (playlistPosition == index-1){
+            btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnNext.setEnabled(false);
         }
 
         isChangeViewPager = true;

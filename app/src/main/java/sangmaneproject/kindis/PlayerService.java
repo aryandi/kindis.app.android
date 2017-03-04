@@ -5,9 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
@@ -22,9 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +35,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     PlayerSessionHelper playerSessionHelper;
     MediaPlayer mediaPlayer = null;
     MediaSession mediaSession;
-    Notification noti;
+
+    Notification.Builder noti;
+    NotificationManager notificationManager;
 
     ParseJsonPlaylist parseJsonPlaylist;
     boolean isDataSources = false;
-    boolean isClickPauseButton = false;
 
     ArrayList<String> songPlaylist = new ArrayList<>();
     int playlistPosition = 0;
@@ -61,6 +58,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaSession.setMetadata(new MediaMetadata.Builder().build());
         mediaSession.setActive(true);
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         playerSessionHelper = new PlayerSessionHelper();
 
@@ -117,6 +116,18 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             }
             getSongResources(intent.getStringExtra("single_id"));
             songPlaylist = intent.getStringArrayListExtra("list_uid");
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAYBACK)){
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+            }else {
+                if (isDataSources){
+                    onPrepared(mediaPlayer);
+                }else {
+                    playMediaPlayer();
+                }
+            }
         }
 
         if (intent.getAction().equals(PlayerActionHelper.PLAY_PLAYLIST)){
@@ -222,12 +233,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }else {
             return true;
         }
-    }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.d("destroycuy", "destroycuy");
-        super.onTaskRemoved(rootIntent);
     }
 
     private void sendBroadcest(int duration, int current) {
@@ -347,7 +352,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                         // Show our playback controls in the compat view
                         .setShowActionsInCompactView(0, 1, 2))
                 // Set the Notification color
-                .setColor(getColor(R.color.jungle_green))
+                .setColor(getColor(R.color.colorPrimary))
                 // Set the large and small icons
                 .setSmallIcon(R.drawable.ic_play)
                 // Set Notification content information
@@ -356,10 +361,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 // Add some playback controls
                 .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
                 .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
-                .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
-                .build();
+                .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2));
 
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(1, noti);
+        notificationManager.notify(1, noti.build());
     }
 
     private PendingIntent retreivePlaybackAction(int which) {
@@ -368,7 +372,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         final ComponentName serviceName = new ComponentName(this, PlayerService.class);
         switch (which) {
             case 1:
-                action = new Intent(PlayerActionHelper.ACTION_PAUSE);
+                action = new Intent(PlayerActionHelper.ACTION_PLAYBACK);
                 action.setComponent(serviceName);
                 pendingIntent = PendingIntent.getService(this, 1, action, 0);
                 return pendingIntent;
@@ -390,20 +394,5 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 break;
         }
         return null;
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
     }
 }

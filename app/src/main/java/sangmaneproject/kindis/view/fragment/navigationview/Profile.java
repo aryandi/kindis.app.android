@@ -35,12 +35,14 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.view.activity.Account.ChangeEmail;
+import sangmaneproject.kindis.view.activity.Account.ChangePassword;
 import sangmaneproject.kindis.view.activity.SignInActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Profile extends Fragment implements View.OnClickListener {
+public class Profile extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     ImageButton btnMenu;
@@ -117,16 +119,7 @@ public class Profile extends Fragment implements View.OnClickListener {
             case R.id.btn_menu:
                 PopupMenu popup = new PopupMenu(getActivity(), btnMenu);
                 popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId()==R.id.logout){
-                            sessionHelper.setPreferences(getContext(), "status", "0");
-                            Intent intent = new Intent(getActivity(), SignInActivity.class);
-                            startActivity(intent);
-                        }
-                        return true;
-                    }
-                });
+                popup.setOnMenuItemClickListener(this);
                 popup.show();
                 break;
             case R.id.btn_save:
@@ -234,5 +227,25 @@ public class Profile extends Fragment implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                sessionHelper.setPreferences(getContext(), "status", "0");
+                Intent intent = new Intent(getActivity(), SignInActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.email:
+                Intent intent1 = new Intent(getActivity(), ChangeEmail.class);
+                startActivity(intent1);
+                break;
+            case R.id.password:
+                Intent intent2 = new Intent(getActivity(), ChangePassword.class);
+                startActivity(intent2);
+                break;
+        }
+        return false;
     }
 }

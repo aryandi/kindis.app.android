@@ -11,6 +11,7 @@ public class PlayerActionHelper {
     public static final String ACTION_LOOPING = "looping";
     public static final String ACTION_NEXT = "com.example.android.musicplayer.action.NEXT";
     public static final String ACTION_PREV = "com.example.android.musicplayer.action.PREV";
+    public static final String ACTION_PLAYBACK = "com.example.android.musicplayer.action.PLAYBACK";
 
     public static final String BROADCAST = "player";
     public static final String BROADCAST_MAX_DURATION = "max_duration";

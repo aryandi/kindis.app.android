@@ -69,7 +69,15 @@
             android:name=".view.activity.DetailArtist"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.ListSongPlayer"
+        <activity
+            android:name=".view.activity.ListSongPlayer"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".view.activity.Account.ChangeEmail"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.activity.Account.ChangePassword"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>

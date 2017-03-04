@@ -115,6 +115,7 @@ public class VolleyHelper {
         request.setTag(url);
         addToRequestQueue(request);
     }
+
     private <T> void addToRequestQueue(Request<T> request) {
         getRequestQueue().add(request);
     }
