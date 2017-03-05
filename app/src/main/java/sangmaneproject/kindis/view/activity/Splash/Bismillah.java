@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.view.activity.Main;
 
 public class Bismillah extends AppCompatActivity {
     Button enter;

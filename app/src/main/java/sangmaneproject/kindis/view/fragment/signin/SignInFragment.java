@@ -21,12 +21,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import sangmaneproject.kindis.util.ProfileInfo;
+import sangmaneproject.kindis.util.BackgroundProses.ProfileInfo;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.activity.Bismillah;
-import sangmaneproject.kindis.view.activity.ForgotPassword;
+import sangmaneproject.kindis.view.activity.Splash.Bismillah;
+import sangmaneproject.kindis.view.activity.Account.ForgotPassword;
 import sangmaneproject.kindis.R;
 
 public class SignInFragment extends Fragment implements View.OnFocusChangeListener {

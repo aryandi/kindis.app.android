@@ -41,6 +41,7 @@ public class ApiHelper {
     public static final String REFRESH_TOKEN = BASE_URL + "sign/refresh_token";
 
     public static final String UPDATE_PROFILE = BASE_URL + "profile/update_info";
+    public static final String CHANGE_EMAIL = BASE_URL + "profile/update_email";
 
     public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
 }

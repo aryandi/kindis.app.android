@@ -11,9 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.helper.SessionHelper;
-import sangmaneproject.kindis.view.activity.Bismillah;
-import sangmaneproject.kindis.view.activity.SignInActivity;
+import sangmaneproject.kindis.view.activity.Account.SignInActivity;
 
 /**
  * Created by vincenttp on 1/24/2017.

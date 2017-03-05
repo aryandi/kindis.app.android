@@ -20,7 +20,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".view.activity.SplashScreen"
+            android:name=".view.activity.Splash.SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,22 +29,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.Walkthrough"
+            android:name=".view.activity.Splash.Walkthrough"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.SignInActivity"
+            android:name=".view.activity.Account.SignInActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".view.activity.ForgotPassword"
+            android:name=".view.activity.Account.ForgotPassword"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.Bismillah"
+            android:name=".view.activity.Splash.Bismillah"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -54,7 +54,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.Player"
+            android:name=".view.activity.Player.Player"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -62,22 +62,25 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.Detail"
+            android:name=".view.activity.Detail.Detail"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.DetailArtist"
+            android:name=".view.activity.Detail.DetailArtist"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.activity.ListSongPlayer"
+            android:name=".view.activity.Player.ListSongPlayer"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".view.activity.Account.ChangeEmail"
+            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Account.ChangePassword"
+        <activity
+            android:name=".view.activity.Account.ChangePassword"
+            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>

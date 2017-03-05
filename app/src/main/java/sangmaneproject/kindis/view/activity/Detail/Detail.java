@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Detail;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -38,8 +38,9 @@ import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.util.BottomPlayerActivity;
-import sangmaneproject.kindis.util.DialogPlaylist;
+import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
+import sangmaneproject.kindis.view.activity.Search;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 public class Detail extends BottomPlayerActivity {

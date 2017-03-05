@@ -37,7 +37,7 @@ import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.activity.Account.ChangeEmail;
 import sangmaneproject.kindis.view.activity.Account.ChangePassword;
-import sangmaneproject.kindis.view.activity.SignInActivity;
+import sangmaneproject.kindis.view.activity.Account.SignInActivity;
 
 /**
  * A simple {@link Fragment} subclass.

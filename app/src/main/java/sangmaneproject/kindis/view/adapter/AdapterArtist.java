@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
-import sangmaneproject.kindis.view.activity.DetailArtist;
+import sangmaneproject.kindis.view.activity.Detail.DetailArtist;
 import sangmaneproject.kindis.view.holder.Item;
 
 /**

@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Splash;
 
 import android.content.Intent;
 import android.os.Bundle;

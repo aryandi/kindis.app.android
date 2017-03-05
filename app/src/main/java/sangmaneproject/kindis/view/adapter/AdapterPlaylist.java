@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.view.activity.Detail;
+import sangmaneproject.kindis.view.activity.Detail.Detail;
 import sangmaneproject.kindis.view.holder.ItemPlaylist;
 
 public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {

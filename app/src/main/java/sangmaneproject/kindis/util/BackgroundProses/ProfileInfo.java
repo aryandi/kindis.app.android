@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.util;
+package sangmaneproject.kindis.util.BackgroundProses;
 
 import android.content.Context;
 import android.os.AsyncTask;

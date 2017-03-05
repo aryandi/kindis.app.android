@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.util;
+package sangmaneproject.kindis.util.BackgroundProses;
 
 import android.app.Activity;
 import android.app.Dialog;

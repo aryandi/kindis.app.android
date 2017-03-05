@@ -29,7 +29,7 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.util.ParseJsonPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     PlayerSessionHelper playerSessionHelper;

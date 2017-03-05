@@ -1,12 +1,13 @@
-package sangmaneproject.kindis.util;
+package sangmaneproject.kindis.util.BaseBottomPlayer;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,13 +20,13 @@ import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
-import sangmaneproject.kindis.view.activity.Player;
+import sangmaneproject.kindis.view.activity.Player.Player;
 
 /**
  * Created by DELL on 2/28/2017.
  */
 
-public class BottomPlayerActivity extends AppCompatActivity {
+public class BottomPlayerFragment extends Fragment {
     ImageButton expand;
     RelativeLayout btnPlay;
     ImageView icPlay;
@@ -35,53 +36,50 @@ public class BottomPlayerActivity extends AppCompatActivity {
     TextView title, artist;
     LinearLayout contBottomPlayer;
 
-    public int layout;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(layout);
-        expand = (ImageButton) findViewById(R.id.btn_expand);
-        btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
-        icPlay = (ImageView) findViewById(R.id.ic_play);
-        progressBar = (ProgressBar) findViewById(R.id.pb);
-        title = (TextView) findViewById(R.id.title_player);
-        artist = (TextView) findViewById(R.id.artist_player);
-        contBottomPlayer = (LinearLayout) findViewById(R.id.cont_bottom_player);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        expand = (ImageButton) view.findViewById(R.id.btn_expand);
+        btnPlay = (RelativeLayout) view.findViewById(R.id.btn_play);
+        icPlay = (ImageView) view.findViewById(R.id.ic_play);
+        progressBar = (ProgressBar) view.findViewById(R.id.pb);
+        title = (TextView) view.findViewById(R.id.title_player);
+        artist = (TextView) view.findViewById(R.id.artist_player);
+        contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bottomPlayer();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
+        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
             icPlay.setImageResource(R.drawable.ic_pause);
         }else {
             icPlay.setImageResource(R.drawable.ic_play);
         }
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").isEmpty()){
+        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
         }
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "pause").equals("true")){
-            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "current_pos"));
-            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "duration"));
+        if (new PlayerSessionHelper().getPreferences(getContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "current_pos"));
+            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "duration"));
             progressBar.setMax(dur);
             progressBar.setProgress(pos);
         }
     }
 
     public void bottomPlayer(){
-        title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
-        artist.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "subtitle"));
+        title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
+        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BottomPlayerActivity.this, Player.class);
+                Intent intent = new Intent(getActivity(), Player.class);
                 startActivity(intent);
             }
         });
@@ -89,18 +87,18 @@ public class BottomPlayerActivity extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
-                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+                if (!new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
+                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "true");
                     icPlay.setImageResource(R.drawable.ic_pause);
-                    Intent intent = new Intent(BottomPlayerActivity.this, PlayerService.class);
+                    Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PLAY);
-                    startService(intent);
+                    getActivity().startService(intent);
                 }else {
-                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "false");
                     icPlay.setImageResource(R.drawable.ic_play);
-                    Intent intent = new Intent(BottomPlayerActivity.this, PlayerService.class);
+                    Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PAUSE);
-                    startService(intent);
+                    getActivity().startService(intent);
                 }
             }
         });

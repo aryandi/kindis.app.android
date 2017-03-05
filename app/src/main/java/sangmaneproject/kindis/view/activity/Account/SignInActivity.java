@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Account;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;

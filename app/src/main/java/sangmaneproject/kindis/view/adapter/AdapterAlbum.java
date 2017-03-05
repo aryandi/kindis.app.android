@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
-import sangmaneproject.kindis.view.activity.Detail;
+import sangmaneproject.kindis.view.activity.Detail.Detail;
 import sangmaneproject.kindis.view.holder.Item;
 
 /**

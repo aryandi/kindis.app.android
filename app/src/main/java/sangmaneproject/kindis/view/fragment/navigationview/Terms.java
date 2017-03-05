@@ -16,13 +16,12 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.ParseHtml;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.util.BottomPlayerFragment;
+import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 
 /**
  * A simple {@link Fragment} subclass.

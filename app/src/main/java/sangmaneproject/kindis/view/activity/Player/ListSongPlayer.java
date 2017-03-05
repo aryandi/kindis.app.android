@@ -1,13 +1,11 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Player;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,14 +14,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
-import sangmaneproject.kindis.util.DialogPlaylist;
-import sangmaneproject.kindis.util.ParseJsonPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterSong;
 
 public class ListSongPlayer extends AppCompatActivity implements View.OnClickListener {

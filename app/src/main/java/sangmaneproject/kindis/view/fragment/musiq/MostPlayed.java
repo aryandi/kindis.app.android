@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.util.DialogPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
 import sangmaneproject.kindis.view.adapter.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterArtist;
 import sangmaneproject.kindis.view.adapter.AdapterPlaylist;

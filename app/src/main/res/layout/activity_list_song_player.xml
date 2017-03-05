@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.activity.ListSongPlayer">
+    tools:context="sangmaneproject.kindis.view.activity.Player.ListSongPlayer">
 
     <RelativeLayout
         android:id="@+id/header"

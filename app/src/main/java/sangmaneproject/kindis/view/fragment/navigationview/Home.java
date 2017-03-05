@@ -1,43 +1,30 @@
 package sangmaneproject.kindis.view.fragment.navigationview;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
-import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
-import sangmaneproject.kindis.util.BottomPlayerFragment;
-import sangmaneproject.kindis.view.activity.Player;
+import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 import sangmaneproject.kindis.view.activity.Search;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Infaq;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Musiq;

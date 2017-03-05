@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.util.InsertItemPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.InsertItemPlaylist;
 import sangmaneproject.kindis.view.holder.ItemPlaylist;
 
 /**

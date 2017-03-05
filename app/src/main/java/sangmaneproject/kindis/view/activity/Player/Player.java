@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.activity;
+package sangmaneproject.kindis.view.activity.Player;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -23,8 +23,8 @@ import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
-import sangmaneproject.kindis.util.DialogPlaylist;
-import sangmaneproject.kindis.util.ParseJsonPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
+import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import sangmaneproject.kindis.util.ZoomOutPageTransformer;
 import sangmaneproject.kindis.view.adapter.AdapterListSong;
 
