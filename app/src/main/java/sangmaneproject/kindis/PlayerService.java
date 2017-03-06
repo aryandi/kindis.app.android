@@ -342,26 +342,33 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void notification(){
-        noti = new Notification.Builder(this)
-                // Hide the timestamp
-                .setShowWhen(false)
-                // Set the Notification style
-                .setStyle(new Notification.MediaStyle()
-                        // Attach our MediaSession token
-                        .setMediaSession(mediaSession.getSessionToken())
-                        // Show our playback controls in the compat view
-                        .setShowActionsInCompactView(0, 1, 2))
-                // Set the Notification color
-                .setColor(getColor(R.color.colorPrimary))
-                // Set the large and small icons
-                .setSmallIcon(R.drawable.ic_play)
-                // Set Notification content information
-                .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                // Add some playback controls
-                .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
-                .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
-                .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2));
+
+        if (songPlaylist.size()>1){
+            noti = new Notification.Builder(this)
+                    .setShowWhen(false)
+                    .setStyle(new Notification.MediaStyle()
+                            .setMediaSession(mediaSession.getSessionToken())
+                            .setShowActionsInCompactView(0, 1, 2))
+                    .setColor(getColor(R.color.colorPrimary))
+                    .setSmallIcon(R.drawable.ic_play)
+                    .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
+                    .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
+                    .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
+                    .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
+                    .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2));
+        }else {
+            noti = new Notification.Builder(this)
+                    .setShowWhen(false)
+                    .setStyle(new Notification.MediaStyle()
+                            .setMediaSession(mediaSession.getSessionToken())
+                            .setShowActionsInCompactView(0))
+                    .setColor(getColor(R.color.colorPrimary))
+                    .setSmallIcon(R.drawable.ic_play)
+                    .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
+                    .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
+                    .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
+        }
+
 
         notificationManager.notify(1, noti.build());
     }

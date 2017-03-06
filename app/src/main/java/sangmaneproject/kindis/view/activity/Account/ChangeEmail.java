@@ -95,10 +95,6 @@ public class ChangeEmail extends AppCompatActivity implements View.OnClickListen
                 Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.email:
-                Intent intent1 = new Intent(this, ChangeEmail.class);
-                startActivity(intent1);
-                break;
             case R.id.password:
                 Intent intent2 = new Intent(this, ChangePassword.class);
                 startActivity(intent2);
