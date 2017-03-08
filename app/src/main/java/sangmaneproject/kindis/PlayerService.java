@@ -7,15 +7,19 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,11 +28,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
+import sangmaneproject.kindis.util.BackgroundProses.GetBitmapImage;
 import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
@@ -73,6 +79,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
             }
         }
+
+        notification();
     }
 
     @Override
@@ -251,7 +259,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void playMediaPlayer(){
-        notification();
         isDataSources = true;
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
         Log.d("songresource", song);
@@ -308,6 +315,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 }
             }
         });
+
+        if (noti != null){
+            updateNotification();
+        }
     }
 
     private boolean cekSizePlaylist(){
@@ -342,35 +353,43 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void notification(){
+        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
+            @Override
+            public void onFetchFinished(Bitmap bitmap) {
+                System.out.println("kontolnotif"+bitmap);
+                noti = new Notification.Builder(getApplicationContext())
+                        .setShowWhen(false)
+                        .setStyle(new Notification.MediaStyle()
+                                .setMediaSession(mediaSession.getSessionToken())
+                                .setShowActionsInCompactView(0, 1, 2))
+                        .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
+                        .setSmallIcon(R.drawable.ic_play)
+                        .setLargeIcon(bitmap)
+                        .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
+                        .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
+                        .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
+                        .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
+                        .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
+                        .setOngoing(true);
 
-        if (songPlaylist.size()>1){
-            noti = new Notification.Builder(this)
-                    .setShowWhen(false)
-                    .setStyle(new Notification.MediaStyle()
-                            .setMediaSession(mediaSession.getSessionToken())
-                            .setShowActionsInCompactView(0, 1, 2))
-                    .setColor(getColor(R.color.colorPrimary))
-                    .setSmallIcon(R.drawable.ic_play)
-                    .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                    .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                    .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
-                    .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
-                    .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2));
-        }else {
-            noti = new Notification.Builder(this)
-                    .setShowWhen(false)
-                    .setStyle(new Notification.MediaStyle()
-                            .setMediaSession(mediaSession.getSessionToken())
-                            .setShowActionsInCompactView(0))
-                    .setColor(getColor(R.color.colorPrimary))
-                    .setSmallIcon(R.drawable.ic_play)
-                    .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                    .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                    .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
-        }
+                notificationManager.notify(1, noti.build());
+            }
+        }).execute();
+    }
 
+    private void updateNotification(){
+        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
+            @Override
+            public void onFetchFinished(Bitmap bitmap) {
+                System.out.println("kontolnotifupdate"+bitmap);
+                noti.setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
+                .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
+                .setLargeIcon(bitmap);
 
         notificationManager.notify(1, noti.build());
+            }
+        }).execute();
+
     }
 
     private PendingIntent retreivePlaybackAction(int which) {
