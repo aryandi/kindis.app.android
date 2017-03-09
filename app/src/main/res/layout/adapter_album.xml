@@ -8,8 +8,8 @@
     android:background="@android:color/transparent">
     <ImageView
         android:id="@+id/image"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:src="@drawable/ic_default_img"
         android:scaleType="centerCrop"/>
     <sangmaneproject.kindis.custom.TextViewBold
