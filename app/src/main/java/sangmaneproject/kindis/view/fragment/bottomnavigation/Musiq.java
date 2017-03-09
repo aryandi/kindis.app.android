@@ -22,6 +22,7 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
+import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterBannerEmpty;
 import sangmaneproject.kindis.view.adapter.AdapterMusiq;
@@ -124,7 +125,7 @@ public class Musiq extends Fragment {
 
     private void getJSON(){
         loading.show();
-        new VolleyHelper().get(ApiHelper.MUSIQ, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.MUSIQ+new SessionHelper().getPreferences(getContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();

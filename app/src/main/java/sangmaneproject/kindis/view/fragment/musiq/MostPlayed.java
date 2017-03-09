@@ -87,9 +87,9 @@ public class MostPlayed extends Fragment {
             JSONObject object = new JSONObject(json);
             if (object.getBoolean("status")){
                 JSONObject result = object.getJSONObject("result");
-
+                JSONObject tab1 = result.getJSONObject("tab1");
                 //album
-                JSONArray album = result.getJSONArray("album");
+                JSONArray album = tab1.getJSONArray("album");
                 for (int i=0; i<album.length(); i++){
                     JSONObject data = album.getJSONObject(i);
                     HashMap<String, String> map = new HashMap<String, String>();
@@ -105,7 +105,7 @@ public class MostPlayed extends Fragment {
                 recyclerViewTopListened.setAdapter(adapterAlbum);
                 recyclerViewTopListened.setNestedScrollingEnabled(false);
 
-                JSONArray artist = result.getJSONArray("artist");
+                JSONArray artist = tab1.getJSONArray("artist");
                 for (int i=0; i<artist.length(); i++){
                     JSONObject data = artist.getJSONObject(i);
                     HashMap<String, String> map = new HashMap<String, String>();
@@ -119,7 +119,7 @@ public class MostPlayed extends Fragment {
                 recyclerViewArtist.setAdapter(adapterArtist);
                 recyclerViewArtist.setNestedScrollingEnabled(false);
 
-                JSONArray single = result.getJSONArray("single");
+                JSONArray single = tab1.getJSONArray("single");
                 for (int i=0; i<single.length(); i++){
                     JSONObject data = single.getJSONObject(i);
                     HashMap<String, String> map = new HashMap<String, String>();
@@ -133,7 +133,7 @@ public class MostPlayed extends Fragment {
                 recyclerViewSong.setNestedScrollingEnabled(true);
                 onClickMenuSong();
 
-                JSONArray playlist = result.getJSONArray("playlist");
+                JSONArray playlist = tab1.getJSONArray("playlist");
                 for (int i=0; i<playlist.length(); i++){
                     JSONObject data = playlist.getJSONObject(i);
                     HashMap<String, String> map = new HashMap<String, String>();

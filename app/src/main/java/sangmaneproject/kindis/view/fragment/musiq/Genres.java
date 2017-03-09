@@ -61,7 +61,8 @@ public class Genres extends Fragment {
         try {
             JSONObject object = new JSONObject(json);
             JSONObject result = object.getJSONObject("result");
-            JSONArray genre = result.getJSONArray("genre");
+            JSONObject tab3 = result.getJSONObject("tab3");
+            JSONArray genre = tab3.getJSONArray("genre");
             for (int i=0; i<genre.length(); i++){{
                 JSONObject data = genre.getJSONObject(i);
                 HashMap<String, String> map = new HashMap<String, String>();

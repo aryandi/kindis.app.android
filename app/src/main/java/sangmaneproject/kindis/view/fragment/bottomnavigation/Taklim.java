@@ -23,8 +23,8 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterBannerEmpty;
-import sangmaneproject.kindis.view.adapter.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
+import sangmaneproject.kindis.view.adapter.AdapterTaklim;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +36,7 @@ public class Taklim extends Fragment {
 
     AdapterMusiqSlider adapterMusiqSlider;
     AdapterBannerEmpty adapterBannerEmpty;
-    AdapterMusiq adapter;
+    AdapterTaklim adapter;
 
     NestedScrollView emptyState;
     Button refresh;
@@ -81,7 +81,7 @@ public class Taklim extends Fragment {
         getBanner();
 
         if (responses != null){
-            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
+            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
             viewPager.setAdapter(adapter);
             viewPager.setOffscreenPageLimit(3);
             tabLayout.setupWithViewPager(viewPager);
@@ -129,7 +129,7 @@ public class Taklim extends Fragment {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             responses = response;
-                            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
+                            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
                             viewPager.setAdapter(adapter);
                             viewPager.setOffscreenPageLimit(3);
                             tabLayout.setupWithViewPager(viewPager);

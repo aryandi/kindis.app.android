@@ -1,8 +1,6 @@
 package sangmaneproject.kindis.view.adapter;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +19,12 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.view.holder.Item;
 
-public class AdapterSongVertical extends RecyclerView.Adapter<Item> {
+public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     Context context;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> dataSong;
 
-    public AdapterSongVertical(Context context, ArrayList<HashMap<String, String>> listSong){
+    public AdapterSongHorizontal(Context context, ArrayList<HashMap<String, String>> listSong){
         this.context = context;
         this.listSong = listSong;
     }
@@ -54,7 +52,7 @@ public class AdapterSongVertical extends RecyclerView.Adapter<Item> {
                 .centerCrop()
                 .into(imageView);
         title.setText(dataSong.get("title"));
-        subTitle.setText(dataSong.get("description"));
+        subTitle.setText(dataSong.get("subtitle"));
     }
 
     @Override
