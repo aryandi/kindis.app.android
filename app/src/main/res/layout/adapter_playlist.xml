@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:background="@android:color/transparent"
-    tools:context="sangmaneproject.kindis.view.adapter.AdapterPlaylist">
+    tools:context="sangmaneproject.kindis.view.adapter.item.AdapterPlaylist">
 
     <sangmaneproject.kindis.custom.TextViewBold
         android:id="@+id/title"

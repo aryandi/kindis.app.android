@@ -36,9 +36,9 @@ import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
 import sangmaneproject.kindis.view.activity.Search;
-import sangmaneproject.kindis.view.adapter.AdapterAlbum;
+import sangmaneproject.kindis.view.adapter.item.AdapterAlbum;
 import sangmaneproject.kindis.view.adapter.AdapterDetailArtist;
-import sangmaneproject.kindis.view.adapter.AdapterSong;
+import sangmaneproject.kindis.view.adapter.item.AdapterSong;
 import sangmaneproject.kindis.view.fragment.detail.DetailAbout;
 import sangmaneproject.kindis.view.fragment.detail.DetailMain;
 

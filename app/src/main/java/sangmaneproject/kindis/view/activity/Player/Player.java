@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import sangmaneproject.kindis.PlayerService;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
@@ -45,6 +47,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     boolean isChangeViewPager = false;
 
+    ArrayList<String> imgList = new ArrayList<>();
+
+    PlayerSessionHelper playerSessionHelper = new PlayerSessionHelper();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +73,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
-        index = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "index"));
-
-        /*DisplayMetrics metrics = getResources().getDisplayMetrics();
-        switch (metrics.densityDpi){
-            case DisplayMetrics.DENSITY_HIGH :
-                viewPager.getLayoutParams().height = 260;
-                break;
-        }*/
+        index = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "index"));
 
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,14 +82,21 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         });
 
-        adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
-        viewPager.setAdapter(adapterListSong);
-        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
             icPlay.setImageResource(R.drawable.ic_pause_large);
         }else {
             icPlay.setImageResource(R.drawable.ic_play_large);
+        }
+
+        if (index == 1){
+            imgList.add(playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+            adapterListSong = new AdapterListSong(getApplicationContext(), imgList);
+            viewPager.setAdapter(adapterListSong);
+            viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        }else {
+            adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
+            viewPager.setAdapter(adapterListSong);
+            viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -127,40 +133,40 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     protected void onResume() {
         super.onResume();
 
-        title.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "title"));
-        subtitle.setText(new PlayerSessionHelper().getPreferences(getApplicationContext(), "subtitle"));
-        if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
-            playlistPosition = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition"));
+        title.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+        subtitle.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+        if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+            playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
-        String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+        String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
         if (isLooping.equals("true")){
             btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
         }else {
             btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
         }
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "pause").equals("true")){
-            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "current_pos"));
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "current_pos"));
             seekBar.setProgress(pos);
             txtProgress.setText(getTimeString(pos));
         }
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "file").isEmpty()){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "file").isEmpty()){
             title.setText("No Song");
             subtitle.setText("");
             txtProgress.setText(getTimeString(0));
             txtDuration.setText(getTimeString(0));
         }else {
-            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getApplicationContext(), "duration"));
+            int dur = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "duration"));
             seekBar.setMax(dur);
             txtDuration.setText(getTimeString(dur));
         }
 
-        if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
-            if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+        if (!playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
+            if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
                 viewPager.setCurrentItem(playlistPosition, true);
             }
         }
@@ -185,36 +191,36 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_looping){
-            String isLooping = ""+new PlayerSessionHelper().getPreferences(getApplicationContext(), "isLooping");
+            String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
             if (isLooping.equals("true")){
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isLooping", "false");
+                playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "false");
 
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
             }else{
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isLooping", "true");
+                playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "true");
 
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
             }
         }else if (view.getId() == R.id.btn_songlis){
-            new DialogPlaylist(Player.this, dialogPlaylis, new PlayerSessionHelper().getPreferences(getApplicationContext(), "uid")).showDialog();
+            new DialogPlaylist(Player.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid")).showDialog();
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);
             startActivity(intent);
         }else if (view.getId() == R.id.cont_play){
-            if (!new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "true");
+            if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "true");
                 icPlay.setImageResource(R.drawable.ic_pause_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY);
                 startService(intent);
             }else {
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                 icPlay.setImageResource(R.drawable.ic_play_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PAUSE);
@@ -268,7 +274,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 icPlay.setImageResource(R.drawable.ic_play_large);
             }
 
-            if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "isplaying").equals("true")){
+            if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
                 icPlay.setImageResource(R.drawable.ic_pause_large);
             }
         }

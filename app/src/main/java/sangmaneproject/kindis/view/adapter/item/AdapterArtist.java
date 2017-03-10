@@ -1,6 +1,7 @@
-package sangmaneproject.kindis.view.adapter;
+package sangmaneproject.kindis.view.adapter.item;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +18,23 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
+import sangmaneproject.kindis.view.activity.Detail.DetailArtist;
 import sangmaneproject.kindis.view.holder.Item;
 
-public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
-    Context context;
-    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> dataSong;
+/**
+ * Created by vincenttp on 2/9/2017.
+ */
 
-    public AdapterSongHorizontal(Context context, ArrayList<HashMap<String, String>> listSong){
+public class AdapterArtist extends RecyclerView.Adapter<Item> {
+    Context context;
+    ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> dataArtist;
+
+    public AdapterArtist (Context context, ArrayList<HashMap<String, String>> listArtist){
         this.context = context;
-        this.listSong = listSong;
+        this.listArtist = listArtist;
     }
+
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,21 +49,39 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
         LinearLayout click = holder.click;
-        dataSong = listSong.get(position);
+
+        dataArtist = listArtist.get(position);
+
+        final String uid = dataArtist.get("uid");
 
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSong.get("image"))
+                .load(ApiHelper.BASE_URL_IMAGE+dataArtist.get("image"))
                 .thumbnail( 0.1f )
-                .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
-        title.setText(dataSong.get("title"));
-        subTitle.setText(dataSong.get("subtitle"));
+        title.setText(dataArtist.get("name"));
+        subTitle.setText("Artist");
+
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), DetailArtist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", uid);
+                intent.putExtra("type", "artist");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return listSong.size();
+        return listArtist.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

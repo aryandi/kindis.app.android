@@ -31,9 +31,9 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
-import sangmaneproject.kindis.view.adapter.AdapterAlbum;
-import sangmaneproject.kindis.view.adapter.AdapterArtist;
-import sangmaneproject.kindis.view.adapter.AdapterSong;
+import sangmaneproject.kindis.view.adapter.item.AdapterAlbum;
+import sangmaneproject.kindis.view.adapter.item.AdapterArtist;
+import sangmaneproject.kindis.view.adapter.item.AdapterSong;
 
 public class Search extends BottomPlayerActivity {
     ImageButton back, clear;

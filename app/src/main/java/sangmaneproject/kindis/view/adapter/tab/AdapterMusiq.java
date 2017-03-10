@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.adapter;
+package sangmaneproject.kindis.view.adapter.tab;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -9,22 +9,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.view.fragment.musiq.Genres;
-import sangmaneproject.kindis.view.fragment.musiq.MostPlayed;
-import sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded;
-import sangmaneproject.kindis.view.fragment.taklim.TabSatu;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.Genres;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.MostPlayed;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
 
 /**
- * Created by vincenttp on 3/10/2017.
+ * Created by vincenttp on 1/26/2017.
  */
 
-public class AdapterTaklim extends FragmentPagerAdapter {
+public class AdapterMusiq extends FragmentPagerAdapter {
     Context context;
     int mNumOfTabs;
     String json;
     String[] title;
 
-    public AdapterTaklim(FragmentManager manager, Context context, int mNumOfTabs, String json, String[] title) {
+    public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs, String json, String[] title) {
         super(manager);
         this.context = context;
         this.mNumOfTabs = mNumOfTabs;
@@ -37,7 +36,7 @@ public class AdapterTaklim extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 //Fragement for Android Tab
-                return new TabSatu(json);
+                return new MostPlayed(json);
             case 1:
                 //Fragment for Ios Tab
                 return new RecentlyAdded(json);

@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment.musiq;
+package sangmaneproject.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.adapter.AdapterGenre;
+import sangmaneproject.kindis.view.adapter.item.AdapterGenre;
 
 
 /**

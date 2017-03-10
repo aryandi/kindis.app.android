@@ -8,7 +8,7 @@
     android:paddingRight="10dp"
     android:paddingTop="12dp"
     android:background="@android:color/transparent"
-    tools:context="sangmaneproject.kindis.view.adapter.AdapterSong">
+    tools:context="sangmaneproject.kindis.view.adapter.item.AdapterSong">
 
     <RelativeLayout
         android:id="@+id/adapter_song"

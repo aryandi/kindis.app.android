@@ -1,8 +1,11 @@
-<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragment.bottomnavigation.musiq.MostPlayed">
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.bottomnavigation.taklim.Kisah">
+
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
@@ -12,6 +15,23 @@
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
+
+        <sangmaneproject.kindis.custom.TextViewBold
+            android:id="@+id/label_discover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="DISCOVER"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_discover"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <sangmaneproject.kindis.custom.TextViewBold
             android:id="@+id/label_premium"
@@ -32,49 +52,32 @@
 
         <sangmaneproject.kindis.custom.TextViewBold
             android:id="@+id/label_top"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="TOP 10 PREMIUM"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_top"
-            android:visibility="gone"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <sangmaneproject.kindis.custom.TextViewBold
-            android:id="@+id/label_album"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="ALBUM"
-            android:textColor="@color/white"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_album"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:visibility="gone"/>
 
         <sangmaneproject.kindis.custom.TextViewBold
-            android:id="@+id/label_artist"
+            android:id="@+id/label_storyteller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="ARTIST"
+            android:text="STORY TELLER"
             android:textColor="@color/white"
             android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_artist"
+            android:id="@+id/list_storyteller"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
@@ -82,54 +85,22 @@
             android:visibility="gone"/>
 
         <sangmaneproject.kindis.custom.TextViewBold
-            android:id="@+id/label_single"
+            android:id="@+id/label_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="SINGLE"
+            android:text="THEME"
             android:textColor="@color/white"
             android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_single"
+            android:id="@+id/list_theme"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
-            android:id="@+id/label_random1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="PLAY"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_random1"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <sangmaneproject.kindis.custom.TextViewBold
-            android:id="@+id/label_random2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="PLAY"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_random2"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+
+</android.support.v4.widget.NestedScrollView >

@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="sangmaneproject.kindis.view.fragment.musiq.Genres"
+        tools:context=".view.fragment.bottomnavigation.musiq.Genres"
         android:background="@drawable/background">
 
         <android.support.v7.widget.RecyclerView

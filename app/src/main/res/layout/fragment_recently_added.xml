@@ -1,8 +1,9 @@
-<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="sangmaneproject.kindis.view.fragment.musiq.RecentlyAdded">
+    tools:context=".view.fragment.bottomnavigation.musiq.RecentlyAdded">
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"

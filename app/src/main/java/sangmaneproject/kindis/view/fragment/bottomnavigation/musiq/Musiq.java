@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment.bottomnavigation;
+package sangmaneproject.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.ProgressDialog;
@@ -25,7 +25,7 @@ import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterBannerEmpty;
-import sangmaneproject.kindis.view.adapter.AdapterMusiq;
+import sangmaneproject.kindis.view.adapter.tab.AdapterMusiq;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
 
 /**

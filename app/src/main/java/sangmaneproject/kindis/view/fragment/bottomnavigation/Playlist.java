@@ -33,7 +33,7 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.adapter.AdapterPlaylist;
+import sangmaneproject.kindis.view.adapter.item.AdapterPlaylist;
 
 /**
  * A simple {@link Fragment} subclass.

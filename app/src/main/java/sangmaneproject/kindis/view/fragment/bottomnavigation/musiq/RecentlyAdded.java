@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment.musiq;
+package sangmaneproject.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.Dialog;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sangmaneproject.kindis.R;
-import sangmaneproject.kindis.view.adapter.AdapterAlbum;
-import sangmaneproject.kindis.view.adapter.AdapterSongHorizontal;
+import sangmaneproject.kindis.view.adapter.item.AdapterAlbum;
+import sangmaneproject.kindis.view.adapter.item.AdapterSongHorizontal;
 
 
 /**
@@ -33,10 +33,10 @@ public class RecentlyAdded extends Fragment {
 
     TextView labelSingle, labelPlay, labelAlbum, labelPremium;
 
-    RecyclerView recyclerViewAlbum;
-    RecyclerView recyclerViewSingle;
+    RecyclerView recyclerViewSingle, recyclerViewPLay, recyclerViewAlbum;
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> listPlay = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listSingle = new ArrayList<HashMap<String, String>>();
 
     String json;
@@ -64,9 +64,11 @@ public class RecentlyAdded extends Fragment {
         labelPremium = (TextView) view.findViewById(R.id.label_premium);
 
         recyclerViewSingle = (RecyclerView) view.findViewById(R.id.list_single);
+        recyclerViewPLay = (RecyclerView) view.findViewById(R.id.list_play);
         recyclerViewAlbum = (RecyclerView) view.findViewById(R.id.list_album);
 
         recyclerViewSingle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewPLay.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewAlbum.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         getJSON();
@@ -81,7 +83,7 @@ public class RecentlyAdded extends Fragment {
 
                 //single
                 JSONArray single = tab2.getJSONArray("single");
-                if (single.length()>1){
+                if (single.length()>0){
                     labelSingle.setVisibility(View.VISIBLE);
 
                     for (int i=0; i<single.length(); i++){
@@ -100,13 +102,27 @@ public class RecentlyAdded extends Fragment {
                 }
 
                 JSONArray play = tab2.getJSONArray("play");
-                if (play.length()>1){
+                if (play.length()>0){
                     labelPlay.setVisibility(View.VISIBLE);
+
+                    for (int i=0; i<play.length(); i++){
+                        JSONObject data = play.getJSONObject(i);
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("uid", data.optString("uid"));
+                        map.put("title", data.optString("title"));
+                        map.put("image", data.optString("image"));
+                        map.put("subtitle", data.optString("artist"));
+                        listPlay.add(map);
+                    }
+
+                    adapterSongHorizontal = new AdapterSongHorizontal(getContext(), listPlay);
+                    recyclerViewPLay.setAdapter(adapterSongHorizontal);
+                    recyclerViewPLay.setNestedScrollingEnabled(false);
                 }
 
                 //album
                 JSONArray album = tab2.getJSONArray("album");
-                if (album.length()>1){
+                if (album.length()>0){
                     labelAlbum.setVisibility(View.VISIBLE);
                     for (int i=0; i<album.length(); i++){
                         JSONObject data = album.getJSONObject(i);
@@ -125,7 +141,7 @@ public class RecentlyAdded extends Fragment {
                 }
 
                 JSONArray premium = tab2.getJSONArray("top10premium");
-                if (premium.length()>1){
+                if (premium.length()>0){
                     labelPremium.setVisibility(View.VISIBLE);
                 }
             }

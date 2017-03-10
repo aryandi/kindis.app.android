@@ -19,7 +19,7 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.BackgroundProses.DialogPlaylist;
 import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
-import sangmaneproject.kindis.view.adapter.AdapterSong;
+import sangmaneproject.kindis.view.adapter.item.AdapterSong;
 
 public class ListSongPlayer extends AppCompatActivity implements View.OnClickListener {
     ParseJsonPlaylist parseJsonPlaylist;

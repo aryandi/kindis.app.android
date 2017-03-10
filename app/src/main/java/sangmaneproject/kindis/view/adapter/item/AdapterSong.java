@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.adapter;
+package sangmaneproject.kindis.view.adapter.item;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -27,9 +27,9 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 import sangmaneproject.kindis.view.activity.Search;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Infaq;
-import sangmaneproject.kindis.view.fragment.bottomnavigation.Musiq;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.Musiq;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Playlist;
-import sangmaneproject.kindis.view.fragment.bottomnavigation.Taklim;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.taklim.Taklim;
 
 /**
  * A simple {@link Fragment} subclass.

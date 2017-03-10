@@ -1,4 +1,4 @@
-package sangmaneproject.kindis.view.fragment.bottomnavigation;
+package sangmaneproject.kindis.view.fragment.bottomnavigation.taklim;
 
 
 import android.app.ProgressDialog;
@@ -21,10 +21,11 @@ import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.CheckConnection;
+import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
 import sangmaneproject.kindis.view.adapter.AdapterBannerEmpty;
 import sangmaneproject.kindis.view.adapter.AdapterMusiqSlider;
-import sangmaneproject.kindis.view.adapter.AdapterTaklim;
+import sangmaneproject.kindis.view.adapter.tab.AdapterTaklim;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,9 +69,9 @@ public class Taklim extends Fragment {
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("MOST PLAYED"));
-        tabLayout.addTab(tabLayout.newTab().setText("RECENTLY"));
-        tabLayout.addTab(tabLayout.newTab().setText("CATEGORY"));
+        tabLayout.addTab(tabLayout.newTab().setText(""));
+        tabLayout.addTab(tabLayout.newTab().setText(""));
+        tabLayout.addTab(tabLayout.newTab().setText(""));
 
         emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
@@ -120,7 +121,7 @@ public class Taklim extends Fragment {
 
     private void getJSON(){
         loading.show();
-        new VolleyHelper().get(ApiHelper.TAKLIM, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.TAKLIM+new SessionHelper().getPreferences(getContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
