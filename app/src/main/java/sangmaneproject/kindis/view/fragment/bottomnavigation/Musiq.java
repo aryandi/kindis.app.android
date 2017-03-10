@@ -44,7 +44,7 @@ public class Musiq extends Fragment {
     Button refresh;
     ProgressDialog loading;
 
-    String[] title = {"MOST PLAYED","RECENTLY","GENRES"};
+    String[] title = {"DISCOVER","RECENTLY","GENRE"};
     String responses = null;
 
     CircleIndicator indicator;
@@ -70,9 +70,9 @@ public class Musiq extends Fragment {
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("MOST PLAYED"));
+        tabLayout.addTab(tabLayout.newTab().setText("DISCOVER"));
         tabLayout.addTab(tabLayout.newTab().setText("RECENTLY"));
-        tabLayout.addTab(tabLayout.newTab().setText("GENRES"));
+        tabLayout.addTab(tabLayout.newTab().setText("GENRE"));
 
         emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);

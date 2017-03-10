@@ -43,7 +43,7 @@ public class Taklim extends Fragment {
     ProgressDialog loading;
 
     String responses = null;
-    String[] title = {"MOST PLAYED","RECENTLY","CATEGORY"};
+    String[] title = {"SYIAR","KISAH","MUROTTAL"};
 
     CircleIndicator indicator;
     public Taklim() {
