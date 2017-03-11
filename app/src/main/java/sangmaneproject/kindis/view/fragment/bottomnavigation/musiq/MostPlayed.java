@@ -155,6 +155,7 @@ public class MostPlayed extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listSong.add(map);
                     }
                     adapterSong = new AdapterSongHorizontal(getActivity(), listSong);
@@ -176,6 +177,7 @@ public class MostPlayed extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listRandom1.add(map);
                     }
                     adapterSong = new AdapterSongHorizontal(getActivity(), listRandom1);
@@ -197,6 +199,7 @@ public class MostPlayed extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listRandom2.add(map);
                     }
                     adapterSong = new AdapterSongHorizontal(getActivity(), listRandom2);

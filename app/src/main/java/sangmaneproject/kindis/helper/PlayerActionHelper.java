@@ -10,7 +10,7 @@ public class PlayerActionHelper {
     public static final String ACTION_SEEK = "change_progress";
     public static final String ACTION_LOOPING = "looping";
     public static final String ACTION_NEXT = "com.example.android.musicplayer.action.NEXT";
-    public static final String ACTION_PREV = "com.example.android.musicplayer.action.PREV";
+    public static final String ACTION_CLOSE = "com.example.android.musicplayer.action.CLOSE";
     public static final String ACTION_PLAYBACK = "com.example.android.musicplayer.action.PLAYBACK";
 
     public static final String BROADCAST = "player";

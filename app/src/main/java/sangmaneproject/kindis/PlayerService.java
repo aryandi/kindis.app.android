@@ -7,16 +7,13 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.media.session.MediaSession;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -31,23 +28,23 @@ import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.util.BackgroundProses.GetBitmapImage;
 import sangmaneproject.kindis.util.BackgroundProses.ParseJsonPlaylist;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     PlayerSessionHelper playerSessionHelper;
     MediaPlayer mediaPlayer = null;
-    MediaSession mediaSession;
 
     Notification.Builder noti;
     NotificationManager notificationManager;
-    Notification.Action mPlayPauseAction;
+    RemoteViews views;
 
     ParseJsonPlaylist parseJsonPlaylist;
     boolean isDataSources = false;
 
     ArrayList<String> songPlaylist = new ArrayList<>();
     int playlistPosition = 0;
+
+    String title, subtitle;
 
     public PlayerService() {
     }
@@ -57,14 +54,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        mediaSession = new MediaSession(this, "debug tag");
-        mediaSession.setMetadata(new MediaMetadata.Builder().build());
-        mediaSession.setActive(true);
-        mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mPlayPauseAction = new Notification.Action(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
 
         playerSessionHelper = new PlayerSessionHelper();
 
@@ -78,6 +67,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
             }
         }
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        views = new RemoteViews(getPackageName(), R.layout.layout_notification);
+        views.setImageViewResource(R.id.image, R.drawable.ic_launcher);
+        views.setTextViewText(R.id.title, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+        views.setTextViewText(R.id.subtitle, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+        views.setOnClickPendingIntent(R.id.btn_play, retreivePlaybackAction(1));
+        views.setOnClickPendingIntent(R.id.btn_next, retreivePlaybackAction(2));
+        views.setOnClickPendingIntent(R.id.btn_close, retreivePlaybackAction(3));
 
         notification();
     }
@@ -128,13 +126,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAYBACK)){
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
+                views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
             }else {
+                views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
                 if (isDataSources){
                     onPrepared(mediaPlayer);
                 }else {
                     playMediaPlayer();
                 }
             }
+            notificationManager.notify(1, noti.build());
         }
 
         if (intent.getAction().equals(PlayerActionHelper.PLAY_PLAYLIST)){
@@ -151,8 +152,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             playNext();
         }
 
-        if (intent.getAction().equals(PlayerActionHelper.ACTION_PREV)){
-            playBack();
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_CLOSE)){
+            notificationManager.cancel(1);
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
@@ -300,9 +301,14 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 playerSessionHelper.setPreferences(getApplicationContext(), "album", result.getString("album"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
+                                title = result.getString("title");
+                                subtitle = result.getString("artist") +" | "+result.getString("album");
                                 sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                 Log.d("titlesongplay", result.getString("title"));
                                 playMediaPlayer();
+                                if (noti != null){
+                                    updateNotification();
+                                }
                             }else {
                                 Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
                                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
@@ -321,10 +327,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 }
             }
         });
-
-        if (noti != null){
-            updateNotification();
-        }
     }
 
     private boolean cekSizePlaylist(){
@@ -359,69 +361,20 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void notification(){
-        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
-            @Override
-            public void onFetchFinished(Bitmap bitmap) {
-                System.out.println("kontolnotif"+bitmap);
-                noti = new Notification.Builder(getApplicationContext())
-                        .setShowWhen(false)
-                        .setStyle(new Notification.MediaStyle()
-                                .setMediaSession(mediaSession.getSessionToken())
-                                .setShowActionsInCompactView(0, 1, 2))
-                        .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
-                        .setSmallIcon(R.drawable.ic_play)
-                        .setLargeIcon(bitmap)
-                        .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                        .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                        .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
-                        .addAction(mPlayPauseAction)
-                        .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
-                        .setOngoing(true);
+        noti = new Notification.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.ic_play)
+                .setContent(views)
+                .setOngoing(true);
 
-                notificationManager.notify(1, noti.build());
-            }
-        }).execute();
+        notificationManager.notify(1, noti.build());
     }
 
     private void updateNotification(){
-        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
-            @Override
-            public void onFetchFinished(Bitmap bitmap) {
-                noti.setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                .setLargeIcon(bitmap);
-
-                notificationManager.notify(1, noti.build());
-            }
-        }).execute();
-
+        Log.d("kontollll", playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+        views.setTextViewText(R.id.title, title);
+        views.setTextViewText(R.id.subtitle, subtitle);
+        notificationManager.notify(1, noti.build());
     }
-/*
-    private void updateIconNotification(){
-        notificationManager.cancel(1);
-        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
-            @Override
-            public void onFetchFinished(Bitmap bitmap) {
-                System.out.println("kontolnotif"+bitmap);
-                noti = new Notification.Builder(getApplicationContext())
-                        .setShowWhen(false)
-                        .setStyle(new Notification.MediaStyle()
-                                .setMediaSession(mediaSession.getSessionToken())
-                                .setShowActionsInCompactView(0, 1, 2))
-                        .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
-                        .setSmallIcon(R.drawable.ic_play)
-                        .setLargeIcon(bitmap)
-                        .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
-                        .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
-                        .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
-                        .addAction(mPlayPauseAction)
-                        .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
-                        .setOngoing(true);
-
-                notificationManager.notify(1, noti.build());
-            }
-        }).execute();
-    }*/
 
     private PendingIntent retreivePlaybackAction(int which) {
         Intent action;
@@ -441,12 +394,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                     return pendingIntent;
                 }
             case 3:
-                if (playlistPosition!=0){
-                    action = new Intent(PlayerActionHelper.ACTION_PREV);
-                    action.setComponent(serviceName);
-                    pendingIntent = PendingIntent.getService(this, 3, action, 0);
-                    return pendingIntent;
-                }
+                action = new Intent(PlayerActionHelper.ACTION_CLOSE);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 2, action, 0);
+                return pendingIntent;
             default:
                 break;
         }

@@ -1,8 +1,10 @@
 package sangmaneproject.kindis.view.adapter.item;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +24,21 @@ import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
 import sangmaneproject.kindis.helper.PlayerSessionHelper;
+import sangmaneproject.kindis.helper.SessionHelper;
+import sangmaneproject.kindis.view.dialog.GetPremium;
 import sangmaneproject.kindis.view.holder.Item;
 
 public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
-    Context context;
+    Activity context;
+    Dialog dialogPremium;
+    GetPremium getPremium;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> dataSong;
 
-    public AdapterSongHorizontal(Context context, ArrayList<HashMap<String, String>> listSong){
+    public AdapterSongHorizontal(Activity context, ArrayList<HashMap<String, String>> listSong){
         this.context = context;
         this.listSong = listSong;
+        getPremium = new GetPremium(context, dialogPremium);
     }
 
     @Override
@@ -64,12 +71,17 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
-                new PlayerSessionHelper().setPreferences(context, "index", "1");
-                Intent intent = new Intent(context, PlayerService.class);
-                intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
-                intent.putExtra("single_id", uid);
-                context.startService(intent);
+                Log.d("kontollll", new SessionHelper().getPreferences(context, "is_premium")+" = "+dataSong.get("is_premium"));
+                if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")){
+                    Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
+                    new PlayerSessionHelper().setPreferences(context, "index", "1");
+                    Intent intent = new Intent(context, PlayerService.class);
+                    intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                    intent.putExtra("single_id", uid);
+                    context.startService(intent);
+                }else {
+                    getPremium.showDialog();
+                }
             }
         });
     }

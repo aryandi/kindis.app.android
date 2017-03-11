@@ -93,10 +93,11 @@ public class RecentlyAdded extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listSingle.add(map);
                     }
 
-                    adapterSongHorizontal = new AdapterSongHorizontal(getContext(), listSingle);
+                    adapterSongHorizontal = new AdapterSongHorizontal(getActivity(), listSingle);
                     recyclerViewSingle.setAdapter(adapterSongHorizontal);
                     recyclerViewSingle.setNestedScrollingEnabled(false);
                 }
@@ -112,10 +113,11 @@ public class RecentlyAdded extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listPlay.add(map);
                     }
 
-                    adapterSongHorizontal = new AdapterSongHorizontal(getContext(), listPlay);
+                    adapterSongHorizontal = new AdapterSongHorizontal(getActivity(), listPlay);
                     recyclerViewPLay.setAdapter(adapterSongHorizontal);
                     recyclerViewPLay.setNestedScrollingEnabled(false);
                 }

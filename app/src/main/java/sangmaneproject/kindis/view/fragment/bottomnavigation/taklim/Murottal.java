@@ -100,6 +100,7 @@ public class Murottal extends Fragment {
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
+                        map.put("is_premium", data.optString("is_premium"));
                         listSurah.add(map);
                     }
                     adapterSong = new AdapterSongHorizontal(getActivity(), listSurah);

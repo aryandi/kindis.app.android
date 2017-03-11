@@ -28,7 +28,7 @@
         <sangmaneproject.kindis.custom.TextViewSemiBold
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3 months for Rp 10.000"
+            android:text="3 months for\nRp 10.000"
             android:textColor="@color/white"
             android:textSize="36sp"/>
     </LinearLayout>
