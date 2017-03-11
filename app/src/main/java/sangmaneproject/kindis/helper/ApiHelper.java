@@ -21,7 +21,7 @@ public class ApiHelper {
     public static final String MUSIQ = BASE_URL + "home/channel?channel_id=1&uid=";
     public static final String TAKLIM = BASE_URL + "home/channel?channel_id=9&uid=";
 
-    public static final String ITEM_ARTIST = BASE_URL + "artist/items_andro?artist_id=";
+    public static final String ITEM_ARTIST = BASE_URL + "artist/items?artist_id=";
     public static final String ITEM_ALBUM = BASE_URL + "album/items?album_id=";
     public static final String ITEM_SINGLE = BASE_URL + "single/andro_item";
     public static final String ITEM_SINGLE_GET = BASE_URL + "single/items?single_id=";

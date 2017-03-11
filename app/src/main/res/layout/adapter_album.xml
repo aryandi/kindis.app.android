@@ -30,7 +30,6 @@
         android:text="Artis"
         android:textSize="12sp"
         android:textColor="@color/dark_gray"
-        android:layout_marginTop="12dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:maxLines="1"

@@ -156,7 +156,9 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                             JSONObject result = object.getJSONObject("result");
                             JSONObject summary = result.getJSONObject("summary");
 
-                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), summary.getString("label")), "Recently Added");
+                            String subtitles = result.getInt("total_album")+" album | "+result.getInt("total_single")+" Single";
+
+                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), subtitles), "Recently Added");
                             adapter.addFragment(new DetailAbout(summary.getString("about")), "Genres");
                             imageSlider.setAdapter(adapter);
 
@@ -173,7 +175,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put("uid", smry.getString("uid"));
                                     map.put("title", smry.getString("title"));
-                                    map.put("year", smry.getString("title"));
+                                    map.put("year", smry.getString("year"));
                                     map.put("image", smry.getString("image"));
                                     listAlbum.add(map);
 

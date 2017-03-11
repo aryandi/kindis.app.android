@@ -1,5 +1,6 @@
 package sangmaneproject.kindis.view.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
+import sangmaneproject.kindis.view.dialog.GetPremium;
 import sangmaneproject.kindis.view.fragment.navigationview.FAQ;
 import sangmaneproject.kindis.view.fragment.navigationview.Home;
 import sangmaneproject.kindis.view.fragment.navigationview.Notification;
@@ -41,12 +43,17 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuPrivacy;
     TextView menuTerms;
 
+    Dialog dialogPremium;
+
+    GetPremium getPremium;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        getPremium = new GetPremium(this, dialogPremium);
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
@@ -101,7 +108,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         }else if (view.getId() == R.id.menu_notif){
             transaction.replace(R.id.cont_main, notifFragment);
         }else if(view.getId() == R.id.menu_premium) {
-            Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+            getPremium.showDialog();
+            //Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);
         }else if (view.getId() == R.id.menu_faq){

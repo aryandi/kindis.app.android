@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import me.relex.circleindicator.CircleIndicator;
 import sangmaneproject.kindis.R;
@@ -43,6 +47,7 @@ public class Taklim extends Fragment {
     Button refresh;
     ProgressDialog loading;
 
+    ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
     String responses = null;
     String[] title = {"SYIAR","KISAH","MUROTTAL"};
 
@@ -153,6 +158,7 @@ public class Taklim extends Fragment {
     }
 
     private void getBanner(){
+        listBanner.clear();
         new VolleyHelper().get(ApiHelper.ADS_BANNER, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
@@ -160,7 +166,16 @@ public class Taklim extends Fragment {
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            adapterMusiqSlider = new AdapterMusiqSlider(getActivity());
+                            JSONArray result = object.getJSONArray("result");
+                            for (int i=0; i<result.length(); i++){
+                                JSONObject data = result.getJSONObject(i);
+                                HashMap<String, String> map = new HashMap<String, String>();
+                                map.put("title", data.getString("title"));
+                                map.put("image", data.getString("image_path"));
+                                map.put("link", data.getString("url_link"));
+                                listBanner.add(map);
+                            }
+                            adapterMusiqSlider = new AdapterMusiqSlider(getActivity(), listBanner);
                             imageSlider.setAdapter(adapterMusiqSlider);
                             indicator.setViewPager(imageSlider);
                             adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
