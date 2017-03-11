@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@drawable/background">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.fragment.bottomnavigation.musiq.Genres"
-        android:background="@drawable/background">
+        tools:context=".view.fragment.bottomnavigation.musiq.Genres">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listview_genre"

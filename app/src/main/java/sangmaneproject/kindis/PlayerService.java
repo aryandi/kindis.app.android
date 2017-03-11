@@ -19,8 +19,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.PlayerActionHelper;
@@ -44,6 +41,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     Notification.Builder noti;
     NotificationManager notificationManager;
+    Notification.Action mPlayPauseAction;
 
     ParseJsonPlaylist parseJsonPlaylist;
     boolean isDataSources = false;
@@ -127,6 +125,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAYBACK)){
+            notification();
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
             }else {
@@ -169,6 +168,13 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        notificationManager.cancel(1);
+        stopSelf();
     }
 
     @Override
@@ -353,6 +359,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void notification(){
+        if (mediaPlayer.isPlaying()){
+            mPlayPauseAction = new Notification.Action(R.drawable.ic_play, "pause", retreivePlaybackAction(1));
+        }else {
+            mPlayPauseAction = new Notification.Action(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
+        }
         new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
             @Override
             public void onFetchFinished(Bitmap bitmap) {
@@ -368,7 +379,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                         .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
                         .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
                         .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
-                        .addAction(R.drawable.ic_pause, "pause", retreivePlaybackAction(1))
+                        .addAction(mPlayPauseAction)
                         .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
                         .setOngoing(true);
 

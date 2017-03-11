@@ -3,13 +3,13 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background"
     tools:context=".view.fragment.bottomnavigation.musiq.RecentlyAdded">
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/background"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
