@@ -370,7 +370,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void updateNotification(){
-        Log.d("kontollll", playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         views.setTextViewText(R.id.title, title);
         views.setTextViewText(R.id.subtitle, subtitle);
         notificationManager.notify(1, noti.build());
