@@ -82,7 +82,8 @@
             android:name=".view.activity.Account.ChangePassword"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.adapter.item.AdapterInfaq"></activity>
     </application>
 
 </manifest>

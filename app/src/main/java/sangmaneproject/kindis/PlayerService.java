@@ -64,6 +64,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mPlayPauseAction = new Notification.Action(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
 
         playerSessionHelper = new PlayerSessionHelper();
 
@@ -125,7 +126,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAYBACK)){
-            notification();
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
             }else {
@@ -359,11 +359,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void notification(){
-        if (mediaPlayer.isPlaying()){
-            mPlayPauseAction = new Notification.Action(R.drawable.ic_play, "pause", retreivePlaybackAction(1));
-        }else {
-            mPlayPauseAction = new Notification.Action(R.drawable.ic_pause, "pause", retreivePlaybackAction(1));
-        }
         new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
             @Override
             public void onFetchFinished(Bitmap bitmap) {
@@ -392,16 +387,41 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
             @Override
             public void onFetchFinished(Bitmap bitmap) {
-                System.out.println("kontolnotifupdate"+bitmap);
                 noti.setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
                 .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
                 .setLargeIcon(bitmap);
 
-        notificationManager.notify(1, noti.build());
+                notificationManager.notify(1, noti.build());
             }
         }).execute();
 
     }
+/*
+    private void updateIconNotification(){
+        notificationManager.cancel(1);
+        new GetBitmapImage(getApplicationContext(), ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image"), new GetBitmapImage.OnFetchFinishedListener() {
+            @Override
+            public void onFetchFinished(Bitmap bitmap) {
+                System.out.println("kontolnotif"+bitmap);
+                noti = new Notification.Builder(getApplicationContext())
+                        .setShowWhen(false)
+                        .setStyle(new Notification.MediaStyle()
+                                .setMediaSession(mediaSession.getSessionToken())
+                                .setShowActionsInCompactView(0, 1, 2))
+                        .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
+                        .setSmallIcon(R.drawable.ic_play)
+                        .setLargeIcon(bitmap)
+                        .setContentText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"))
+                        .setContentTitle(playerSessionHelper.getPreferences(getApplicationContext(), "title"))
+                        .addAction(R.drawable.ic_back, "prev", retreivePlaybackAction(3))
+                        .addAction(mPlayPauseAction)
+                        .addAction(R.drawable.ic_next, "next", retreivePlaybackAction(2))
+                        .setOngoing(true);
+
+                notificationManager.notify(1, noti.build());
+            }
+        }).execute();
+    }*/
 
     private PendingIntent retreivePlaybackAction(int which) {
         Intent action;

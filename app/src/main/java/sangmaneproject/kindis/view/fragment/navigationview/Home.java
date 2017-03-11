@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -27,8 +26,8 @@ import sangmaneproject.kindis.helper.PlayerSessionHelper;
 import sangmaneproject.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 import sangmaneproject.kindis.view.activity.Search;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Infaq;
-import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.Musiq;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.Playlist;
+import sangmaneproject.kindis.view.fragment.bottomnavigation.musiq.Musiq;
 import sangmaneproject.kindis.view.fragment.bottomnavigation.taklim.Taklim;
 
 /**
@@ -158,10 +157,9 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
                 transactionBottomNavigation.commit();
                 break;
             case 2:
-                /*titleToolbar.setText("Infaq");
+                titleToolbar.setText("Infaq");
                 transactionBottomNavigation.replace(R.id.cont_home, infaqFragment);
-                transactionBottomNavigation.commit();*/
-                Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+                transactionBottomNavigation.commit();
                 break;
             case 3:
                 titleToolbar.setText("Playlist");
