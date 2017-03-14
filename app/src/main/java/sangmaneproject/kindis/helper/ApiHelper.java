@@ -45,4 +45,6 @@ public class ApiHelper {
     public static final String CHANGE_PASSWORD = BASE_URL + "profile/update_password";
 
     public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
+
+    public static final String LIST_INFAQ = BASE_URL + "infaq/list";
 }

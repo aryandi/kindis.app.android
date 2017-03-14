@@ -149,7 +149,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_NEXT)){
-            playNext();
+            if (cekSizePlaylist()){
+                playNext();
+            }
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_CLOSE)){
@@ -386,12 +388,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 pendingIntent = PendingIntent.getService(this, 1, action, 0);
                 return pendingIntent;
             case 2:
-                if (cekSizePlaylist()){
-                    action = new Intent(PlayerActionHelper.ACTION_NEXT);
-                    action.setComponent(serviceName);
-                    pendingIntent = PendingIntent.getService(this, 2, action, 0);
-                    return pendingIntent;
-                }
+                action = new Intent(PlayerActionHelper.ACTION_NEXT);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 2, action, 0);
+                return pendingIntent;
             case 3:
                 action = new Intent(PlayerActionHelper.ACTION_CLOSE);
                 action.setComponent(serviceName);
