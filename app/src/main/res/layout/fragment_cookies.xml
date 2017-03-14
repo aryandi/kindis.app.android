@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sangmaneproject.kindis.view.fragment.navigationview.Cookies">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:background="@drawable/background_profile">
+        <ImageButton
+            android:id="@+id/btn_drawer"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_drawer"
+            android:background="@android:color/transparent"/>
+        <sangmaneproject.kindis.custom.TextViewSemiBold
+            android:id="@+id/title"
+            android:layout_toRightOf="@+id/btn_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:text="Cookies"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="58dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/view_terms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cont_bottom_player"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true">
+        <include
+            layout="@layout/layout_bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

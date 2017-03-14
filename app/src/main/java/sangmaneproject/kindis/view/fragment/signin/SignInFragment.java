@@ -6,28 +6,39 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import sangmaneproject.kindis.util.BackgroundProses.ProfileInfo;
+import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.ApiHelper;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.helper.VolleyHelper;
-import sangmaneproject.kindis.view.activity.Splash.Bismillah;
+import sangmaneproject.kindis.util.BackgroundProses.ProfileInfo;
 import sangmaneproject.kindis.view.activity.Account.ForgotPassword;
-import sangmaneproject.kindis.R;
+import sangmaneproject.kindis.view.activity.Splash.Bismillah;
 
 public class SignInFragment extends Fragment implements View.OnFocusChangeListener {
     EditText email;
@@ -35,9 +46,15 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     AppBarLayout appBarLayout;
     TextView forgotPassword, errorMessage;
     Button login;
+
+    ImageButton loginFacebook;
+
     LinearLayout contErrorMessage;
     VolleyHelper volleyHelper;
     ProgressDialog loading;
+
+    CallbackManager callbackManager;
+    LoginButton buttonFacebook;
 
     public SignInFragment(){}
 
@@ -61,6 +78,8 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
         errorMessage = (TextView) view.findViewById(R.id.error_message);
         login = (Button) view.findViewById(R.id.btn_login);
+        loginFacebook = (ImageButton) view.findViewById(R.id.login_facebook);
+        buttonFacebook = (LoginButton) view.findViewById(R.id.button_facebook);
         contErrorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
         volleyHelper = new VolleyHelper();
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
@@ -76,6 +95,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                 startActivity(intent);
             }
         });
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,11 +106,20 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                 }
             }
         });
+
+        loginFacebook();
     }
 
     @Override
     public void onFocusChange(View view, boolean b) {
         appBarLayout.setExpanded(false, true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        Log.d("FacebookLogin", requestCode+" : "+resultCode);
     }
 
     private boolean formValidation(){
@@ -137,6 +166,44 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         email.setBackground(getResources().getDrawable(R.drawable.edittext_error));
                     }
                 }
+            }
+        });
+    }
+
+    private void loginFacebook(){
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                // Use Access Token loginResult.getAccessToken().getToken());
+                Log.d("FacebookLogin", loginResult.getAccessToken().getUserId());
+                Log.d("FacebookLogin", loginResult.getAccessToken().getUserId());
+
+                Profile profile = Profile.getCurrentProfile();
+                Log.d("FacebookLogin", profile.getName());
+                Log.d("FacebookLogin", profile.getProfilePictureUri(100, 100).toString());
+
+            }
+
+            @Override
+            public void onCancel() {
+                // Handle cancel event
+                Log.d("FacebookLogin", "cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                //Handle Error event
+                Log.d("FacebookLogin", "error");
+            }
+        });
+
+        loginFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile", "user_friends"));
             }
         });
     }

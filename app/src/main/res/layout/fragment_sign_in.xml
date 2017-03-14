@@ -20,10 +20,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
-            <ImageView
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/button_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+            <ImageButton
+                android:id="@+id/login_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_fb"
+                android:background="@android:color/transparent"
                 android:layout_marginRight="24dp"/>
             <ImageView
                 android:layout_width="wrap_content"

@@ -10,11 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import sangmaneproject.kindis.R;
 import sangmaneproject.kindis.helper.SessionHelper;
 import sangmaneproject.kindis.view.dialog.GetPremium;
+import sangmaneproject.kindis.view.fragment.navigationview.Cookies;
 import sangmaneproject.kindis.view.fragment.navigationview.FAQ;
 import sangmaneproject.kindis.view.fragment.navigationview.Home;
 import sangmaneproject.kindis.view.fragment.navigationview.Notification;
@@ -32,6 +32,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     Fragment faqFragment;
     Fragment privacyFragment;
     Fragment termsFragment;
+    Fragment cookiesFragment;
 
     //sidebar
     TextView fullname;
@@ -42,6 +43,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuFAQ;
     TextView menuPrivacy;
     TextView menuTerms;
+    TextView menuCookies;
 
     Dialog dialogPremium;
 
@@ -61,6 +63,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         faqFragment = new FAQ(drawer);
         privacyFragment = new Privacy(drawer);
         termsFragment = new Terms(drawer);
+        cookiesFragment = new Cookies(drawer);
         sessionHelper = new SessionHelper();
 
         //sidebar
@@ -72,6 +75,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuFAQ = (TextView) findViewById(R.id.menu_faq);
         menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
         menuTerms = (TextView) findViewById(R.id.menu_terms);
+        menuCookies = (TextView) findViewById(R.id.menu_cookies);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_main, homeFragment);
@@ -98,6 +102,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuFAQ.setOnClickListener(this);
         menuPrivacy.setOnClickListener(this);
         menuTerms.setOnClickListener(this);
+        menuCookies.setOnClickListener(this);
     }
 
     @Override
@@ -118,6 +123,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             transaction.replace(R.id.cont_main, privacyFragment);
         }else if (view.getId() == R.id.menu_terms){
             transaction.replace(R.id.cont_main, termsFragment);
+        }else if (view.getId() == R.id.menu_cookies){
+            transaction.replace(R.id.cont_main, cookiesFragment);
         }
         transaction.addToBackStack(null);
         transaction.commit();

@@ -160,7 +160,7 @@
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:background="@color/dark_jungle_green"/>
+                        android:background="@color/white"/>
 
                     <sangmaneproject.kindis.custom.TextViewSemiBold
                         android:id="@+id/menu_faq"
@@ -194,6 +194,18 @@
                         android:paddingBottom="12dp"
                         android:paddingLeft="16dp"
                         android:text="Terms and Agreements"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="true"/>
+
+                    <sangmaneproject.kindis.custom.TextViewSemiBold
+                        android:id="@+id/menu_cookies"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="16dp"
+                        android:text="Cookies"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:clickable="true"/>

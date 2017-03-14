@@ -14,4 +14,6 @@
     <string name="taklim">Taklim</string>
     <string name="infaq">Infaq</string>
     <string name="playlist">My Playlist</string>
+    <string name="facebook_app_id">614398928768588</string>
+    <string name="fb_login_protocol_scheme">fb614398928768588</string>
 </resources>

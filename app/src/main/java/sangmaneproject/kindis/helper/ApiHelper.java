@@ -16,6 +16,7 @@ public class ApiHelper {
     public static final String TERMS = BASE_URL + "statics/page/terms_of_use";
     public static final String PRIVACY = BASE_URL + "statics/page/privacy_policy";
     public static final String FAQ = BASE_URL + "statics/page/faq";
+    public static final String COOKIES = BASE_URL + "statics/page/cookies";
     public static final String DETAIL_GENRE = BASE_URL + "genre/items?genre_id=";
 
     public static final String MUSIQ = BASE_URL + "home/channel?channel_id=1&uid=";
