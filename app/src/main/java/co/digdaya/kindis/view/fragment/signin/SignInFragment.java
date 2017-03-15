@@ -21,10 +21,10 @@ import com.facebook.login.LoginManager;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +40,7 @@ import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.view.activity.Account.ForgotPassword;
 import co.digdaya.kindis.view.activity.Splash.Bismillah;
-import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
 
 public class SignInFragment extends Fragment implements View.OnFocusChangeListener {
     EditText email;
@@ -58,6 +58,8 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
 
     CallbackManager callbackManager;
     LoginManager loginManager;
+
+    TwitterAuthClient client;
 
     public SignInFragment(){}
 
@@ -115,6 +117,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         });
 
         loginFacebook();
+        loginTwitter();
     }
 
     @Override
@@ -184,7 +187,36 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         loginTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                client = new TwitterAuthClient();
+                client.authorize(getActivity(), new Callback<TwitterSession>() {
+                    @Override
+                    public void success(Result<TwitterSession> twitterSessionResult) {
+                        System.out.println("logintwitter"+twitterSessionResult.data.getUserId());
+                        System.out.println("logintwitter"+twitterSessionResult.data.getUserName());
 
+                        TwitterSession twitterSession = twitterSessionResult.data;
+
+                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void success(Result<User> result) {
+                                System.out.println("logintwitter"+result.data.name);
+                                System.out.println("logintwitter"+result.data.profileImageUrl);
+                            }
+
+                            @Override
+                            public void failure(TwitterException e) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

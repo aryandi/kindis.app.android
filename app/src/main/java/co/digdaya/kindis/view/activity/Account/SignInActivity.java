@@ -1,6 +1,5 @@
 package co.digdaya.kindis.view.activity.Account;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -22,6 +21,9 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,7 @@ import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.view.activity.Splash.Bismillah;
 import co.digdaya.kindis.view.fragment.signin.SignInFragment;
 import co.digdaya.kindis.view.fragment.signin.SignUpFragment;
+import io.fabric.sdk.android.Fabric;
 
 public class SignInActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -52,6 +55,9 @@ public class SignInActivity extends AppCompatActivity {
     VolleyHelper volleyHelper;
     SessionHelper sessionHelper;
 
+    TwitterAuthClient client;
+    TwitterAuthClient authClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,12 @@ public class SignInActivity extends AppCompatActivity {
         volleyHelper = new VolleyHelper();
         dialogLoading = new DialogLoading(this);
         sessionHelper = new SessionHelper();
+
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
+        Fabric.with(this, new Twitter(authConfig));
+
+        client = new TwitterAuthClient();
+        authClient = new TwitterAuthClient();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -74,6 +86,7 @@ public class SignInActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         loginFacebook();
+        //loginTwitter();
     }
 
     @Override
@@ -85,6 +98,8 @@ public class SignInActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        client.onActivityResult(requestCode, resultCode, data);
+        authClient.onActivityResult(requestCode, resultCode, data);
         Log.d("FacebookLogin", requestCode+" : "+resultCode);
     }
 

@@ -18,7 +18,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="@string/twitter_key" />
+            android:value="@string/twitter_secret" />
         <service
             android:name=".PlayerService"
             android:enabled="true"

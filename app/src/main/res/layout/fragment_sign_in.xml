@@ -32,11 +32,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_twitter"
+                android:background="@android:color/transparent"
                 android:layout_marginRight="24dp"/>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_gplus"/>
+                android:src="@drawable/ic_gplus"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
 
         <co.digdaya.kindis.custom.TextViewRegular
