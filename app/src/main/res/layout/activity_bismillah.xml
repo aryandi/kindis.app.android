@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.activity.Splash.Bismillah">
+    tools:context="co.digdaya.kindis.view.activity.Splash.Bismillah">
 
     <ImageView
         android:layout_above="@+id/label_bismillah"
@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_bismillah" />
 
-    <sangmaneproject.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.custom.TextViewRegular
         android:id="@+id/label_bismillah"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:textSize="14sp"
         android:textColor="@color/white"/>
 
-    <sangmaneproject.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.custom.ButtonSemiBold
         android:id="@+id/btn_enter"
         android:layout_below="@+id/label_bismillah"
         android:layout_width="wrap_content"

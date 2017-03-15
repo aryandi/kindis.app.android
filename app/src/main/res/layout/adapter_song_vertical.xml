@@ -8,6 +8,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sangmaneproject.kindis.view.adapter.item.AdapterSongHorizontal">
+    tools:context="co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal">
 
 </RelativeLayout>

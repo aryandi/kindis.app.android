@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    tools:context="sangmaneproject.kindis.view.adapter.AdapterNotification">
+    tools:context="co.digdaya.kindis.view.adapter.AdapterNotification">
     
     <RelativeLayout
         android:layout_width="64dp"
@@ -24,7 +24,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="24dp">
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

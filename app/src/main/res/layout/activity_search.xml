@@ -4,7 +4,7 @@
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sangmaneproject.kindis.view.activity.Search"
+    tools:context="co.digdaya.kindis.view.activity.Search"
     android:background="@drawable/background">
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:src="@drawable/ic_arrow_back"
             android:background="@android:color/transparent"
             android:layout_marginRight="16dp"/>
-        <sangmaneproject.kindis.custom.EditTextSemiBold
+        <co.digdaya.kindis.custom.EditTextSemiBold
             android:id="@+id/input_search"
             android:layout_toRightOf="@+id/back"
             android:layout_toLeftOf="@+id/btn_clear"
@@ -60,14 +60,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <sangmaneproject.kindis.custom.TextViewBold
+                <co.digdaya.kindis.custom.TextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/white"
                     android:text="Showing results for "/>
 
-                <sangmaneproject.kindis.custom.TextViewBold
+                <co.digdaya.kindis.custom.TextViewBold
                     android:id="@+id/keyword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <sangmaneproject.kindis.custom.TextViewBold
+                <co.digdaya.kindis.custom.TextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -105,7 +105,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <sangmaneproject.kindis.custom.TextViewBold
+                <co.digdaya.kindis.custom.TextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -126,7 +126,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <sangmaneproject.kindis.custom.TextViewBold
+                <co.digdaya.kindis.custom.TextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"

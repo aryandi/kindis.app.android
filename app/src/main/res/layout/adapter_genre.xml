@@ -7,7 +7,7 @@
     android:layout_marginBottom="16dp"
     android:layout_marginRight="16dp"
     android:background="@drawable/background_genre"
-    tools:context="sangmaneproject.kindis.view.adapter.item.AdapterGenre">
+    tools:context="co.digdaya.kindis.view.adapter.item.AdapterGenre">
 
     <ImageView
         android:id="@+id/ic_genre"
@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/medium_sea_green"
         android:layout_marginBottom="6dp"/>
-    <sangmaneproject.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.custom.TextViewSemiBold
         android:id="@+id/title_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

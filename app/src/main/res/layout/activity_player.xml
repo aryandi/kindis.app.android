@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.activity.Player.Player">
+    tools:context="co.digdaya.kindis.view.activity.Player.Player">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -27,13 +27,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true">
-            <sangmaneproject.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"
                 android:text="Playlist"/>
-            <sangmaneproject.kindis.custom.TextViewBold
+            <co.digdaya.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -146,7 +146,7 @@
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:layout_marginTop="16dp">
-            <sangmaneproject.kindis.custom.TextViewBold
+            <co.digdaya.kindis.custom.TextViewBold
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 android:textColor="@color/white" />
-            <sangmaneproject.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.custom.TextViewRegular
                 android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

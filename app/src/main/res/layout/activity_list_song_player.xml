@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.activity.Player.ListSongPlayer">
+    tools:context="co.digdaya.kindis.view.activity.Player.ListSongPlayer">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -28,13 +28,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true">
-            <sangmaneproject.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"
                 android:text="Playlist"/>
-            <sangmaneproject.kindis.custom.TextViewBold
+            <co.digdaya.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -60,7 +60,7 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
-            <sangmaneproject.kindis.custom.TextViewBold
+            <co.digdaya.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/image_song"
                     android:layout_centerVertical="true">
-                    <sangmaneproject.kindis.custom.TextViewBold
+                    <co.digdaya.kindis.custom.TextViewBold
                         android:id="@+id/title_play"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                         android:textColor="@color/white"
                         android:text="Mengejar Sorga"/>
 
-                    <sangmaneproject.kindis.custom.TextViewRegular
+                    <co.digdaya.kindis.custom.TextViewRegular
                         android:id="@+id/subtitle_play"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                     android:layout_marginRight="8dp"/>
             </RelativeLayout>
 
-            <sangmaneproject.kindis.custom.TextViewBold
+            <co.digdaya.kindis.custom.TextViewBold
                 android:id="@+id/label_play_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

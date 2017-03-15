@@ -12,7 +12,7 @@
         android:layout_height="140dp"
         android:src="@drawable/ic_default_img"
         android:scaleType="centerCrop"/>
-    <sangmaneproject.kindis.custom.TextViewBold
+    <co.digdaya.kindis.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:paddingRight="8dp"
         android:maxLines="1"
         android:ellipsize="end"/>
-    <sangmaneproject.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.custom.TextViewRegular
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_emptystate" />
 
-    <sangmaneproject.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.custom.TextViewSemiBold
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textColor="@color/dark_gray"
         android:text="Create Playlist" />
 
-    <sangmaneproject.kindis.custom.EditTextRegular
+    <co.digdaya.kindis.custom.EditTextRegular
         android:id="@+id/input_playlist"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -35,7 +35,7 @@
         android:inputType="text"
         android:background="@drawable/edittext_normal"/>
 
-    <sangmaneproject.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.custom.ButtonSemiBold
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

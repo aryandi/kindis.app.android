@@ -4,7 +4,7 @@
     android:id="@+id/adapter_banner_empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sangmaneproject.kindis.view.adapter.AdapterBannerEmpty">
+    tools:context="co.digdaya.kindis.view.adapter.AdapterBannerEmpty">
 
     <ImageView
         android:id="@+id/image_musiq_slider"
@@ -13,7 +13,7 @@
         android:src="@drawable/bg_sign_in"
         android:scaleType="centerCrop"/>
 
-    <sangmaneproject.kindis.custom.TextViewBold
+    <co.digdaya.kindis.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

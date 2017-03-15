@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sangmaneproject.kindis.view.fragment.navigationview.Privacy">
+    tools:context="co.digdaya.kindis.view.fragment.navigationview.Privacy">
 
     <LinearLayout
         android:id="@+id/toolbar"
@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_drawer"
             android:background="@android:color/transparent"/>
-        <sangmaneproject.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.custom.TextViewSemiBold
             android:id="@+id/title"
             android:layout_toRightOf="@+id/btn_drawer"
             android:layout_width="wrap_content"

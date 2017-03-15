@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.fragment.bottomnavigation.taklim.Murottal">
+    tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.taklim.Murottal">
 
     <LinearLayout
         android:id="@+id/body"
@@ -15,7 +15,7 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_qori"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_surah"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

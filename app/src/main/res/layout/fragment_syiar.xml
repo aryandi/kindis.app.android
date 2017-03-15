@@ -16,7 +16,7 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_premium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_dai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

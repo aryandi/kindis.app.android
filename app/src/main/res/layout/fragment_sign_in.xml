@@ -7,7 +7,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:background="@drawable/background"
-    tools:context="sangmaneproject.kindis.view.fragment.signin.SignInFragment">
+    tools:context="co.digdaya.kindis.view.fragment.signin.SignInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,12 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/button_facebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
             <ImageButton
                 android:id="@+id/login_facebook"
                 android:layout_width="wrap_content"
@@ -33,18 +27,19 @@
                 android:src="@drawable/ic_fb"
                 android:background="@android:color/transparent"
                 android:layout_marginRight="24dp"/>
-            <ImageView
+            <ImageButton
+                android:id="@+id/login_twitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_twitter"
                 android:layout_marginRight="24dp"/>
-            <ImageView
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_gplus"/>
         </LinearLayout>
 
-        <sangmaneproject.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.custom.TextViewRegular
             android:id="@+id/label_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +49,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.custom.TextViewRegular
             android:id="@+id/label_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +58,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.custom.EditTextRegular
+        <co.digdaya.kindis.custom.EditTextRegular
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -88,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_error"
                 android:layout_marginRight="8dp"/>
-            <sangmaneproject.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.custom.TextViewRegular
                 android:id="@+id/error_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,7 +92,7 @@
                 android:textColor="@color/safety_orange"/>
         </LinearLayout>
 
-        <sangmaneproject.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.custom.TextViewRegular
             android:id="@+id/label_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +101,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <sangmaneproject.kindis.custom.ShowHidePasswordEditTextRegular
+        <co.digdaya.kindis.custom.ShowHidePasswordEditTextRegular
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -121,7 +116,7 @@
             app:tint_color="@color/white"
             android:background="@drawable/edittext_normal"/>
 
-        <sangmaneproject.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.custom.TextViewRegular
             android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +126,7 @@
             android:textColor="@color/white"
             android:clickable="true"/>
 
-        <sangmaneproject.kindis.custom.ButtonSemiBold
+        <co.digdaya.kindis.custom.ButtonSemiBold
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

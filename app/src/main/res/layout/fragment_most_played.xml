@@ -13,7 +13,7 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_premium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_top"
             android:visibility="gone"
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_album"
             android:visibility="gone"
             android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_single"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_random1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-        <sangmaneproject.kindis.custom.TextViewBold
+        <co.digdaya.kindis.custom.TextViewBold
             android:id="@+id/label_random2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,0 +1,405 @@
+package co.digdaya.kindis;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.PlayerActionHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
+import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
+
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
+    PlayerSessionHelper playerSessionHelper;
+    MediaPlayer mediaPlayer = null;
+
+    Notification.Builder noti;
+    NotificationManager notificationManager;
+    RemoteViews views;
+
+    ParseJsonPlaylist parseJsonPlaylist;
+    boolean isDataSources = false;
+
+    ArrayList<String> songPlaylist = new ArrayList<>();
+    int playlistPosition = 0;
+
+    String title, subtitle;
+
+    public PlayerService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        playerSessionHelper = new PlayerSessionHelper();
+
+        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
+            songPlaylist = new ArrayList<>();;
+        }else {
+            songPlaylist = parseJsonPlaylist.getSongPlaylist();
+
+            if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+                playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
+            }
+        }
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        views = new RemoteViews(getPackageName(), R.layout.layout_notification);
+        views.setImageViewResource(R.id.image, R.drawable.ic_launcher);
+        views.setTextViewText(R.id.title, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+        views.setTextViewText(R.id.subtitle, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+        views.setOnClickPendingIntent(R.id.btn_play, retreivePlaybackAction(1));
+        views.setOnClickPendingIntent(R.id.btn_next, retreivePlaybackAction(2));
+        views.setOnClickPendingIntent(R.id.btn_close, retreivePlaybackAction(3));
+
+        notification();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent.getAction().equals(PlayerActionHelper.UPDATE_RESOURCE)){
+            songPlaylist = new ArrayList<>();
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            getSongResources(intent.getStringExtra("single_id"));
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
+            if (isDataSources){
+                onPrepared(mediaPlayer);
+            }else {
+                playMediaPlayer();
+            }
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
+            mediaPlayer.pause();
+            sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+            playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            playerSessionHelper.setPreferences(getApplicationContext(), "pause", "true");
+            playerSessionHelper.setPreferences(getApplicationContext(), "current_pos", ""+mediaPlayer.getCurrentPosition());
+            updateProgressBar();
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_SEEK)){
+            mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.PLAY_MULTYSOURCE)){
+            playlistPosition = 0;
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            getSongResources(intent.getStringExtra("single_id"));
+            songPlaylist = intent.getStringArrayListExtra("list_uid");
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAYBACK)){
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+                views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
+            }else {
+                views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
+                if (isDataSources){
+                    onPrepared(mediaPlayer);
+                }else {
+                    playMediaPlayer();
+                }
+            }
+            notificationManager.notify(1, noti.build());
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.PLAY_PLAYLIST)){
+            playlistPosition = intent.getIntExtra("position", 0);
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            getSongResources(intent.getStringExtra("single_id"));
+            songPlaylist = intent.getStringArrayListExtra("list_uid");
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_NEXT)){
+            if (cekSizePlaylist()){
+                playNext();
+            }
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_CLOSE)){
+            notificationManager.cancel(1);
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+                onPrepared(mediaPlayer);
+            }
+        }
+
+        return START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        notificationManager.cancel(1);
+        stopSelf();
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
+        playerSessionHelper.setPreferences(getApplicationContext(), "playlistPosition", ""+playlistPosition);
+        Log.d("islooping", isLooping);
+        if (isLooping.equals("true")){
+            mp.setLooping(true);
+        }else {
+            mp.setLooping(false);
+        }
+        mp.start();
+        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "true");
+        playerSessionHelper.setPreferences(getApplicationContext(), "pause", "false");
+        if (mp.isPlaying()){
+            playerSessionHelper.setPreferences(getApplicationContext(), "duration", ""+mp.getDuration());
+            sendBroadcest(mp.getDuration(), mp.getCurrentPosition());
+            updateProgressBar();
+            mp.setOnCompletionListener(this);
+        }
+    }
+
+    private void updateProgressBar(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                while (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
+                    sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        Log.d("playerservice", "onCompleted");
+
+        if (cekSizePlaylist()){
+            playNext();
+        }else {
+            Log.d("playerservice", "false");
+            sendBroadcest(mp.getDuration(), mp.getDuration());
+            playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            mp.release();
+            stopSelf();
+        }
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+        if (i!=-38){
+            playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            Log.d("playerservice", "error "+i);
+            Toast.makeText(getApplicationContext(), "Something Error", Toast.LENGTH_SHORT).show();
+
+            if (cekSizePlaylist()){
+                playNext();
+            }else {
+                mediaPlayer.reset();
+            }
+
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    private void sendBroadcest(int duration, int current) {
+        Intent intent = new Intent(PlayerActionHelper.BROADCAST);
+        intent.putExtra(PlayerActionHelper.BROADCAST_MAX_DURATION, duration);
+        intent.putExtra(PlayerActionHelper.BROADCAST_CURRENT_DURATION, current);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void sendBroadcestInfo(String title, String subtitle, int playistPos) {
+        Intent intent = new Intent(PlayerActionHelper.BROADCAST_INFO);
+        intent.putExtra(PlayerActionHelper.BROADCAST_TITLE, title);
+        intent.putExtra(PlayerActionHelper.BROADCAST_SUBTITLE, subtitle);
+        intent.putExtra(PlayerActionHelper.BROADCAST_POSITION, playistPos);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void playMediaPlayer(){
+        isDataSources = true;
+        String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
+        Log.d("songresource", song);
+
+        mediaPlayer.reset();
+        try {
+            mediaPlayer.setDataSource(song);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.prepareAsync();
+        mediaPlayer.setOnErrorListener(this);
+    }
+
+    private void getSongResources (String uid){
+        Log.d("playerservice", "getSongResource");
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("single_id", uid);
+        playerSessionHelper.setPreferences(getApplicationContext(), "uid", uid);
+        new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    Log.d("songplayresponse", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            if (!result.getString("file").equals("null")){
+                                playerSessionHelper.setPreferences(getApplicationContext(), "title", result.getString("title"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "subtitle", result.getString("artist") +" | "+result.getString("album"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "album", result.getString("album"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
+                                title = result.getString("title");
+                                subtitle = result.getString("artist") +" | "+result.getString("album");
+                                sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
+                                Log.d("titlesongplay", result.getString("title"));
+                                playMediaPlayer();
+                                if (noti != null){
+                                    updateNotification();
+                                }
+                            }else {
+                                Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();
+                                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                                if (cekSizePlaylist()){
+                                    playNext();
+                                }
+                            }
+                        }else {
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                        Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean cekSizePlaylist(){
+        if (playlistPosition < songPlaylist.size()-1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private void playNext(){
+        playlistPosition++;
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+        getSongResources(songPlaylist.get(playlistPosition));
+    }
+
+    private void playBack(){
+        Log.d("playerservice", "playNext");
+        Log.d("playerservice", ""+playlistPosition);
+
+        playlistPosition--;
+
+        Log.d("playerservice", ""+playlistPosition);
+        Log.d("playerservice", ""+songPlaylist.size());
+
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+        }
+        getSongResources(songPlaylist.get(playlistPosition));
+    }
+
+    private void notification(){
+        noti = new Notification.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.ic_play)
+                .setContent(views)
+                .setOngoing(true);
+
+        notificationManager.notify(1, noti.build());
+    }
+
+    private void updateNotification(){
+        views.setTextViewText(R.id.title, title);
+        views.setTextViewText(R.id.subtitle, subtitle);
+        notificationManager.notify(1, noti.build());
+    }
+
+    private PendingIntent retreivePlaybackAction(int which) {
+        Intent action;
+        PendingIntent pendingIntent;
+        final ComponentName serviceName = new ComponentName(this, PlayerService.class);
+        switch (which) {
+            case 1:
+                action = new Intent(PlayerActionHelper.ACTION_PLAYBACK);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 1, action, 0);
+                return pendingIntent;
+            case 2:
+                action = new Intent(PlayerActionHelper.ACTION_NEXT);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 2, action, 0);
+                return pendingIntent;
+            case 3:
+                action = new Intent(PlayerActionHelper.ACTION_CLOSE);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 2, action, 0);
+                return pendingIntent;
+            default:
+                break;
+        }
+        return null;
+    }
+}
