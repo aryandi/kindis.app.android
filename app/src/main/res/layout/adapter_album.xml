@@ -27,7 +27,6 @@
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Artis"
         android:textSize="12sp"
         android:textColor="@color/dark_gray"
         android:paddingLeft="8dp"

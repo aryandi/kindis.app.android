@@ -196,6 +196,7 @@ public class Search extends BottomPlayerActivity {
                                     map.put("image", data.getString("image"));
                                     map.put("file", data.getString("file"));
                                     map.put("subtitle", data.getString("year"));
+                                    map.put("is_premium", data.optString("is_premium"));
                                     listSingle.add(map);
                                 }
                                 contSingle.setVisibility(View.VISIBLE);

@@ -65,6 +65,8 @@ public class SignInActivity extends AppCompatActivity {
     TwitterAuthClient client;
     TwitterAuthClient authClient;
 
+    GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,20 @@ public class SignInActivity extends AppCompatActivity {
 
         client = new TwitterAuthClient();
         authClient = new TwitterAuthClient();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        System.out.println("googlelogin "+connectionResult.getErrorMessage());
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -204,8 +220,9 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result){
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            System.out.println("GoogleSign"+acct);
+            System.out.println("googlelogin"+acct);
         } else {
+            System.out.println("googlelogin "+result.getStatus());
         }
     }
 

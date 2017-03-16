@@ -18,15 +18,21 @@ public class SpacingItemInfaq extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        int pixels = (int) (24 * scale + 0.5f);
+        outRect.left = getDP(16);
+        outRect.top = getDP(16);
 
-        outRect.bottom = pixels;
+        /*outRect.bottom = pixels;
         // Add top margin only for the first item to avoid double space between items
         if ((parent.getChildLayoutPosition(view)%2) == 0) {
             outRect.right = pixels;
         } else {
             outRect.right = 0;
-        }
+        }*/
+    }
+
+    private int getDP(int dp){
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int pixels = (int) (dp * scale + 0.5f);
+        return pixels;
     }
 }

@@ -36,7 +36,7 @@ public class AdapterInfaq extends RecyclerView.Adapter<ItemInfaq> {
         infaqModel = list.get(position);
 
         Log.d("kontollll", infaqModel.getTitle());
-        TextView title = holder.labelMasjid;
+        TextView title = holder.labelNama;
         title.setText(infaqModel.getTitle());
     }
 

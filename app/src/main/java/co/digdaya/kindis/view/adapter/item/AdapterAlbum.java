@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,39 +46,60 @@ public class AdapterAlbum extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, int position) {
+    public void onBindViewHolder(Item holder, final int position) {
         ImageView imageView = holder.imageView;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
         LinearLayout click = holder.click;
-        dataSinggle = listAlbum.get(position);
 
-        Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
-                .thumbnail( 0.1f )
-                .placeholder(R.drawable.ic_default_img)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .into(imageView);
-        Log.d("imageadapteralbum", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
-        title.setText(dataSinggle.get("title"));
-        subTitle.setText(dataSinggle.get("year"));
+        if (position == listAlbum.size()){
+            click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Load More", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            dataSinggle = listAlbum.get(position);
 
-        final String uid = dataSinggle.get("uid");
-        click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Detail.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid", uid);
-                intent.putExtra("type", "album");
-                context.startActivity(intent);
-            }
-        });
+            Glide.with(context)
+                    .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
+                    .thumbnail( 0.1f )
+                    .placeholder(R.drawable.ic_default_img)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(imageView);
+            Log.d("imageadapteralbum", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
+            title.setText(dataSinggle.get("title"));
+            subTitle.setText(dataSinggle.get("year"));
+
+            final String uid = dataSinggle.get("uid");
+
+            click.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Detail.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("type", "album");
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return listAlbum.size();
+        return listAlbum.size()+1;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
 }

@@ -187,6 +187,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                                             maps.put("uid", song.optString("uid"));
                                             maps.put("title", song.optString("title"));
                                             maps.put("subtitle", smry.getString("title"));
+                                            map.put("is_premium", data.optString("is_premium"));
                                             listSong.add(maps);
                                             songPlaylist.add(song.optString("uid"));
                                         }

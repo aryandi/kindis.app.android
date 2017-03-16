@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.adapter.item;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
+import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.view.dialog.GetPremium;
 import co.digdaya.kindis.view.holder.ItemSong;
 
 public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
@@ -28,11 +31,15 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     private OnClickMenuListener onClickMenuListener;
     String type;
 
+    Dialog dialogPremium;
+    GetPremium getPremium;
+
     public AdapterSong(Activity context, ArrayList<HashMap<String, String>> listSong, String type, ArrayList<String> songPlaylist){
         this.context = context;
         this.listSong = listSong;
         this.type = type;
         this.songPlaylist = songPlaylist;
+        getPremium = new GetPremium(context, dialogPremium);
     }
 
     @Override
@@ -60,9 +67,9 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                 new PlayerSessionHelper().setPreferences(context, "uid", uid);
                 if (type.equals("list")){
+                    Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, PlayerService.class);
                     intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
                     intent.putExtra("single_id", uid);
@@ -70,11 +77,16 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                     intent.putExtra("list_uid", songPlaylist);
                     context.startService(intent);
                 }else {
-                    new PlayerSessionHelper().setPreferences(context, "index", "1");
-                    Intent intent = new Intent(context, PlayerService.class);
-                    intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
-                    intent.putExtra("single_id", uid);
-                    context.startService(intent);
+                    if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")) {
+                        Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
+                        new PlayerSessionHelper().setPreferences(context, "index", "1");
+                        Intent intent = new Intent(context, PlayerService.class);
+                        intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                        intent.putExtra("single_id", uid);
+                        context.startService(intent);
+                    }else {
+                        getPremium.showDialog();
+                    }
                 }
             }
         });

@@ -307,8 +307,20 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 subtitle = result.getString("artist") +" | "+result.getString("album");
                                 sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                 Log.d("titlesongplay", result.getString("title"));
+
+                                /*if (new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")) {
+                                    playMediaPlayer();
+                                    if (noti != null) {
+                                        updateNotification();
+                                    }
+                                }else {
+                                    if (cekSizePlaylist()){
+                                        playNext();
+                                    }
+                                }*/
+
                                 playMediaPlayer();
-                                if (noti != null){
+                                if (noti != null) {
                                     updateNotification();
                                 }
                             }else {

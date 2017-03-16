@@ -225,6 +225,7 @@ public class Detail extends BottomPlayerActivity {
                                 map.put("uid", data.optString("single_id"));
                                 map.put("title", data.optString("title"));
                                 map.put("subtitle", data.optString("artist"));
+                                map.put("is_premium", data.optString("is_premium"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -263,6 +264,7 @@ public class Detail extends BottomPlayerActivity {
                             map.put("uid", data.optString("uid"));
                             map.put("title", data.optString("title"));
                             map.put("subtitle", data.optString("artist"));
+                            map.put("is_premium", data.optString("is_premium"));
                             listSong.add(map);
                             songPlaylist.add(data.optString("uid"));
                         }
@@ -291,6 +293,7 @@ public class Detail extends BottomPlayerActivity {
                 map.put("uid", summary.optString("uid"));
                 map.put("title", summary.optString("title"));
                 map.put("subtitle", subtitle);
+                map.put("is_premium", data.optString("is_premium"));
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }
