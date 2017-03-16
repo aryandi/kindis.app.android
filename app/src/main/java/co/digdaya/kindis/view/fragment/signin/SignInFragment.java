@@ -3,6 +3,7 @@ package co.digdaya.kindis.view.fragment.signin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,10 @@ import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -51,6 +56,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
 
     ImageButton loginFacebook;
     ImageButton loginTwitter;
+    ImageButton loginGoogle;
 
     LinearLayout contErrorMessage;
     VolleyHelper volleyHelper;
@@ -60,6 +66,9 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     LoginManager loginManager;
 
     TwitterAuthClient client;
+
+    GoogleApiClient mGoogleApiClient;
+    GoogleSignInOptions gso;
 
     public SignInFragment(){}
 
@@ -89,6 +98,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         login = (Button) view.findViewById(R.id.btn_login);
         loginFacebook = (ImageButton) view.findViewById(R.id.login_facebook);
         loginTwitter = (ImageButton) view.findViewById(R.id.login_twitter);
+        loginGoogle = (ImageButton) view.findViewById(R.id.login_google);
         contErrorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
         volleyHelper = new VolleyHelper();
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
@@ -118,6 +128,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
 
         loginFacebook();
         loginTwitter();
+        loginGoogle();
     }
 
     @Override
@@ -217,6 +228,30 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         Toast.makeText(getActivity(), "failure", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+    }
+
+    private void loginGoogle(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity() , new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        loginGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, 3);
             }
         });
     }

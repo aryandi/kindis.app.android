@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.activity.Account;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,12 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
@@ -100,6 +107,11 @@ public class SignInActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
         authClient.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
         Log.d("FacebookLogin", requestCode+" : "+resultCode);
     }
 
@@ -187,6 +199,14 @@ public class SignInActivity extends AppCompatActivity {
                 Log.d("FacebookLogin", "error");
             }
         });
+    }
+
+    private void handleSignInResult(GoogleSignInResult result){
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            System.out.println("GoogleSign"+acct);
+        } else {
+        }
     }
 
     private void loginSocial(final String fullname, final String gender, final String birth_date, final String type_social, final String app_id, final String email, final String phone){

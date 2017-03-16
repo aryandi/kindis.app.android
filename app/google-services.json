@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1032558886656",
+    "project_id": "firebase-devapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032558886656:android:ae36f6b99ec1ec6b",
+        "android_client_info": {
+          "package_name": "co.digdaya.kindis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032558886656-e8e3vd3j72h3tfepgiatbbvpprfcvd50.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis",
+            "certificate_hash": "78b9b97771ce64ac84d27f31aa0ad412a89a0898"
+          }
+        },
+        {
+          "client_id": "1032558886656-a1jrail71snjem94a6kbdp9pofioaetb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoK6YsJmw3856L_LPJh5xiHSdFrMvjIp8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
