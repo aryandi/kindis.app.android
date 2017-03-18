@@ -18,13 +18,7 @@ import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +34,6 @@ import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.view.activity.Account.ForgotPassword;
 import co.digdaya.kindis.view.activity.Splash.Bismillah;
-import retrofit2.Call;
 
 public class SignInFragment extends Fragment implements View.OnFocusChangeListener {
     EditText email;
@@ -62,6 +55,9 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
 
     TwitterAuthClient client;
 
+    private OnClickLoginTwitterListener onClickLoginTwitterListener;
+    private OnClickLoginGoogleListener onClickLoginGoogleListener;
+
     public SignInFragment(){}
 
     public SignInFragment(AppBarLayout appBarLayout) {
@@ -74,8 +70,6 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         // Inflate the layout for this fragment
         callbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
-
-
         return inflater.inflate(R.layout.fragment_sign_in, container, false);
     }
 
@@ -191,35 +185,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
             @Override
             public void onClick(View v) {
                 client = new TwitterAuthClient();
-                client.authorize(getActivity(), new Callback<TwitterSession>() {
-                    @Override
-                    public void success(Result<TwitterSession> twitterSessionResult) {
-                        System.out.println("logintwitter"+twitterSessionResult.data.getUserId());
-                        System.out.println("logintwitter"+twitterSessionResult.data.getUserName());
-
-                        TwitterSession twitterSession = twitterSessionResult.data;
-
-                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
-                        call.enqueue(new Callback<User>() {
-                            @Override
-                            public void success(Result<User> result) {
-                                System.out.println("logintwitter"+result.data.name);
-                                System.out.println("logintwitter"+result.data.profileImageUrl);
-                            }
-
-                            @Override
-                            public void failure(TwitterException e) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getActivity(), "failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                onClickLoginTwitterListener.onClick(client);
             }
         });
     }
@@ -228,7 +194,24 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onClickLoginGoogleListener.onClick();
             }
         });
+    }
+
+    public void setOnClickLoginTwitterListener(OnClickLoginTwitterListener onClickLoginTwitterListener){
+        this.onClickLoginTwitterListener = onClickLoginTwitterListener;
+    }
+
+    public interface OnClickLoginTwitterListener{
+        void onClick(TwitterAuthClient twitterAuthClient);
+    }
+
+    public void setOnClickLoginGoogleListener(OnClickLoginGoogleListener onClickLoginGoogleListener){
+        this.onClickLoginGoogleListener = onClickLoginGoogleListener;
+    }
+
+    public interface OnClickLoginGoogleListener{
+        void onClick();
     }
 }

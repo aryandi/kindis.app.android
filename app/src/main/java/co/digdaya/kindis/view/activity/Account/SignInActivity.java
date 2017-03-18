@@ -29,8 +29,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +54,7 @@ import co.digdaya.kindis.view.activity.Splash.Bismillah;
 import co.digdaya.kindis.view.fragment.signin.SignInFragment;
 import co.digdaya.kindis.view.fragment.signin.SignUpFragment;
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
 
 public class SignInActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -65,8 +71,8 @@ public class SignInActivity extends AppCompatActivity {
     TwitterAuthClient client;
     TwitterAuthClient authClient;
 
+    SignInFragment signInFragment;
     GoogleApiClient mGoogleApiClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +115,8 @@ public class SignInActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         loginFacebook();
-        //loginTwitter();
+        loginTwitter();
+        loginGoogle();
     }
 
     @Override
@@ -123,17 +130,14 @@ public class SignInActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
         authClient.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 3) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-        Log.d("FacebookLogin", requestCode+" : "+resultCode);
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        handleSignInResult(result);
     }
 
     private void setupViewPager(ViewPager viewPager) {
+        signInFragment = new SignInFragment(appBarLayout);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SignInFragment(appBarLayout), "Sign In");
+        adapter.addFragment(signInFragment, "Sign In");
         adapter.addFragment(new SignUpFragment(appBarLayout), "Sign Up");
         viewPager.setAdapter(adapter);
     }
@@ -184,12 +188,11 @@ public class SignInActivity extends AppCompatActivity {
                                 try {
                                     String fullname = object.getString("name");
                                     String gender = object.getString("gender");
-                                    String birth_date = "22-10-1994";
+                                    String birth_date = object.optString("birth_date");
                                     String type_social = "1";
                                     String app_id = object.getString("id");
                                     String email = object.getString("email");
                                     String phone = "";
-                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "1");
                                     loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -197,7 +200,7 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,gender,email,birthday");
+                parameters.putString("fields", "id,name,gender,email,birthday,cover");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -217,10 +220,72 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    private void loginTwitter(){
+        signInFragment.setOnClickLoginTwitterListener(new SignInFragment.OnClickLoginTwitterListener() {
+            @Override
+            public void onClick(TwitterAuthClient twitterAuthClient) {
+                client.authorize(SignInActivity.this, new Callback<TwitterSession>() {
+                    @Override
+                    public void success(final Result<TwitterSession> twitterSessionResult) {
+                        TwitterSession twitterSession = twitterSessionResult.data;
+
+                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void success(Result<User> result) {
+                                System.out.println("logintwitter"+result.data.email);
+                                String fullname = result.data.name;
+                                String gender = "";
+                                String birth_date = "";
+                                String type_social = "1";
+                                String app_id = String.valueOf(twitterSessionResult.data.getUserId());
+                                String email = result.data.email;
+                                String phone = "";
+                                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                            }
+
+                            @Override
+                            public void failure(TwitterException e) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void loginGoogle(){
+        signInFragment.setOnClickLoginGoogleListener(new SignInFragment.OnClickLoginGoogleListener() {
+            @Override
+            public void onClick() {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, 3);
+            }
+        });
+    }
+
     private void handleSignInResult(GoogleSignInResult result){
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            System.out.println("googlelogin"+acct);
+            System.out.println("googlelogin"+acct.getDisplayName());
+            System.out.println("googlelogin"+acct.getEmail());
+            System.out.println("googlelogin"+acct.getId());
+
+            String fullname = acct.getDisplayName();
+            String gender = "";
+            String birth_date = "";
+            String type_social = "3";
+            String app_id = acct.getId();
+            String email = acct.getEmail();
+            String phone = "";
+            loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
         } else {
             System.out.println("googlelogin "+result.getStatus());
         }
@@ -237,42 +302,8 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 Log.d("response", response);
-                if (status){
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            dialogLoading.dismisLoading();
-                            JSONObject result = object.getJSONObject("result");
-                            new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
-                            Intent intent = new Intent(SignInActivity.this, Bismillah.class);
-                            startActivity(intent);
-                        }else {
-                            registerSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    private void registerSocial(String fullname, String gender, String birth_date, String type_social, String app_id, String email,String phone){
-        HashMap<String, String> param = new HashMap<>();
-        param.put("fullname", fullname);
-        param.put("gender", gender);
-        param.put("birth_date", birth_date);
-        param.put("type_social", type_social);
-        param.put("app_id", app_id);
-        param.put("email", email);
-        param.put("phone", phone);
-
-        volleyHelper.post(ApiHelper.REGISTER_SOCIAL, param, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
                 dialogLoading.dismisLoading();
                 if (status){
-                    Log.d("response", response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
@@ -281,7 +312,15 @@ public class SignInActivity extends AppCompatActivity {
                             Intent intent = new Intent(SignInActivity.this, Bismillah.class);
                             startActivity(intent);
                         }else {
-                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignInActivity.this, Register.class);
+                            intent.putExtra("fullname", fullname);
+                            intent.putExtra("gender", gender);
+                            intent.putExtra("birth_date", birth_date);
+                            intent.putExtra("type_social", type_social);
+                            intent.putExtra("app_id", app_id);
+                            intent.putExtra("email", email);
+                            intent.putExtra("phone", phone);
+                            startActivity(intent);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
