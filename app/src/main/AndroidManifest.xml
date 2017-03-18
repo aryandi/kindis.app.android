@@ -103,7 +103,8 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Detail.DetailInfaq" />
+        <activity android:name=".view.activity.Detail.DetailInfaq"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".view.activity.Account.Register"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>

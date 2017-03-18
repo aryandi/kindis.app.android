@@ -127,11 +127,15 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        client.onActivityResult(requestCode, resultCode, data);
-        authClient.onActivityResult(requestCode, resultCode, data);
-        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-        handleSignInResult(result);
+        if(requestCode == 3){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }else if (requestCode == 140){
+            client.onActivityResult(requestCode, resultCode, data);
+            authClient.onActivityResult(requestCode, resultCode, data);
+        }else if (requestCode == 64206){
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
