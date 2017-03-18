@@ -4,6 +4,7 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.taklim;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.view.adapter.item.AdapterGenre;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
 
@@ -35,6 +37,7 @@ public class Murottal extends Fragment {
 
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
+    AdapterGenre adapterGenre;
 
     public Murottal(String json) {
         this.json = json;
@@ -58,7 +61,7 @@ public class Murottal extends Fragment {
         recyclerViewSurah = (RecyclerView) view.findViewById(R.id.list_surah);
 
         recyclerViewQori.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewSurah.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewSurah.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         getJSON();
     }
@@ -99,13 +102,10 @@ public class Murottal extends Fragment {
                         map.put("uid", data.optString("uid"));
                         map.put("title", data.optString("title"));
                         map.put("image", data.optString("image"));
-                        map.put("subtitle", data.optString("artist"));
-                        map.put("is_premium", data.optString("is_premium"));
                         listSurah.add(map);
                     }
-                    adapterSong = new AdapterSongHorizontal(getActivity(), listSurah);
-                    recyclerViewSurah.setAdapter(adapterSong);
-                    recyclerViewSurah.setNestedScrollingEnabled(true);
+                    adapterGenre = new AdapterGenre(getContext(), listSurah);
+                    recyclerViewSurah.setAdapter(adapterGenre);
                 }
             }
         } catch (JSONException e) {

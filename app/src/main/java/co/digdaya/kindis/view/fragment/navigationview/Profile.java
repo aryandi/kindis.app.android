@@ -38,6 +38,7 @@ import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.view.activity.Account.SignInActivity;
+import co.digdaya.kindis.view.activity.Account.TransactionHistory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -245,6 +246,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 Intent intent2 = new Intent(getActivity(), ChangePassword.class);
                 startActivity(intent2);
                 break;
+            case R.id.history:
+                Intent intent3 = new Intent(getActivity(), TransactionHistory.class);
+                startActivity(intent3);
         }
         return false;
     }
