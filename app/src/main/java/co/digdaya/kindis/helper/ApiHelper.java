@@ -9,6 +9,10 @@ public class ApiHelper {
     public static final String BASE_URL_IMAGE = "http://cdn.kindis.co";
     public static final String TOKEN = "&token=";
 
+    //ads
+    public static final String ADS_INFAQ = BASE_URL + "infaq/highlight";
+    public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
+
     public static final String REGISTER = BASE_URL + "sign/register";
     public static final String LOGIN = BASE_URL + "sign/login";
     public static final String REGISTER_SOCIAL = BASE_URL + "sign/register_social";
@@ -47,8 +51,6 @@ public class ApiHelper {
     public static final String UPDATE_PROFILE = BASE_URL + "profile/update_info";
     public static final String CHANGE_EMAIL = BASE_URL + "profile/update_email";
     public static final String CHANGE_PASSWORD = BASE_URL + "profile/update_password";
-
-    public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
 
     public static final String LIST_INFAQ = BASE_URL + "infaq/list";
 }

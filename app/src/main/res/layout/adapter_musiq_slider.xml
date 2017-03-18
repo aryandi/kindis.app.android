@@ -10,28 +10,29 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
-    <!--<sangmaneproject.kindis.custom.TextViewBold
+    <co.digdaya.kindis.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
-        android:text="SNADA"
         android:textSize="36sp"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
-    <sangmaneproject.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.custom.TextViewSemiBold
         android:id="@+id/subtitle"
         android:layout_below="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:text="is now on Kindis !"
-        android:textColor="@color/white"/>-->
+        android:text="need deskripsi from api ads banner"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
-    <!--<sangmaneproject.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.custom.ButtonSemiBold
+        android:id="@+id/btn_donate"
         android:layout_below="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,11 +40,13 @@
         android:layout_centerHorizontal="true"
         app:paddingEnd="0dp"
         app:paddingStart="0dp"
-        android:background="@drawable/button_transparent"
+        android:background="@drawable/button_rounded_green"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="34dp"
         android:paddingRight="34dp"
-        android:text="PLAY"
-        android:textColor="@color/white"/>-->
+        android:text="DONATE"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"/>
 </RelativeLayout>

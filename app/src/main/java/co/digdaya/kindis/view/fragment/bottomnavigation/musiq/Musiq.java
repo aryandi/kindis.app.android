@@ -30,7 +30,7 @@ import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.view.adapter.tab.AdapterMusiq;
-import co.digdaya.kindis.view.adapter.AdapterMusiqSlider;
+import co.digdaya.kindis.view.adapter.AdapterBanner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +40,7 @@ public class Musiq extends Fragment {
     ViewPager viewPager;
     ViewPager imageSlider;
 
-    AdapterMusiqSlider adapterMusiqSlider;
+    AdapterBanner adapterBanner;
     AdapterBannerEmpty adapterBannerEmpty;
     AdapterMusiq adapter;
 
@@ -179,10 +179,12 @@ public class Musiq extends Fragment {
                                 map.put("link", data.getString("url_link"));
                                 listBanner.add(map);
                             }
-                            adapterMusiqSlider = new AdapterMusiqSlider(getActivity(), listBanner);
-                            imageSlider.setAdapter(adapterMusiqSlider);
-                            indicator.setViewPager(imageSlider);
-                            adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+                            adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                            imageSlider.setAdapter(adapterBanner);
+                            if (result.length()>1){
+                                indicator.setViewPager(imageSlider);
+                                adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                            }
                         }else {
                             if (getActivity()!=null){
                                 adapterBannerEmpty = new AdapterBannerEmpty(getContext());

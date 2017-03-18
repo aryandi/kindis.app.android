@@ -28,7 +28,7 @@ import co.digdaya.kindis.helper.CheckConnection;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.view.adapter.AdapterBannerEmpty;
-import co.digdaya.kindis.view.adapter.AdapterMusiqSlider;
+import co.digdaya.kindis.view.adapter.AdapterBanner;
 import co.digdaya.kindis.view.adapter.tab.AdapterTaklim;
 
 /**
@@ -39,7 +39,7 @@ public class Taklim extends Fragment {
     ViewPager viewPager;
     ViewPager imageSlider;
 
-    AdapterMusiqSlider adapterMusiqSlider;
+    AdapterBanner adapterBanner;
     AdapterBannerEmpty adapterBannerEmpty;
     AdapterTaklim adapter;
 
@@ -175,10 +175,12 @@ public class Taklim extends Fragment {
                                 map.put("link", data.getString("url_link"));
                                 listBanner.add(map);
                             }
-                            adapterMusiqSlider = new AdapterMusiqSlider(getActivity(), listBanner);
-                            imageSlider.setAdapter(adapterMusiqSlider);
-                            indicator.setViewPager(imageSlider);
-                            adapterMusiqSlider.registerDataSetObserver(indicator.getDataSetObserver());
+                            adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                            imageSlider.setAdapter(adapterBanner);
+                            if (result.length()>1){
+                                indicator.setViewPager(imageSlider);
+                                adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                            }
                         }else {
                             adapterBannerEmpty = new AdapterBannerEmpty(getContext());
                             imageSlider.setAdapter(adapterBannerEmpty);
