@@ -31,7 +31,7 @@ public class ApiHelper {
 
     public static final String ITEM_ARTIST = BASE_URL + "artist/items?artist_id=";
     public static final String ITEM_ALBUM = BASE_URL + "album/items?album_id=";
-    public static final String ITEM_SINGLE = BASE_URL + "single/andro_item";
+    public static final String ITEM_SINGLE = BASE_URL + "single/single_item";
     public static final String ITEM_SINGLE_GET = BASE_URL + "single/items?single_id=";
 
     public static final String NOTIFICATION = BASE_URL + "notification/list";

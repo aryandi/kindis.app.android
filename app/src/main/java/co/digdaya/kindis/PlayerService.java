@@ -27,11 +27,13 @@ import java.util.Map;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
+import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     PlayerSessionHelper playerSessionHelper;
+    SessionHelper sessionHelper;
     MediaPlayer mediaPlayer = null;
 
     Notification.Builder noti;
@@ -56,6 +58,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         playerSessionHelper = new PlayerSessionHelper();
+        sessionHelper = new SessionHelper();
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
         if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
@@ -287,6 +290,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         Log.d("playerservice", "getSongResource");
         Map<String, String> param = new HashMap<String, String>();
         param.put("single_id", uid);
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        param.put("token", sessionHelper.getPreferences(getApplicationContext(), "token"));
+
         playerSessionHelper.setPreferences(getApplicationContext(), "uid", uid);
         new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -307,17 +313,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 subtitle = result.getString("artist") +" | "+result.getString("album");
                                 sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                 Log.d("titlesongplay", result.getString("title"));
-
-                                /*if (new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")) {
-                                    playMediaPlayer();
-                                    if (noti != null) {
-                                        updateNotification();
-                                    }
-                                }else {
-                                    if (cekSizePlaylist()){
-                                        playNext();
-                                    }
-                                }*/
 
                                 playMediaPlayer();
                                 if (noti != null) {
