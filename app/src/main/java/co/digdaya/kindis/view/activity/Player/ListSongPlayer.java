@@ -17,7 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
-import co.digdaya.kindis.util.BackgroundProses.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 

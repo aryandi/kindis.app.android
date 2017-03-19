@@ -30,7 +30,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.util.BackgroundProses.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;

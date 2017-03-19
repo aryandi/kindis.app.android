@@ -27,7 +27,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.util.BackgroundProses.DialogLoading;
+import co.digdaya.kindis.view.dialog.DialogLoading;
 
 public class ChangeEmail extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, TextWatcher {
     ImageButton btnDrawer;

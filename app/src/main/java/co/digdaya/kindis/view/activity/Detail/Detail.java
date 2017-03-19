@@ -39,7 +39,7 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.util.BackgroundProses.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 

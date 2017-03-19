@@ -15,7 +15,7 @@ import co.digdaya.kindis.R;
  * Created by DELL on 3/11/2017.
  */
 
-public class GetPremium implements View.OnClickListener {
+public class DialogGetPremium implements View.OnClickListener {
     Dialog premium;
     Activity activity;
     AlertDialog.Builder alertDialog;
@@ -23,7 +23,7 @@ public class GetPremium implements View.OnClickListener {
     View dialogView;
     TextView btnCancel, btnPremium;
 
-    public GetPremium(Activity activity, Dialog premium){
+    public DialogGetPremium(Activity activity, Dialog premium){
         this.activity = activity;
         this.premium = premium;
 

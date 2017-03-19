@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -237,6 +238,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 sessionHelper.setPreferences(getContext(), "status", "0");
                 Intent intent = new Intent(getActivity(), SignInActivity.class);
                 startActivity(intent);
+                new LogOut().execute();
                 break;
             case R.id.email:
                 Intent intent1 = new Intent(getActivity(), ChangeEmail.class);
@@ -251,5 +253,25 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 startActivity(intent3);
         }
         return false;
+    }
+
+
+    public class LogOut extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HashMap<String, String> param = new HashMap<>();
+            param.put("uid", sessionHelper.getPreferences(getContext(), "user_id"));
+            param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
+            param.put("token_refresh", sessionHelper.getPreferences(getContext(), "token_refresh"));
+
+            new VolleyHelper().post(ApiHelper.LOGOUT, param, new VolleyHelper.HttpListener<String>() {
+                @Override
+                public void onReceive(boolean status, String message, String response) {
+                    System.out.println("logoutresponse: "+response);
+                }
+            });
+            return null;
+        }
     }
 }

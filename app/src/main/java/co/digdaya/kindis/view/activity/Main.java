@@ -17,9 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.R;
-import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
-import co.digdaya.kindis.view.dialog.GetPremium;
+import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.fragment.navigationview.Cookies;
 import co.digdaya.kindis.view.fragment.navigationview.FAQ;
 import co.digdaya.kindis.view.fragment.navigationview.Home;
@@ -54,7 +53,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     Dialog dialogPremium;
 
-    GetPremium getPremium;
+    DialogGetPremium dialogGetPremium;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        getPremium = new GetPremium(this, dialogPremium);
+        dialogGetPremium = new DialogGetPremium(this, dialogPremium);
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
@@ -129,7 +128,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         }else if (view.getId() == R.id.menu_notif){
             transaction.replace(R.id.cont_main, notifFragment);
         }else if(view.getId() == R.id.menu_premium) {
-            getPremium.showDialog();
+            dialogGetPremium.showDialog();
             //Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);

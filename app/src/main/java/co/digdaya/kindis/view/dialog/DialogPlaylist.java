@@ -1,4 +1,4 @@
-package co.digdaya.kindis.util.BackgroundProses;
+package co.digdaya.kindis.view.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;

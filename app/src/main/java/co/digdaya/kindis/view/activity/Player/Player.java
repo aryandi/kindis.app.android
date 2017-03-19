@@ -25,7 +25,7 @@ import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
-import co.digdaya.kindis.util.BackgroundProses.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.view.adapter.AdapterListSong;

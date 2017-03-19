@@ -20,7 +20,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
-import co.digdaya.kindis.view.dialog.GetPremium;
+import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.ItemSong;
 
 public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
@@ -32,14 +32,14 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     String type;
 
     Dialog dialogPremium;
-    GetPremium getPremium;
+    DialogGetPremium dialogGetPremium;
 
     public AdapterSong(Activity context, ArrayList<HashMap<String, String>> listSong, String type, ArrayList<String> songPlaylist){
         this.context = context;
         this.listSong = listSong;
         this.type = type;
         this.songPlaylist = songPlaylist;
-        getPremium = new GetPremium(context, dialogPremium);
+        dialogGetPremium = new DialogGetPremium(context, dialogPremium);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                         intent.putExtra("single_id", uid);
                         context.startService(intent);
                     }else {
-                        getPremium.showDialog();
+                        dialogGetPremium.showDialog();
                     }
                 }
             }

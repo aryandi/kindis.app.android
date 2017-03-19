@@ -23,7 +23,7 @@ import java.util.HashMap;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.util.BackgroundProses.DialogLoading;
+import co.digdaya.kindis.view.dialog.DialogLoading;
 import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.view.activity.Splash.Bismillah;
 

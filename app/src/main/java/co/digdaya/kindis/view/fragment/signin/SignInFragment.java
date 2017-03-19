@@ -49,6 +49,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     LinearLayout contErrorMessage;
     VolleyHelper volleyHelper;
     ProgressDialog loading;
+    SessionHelper sessionHelper;
 
     CallbackManager callbackManager;
     LoginManager loginManager;
@@ -87,6 +88,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         loginGoogle = (ImageButton) view.findViewById(R.id.login_google);
         contErrorMessage = (LinearLayout) view.findViewById(R.id.cont_error_message);
         volleyHelper = new VolleyHelper();
+        sessionHelper = new SessionHelper();
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
@@ -145,8 +147,10 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
-                            new SessionHelper().setPreferences(getContext(), "token", result.getString("token"));
-                            new SessionHelper().setPreferences(getContext(), "login_type", "0");
+                            sessionHelper.setPreferences(getContext(), "token", result.getString("token"));
+                            sessionHelper.setPreferences(getContext(), "token_access", result.getString("token_access"));
+                            sessionHelper.setPreferences(getContext(), "token_refresh", result.getString("token_refresh"));
+                            sessionHelper.setPreferences(getContext(), "login_type", "0");
                             new ProfileInfo(getContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(getActivity(), Bismillah.class);
                             startActivity(intent);

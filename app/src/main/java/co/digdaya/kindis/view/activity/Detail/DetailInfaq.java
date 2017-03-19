@@ -1,17 +1,20 @@
 package co.digdaya.kindis.view.activity.Detail;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.view.dialog.DialogDonate;
 
-public class DetailInfaq extends BottomPlayerActivity {
+public class DetailInfaq extends BottomPlayerActivity implements View.OnClickListener {
     AppBarLayout appBarLayout;
     LinearLayout contFloatingButton;
     RelativeLayout contLabel;
@@ -19,6 +22,9 @@ public class DetailInfaq extends BottomPlayerActivity {
     TextView titleToolbar;
     TextView titleDetail;
     TextView description;
+    Button btnDonate;
+    DialogDonate dialogDonate;
+    Dialog dialog;
 
     public DetailInfaq(){
         layout = R.layout.activity_detail_infaq;
@@ -35,6 +41,9 @@ public class DetailInfaq extends BottomPlayerActivity {
         titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
         titleDetail = (TextView) findViewById(R.id.title_detail);
         description = (TextView) findViewById(R.id.description);
+        btnDonate = (Button) findViewById(R.id.btn_donate);
+
+        dialogDonate = new DialogDonate(this, dialog);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,10 +82,21 @@ public class DetailInfaq extends BottomPlayerActivity {
         });
 
         initDetailInfaq();
+
+        btnDonate.setOnClickListener(this);
     }
 
     private void initDetailInfaq(){
         titleDetail.setText(getIntent().getStringExtra("title"));
         titleToolbar.setText(getIntent().getStringExtra("title"));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_donate:
+                dialogDonate.showDialog();
+                break;
+        }
     }
 }

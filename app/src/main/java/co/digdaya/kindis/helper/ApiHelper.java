@@ -13,6 +13,8 @@ public class ApiHelper {
     public static final String ADS_INFAQ = BASE_URL + "infaq/highlight";
     public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
 
+    //sign
+    public static final String LOGOUT = BASE_URL+ "sign/logout";
     public static final String REGISTER = BASE_URL + "sign/register";
     public static final String LOGIN = BASE_URL + "sign/login";
     public static final String REGISTER_SOCIAL = BASE_URL + "sign/register_social";
