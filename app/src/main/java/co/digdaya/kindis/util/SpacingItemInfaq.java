@@ -3,6 +3,7 @@ package co.digdaya.kindis.util;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
@@ -20,14 +21,6 @@ public class SpacingItemInfaq extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         outRect.left = getDP(16);
         outRect.top = getDP(16);
-
-        /*outRect.bottom = pixels;
-        // Add top margin only for the first item to avoid double space between items
-        if ((parent.getChildLayoutPosition(view)%2) == 0) {
-            outRect.right = pixels;
-        } else {
-            outRect.right = 0;
-        }*/
     }
 
     private int getDP(int dp){

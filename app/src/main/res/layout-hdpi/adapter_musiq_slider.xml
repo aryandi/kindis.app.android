@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/image_musiq_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <co.digdaya.kindis.custom.TextViewBold
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
+    <co.digdaya.kindis.custom.TextViewSemiBold
+        android:id="@+id/subtitle"
+        android:layout_below="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp"
+        android:text="need deskripsi from api ads banner"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
+    <co.digdaya.kindis.custom.ButtonSemiBold
+        android:id="@+id/btn_donate"
+        android:layout_below="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        app:paddingEnd="0dp"
+        app:paddingStart="0dp"
+        android:background="@drawable/button_rounded_green"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:text="DONATE"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+</RelativeLayout>

@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
