@@ -101,6 +101,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             }else {
                 playMediaPlayer();
             }
+
+            views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
+            notificationManager.notify(1, noti.build());
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PAUSE)){
@@ -110,6 +113,9 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             playerSessionHelper.setPreferences(getApplicationContext(), "pause", "true");
             playerSessionHelper.setPreferences(getApplicationContext(), "current_pos", ""+mediaPlayer.getCurrentPosition());
             updateProgressBar();
+
+            views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
+            notificationManager.notify(1, noti.build());
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_SEEK)){

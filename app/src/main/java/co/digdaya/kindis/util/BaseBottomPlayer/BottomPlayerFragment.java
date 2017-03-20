@@ -35,6 +35,7 @@ public class BottomPlayerFragment extends Fragment {
     int progress;
     TextView title, artist;
     LinearLayout contBottomPlayer;
+    PlayerSessionHelper playerSessionHelper;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class BottomPlayerFragment extends Fragment {
         title = (TextView) view.findViewById(R.id.title_player);
         artist = (TextView) view.findViewById(R.id.artist_player);
         contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
+
+        playerSessionHelper = new PlayerSessionHelper();
     }
 
     @Override
@@ -55,27 +58,27 @@ public class BottomPlayerFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
-        if (new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
+        if (playerSessionHelper.getPreferences(getContext(), "isplaying").equals("true")){
             icPlay.setImageResource(R.drawable.ic_pause);
         }else {
             icPlay.setImageResource(R.drawable.ic_play);
         }
 
-        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
+        if (playerSessionHelper.getPreferences(getContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
         }
 
-        if (new PlayerSessionHelper().getPreferences(getContext(), "pause").equals("true")){
-            int pos = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "current_pos"));
-            int dur = Integer.parseInt(new PlayerSessionHelper().getPreferences(getContext(), "duration"));
+        if (playerSessionHelper.getPreferences(getContext(), "pause").equals("true")){
+            int pos = Integer.parseInt(playerSessionHelper.getPreferences(getContext(), "current_pos"));
+            int dur = Integer.parseInt(playerSessionHelper.getPreferences(getContext(), "duration"));
             progressBar.setMax(dur);
             progressBar.setProgress(pos);
         }
     }
 
     public void bottomPlayer(){
-        title.setText(new PlayerSessionHelper().getPreferences(getContext(), "title"));
-        artist.setText(new PlayerSessionHelper().getPreferences(getContext(), "subtitle"));
+        title.setText(playerSessionHelper.getPreferences(getContext(), "title"));
+        artist.setText(playerSessionHelper.getPreferences(getContext(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,14 +90,14 @@ public class BottomPlayerFragment extends Fragment {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!new PlayerSessionHelper().getPreferences(getContext(), "isplaying").equals("true")){
-                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "true");
+                if (!playerSessionHelper.getPreferences(getContext(), "isplaying").equals("true")){
+                    playerSessionHelper.setPreferences(getContext(), "isplaying", "true");
                     icPlay.setImageResource(R.drawable.ic_pause);
                     Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PLAY);
                     getActivity().startService(intent);
                 }else {
-                    new PlayerSessionHelper().setPreferences(getContext(), "isplaying", "false");
+                    playerSessionHelper.setPreferences(getContext(), "isplaying", "false");
                     icPlay.setImageResource(R.drawable.ic_play);
                     Intent intent = new Intent(getActivity(), PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PAUSE);
@@ -121,6 +124,8 @@ public class BottomPlayerFragment extends Fragment {
 
             if (progress==duration){
                 icPlay.setImageResource(R.drawable.ic_play);
+            }else if (playerSessionHelper.getPreferences(getContext(), "isplaying").equals("true")){
+                icPlay.setImageResource(R.drawable.ic_pause);
             }
         }
     };
