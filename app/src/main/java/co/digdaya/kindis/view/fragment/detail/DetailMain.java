@@ -7,12 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 
@@ -20,7 +20,7 @@ import co.digdaya.kindis.helper.ApiHelper;
  * A simple {@link Fragment} subclass.
  */
 public class DetailMain extends Fragment {
-    CircleImageView image;
+    ImageView image;
     TextView title, subTitle;
 
     String img, ttl, sttl;
@@ -42,7 +42,7 @@ public class DetailMain extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        image = (CircleImageView) view.findViewById(R.id.image);
+        image = (ImageView) view.findViewById(R.id.image);
         title = (TextView) view.findViewById(R.id.title);
         subTitle = (TextView) view.findViewById(R.id.subtitle);
 

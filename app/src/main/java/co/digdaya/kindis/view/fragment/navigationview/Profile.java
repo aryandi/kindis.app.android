@@ -236,6 +236,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         switch (item.getItemId()){
             case R.id.logout:
                 sessionHelper.setPreferences(getContext(), "status", "0");
+                sessionHelper.setPreferences(getContext(), "profile_picture", null);
                 Intent intent = new Intent(getActivity(), SignInActivity.class);
                 startActivity(intent);
                 new LogOut().execute();

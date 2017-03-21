@@ -179,9 +179,6 @@ public class SignInActivity extends AppCompatActivity {
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Profile profile = Profile.getCurrentProfile();
-                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", profile.getProfilePictureUri(100, 100).toString());
-
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -238,6 +235,9 @@ public class SignInActivity extends AppCompatActivity {
                             @Override
                             public void success(Result<User> result) {
                                 System.out.println("logintwitter"+result.data.email);
+
+                                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
+
                                 String fullname = result.data.name;
                                 String gender = "";
                                 String birth_date = "";
@@ -278,9 +278,7 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result){
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            System.out.println("googlelogin"+acct.getDisplayName());
-            System.out.println("googlelogin"+acct.getEmail());
-            System.out.println("googlelogin"+acct.getId());
+            sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
 
             String fullname = acct.getDisplayName();
             String gender = "";

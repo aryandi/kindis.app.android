@@ -101,14 +101,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void initSidebar(){
-        Log.d("profile_picture", sessionHelper.getPreferences(getApplicationContext(), "profile_picture"));
+        System.out.println("profile_picture: "+sessionHelper.getPreferences(getApplicationContext(), "profile_picture"));
+
         Glide.with(getApplicationContext())
                 .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
-                .thumbnail( 0.1f )
-                .placeholder(R.drawable.bg_sign_in)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(profilePicture);
+
         fullname.setText(sessionHelper.getPreferences(getApplicationContext(), "fullname"));
         menuHome.setOnClickListener(this);
         menuNotif.setOnClickListener(this);
