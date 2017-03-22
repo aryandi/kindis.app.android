@@ -1,19 +1,19 @@
 {
   "project_info": {
-    "project_number": "1032558886656",
-    "project_id": "firebase-devapp"
+    "project_number": "153105834235",
+    "project_id": "firebase-kindis"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1032558886656:android:ae36f6b99ec1ec6b",
+        "mobilesdk_app_id": "1:153105834235:android:ae36f6b99ec1ec6b",
         "android_client_info": {
           "package_name": "co.digdaya.kindis"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1032558886656-e8e3vd3j72h3tfepgiatbbvpprfcvd50.apps.googleusercontent.com",
+          "client_id": "153105834235-a2epdt5gbr8c1omvnfjgpnjsf7uk9cgv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "co.digdaya.kindis",
@@ -21,13 +21,13 @@
           }
         },
         {
-          "client_id": "1032558886656-a1jrail71snjem94a6kbdp9pofioaetb.apps.googleusercontent.com",
+          "client_id": "153105834235-dc0c2gpncbg6r8t5bhki0v1qp08c3ogm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoK6YsJmw3856L_LPJh5xiHSdFrMvjIp8"
+          "current_key": "AIzaSyCNU1SAcK4WoUVBU-BFNLoANDeZxoj-iF8"
         }
       ],
       "services": {

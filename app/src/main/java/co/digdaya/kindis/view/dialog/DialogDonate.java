@@ -3,12 +3,15 @@ package co.digdaya.kindis.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.util.GoogleBilling.IabHelper;
+import co.digdaya.kindis.util.GoogleBilling.IabResult;
 
 /**
  * Created by vincenttp on 3/19/2017.

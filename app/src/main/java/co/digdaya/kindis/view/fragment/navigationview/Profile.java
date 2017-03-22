@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,6 +29,15 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.twitter.sdk.android.Twitter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +73,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     SessionHelper sessionHelper;
     ProgressDialog loading;
 
+
+    GoogleApiClient mGoogleApiClient;
+
     boolean isEditButton = true;
 
     public Profile(DrawerLayout drawer) {
@@ -94,6 +109,20 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        System.out.println("googlelogin "+connectionResult.getErrorMessage());
+                    }
+                } /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         inputNama.setText(sessionHelper.getPreferences(getContext(), "fullname"));
         inputBirtday.setText(sessionHelper.getPreferences(getContext(), "birth_date"));
@@ -235,6 +264,20 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
+                if (sessionHelper.getPreferences(getContext(), "login_type").equals("1")){
+                    LoginManager.getInstance().logOut();
+                }else if (sessionHelper.getPreferences(getContext(), "login_type").equals("2")){
+                    Twitter.getSessionManager().clearActiveSession();
+                    Twitter.logOut();
+                }else if (sessionHelper.getPreferences(getContext(), "login_type").equals("3")){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(Status status) {
+                                    System.out.println("logoutsosmed : "+status);
+                                }
+                            });
+                }
                 sessionHelper.setPreferences(getContext(), "status", "0");
                 sessionHelper.setPreferences(getContext(), "profile_picture", null);
                 Intent intent = new Intent(getActivity(), SignInActivity.class);

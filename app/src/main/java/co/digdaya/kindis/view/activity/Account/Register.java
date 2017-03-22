@@ -75,6 +75,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         volleyHelper = new VolleyHelper();
         dialogLoading = new DialogLoading(this);
 
+        String eml = ""+email;
+        if (eml.length()>10){
+            inputEmail.setEnabled(false);
+        }
+
         inputFullname.setText(fullname);
         inputEmail.setText(email);
         inputBirtday.setText(birth_date);

@@ -25,6 +25,7 @@ import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
+import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.ZoomOutPageTransformer;
@@ -118,6 +119,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         });
+
+        if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
+        }
 
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
@@ -291,8 +297,13 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 btnBack.setEnabled(false);
             }else {
-                btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                btnBack.setEnabled(true);
+                if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")){
+                    btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                    btnBack.setEnabled(false);
+                }else {
+                    btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    btnBack.setEnabled(true);
+                }
             }
 
             if (playlistPosition == (index-1)){

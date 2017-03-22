@@ -127,6 +127,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("requestCode : "+requestCode);
         if(requestCode == 3){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -184,9 +185,10 @@ public class SignInActivity extends AppCompatActivity {
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                System.out.println(object);
-                                System.out.println(response);
+                                System.out.println("loginsosmed : "+object);
+                                System.out.println("loginsosmed : "+response);
                                 try {
+                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "1");
                                     String fullname = object.getString("name");
                                     String gender = object.getString("gender");
                                     String birth_date = object.optString("birth_date");
@@ -217,6 +219,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onError(FacebookException error) {
                 //Handle Error event
                 Log.d("FacebookLogin", "error");
+                System.out.println("FacebookLogin"+error.getMessage());
             }
         });
     }
@@ -237,11 +240,12 @@ public class SignInActivity extends AppCompatActivity {
                                 System.out.println("logintwitter"+result.data.email);
 
                                 sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
+                                sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
 
                                 String fullname = result.data.name;
                                 String gender = "";
                                 String birth_date = "";
-                                String type_social = "1";
+                                String type_social = "2";
                                 String app_id = String.valueOf(twitterSessionResult.data.getUserId());
                                 String email = result.data.email;
                                 String phone = "";
@@ -279,7 +283,7 @@ public class SignInActivity extends AppCompatActivity {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
-
+            sessionHelper.setPreferences(getApplicationContext(), "login_type", "3");
             String fullname = acct.getDisplayName();
             String gender = "";
             String birth_date = "";

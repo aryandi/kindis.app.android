@@ -77,12 +77,14 @@
                         android:paddingBottom="12dp"
                         android:paddingLeft="16dp">
                         <ImageView
+                            android:id="@+id/ic_menu_home"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_home"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
                         <co.digdaya.kindis.custom.TextViewSemiBold
+                            android:id="@+id/label_menu_home"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Home"
@@ -98,12 +100,14 @@
                         android:paddingBottom="12dp"
                         android:paddingLeft="16dp">
                         <ImageView
+                            android:id="@+id/ic_menu_notif"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_notif"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
                         <co.digdaya.kindis.custom.TextViewSemiBold
+                            android:id="@+id/label_menu_notif"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Notication"
@@ -119,12 +123,14 @@
                         android:paddingBottom="12dp"
                         android:paddingLeft="16dp">
                         <ImageView
+                            android:id="@+id/ic_menu_profile"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_account"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
                         <co.digdaya.kindis.custom.TextViewSemiBold
+                            android:id="@+id/label_menu_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Profile"
@@ -151,6 +157,28 @@
                             android:text="Get Premium"
                             android:textSize="14sp"
                             android:textColor="@color/safety_orange"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/menu_gift"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="16dp">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_gift"
+                            android:background="@android:color/transparent"
+                            android:layout_marginRight="32dp"/>
+                        <co.digdaya.kindis.custom.TextViewSemiBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gift"
+                            android:textSize="14sp"
+                            android:textColor="@color/white"/>
                     </LinearLayout>
 
                     <View

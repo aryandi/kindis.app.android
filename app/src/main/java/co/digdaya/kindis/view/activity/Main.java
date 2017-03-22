@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +52,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuTerms;
     TextView menuCookies;
 
+    ImageView icMenuHome, icMenuNotif, icMenuProfile;
+    TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
+
     Dialog dialogPremium;
 
     DialogGetPremium dialogGetPremium;
@@ -84,6 +88,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuTerms = (TextView) findViewById(R.id.menu_terms);
         menuCookies = (TextView) findViewById(R.id.menu_cookies);
 
+        icMenuHome = (ImageView) findViewById(R.id.ic_menu_home);
+        icMenuNotif = (ImageView) findViewById(R.id.ic_menu_notif);
+        icMenuProfile = (ImageView) findViewById(R.id.ic_menu_profile);
+
+        labelMenuHome = (TextView) findViewById(R.id.label_menu_home);
+        labelMenuNotif = (TextView) findViewById(R.id.label_menu_notif);
+        labelMenuProfile = (TextView) findViewById(R.id.label_menu_profile);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_main, homeFragment);
         transaction.commit();
@@ -109,6 +121,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                 .centerCrop()
                 .into(profilePicture);
 
+        icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+        labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+
         fullname.setText(sessionHelper.getPreferences(getApplicationContext(), "fullname"));
         menuHome.setOnClickListener(this);
         menuNotif.setOnClickListener(this);
@@ -122,27 +137,60 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        setDefaultSelectedMenuColor();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.menu_home){
             transaction.replace(R.id.cont_main, homeFragment);
+
+            icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+            labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_notif){
             transaction.replace(R.id.cont_main, notifFragment);
+
+            icMenuNotif.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+            labelMenuNotif.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if(view.getId() == R.id.menu_premium) {
             dialogGetPremium.showDialog();
-            //Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);
+
+            icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+            labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_faq){
             transaction.replace(R.id.cont_main, faqFragment);
+
+            menuFAQ.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_privacy){
             transaction.replace(R.id.cont_main, privacyFragment);
+
+            menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_terms){
             transaction.replace(R.id.cont_main, termsFragment);
+
+            menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_cookies){
             transaction.replace(R.id.cont_main, cookiesFragment);
+
+            menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }
         transaction.addToBackStack(null);
         transaction.commit();
         drawer.closeDrawers();
+    }
+
+    private void setDefaultSelectedMenuColor(){
+        icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+
+        icMenuNotif.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        labelMenuNotif.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+
+        icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+
+        menuFAQ.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
     }
 }
