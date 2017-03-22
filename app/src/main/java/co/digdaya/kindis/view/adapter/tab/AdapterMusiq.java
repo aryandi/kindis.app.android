@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Genres;
-import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.MostPlayed;
+import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
 
 /**
@@ -36,7 +36,7 @@ public class AdapterMusiq extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 //Fragement for Android Tab
-                return new MostPlayed(json);
+                return new Discover(json);
             case 1:
                 //Fragment for Ios Tab
                 return new RecentlyAdded(json);

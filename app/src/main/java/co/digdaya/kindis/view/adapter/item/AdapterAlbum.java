@@ -8,9 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -50,7 +49,7 @@ public class AdapterAlbum extends RecyclerView.Adapter<Item> {
         ImageView imageView = holder.imageView;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
-        LinearLayout click = holder.click;
+        RelativeLayout click = holder.click;
 
         dataSinggle = listAlbum.get(position);
 

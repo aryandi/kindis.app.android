@@ -19,7 +19,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -48,9 +47,9 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.view.dialog.DialogLoading;
 import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.view.activity.Splash.Bismillah;
+import co.digdaya.kindis.view.dialog.DialogLoading;
 import co.digdaya.kindis.view.fragment.signin.SignInFragment;
 import co.digdaya.kindis.view.fragment.signin.SignUpFragment;
 import io.fabric.sdk.android.Fabric;
@@ -137,6 +136,13 @@ public class SignInActivity extends AppCompatActivity {
         }else if (requestCode == 64206){
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.stopAutoManage(this);
+        mGoogleApiClient.disconnect();
     }
 
     private void setupViewPager(ViewPager viewPager) {

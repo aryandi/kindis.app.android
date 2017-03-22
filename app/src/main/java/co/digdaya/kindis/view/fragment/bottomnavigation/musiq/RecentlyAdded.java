@@ -114,6 +114,7 @@ public class RecentlyAdded extends Fragment {
                         map.put("image", data.optString("image"));
                         map.put("subtitle", data.optString("artist"));
                         map.put("is_premium", data.optString("is_premium"));
+                        System.out.println("kontolll: "+data.optString("title")+" = "+data.optString("is_premium"));
                         listPlay.add(map);
                     }
 

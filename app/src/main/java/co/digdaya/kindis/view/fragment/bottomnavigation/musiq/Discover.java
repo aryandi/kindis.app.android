@@ -28,7 +28,7 @@ import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MostPlayed extends Fragment {
+public class Discover extends Fragment {
     AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
@@ -46,7 +46,7 @@ public class MostPlayed extends Fragment {
     String json;
     Dialog dialogPlaylis;
 
-    public MostPlayed(String json) {
+    public Discover(String json) {
         this.json = json;
     }
 

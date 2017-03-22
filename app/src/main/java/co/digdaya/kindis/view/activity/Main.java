@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -115,11 +114,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     private void initSidebar(){
         System.out.println("profile_picture: "+sessionHelper.getPreferences(getApplicationContext(), "profile_picture"));
 
-        Glide.with(getApplicationContext())
-                .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .into(profilePicture);
+        if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length()>10){
+            Glide.with(getApplicationContext())
+                    .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(profilePicture);
+        }
 
         icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));

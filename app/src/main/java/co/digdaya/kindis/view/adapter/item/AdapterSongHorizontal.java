@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,14 +49,16 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, int position) {
+    public void onBindViewHolder(Item holder, final int position) {
         ImageView imageView = holder.imageView;
+        ImageView badgePremium = holder.badgePremium;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
-        LinearLayout click = holder.click;
+        RelativeLayout click = holder.click;
         dataSong = listSong.get(position);
 
         final String uid = dataSong.get("uid");
+        final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
 
         Glide.with(context)
                 .load(ApiHelper.BASE_URL_IMAGE+dataSong.get("image"))
@@ -68,11 +70,15 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         title.setText(dataSong.get("title"));
         subTitle.setText(dataSong.get("subtitle"));
 
+        if (getItemViewType(position) == 1){
+            badgePremium.setVisibility(View.VISIBLE);
+        }
+
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("kontollll", new SessionHelper().getPreferences(context, "is_premium")+" = "+dataSong.get("is_premium"));
-                if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")){
+                Log.d("kontollll", isAccountPremium+" = "+getItemViewType(position));
+                if (isAccountPremium == getItemViewType(position) || isAccountPremium == 1){
                     Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                     new PlayerSessionHelper().setPreferences(context, "index", "1");
                     Intent intent = new Intent(context, PlayerService.class);
@@ -89,5 +95,17 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemCount() {
         return listSong.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        dataSong = listSong.get(position);
+        int isPremium = Integer.parseInt(dataSong.get("is_premium"));
+        return isPremium;
     }
 }

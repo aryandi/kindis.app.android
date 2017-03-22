@@ -20,8 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -73,7 +71,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     SessionHelper sessionHelper;
     ProgressDialog loading;
 
-
+    String loginType;
     GoogleApiClient mGoogleApiClient;
 
     boolean isEditButton = true;
@@ -110,19 +108,23 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        loginType = sessionHelper.getPreferences(getContext(), "login_type");
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        System.out.println("googlelogin "+connectionResult.getErrorMessage());
-                    }
-                } /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        if (loginType.equals("3")){
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            System.out.println("googlelogin "+connectionResult.getErrorMessage());
+                        }
+                    } /* OnConnectionFailedListener */)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
 
         inputNama.setText(sessionHelper.getPreferences(getContext(), "fullname"));
         inputBirtday.setText(sessionHelper.getPreferences(getContext(), "birth_date"));
@@ -264,12 +266,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
-                if (sessionHelper.getPreferences(getContext(), "login_type").equals("1")){
+                if (loginType.equals("1")){
                     LoginManager.getInstance().logOut();
-                }else if (sessionHelper.getPreferences(getContext(), "login_type").equals("2")){
+                }else if (loginType.equals("2")){
                     Twitter.getSessionManager().clearActiveSession();
                     Twitter.logOut();
-                }else if (sessionHelper.getPreferences(getContext(), "login_type").equals("3")){
+                }else if (loginType.equals("3")){
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                             new ResultCallback<Status>() {
                                 @Override
@@ -299,6 +301,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         return false;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
 
     public class LogOut extends AsyncTask<String, String, String>{
 
