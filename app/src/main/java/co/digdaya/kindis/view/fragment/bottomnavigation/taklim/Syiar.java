@@ -4,6 +4,7 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.taklim;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
+import co.digdaya.kindis.view.adapter.item.AdapterGenre;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +31,12 @@ public class Syiar extends Fragment {
 
     TextView labelPremium, labelTop, labelDai, labelTheme;
     RecyclerView recyclerViewPremium, recyclerViewTop, recyclerViewDai, recyclerViewTheme;
+
     AdapterArtist adapterArtist;
+    AdapterGenre adapterGenre;
+
     ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> listTheme = new ArrayList<HashMap<String, String>>();
 
     public Syiar(String json) {
         this.json = json;
@@ -61,7 +67,7 @@ public class Syiar extends Fragment {
         recyclerViewPremium.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTop.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewDai.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewTheme.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTheme.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         getJSON();
     }
@@ -107,6 +113,17 @@ public class Syiar extends Fragment {
                 if (theme.length()>0){
                     labelTheme.setVisibility(View.VISIBLE);
                     recyclerViewTheme.setVisibility(View.VISIBLE);
+
+                    for (int i=0; i<theme.length(); i++){{
+                        JSONObject data = theme.getJSONObject(i);
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("uid", data.optString("uid"));
+                        map.put("title", data.optString("title"));
+                        map.put("image", data.optString("image"));
+                        listTheme.add(map);
+                    }}
+                    adapterGenre = new AdapterGenre(getContext(), listTheme);
+                    recyclerViewTheme.setAdapter(adapterGenre);
                 }
             }
         } catch (JSONException e) {

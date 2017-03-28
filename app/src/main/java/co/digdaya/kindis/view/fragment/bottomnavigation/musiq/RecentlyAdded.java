@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ public class RecentlyAdded extends Fragment {
     AdapterAlbum adapterAlbum;
     AdapterSongHorizontal adapterSongHorizontal;
 
-    TextView labelSingle, labelPlay, labelAlbum, labelPremium;
+    RelativeLayout labelSingle, labelPlay, labelAlbum, labelPremium;
 
     RecyclerView recyclerViewSingle, recyclerViewPLay, recyclerViewAlbum;
 
@@ -58,10 +59,10 @@ public class RecentlyAdded extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        labelSingle = (TextView) view.findViewById(R.id.label_single);
-        labelPlay = (TextView) view.findViewById(R.id.label_play);
-        labelAlbum = (TextView) view.findViewById(R.id.label_album);
-        labelPremium = (TextView) view.findViewById(R.id.label_premium);
+        labelSingle = (RelativeLayout) view.findViewById(R.id.label_single);
+        labelPlay = (RelativeLayout) view.findViewById(R.id.label_play);
+        labelAlbum = (RelativeLayout) view.findViewById(R.id.label_album);
+        labelPremium = (RelativeLayout) view.findViewById(R.id.label_premium);
 
         recyclerViewSingle = (RecyclerView) view.findViewById(R.id.list_single);
         recyclerViewPLay = (RecyclerView) view.findViewById(R.id.list_play);

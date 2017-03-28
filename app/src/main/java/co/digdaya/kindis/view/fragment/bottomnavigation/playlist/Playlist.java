@@ -1,4 +1,4 @@
-package co.digdaya.kindis.view.fragment.bottomnavigation;
+package co.digdaya.kindis.view.fragment.bottomnavigation.playlist;
 
 
 import android.app.ProgressDialog;

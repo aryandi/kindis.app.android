@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.playlist.NewPlaylist">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/htab_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/dark_jungle_green"
+        app:tabIndicatorColor="@color/medium_sea_green" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/htab_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
+

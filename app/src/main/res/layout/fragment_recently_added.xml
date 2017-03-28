@@ -14,62 +14,114 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <co.digdaya.kindis.custom.TextViewBold
+        <RelativeLayout
             android:id="@+id/label_single"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="SINGLE"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone">
+            <co.digdaya.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="SINGLE"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:textSize="14sp"
+                android:text="MORE"
+                android:textColor="@color/white" />
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_single"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <co.digdaya.kindis.custom.TextViewBold
+        <RelativeLayout
             android:id="@+id/label_play"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="PLAY"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone">
+            <co.digdaya.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="PLAY"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:textSize="14sp"
+                android:text="MORE"
+                android:textColor="@color/white" />
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_play"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <co.digdaya.kindis.custom.TextViewBold
+        <RelativeLayout
             android:id="@+id/label_album"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="ALBUM"
-            android:textColor="@color/white"/>
+            android:visibility="gone">
+            <co.digdaya.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ALBUM"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:textSize="14sp"
+                android:text="MORE"
+                android:textColor="@color/white" />
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_album"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <co.digdaya.kindis.custom.TextViewBold
+        <RelativeLayout
             android:id="@+id/label_premium"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="TOP 10 PREMIUM"
-            android:textColor="@color/white"/>
+            android:visibility="gone">
+            <co.digdaya.kindis.custom.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="TOP 10 PREMIUM"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:textSize="14sp"
+                android:text="MORE"
+                android:textColor="@color/white" />
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_premium"

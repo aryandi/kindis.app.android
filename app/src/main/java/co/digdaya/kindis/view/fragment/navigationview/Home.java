@@ -26,7 +26,8 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.fragment.bottomnavigation.Infaq;
-import co.digdaya.kindis.view.fragment.bottomnavigation.Playlist;
+import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.NewPlaylist;
+import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Musiq;
 import co.digdaya.kindis.view.fragment.bottomnavigation.taklim.Taklim;
 
@@ -73,7 +74,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
         musiqFragment = new Musiq();
         taklimFragment = new Taklim();
         infaqFragment = new Infaq();
-        playlistFragment = new Playlist();
+        playlistFragment = new NewPlaylist();
 
         AHBottomNavigationItem musiq = new AHBottomNavigationItem(R.string.musiq, R.drawable.ic_explore, R.color.white);
         AHBottomNavigationItem taklim = new AHBottomNavigationItem(R.string.taklim, R.drawable.ic_taklim, R.color.white);

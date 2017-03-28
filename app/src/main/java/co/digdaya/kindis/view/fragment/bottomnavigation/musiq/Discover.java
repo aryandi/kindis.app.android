@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -33,7 +34,8 @@ public class Discover extends Fragment {
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
 
-    TextView labelPremium, labelTop, labelAlbum, labelArtist, labelSingle, labelRandom1, labelRandom2;
+    RelativeLayout labelPremium, labelTop, labelAlbum, labelArtist, labelSingle, labelRandom1, labelRandom2;
+    TextView textRandom1, textRandom2;
     RecyclerView recyclerViewPremium, recyclerViewTop, recyclerViewAlbum, recyclerViewArtist, recyclerViewSingle, recyclerViewRandom1, recyclerViewRandom2;
 
 
@@ -62,13 +64,16 @@ public class Discover extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        labelPremium = (TextView) view.findViewById(R.id.label_premium);
-        labelTop = (TextView) view.findViewById(R.id.label_top);
-        labelAlbum = (TextView) view.findViewById(R.id.label_album);
-        labelArtist = (TextView) view.findViewById(R.id.label_artist);
-        labelSingle = (TextView) view.findViewById(R.id.label_single);
-        labelRandom1 = (TextView) view.findViewById(R.id.label_random1);
-        labelRandom2 = (TextView) view.findViewById(R.id.label_random2);
+        labelPremium = (RelativeLayout) view.findViewById(R.id.label_premium);
+        labelTop = (RelativeLayout) view.findViewById(R.id.label_top);
+        labelAlbum = (RelativeLayout) view.findViewById(R.id.label_album);
+        labelArtist = (RelativeLayout) view.findViewById(R.id.label_artist);
+        labelSingle = (RelativeLayout) view.findViewById(R.id.label_single);
+        labelRandom1 = (RelativeLayout) view.findViewById(R.id.label_random1);
+        labelRandom2 = (RelativeLayout) view.findViewById(R.id.label_random2);
+
+        textRandom1 = (TextView) view.findViewById(R.id.text_random1);
+        textRandom2 = (TextView) view.findViewById(R.id.text_random2);
 
         recyclerViewPremium = (RecyclerView) view.findViewById(R.id.list_premium);
         recyclerViewTop = (RecyclerView) view.findViewById(R.id.list_top);
@@ -165,7 +170,7 @@ public class Discover extends Fragment {
 
                 JSONArray random1 = tab1.getJSONArray("random1");
                 JSONObject random1Data = random1.getJSONObject(0);
-                labelRandom1.setText(random1Data.getString("name"));
+                textRandom1.setText(random1Data.getString("name"));
                 JSONArray dataRandom1 = random1Data.getJSONArray("data");
                 if (dataRandom1.length()>0){
                     labelRandom1.setVisibility(View.VISIBLE);
@@ -187,7 +192,7 @@ public class Discover extends Fragment {
 
                 JSONArray random2 = tab1.getJSONArray("random2");
                 JSONObject random2Data = random2.getJSONObject(0);
-                labelRandom2.setText(random2Data.getString("name"));
+                textRandom2.setText(random2Data.getString("name"));
                 JSONArray dataRandom2 = random2Data.getJSONArray("data");
                 if (dataRandom2.length()>0){
                     labelRandom2.setVisibility(View.VISIBLE);
