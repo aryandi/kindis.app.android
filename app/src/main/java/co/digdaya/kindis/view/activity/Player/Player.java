@@ -12,12 +12,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.view.adapter.AdapterListSong;
 
-public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
     ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList;
     ImageView icPlay;
     ViewPager viewPager;
@@ -45,6 +47,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     int index, playlistPosition;
     int duration, progress;
+    int isAccountPremium;
 
     boolean isChangeViewPager = false;
 
@@ -75,6 +78,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
 
         index = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "index"));
+        isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(getApplicationContext(), "is_premium"));
 
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,12 +252,26 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onPageSelected(int position) {
         if (isChangeViewPager){
-            Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-            intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-            intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-            intent.putExtra("position", position);
-            intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-            startService(intent);
+            if (isAccountPremium == 1){
+                Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+                intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+                intent.putExtra("position", position);
+                intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+                startService(intent);
+            }else {
+                if (position > playlistPosition){
+                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                    intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+                    intent.putExtra("position", position);
+                    intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+                    startService(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(), "Disable swipe left", Toast.LENGTH_SHORT).show();
+                    viewPager.setCurrentItem(playlistPosition, true);
+                }
+            }
         }
     }
 
