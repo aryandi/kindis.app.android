@@ -120,7 +120,9 @@
         <activity
             android:name=".view.activity.Account.TransactionHistory"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Detail.More"></activity>
+        <activity android:name=".view.activity.Detail.More"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

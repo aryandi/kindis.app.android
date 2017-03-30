@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.PlaylistModel;
+import co.digdaya.kindis.view.activity.Detail.More;
 import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
@@ -31,7 +33,7 @@ import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Discover extends Fragment {
+public class Discover extends Fragment implements View.OnClickListener {
     AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
@@ -40,6 +42,7 @@ public class Discover extends Fragment {
     RelativeLayout labelPremium, labelTop, labelAlbum, labelArtist, labelSingle, labelRandom1, labelRandom2;
     TextView textRandom1, textRandom2;
     RecyclerView recyclerViewPremium, recyclerViewTop, recyclerViewAlbum, recyclerViewArtist, recyclerViewSingle, recyclerViewRandom1, recyclerViewRandom2;
+    TextView btnMorePremium, btnMoreTop, btnMoreAlbum, btnMoreArtist, btnMoreSingle, btnMoreRandom1, btnMoreRandom2;
 
 
     ArrayList<PlaylistModel> listPremium = new ArrayList<PlaylistModel>();
@@ -80,6 +83,14 @@ public class Discover extends Fragment {
         textRandom1 = (TextView) view.findViewById(R.id.text_random1);
         textRandom2 = (TextView) view.findViewById(R.id.text_random2);
 
+        btnMorePremium = (TextView) view.findViewById(R.id.btn_more_premium);
+        btnMoreTop = (TextView) view.findViewById(R.id.btn_more_top);
+        btnMoreAlbum = (TextView) view.findViewById(R.id.btn_more_album);
+        btnMoreArtist = (TextView) view.findViewById(R.id.btn_more_artist);
+        btnMoreSingle = (TextView) view.findViewById(R.id.btn_more_single);
+        btnMoreRandom1 = (TextView) view.findViewById(R.id.btn_more_random1);
+        btnMoreRandom2 = (TextView) view.findViewById(R.id.btn_more_random2);
+
         recyclerViewPremium = (RecyclerView) view.findViewById(R.id.list_premium);
         recyclerViewTop = (RecyclerView) view.findViewById(R.id.list_top);
         recyclerViewAlbum = (RecyclerView) view.findViewById(R.id.list_album);
@@ -95,6 +106,14 @@ public class Discover extends Fragment {
         recyclerViewSingle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRandom1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRandom2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+        btnMorePremium.setOnClickListener(this);
+        btnMoreTop.setOnClickListener(this);
+        btnMoreAlbum.setOnClickListener(this);
+        btnMoreArtist.setOnClickListener(this);
+        btnMoreSingle.setOnClickListener(this);
+        btnMoreRandom1.setOnClickListener(this);
+        btnMoreRandom2.setOnClickListener(this);
 
         getJSON();
     }
@@ -244,6 +263,42 @@ public class Discover extends Fragment {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(getActivity(), More.class);
+        switch (view.getId()){
+            case R.id.btn_more_premium:
+                intent.putExtra("title", "PREMIUM");
+                intent.putExtra("url", "playlist/more?channel_id=1&uid=10051608ad5470&page=0&limit=12");
+                startActivity(intent);
+                break;
+            case R.id.btn_more_top:
+                intent.putExtra("title", "TOP 10 PREMIUM");
+                intent.putExtra("url", "playlist/more?channel_id=1&uid=10051608ad5470&page=0&limit=12");
+                startActivity(intent);
+                break;
+            case R.id.btn_more_album:
+                intent.putExtra("title", "ALBUM");
+                intent.putExtra("url", "home/album_more?channel_id=1&uid=10051608ad5470&page=0&limit=12");
+                startActivity(intent);
+                break;
+            case R.id.btn_more_artist:
+                intent.putExtra("title", "ARTIST");
+                intent.putExtra("url", "home/album_more?channel_id=1&uid=10051608ad5470&page=0&limit=12");
+                startActivity(intent);
+                break;
+            case R.id.btn_more_single:
+                intent.putExtra("title", "SINGLE");
+                intent.putExtra("url", "home/single_more?channel_id=1&uid=10051608ad5470&page=0&limit=12");
+                startActivity(intent);
+                break;
+            case R.id.btn_more_random1:
+                break;
+            case R.id.btn_more_random2:
+                break;
         }
     }
 }

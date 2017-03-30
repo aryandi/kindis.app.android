@@ -26,6 +26,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_premium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -56,6 +57,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -86,6 +88,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_album"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -116,6 +119,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -146,6 +150,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_single"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -176,6 +181,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_random1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -206,6 +212,7 @@
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/btn_more_random2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
