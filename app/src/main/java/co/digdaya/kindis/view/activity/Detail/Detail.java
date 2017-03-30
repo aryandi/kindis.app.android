@@ -60,6 +60,7 @@ public class Detail extends BottomPlayerActivity {
     ArrayList<String> songPlaylist = new ArrayList<>();
     Dialog dialogPlaylis;
 
+    SessionHelper sessionHelper;
     String json;
     public Detail(){
         layout = R.layout.activity_detail;
@@ -92,6 +93,8 @@ public class Detail extends BottomPlayerActivity {
             }
         });
 
+        sessionHelper = new SessionHelper();
+
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         if (getIntent().getStringExtra("type").equals("genre")){
@@ -102,6 +105,8 @@ public class Detail extends BottomPlayerActivity {
             getDetail(url);
         }else if (getIntent().getStringExtra("type").equals("playlist")){
             getDetailPlaylist();
+        }else if (getIntent().getStringExtra("type").equals("premium")){
+            getListPremium();
         }
 
         titleToolbar.setVisibility(View.INVISIBLE);
@@ -278,6 +283,21 @@ public class Detail extends BottomPlayerActivity {
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+    }
+
+    //from premium
+    private void getListPremium(){
+        HashMap<String, String> param = new HashMap<>();
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        param.put("playlist_id", getIntent().getStringExtra("uid"));
+
+        new VolleyHelper().post(ApiHelper.DETAIL_PLAYLIST_PREMIUM, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                System.out.println(sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access")+"\n"+getIntent().getStringExtra("uid")+"\n"+response);
             }
         });
     }

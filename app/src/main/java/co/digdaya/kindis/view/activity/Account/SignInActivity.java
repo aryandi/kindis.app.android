@@ -310,6 +310,7 @@ public class SignInActivity extends AppCompatActivity {
         param.put("type_social", type_social);
         param.put("keyss", "QUTWnIZTyeMZBi0AI3IiXkgzTATH2Y8PEMACjH3ZUFE%3D");
 
+        System.out.println("app_id : "+app_id);
         volleyHelper.post(ApiHelper.LOGIN_SOCIAL, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {

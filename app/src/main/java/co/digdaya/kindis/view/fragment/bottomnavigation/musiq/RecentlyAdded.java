@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.model.PlaylistModel;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
+import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 
 
@@ -31,14 +33,16 @@ import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 public class RecentlyAdded extends Fragment {
     AdapterAlbum adapterAlbum;
     AdapterSongHorizontal adapterSongHorizontal;
+    AdapterPlaylistHorizontal adapterPlaylistHorizontal;
 
     RelativeLayout labelSingle, labelPlay, labelAlbum, labelPremium;
 
-    RecyclerView recyclerViewSingle, recyclerViewPLay, recyclerViewAlbum;
+    RecyclerView recyclerViewSingle, recyclerViewPLay, recyclerViewAlbum, recyclerViewPremium;
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listPlay = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listSingle = new ArrayList<HashMap<String, String>>();
+    ArrayList<PlaylistModel> listPremium = new ArrayList<PlaylistModel>();
 
     String json;
     Dialog dialogPlaylis;
@@ -67,10 +71,12 @@ public class RecentlyAdded extends Fragment {
         recyclerViewSingle = (RecyclerView) view.findViewById(R.id.list_single);
         recyclerViewPLay = (RecyclerView) view.findViewById(R.id.list_play);
         recyclerViewAlbum = (RecyclerView) view.findViewById(R.id.list_album);
+        recyclerViewPremium = (RecyclerView) view.findViewById(R.id.list_premium);
 
         recyclerViewSingle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewPLay.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewAlbum.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewPremium.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         getJSON();
     }
@@ -147,6 +153,18 @@ public class RecentlyAdded extends Fragment {
                 JSONArray premium = tab2.getJSONArray("top10premium");
                 if (premium.length()>0){
                     labelPremium.setVisibility(View.VISIBLE);
+                    recyclerViewPremium.setVisibility(View.VISIBLE);
+                    for (int i=0; i<premium.length(); i++){
+                        JSONObject data = premium.getJSONObject(i);
+                        PlaylistModel playlistModel = new PlaylistModel();
+                        playlistModel.setUid(data.optString("uid"));
+                        playlistModel.setName(data.optString("name"));
+                        playlistModel.setImage(data.optString("image"));
+                        listPremium.add(playlistModel);
+                    }
+                    adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), listPremium);
+                    recyclerViewPremium.setAdapter(adapterPlaylistHorizontal);
+                    recyclerViewPremium.setNestedScrollingEnabled(false);
                 }
             }
         } catch (JSONException e) {

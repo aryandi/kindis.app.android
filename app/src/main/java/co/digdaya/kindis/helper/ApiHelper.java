@@ -48,6 +48,8 @@ public class ApiHelper {
     public static final String REMOVE_ITEM_PLAYLIST = BASE_URL + "playlist/remove_item";
     public static final String DELETE_PLAYLIST = BASE_URL + "playlist/delete";
 
+    public static final String DETAIL_PLAYLIST_PREMIUM = BASE_URL + "playlist/pre_item";
+
     public static final String REFRESH_TOKEN = BASE_URL + "sign/refresh_token";
 
     public static final String UPDATE_PROFILE = BASE_URL + "profile/update_info";

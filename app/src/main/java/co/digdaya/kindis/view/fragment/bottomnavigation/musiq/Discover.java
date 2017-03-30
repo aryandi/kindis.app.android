@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.model.PlaylistModel;
+import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
@@ -33,12 +35,15 @@ public class Discover extends Fragment {
     AdapterAlbum adapterAlbum;
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
+    AdapterPlaylistHorizontal adapterPlaylistHorizontal;
 
     RelativeLayout labelPremium, labelTop, labelAlbum, labelArtist, labelSingle, labelRandom1, labelRandom2;
     TextView textRandom1, textRandom2;
     RecyclerView recyclerViewPremium, recyclerViewTop, recyclerViewAlbum, recyclerViewArtist, recyclerViewSingle, recyclerViewRandom1, recyclerViewRandom2;
 
 
+    ArrayList<PlaylistModel> listPremium = new ArrayList<PlaylistModel>();
+    ArrayList<PlaylistModel> listTop = new ArrayList<PlaylistModel>();
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
@@ -104,11 +109,36 @@ public class Discover extends Fragment {
                 JSONArray premium = tab1.getJSONArray("premium");
                 if (premium.length()>0){
                     labelPremium.setVisibility(View.VISIBLE);
+                    recyclerViewPremium.setVisibility(View.VISIBLE);
+                    for (int i=0; i<premium.length(); i++){
+                        JSONObject data = premium.getJSONObject(i);
+                        PlaylistModel playlistModel = new PlaylistModel();
+                        playlistModel.setUid(data.optString("uid"));
+                        playlistModel.setName(data.optString("name"));
+                        playlistModel.setImage(data.optString("image"));
+                        listPremium.add(playlistModel);
+                    }
+                    adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), listPremium);
+                    recyclerViewPremium.setAdapter(adapterPlaylistHorizontal);
+                    recyclerViewPremium.setNestedScrollingEnabled(false);
                 }
 
                 JSONArray top = tab1.getJSONArray("top10premium");
                 if (top.length()>0){
                     labelTop.setVisibility(View.VISIBLE);
+                    recyclerViewTop.setVisibility(View.VISIBLE);
+
+                    for (int i=0; i<top.length(); i++){
+                        JSONObject data = top.getJSONObject(i);
+                        PlaylistModel playlistModel = new PlaylistModel();
+                        playlistModel.setUid(data.optString("uid"));
+                        playlistModel.setName(data.optString("name"));
+                        playlistModel.setImage(data.optString("image"));
+                        listTop.add(playlistModel);
+                    }
+                    adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), listTop);
+                    recyclerViewTop.setAdapter(adapterPlaylistHorizontal);
+                    recyclerViewTop.setNestedScrollingEnabled(false);
                 }
 
                 JSONArray album = tab1.getJSONArray("album");
