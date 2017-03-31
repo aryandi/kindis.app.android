@@ -103,10 +103,10 @@ public class RecentlyAdded extends Fragment {
                         map.put("is_premium", data.optString("is_premium"));
                         listSingle.add(map);
                     }
-
+/*
                     adapterSongHorizontal = new AdapterSongHorizontal(getActivity(), listSingle);
                     recyclerViewSingle.setAdapter(adapterSongHorizontal);
-                    recyclerViewSingle.setNestedScrollingEnabled(false);
+                    recyclerViewSingle.setNestedScrollingEnabled(false);*/
                 }
 
                 JSONArray play = tab2.getJSONArray("play");
@@ -125,9 +125,9 @@ public class RecentlyAdded extends Fragment {
                         listPlay.add(map);
                     }
 
-                    adapterSongHorizontal = new AdapterSongHorizontal(getActivity(), listPlay);
+                    /*adapterSongHorizontal = new AdapterSongHorizontal(getActivity(), listPlay);
                     recyclerViewPLay.setAdapter(adapterSongHorizontal);
-                    recyclerViewPLay.setNestedScrollingEnabled(false);
+                    recyclerViewPLay.setNestedScrollingEnabled(false);*/
                 }
 
                 //album

@@ -25,6 +25,7 @@ import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.model.DataSingle;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.Item;
 
@@ -32,12 +33,11 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     Activity context;
     Dialog dialogPremium;
     DialogGetPremium dialogGetPremium;
-    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> dataSong;
+    DataSingle dataSingle;
 
-    public AdapterSongHorizontal(Activity context, ArrayList<HashMap<String, String>> listSong){
+    public AdapterSongHorizontal(Activity context, DataSingle dataSingle){
         this.context = context;
-        this.listSong = listSong;
+        this.dataSingle = dataSingle;
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
     }
 
@@ -55,29 +55,27 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
-        dataSong = listSong.get(position);
 
-        final String uid = dataSong.get("uid");
-        final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
-
+        title.setText(dataSingle.data.get(position).title);
+        subTitle.setText(dataSingle.data.get(position).artist);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSong.get("image"))
+                .load(ApiHelper.BASE_URL_IMAGE+dataSingle.data.get(position).image)
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
-        title.setText(dataSong.get("title"));
-        subTitle.setText(dataSong.get("subtitle"));
 
         if (getItemViewType(position) == 1){
             badgePremium.setVisibility(View.VISIBLE);
         }
 
+
+        final String uid = dataSingle.data.get(position).uid;
+        final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("kontollll", isAccountPremium+" = "+getItemViewType(position));
                 if (isAccountPremium == getItemViewType(position) || isAccountPremium == 1){
                     Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                     new PlayerSessionHelper().setPreferences(context, "index", "1");
@@ -94,7 +92,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return listSong.size();
+        return dataSingle.data.size();
     }
 
     @Override
@@ -104,8 +102,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemViewType(int position) {
-        dataSong = listSong.get(position);
-        int isPremium = Integer.parseInt(dataSong.get("is_premium"));
+        int isPremium = Integer.parseInt(dataSingle.data.get(position).is_premium);
         return isPremium;
     }
 }

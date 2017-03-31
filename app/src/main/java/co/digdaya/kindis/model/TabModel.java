@@ -24,5 +24,7 @@ public class TabModel {
         public String type_content;
         @SerializedName("type_content_id")
         public String type_content_id;
+        @SerializedName("data")
+        public String data;
     }
 }
