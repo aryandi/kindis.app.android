@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="140dp"
     android:layout_height="wrap_content"
-    android:layout_marginRight="8dp"
     android:background="@android:color/transparent">
     <ImageView
         android:id="@+id/image"
@@ -16,8 +15,8 @@
         android:id="@+id/badge_premium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_badge_premium"
         android:layout_margin="8dp"
+        android:src="@drawable/ic_badge_premium"
         android:visibility="gone"/>
     <co.digdaya.kindis.custom.TextViewBold
         android:id="@+id/title"

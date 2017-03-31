@@ -19,13 +19,16 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 
 public class More extends AppCompatActivity {
     TextView title;
     ImageButton btnBack;
     RecyclerView listViewMore;
-    ArrayList<HashMap<String, String>> listMore = new ArrayList<>();
+
+    String url;
+    int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,19 @@ public class More extends AppCompatActivity {
                 finish();
             }
         });
+
+        type = getIntent().getIntExtra("type", 1);
+        switch (type){
+            case 2:
+                url = "home/album_more?channel_id=1&uid="+new SessionHelper().getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                break;
+        }
+
         getDataMore();
     }
 
     private void getDataMore(){
-        new VolleyHelper().get(ApiHelper.BASE_URL + getIntent().getStringExtra("url"), new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.BASE_URL + url, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 System.out.println("getDataMore : "+response);

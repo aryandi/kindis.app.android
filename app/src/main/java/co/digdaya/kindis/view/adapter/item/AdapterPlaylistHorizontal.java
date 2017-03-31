@@ -49,7 +49,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, int position) {
+    public void onBindViewHolder(Item holder, final int position) {
         ImageView imageView = holder.imageView;
         ImageView badgePremium = holder.badgePremium;
         TextView title = holder.title;
@@ -57,6 +57,10 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         RelativeLayout click = holder.click;
 
         final DataPlaylist.Data data = dataPlaylist.data.get(position);
+        badgePremium.setVisibility(View.VISIBLE);
+        if (getItemViewType(position) == 0){
+            badgePremium.setImageResource(R.drawable.ic_badge_sponsored);
+        }
         title.setText(data.name);
         Glide.with(context)
                 .load(ApiHelper.BASE_URL_IMAGE+data.image)
@@ -64,16 +68,20 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
-
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Detail.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid", data.uid);
-                intent.putExtra("type", "premium");
-                intent.putExtra("isMyPlaylist", "");
-                context.startActivity(intent);
+                if (getItemViewType(position)==0){
+                    Intent intent = new Intent(context, Detail.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", data.uid);
+                    intent.putExtra("type", "premium");
+                    intent.putExtra("isMyPlaylist", "");
+                    context.startActivity(intent);
+                }else {
+                    dialogGetPremium.showDialog();
+                }
+
             }
         });
     }
@@ -81,5 +89,10 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemCount() {
         return dataPlaylist.data.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return Integer.parseInt(dataPlaylist.data.get(position).is_premium);
     }
 }

@@ -194,6 +194,9 @@ public class Musiq extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                    imageSlider.setAdapter(adapterBannerEmpty);
                 }
             }
         });

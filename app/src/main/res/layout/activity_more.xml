@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="TEst"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="20sp"/>
     </LinearLayout>
