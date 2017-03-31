@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.model.DataPlaylist;
 import co.digdaya.kindis.model.PlaylistModel;
 import co.digdaya.kindis.view.activity.Detail.Detail;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
@@ -32,13 +33,11 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     Activity context;
     Dialog dialogPremium;
     DialogGetPremium dialogGetPremium;
-    ArrayList<PlaylistModel> listPremium = new ArrayList<PlaylistModel>();
-    HashMap<String, String> dataItem;
-    PlaylistModel playlistModel;
+    DataPlaylist dataPlaylist;
 
-    public AdapterPlaylistHorizontal(Activity context, ArrayList<PlaylistModel> listPremium){
+    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist){
         this.context = context;
-        this.listPremium = listPremium;
+        this.dataPlaylist = dataPlaylist;
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
     }
 
@@ -57,11 +56,10 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        playlistModel = listPremium.get(position);
-
-        title.setText(playlistModel.getName());
+        final DataPlaylist.Data data = dataPlaylist.data.get(position);
+        title.setText(data.name);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+playlistModel.getImage())
+                .load(ApiHelper.BASE_URL_IMAGE+data.image)
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
@@ -72,7 +70,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid", playlistModel.getUid());
+                intent.putExtra("uid", data.uid);
                 intent.putExtra("type", "premium");
                 intent.putExtra("isMyPlaylist", "");
                 context.startActivity(intent);
@@ -82,6 +80,6 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return listPremium.size();
+        return dataPlaylist.data.size();
     }
 }

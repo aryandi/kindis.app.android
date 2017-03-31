@@ -13,16 +13,23 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+        <!--<RelativeLayout
             android:id="@+id/label_premium"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:layout_height="wrap_content">
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/text_premium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="PREMIUM"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -41,8 +48,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"/>
 
         <RelativeLayout
             android:id="@+id/label_top"
@@ -50,10 +56,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/text_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="TOP 10 PREMIUM"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -81,10 +89,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/text_album"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="ALBUM"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -112,10 +122,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/text_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="ARTIST"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -143,10 +155,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/text_single"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="SINGLE"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -178,6 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -209,6 +224,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textAllCaps="true"
                 android:textColor="@color/white"/>
 
             <co.digdaya.kindis.custom.TextViewRegular
@@ -228,6 +244,6 @@
             android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone"/>-->
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

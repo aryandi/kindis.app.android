@@ -78,7 +78,7 @@ public class RecentlyAdded extends Fragment {
         recyclerViewAlbum.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewPremium.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        getJSON();
+        //getJSON();
     }
 
     private void getJSON(){
@@ -162,7 +162,7 @@ public class RecentlyAdded extends Fragment {
                         playlistModel.setImage(data.optString("image"));
                         listPremium.add(playlistModel);
                     }
-                    adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), listPremium);
+                    //adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), listPremium);
                     recyclerViewPremium.setAdapter(adapterPlaylistHorizontal);
                     recyclerViewPremium.setNestedScrollingEnabled(false);
                 }

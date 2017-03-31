@@ -53,7 +53,7 @@ public class Genres extends Fragment {
         gridView = (RecyclerView) view.findViewById(R.id.listview_genre);
         gridView.setLayoutManager(new GridLayoutManager(getContext(),3));
 
-        getListGenre();
+        //getListGenre();
     }
 
     void getListGenre(){

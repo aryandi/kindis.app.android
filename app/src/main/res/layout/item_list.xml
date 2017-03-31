@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <co.digdaya.kindis.custom.TextViewBold
+        android:id="@+id/text_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="PREMIUM"
+        android:textAllCaps="true"
+        android:textColor="@color/white"/>
+
+    <co.digdaya.kindis.custom.TextViewRegular
+        android:id="@+id/btn_more_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="16dp"
+        android:textSize="14sp"
+        android:text="MORE"
+        android:textColor="@color/white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_below="@+id/text_list"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
