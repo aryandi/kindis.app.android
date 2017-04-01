@@ -125,5 +125,17 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:background="@drawable/button_rounded"/>
+
+
+        <co.digdaya.kindis.custom.ButtonSemiBold
+            android:id="@+id/btn_premium"
+            android:layout_width="108dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:layout_marginLeft="16dp"
+            android:text="BUY"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/button_rounded_orange"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

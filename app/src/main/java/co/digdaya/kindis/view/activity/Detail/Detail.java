@@ -52,7 +52,7 @@ public class Detail extends BottomPlayerActivity {
     TextView titleDetail;
     TextView description;
     ImageView backDrop;
-    Button btnPlayAll;
+    Button btnPlayAll, btnPremium;
 
     RecyclerView listViewSong;
     AdapterSong adapterSong;
@@ -80,6 +80,7 @@ public class Detail extends BottomPlayerActivity {
         description = (TextView) findViewById(R.id.description);
         backDrop = (ImageView) findViewById(R.id.backdrop);
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
+        btnPremium = (Button) findViewById(R.id.btn_premium);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
@@ -289,6 +290,9 @@ public class Detail extends BottomPlayerActivity {
 
     //from premium
     private void getListPremium(){
+        if (getIntent().getIntExtra("playlisttype", 0)==1){
+            btnPremium.setVisibility(View.VISIBLE);
+        }
         HashMap<String, String> param = new HashMap<>();
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
@@ -297,7 +301,35 @@ public class Detail extends BottomPlayerActivity {
         new VolleyHelper().post(ApiHelper.DETAIL_PLAYLIST_PREMIUM, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                System.out.println(sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access")+"\n"+getIntent().getStringExtra("uid")+"\n"+response);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            JSONObject playlist = result.getJSONObject("playlist");
+                            titleToolbar.setText(playlist.getString("playlist_name"));
+                            titleDetail.setText(playlist.getString("playlist_name"));
+
+                            JSONArray single = playlist.getJSONArray("singles");
+                            for (int i=0; i<single.length(); i++){
+                                JSONObject data = single.getJSONObject(i);
+                                HashMap<String, String> map = new HashMap<String, String>();
+                                map.put("uid", data.optString("uid"));
+                                map.put("title", data.optString("title"));
+                                map.put("subtitle", data.optString("artist"));
+                                map.put("is_premium", data.optString("is_premium"));
+                                listSong.add(map);
+                                songPlaylist.add(data.optString("uid"));
+                            }
+
+                            adapterSong = new AdapterSong(Detail.this, listSong, "", null);
+                            listViewSong.setAdapter(adapterSong);
+                            listViewSong.setNestedScrollingEnabled(true);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

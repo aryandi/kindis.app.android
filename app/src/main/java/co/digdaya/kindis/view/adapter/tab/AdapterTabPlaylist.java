@@ -12,6 +12,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Genres;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
+import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist;
 import co.digdaya.kindis.view.fragment.navigationview.Notification;
 import co.digdaya.kindis.view.fragment.signin.SignInFragment;
 import co.digdaya.kindis.view.fragment.signin.SignUpFragment;
@@ -35,7 +36,7 @@ public class AdapterTabPlaylist extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 //Fragement for Android Tab
-                return new SignInFragment();
+                return new Playlist();
             case 1:
                 //Fragment for Ios Tab
                 return new SignUpFragment();

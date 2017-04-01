@@ -53,6 +53,8 @@ public class Playlist extends Fragment implements View.OnClickListener {
     Button refresh;
     ProgressDialog loading;
 
+    SessionHelper sessionHelper;
+
     public Playlist() {
         // Required empty public constructor
     }
@@ -68,6 +70,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        sessionHelper = new SessionHelper();
+
         contCreatePlaylist = (LinearLayout) view.findViewById(R.id.layout_create_playlist);
         inputPlaylist = (EditText) view.findViewById(R.id.input_playlist);
         btnCreate = (Button) view.findViewById(R.id.btn_create);
@@ -172,6 +177,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
         Map<String, String> param = new HashMap<String, String>();
         param.put("user_id", new SessionHelper().getPreferences(getContext(), "user_id"));
         param.put("playlist_name", inputPlaylist.getText().toString());
+        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.CREATE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override

@@ -74,16 +74,13 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getItemViewType(position)==0){
-                    Intent intent = new Intent(context, Detail.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("uid", data.uid);
-                    intent.putExtra("type", "premium");
-                    intent.putExtra("isMyPlaylist", "");
-                    context.startActivity(intent);
-                }else {
-                    dialogGetPremium.showDialog();
-                }
+                Intent intent = new Intent(context, Detail.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", data.uid);
+                intent.putExtra("type", "premium");
+                intent.putExtra("isMyPlaylist", "");
+                intent.putExtra("playlisttype", getItemViewType(position));
+                context.startActivity(intent);
 
             }
         });

@@ -293,11 +293,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void getSongResources (String uid){
-        Log.d("playerservice", "getSongResource");
         Map<String, String> param = new HashMap<String, String>();
         param.put("single_id", uid);
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
-        param.put("token", sessionHelper.getPreferences(getApplicationContext(), "token"));
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+
+        System.out.println("Paramssongresource : "+uid+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
 
         playerSessionHelper.setPreferences(getApplicationContext(), "uid", uid);
         new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {

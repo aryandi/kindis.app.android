@@ -132,8 +132,8 @@ public class DetailInfaq extends BottomPlayerActivity implements View.OnClickLis
     }
 
     public void buyClick(View view) {
-        mHelper.launchPurchaseFlow(this, "purchased", 10001,
-                mPurchaseFinishedListener, "mypurchasetoken");
+        mHelper.launchPurchaseFlow(this, "co.digdaya.kindis.premium", 10001,
+                mPurchaseFinishedListener, "kindis123");
     }
 
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
