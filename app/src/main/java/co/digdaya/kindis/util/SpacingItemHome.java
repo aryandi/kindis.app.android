@@ -20,9 +20,9 @@ public class SpacingItemHome extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int itemPosition = parent.getChildAdapterPosition(view);
         if (itemPosition%2==0){
-            outRect.left = getDP(14);
+            outRect.left = getDP(16);
         }else {
-            outRect.right = getDP(14);
+            outRect.left = getDP(8);
         }
     }
 

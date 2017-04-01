@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import co.digdaya.kindis.util.MarginItemHorizontal;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -97,6 +98,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
         });
 
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        listViewAlbum.addItemDecoration(new MarginItemHorizontal(this));
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

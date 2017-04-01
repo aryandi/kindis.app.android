@@ -73,12 +73,12 @@
             android:orientation="vertical"
             android:background="@drawable/background"
             android:paddingTop="45dp"
-            android:paddingLeft="16dp"
             android:paddingBottom="16dp">
 
             <co.digdaya.kindis.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
                 android:textSize="14sp"
                 android:text="ALBUM"
                 android:textColor="@color/white"/>
@@ -91,6 +91,7 @@
 
             <co.digdaya.kindis.custom.TextViewBold
                 android:layout_marginTop="16dp"
+                android:paddingLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"

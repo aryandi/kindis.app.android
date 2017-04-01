@@ -4,7 +4,6 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,6 @@ public class RecentlyAdded extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         gson = new Gson();
 
@@ -61,8 +59,9 @@ public class RecentlyAdded extends Fragment {
                 JSONObject tab2 = result.getJSONObject("tab2");
 
                 //adapterListTab = new AdapterListTab(getActivity(), tab2Model);
-                recyclerView.setAdapter(adapterListTab);
+                /*recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));*/
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,7 +1,6 @@
 package co.digdaya.kindis.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +21,9 @@ public class MarginItemHorizontal extends RecyclerView.ItemDecoration {
         final int itemPosition = parent.getChildAdapterPosition(view);
         if (itemPosition == 0){
             outRect.left = getDP(16);
+        }else if (itemPosition == state.getItemCount()-1){
+            outRect.left = getDP(8);
+            outRect.right = getDP(16);
         }else {
             outRect.left = getDP(8);
         }

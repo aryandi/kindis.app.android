@@ -57,6 +57,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         final ImageButton btnMenu = holder.btnMenu;
         dataSong = listSong.get(position);
 
+        System.out.println("kontol : "+dataSong);
         final String uid = dataSong.get("uid");
         final String titles = dataSong.get("title");
         final String subTitles = dataSong.get("subtitle");

@@ -1,7 +1,6 @@
 package co.digdaya.kindis.view.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,20 +17,14 @@ import co.digdaya.kindis.model.DataAlbum;
 import co.digdaya.kindis.model.DataArtist;
 import co.digdaya.kindis.model.DataPlaylist;
 import co.digdaya.kindis.model.DataSingle;
-import co.digdaya.kindis.model.PlaylistModel;
 import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.util.MarginItemHorizontal;
 import co.digdaya.kindis.util.SpacingItemHome;
-import co.digdaya.kindis.util.SpacingItemInfaq;
 import co.digdaya.kindis.view.activity.Detail.More;
-import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterArtistNew;
 import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
-import co.digdaya.kindis.view.adapter.item.AdapterSong;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
-import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist;
-import co.digdaya.kindis.view.holder.Item;
 import co.digdaya.kindis.view.holder.ItemListTab;
 
 /**
@@ -102,7 +95,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
                 parseSingle(tabModel.tab1.get(position).data, recyclerView);
                 break;
             case 5:
-                parsePlaylist(tabModel.tab1.get(position).data, recyclerView);
+                parsePlaylist(tabModel.tab1.get(position).data, recyclerView, Integer.parseInt(tabModel.tab1.get(position).type_id));
                 break;
         }
     }
@@ -117,12 +110,12 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         return Integer.parseInt(tabModel.tab1.get(position).type_content_id);
     }
 
-    private void parsePlaylist(String s, RecyclerView recyclerView){
+    private void parsePlaylist(String s, RecyclerView recyclerView, int type){
         String json = "{ \"data\":"+s+"}";
 
         DataPlaylist playlistModel = gson.fromJson(json, DataPlaylist.class);
 
-        adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(context, playlistModel);
+        adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(context, playlistModel, type);
         recyclerView.setAdapter(adapterPlaylistHorizontal);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -133,7 +126,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
         System.out.println("AdapterAlbumNew : "+dataAlbum.data.get(0).title);
         adapterAlbum = new AdapterAlbumNew(context, dataAlbum);
-        recyclerView.setAdapter(adapterPlaylistHorizontal);
+        recyclerView.setAdapter(adapterAlbum);
         recyclerView.setNestedScrollingEnabled(false);
     }
 

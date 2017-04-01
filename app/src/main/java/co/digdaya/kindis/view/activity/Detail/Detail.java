@@ -313,7 +313,7 @@ public class Detail extends BottomPlayerActivity {
                 map.put("uid", summary.optString("uid"));
                 map.put("title", summary.optString("title"));
                 map.put("subtitle", subtitle);
-                map.put("is_premium", data.optString("is_premium"));
+                map.put("is_premium", summary.getString("is_premium"));
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }

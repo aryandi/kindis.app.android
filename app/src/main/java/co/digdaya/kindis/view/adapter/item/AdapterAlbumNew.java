@@ -50,8 +50,6 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        System.out.println("AdapterAlbumNew : "+dataAlbum.data.get(position).title);
-
         title.setText(dataAlbum.data.get(position).title);
         subTitle.setText(dataAlbum.data.get(position).year);
         Glide.with(context)

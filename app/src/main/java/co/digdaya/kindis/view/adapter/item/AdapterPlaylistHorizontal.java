@@ -14,13 +14,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.model.DataPlaylist;
-import co.digdaya.kindis.model.PlaylistModel;
 import co.digdaya.kindis.view.activity.Detail.Detail;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.Item;
@@ -34,16 +30,23 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     Dialog dialogPremium;
     DialogGetPremium dialogGetPremium;
     DataPlaylist dataPlaylist;
+    int type;
 
-    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist){
+    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist, int type){
         this.context = context;
         this.dataPlaylist = dataPlaylist;
+        this.type = type;
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
     }
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        View view;
+        if (type == 1){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more, parent, false);
+        }
         Item item= new Item(view);
         return item;
     }
