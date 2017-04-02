@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import co.digdaya.kindis.util.MarginItemHorizontal;
+import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;

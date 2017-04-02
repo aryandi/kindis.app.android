@@ -1,4 +1,4 @@
-package co.digdaya.kindis.util;
+package co.digdaya.kindis.util.SpacingItem;
 
 import android.app.Activity;
 import android.graphics.Rect;

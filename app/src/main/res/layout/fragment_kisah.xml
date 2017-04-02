@@ -16,90 +16,11 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_discover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="DISCOVER"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_discover"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/list_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_premium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="PREMIUM"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_premium"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="TOP 10 PREMIUM"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_top"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_storyteller"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="STORY TELLER"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_storyteller"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="THEME"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_theme"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 

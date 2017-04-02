@@ -4,6 +4,7 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.view.adapter.AdapterListTab;
 
 
@@ -44,7 +46,7 @@ public class RecentlyAdded extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
 
         gson = new Gson();
 
@@ -56,12 +58,13 @@ public class RecentlyAdded extends Fragment {
             JSONObject object = new JSONObject(json);
             if (object.getBoolean("status")){
                 JSONObject result = object.getJSONObject("result");
-                JSONObject tab2 = result.getJSONObject("tab2");
 
-                //adapterListTab = new AdapterListTab(getActivity(), tab2Model);
-                /*recyclerView.setAdapter(adapterListTab);
+                TabModel model = gson.fromJson(result.toString(), TabModel.class);
+
+                adapterListTab = new AdapterListTab(getActivity(), model, 2);
+                recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));*/
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             }
         } catch (JSONException e) {
             e.printStackTrace();

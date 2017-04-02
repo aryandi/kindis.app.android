@@ -5,18 +5,17 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@drawable/background">
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.fragment.bottomnavigation.musiq.Genres">
+        android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview_genre"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:padding="16dp"
-            android:layout_centerHorizontal="true"/>
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

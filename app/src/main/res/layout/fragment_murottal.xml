@@ -15,39 +15,11 @@
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_qori"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="QORI"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_qori"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="30dp"
+            android:id="@+id/list_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_surah"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="SURAH"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_surah"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

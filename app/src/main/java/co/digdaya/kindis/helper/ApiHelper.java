@@ -29,7 +29,7 @@ public class ApiHelper {
     public static final String DETAIL_GENRE = BASE_URL + "genre/items?genre_id=";
 
     public static final String MUSIQ = BASE_URL + "home/channel_andro?channel_id=1&uid=";
-    public static final String TAKLIM = BASE_URL + "home/channel?channel_id=9&uid=";
+    public static final String TAKLIM = BASE_URL + "home/channel_andro?channel_id=9&uid=";
 
     public static final String ITEM_ARTIST = BASE_URL + "artist/items?artist_id=";
     public static final String ITEM_ALBUM = BASE_URL + "album/items?album_id=";

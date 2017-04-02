@@ -12,17 +12,22 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.DataAlbum;
 import co.digdaya.kindis.model.DataArtist;
+import co.digdaya.kindis.model.DataGenre;
 import co.digdaya.kindis.model.DataPlaylist;
 import co.digdaya.kindis.model.DataSingle;
 import co.digdaya.kindis.model.TabModel;
-import co.digdaya.kindis.util.MarginItemHorizontal;
-import co.digdaya.kindis.util.SpacingItemHome;
+import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemHome;
 import co.digdaya.kindis.view.activity.Detail.More;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterArtistNew;
+import co.digdaya.kindis.view.adapter.item.AdapterGenreNew;
 import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 import co.digdaya.kindis.view.holder.ItemListTab;
@@ -34,15 +39,30 @@ import co.digdaya.kindis.view.holder.ItemListTab;
 public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
     Activity context;
     TabModel tabModel;
+    List<TabModel.Tab> tabs;
+
     AdapterPlaylistHorizontal adapterPlaylistHorizontal;
     AdapterAlbumNew adapterAlbum;
     AdapterSongHorizontal adapterSong;
     AdapterArtistNew adapterArtistNew;
+    AdapterGenreNew adapterGenre;
+
     Gson gson;
 
-    public AdapterListTab(Activity context, TabModel tabModel) {
+    public AdapterListTab(Activity context, TabModel tabModel, int tab) {
         this.context = context;
         this.tabModel = tabModel;
+        switch (tab){
+            case 1:
+                tabs = tabModel.tab1;
+                break;
+            case 2:
+                tabs = tabModel.tab2;
+                break;
+            case 3:
+                tabs = tabModel.tab3;
+                break;
+        }
         gson = new Gson();
     }
 
@@ -59,13 +79,13 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         TextView btnMore = holder.btnMore;
         final RecyclerView recyclerView = holder.list;
 
-        if (tabModel.tab1.get(position).data.length() < 10){
+        if (tabs.get(position).data.length() < 10){
             title.setVisibility(View.GONE);
             btnMore.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
         }
 
-        title.setText(tabModel.tab1.get(position).name);
+        title.setText(tabs.get(position).name);
         btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,38 +96,44 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
             }
         });
 
-        if (tabModel.tab1.get(position).type_id.equals("1")){
+        if (tabs.get(position).type_id.equals("1")){
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             recyclerView.addItemDecoration(new MarginItemHorizontal(context));
-        }else if (tabModel.tab1.get(position).type_id.equals("2")){
+        }else if (tabs.get(position).type_id.equals("2")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,2));
             recyclerView.addItemDecoration(new SpacingItemHome(context.getApplicationContext()));
+        }else if (tabs.get(position).type_id.equals("3")){
+            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+            recyclerView.addItemDecoration(new SpacingItemGenre(context));
         }
 
         switch (getItemViewType(position)){
             case 1:
-                parseArtist(tabModel.tab1.get(position).data, recyclerView);
+                parseArtist(tabs.get(position).data, recyclerView);
                 break;
             case 2:
-                parseAlbum(tabModel.tab1.get(position).data, recyclerView);
+                parseAlbum(tabs.get(position).data, recyclerView);
                 break;
             case 3:
-                parseSingle(tabModel.tab1.get(position).data, recyclerView);
+                parseSingle(tabs.get(position).data, recyclerView);
+                break;
+            case 4:
+                parseGenre(tabs.get(position).data, recyclerView);
                 break;
             case 5:
-                parsePlaylist(tabModel.tab1.get(position).data, recyclerView, Integer.parseInt(tabModel.tab1.get(position).type_id));
+                parsePlaylist(tabs.get(position).data, recyclerView, Integer.parseInt(tabs.get(position).type_id));
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return tabModel.tab1.size();
+        return tabs.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return Integer.parseInt(tabModel.tab1.get(position).type_content_id);
+        return Integer.parseInt(tabs.get(position).type_content_id);
     }
 
     private void parsePlaylist(String s, RecyclerView recyclerView, int type){
@@ -147,6 +173,16 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
         adapterArtistNew = new AdapterArtistNew(context, dataArtist);
         recyclerView.setAdapter(adapterArtistNew);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private void parseGenre(String s, RecyclerView recyclerView){
+        String json = "{ \"data\":"+s+"}";
+
+        DataGenre dataGenre = gson.fromJson(json, DataGenre.class);
+
+        adapterGenre = new AdapterGenreNew(context, dataGenre);
+        recyclerView.setAdapter(adapterGenre);
         recyclerView.setNestedScrollingEnabled(false);
     }
 }

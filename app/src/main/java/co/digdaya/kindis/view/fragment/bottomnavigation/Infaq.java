@@ -24,7 +24,7 @@ import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.InfaqModel;
 import co.digdaya.kindis.view.dialog.DialogLoading;
-import co.digdaya.kindis.util.SpacingItemInfaq;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemInfaq;
 import co.digdaya.kindis.view.adapter.AdapterBanner;
 import co.digdaya.kindis.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.view.adapter.item.AdapterInfaq;

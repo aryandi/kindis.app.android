@@ -4,35 +4,32 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.json.JSONArray;
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import co.digdaya.kindis.R;
-import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.view.adapter.item.AdapterGenre;
+import co.digdaya.kindis.model.TabModel;
+import co.digdaya.kindis.view.adapter.AdapterListTab;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Genres extends Fragment {
-    RecyclerView gridView;
-    VolleyHelper volleyHelper;
-    ArrayList<HashMap<String, String>> listGenre = new ArrayList<HashMap<String, String>>();
-    AdapterGenre adapterGenre;
-
+    AdapterListTab adapterListTab;
+    RecyclerView recyclerView;
 
     String json;
+    Gson gson;
+
     public Genres(String json) {
         this.json = json;
     }
@@ -49,30 +46,29 @@ public class Genres extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        volleyHelper = new VolleyHelper();
+        /*volleyHelper = new VolleyHelper();
         gridView = (RecyclerView) view.findViewById(R.id.listview_genre);
-        gridView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        gridView.setLayoutManager(new GridLayoutManager(getContext(),3));*/
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
 
-        //getListGenre();
+        gson = new Gson();
+
+        getListGenre();
     }
 
     void getListGenre(){
-        listGenre.clear();
         try {
             JSONObject object = new JSONObject(json);
-            JSONObject result = object.getJSONObject("result");
-            JSONObject tab3 = result.getJSONObject("tab3");
-            JSONArray genre = tab3.getJSONArray("genre");
-            for (int i=0; i<genre.length(); i++){{
-                JSONObject data = genre.getJSONObject(i);
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("uid", data.optString("uid"));
-                map.put("title", data.optString("title"));
-                map.put("image", data.optString("image"));
-                listGenre.add(map);
-            }}
-            adapterGenre = new AdapterGenre(getContext(), listGenre);
-            gridView.setAdapter(adapterGenre);
+            if (object.getBoolean("status")){
+                JSONObject result = object.getJSONObject("result");
+
+                TabModel model = gson.fromJson(result.toString(), TabModel.class);
+
+                adapterListTab = new AdapterListTab(getActivity(), model, 3);
+                recyclerView.setAdapter(adapterListTab);
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

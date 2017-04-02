@@ -1,26 +1,26 @@
-package co.digdaya.kindis.util;
+package co.digdaya.kindis.util.SpacingItem;
 
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
- * Created by DELL on 3/14/2017.
+ * Created by vincenttp on 4/2/2017.
  */
 
-public class SpacingItemInfaq extends RecyclerView.ItemDecoration {
+public class SpacingItemGenre extends RecyclerView.ItemDecoration {
     Context context;
 
-    public SpacingItemInfaq(Context context) {
+    public SpacingItemGenre(Context context) {
         this.context = context;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        final int itemPosition = parent.getChildAdapterPosition(view);
         outRect.left = getDP(16);
-        outRect.top = getDP(16);
+        outRect.bottom = getDP(16);
     }
 
     private int getDP(int dp){

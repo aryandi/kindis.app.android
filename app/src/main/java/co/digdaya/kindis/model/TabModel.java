@@ -11,9 +11,15 @@ import java.util.List;
 public class TabModel {
 
     @SerializedName("tab1")
-    public List<Tab2> tab1;
+    public List<Tab> tab1;
 
-    public static class Tab2 {
+    @SerializedName("tab2")
+    public List<Tab> tab2;
+
+    @SerializedName("tab3")
+    public List<Tab> tab3;
+
+    public static class Tab {
         @SerializedName("name")
         public String name;
         @SerializedName("type_id")
