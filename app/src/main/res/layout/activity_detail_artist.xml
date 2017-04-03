@@ -66,12 +66,12 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingBottom="58dp"
+        android:background="@drawable/background"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background"
             android:paddingTop="45dp"
             android:paddingBottom="16dp">
 

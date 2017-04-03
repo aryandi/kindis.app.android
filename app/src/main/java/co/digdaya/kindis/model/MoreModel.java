@@ -22,4 +22,9 @@ public class MoreModel {
         @SerializedName("result")
         public List<DataPlaylist.Data> result;
     }
+
+    public static class ArtistsMore{
+        @SerializedName("result")
+        public List<DataArtist.Data> result;
+    }
 }

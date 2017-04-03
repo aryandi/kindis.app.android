@@ -28,6 +28,7 @@ import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemMore;
 import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.more.AdapterMoreAlbum;
+import co.digdaya.kindis.view.adapter.more.AdapterMoreArtist;
 import co.digdaya.kindis.view.adapter.more.AdapterMorePlaylist;
 import co.digdaya.kindis.view.adapter.more.AdapterMoreSingle;
 
@@ -44,6 +45,7 @@ public class More extends BottomPlayerActivity {
     AdapterMoreAlbum adapterMoreAlbum;
     AdapterMoreSingle adapterMoreSingle;
     AdapterMorePlaylist adapterMorePlaylist;
+    AdapterMoreArtist adapterMoreArtist;
 
     public More() {
         layout = R.layout.activity_more;
@@ -72,6 +74,9 @@ public class More extends BottomPlayerActivity {
 
         type = getIntent().getIntExtra("type", 1);
         switch (type){
+            case 1:
+                url = "home/artist_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                break;
             case 2:
                 url = "home/album_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
                 break;
@@ -95,6 +100,11 @@ public class More extends BottomPlayerActivity {
                         JSONObject object = new JSONObject(response);
 
                         switch (type){
+                            case 1:
+                                MoreModel.ArtistsMore artistsMore = gson.fromJson(object.toString(), MoreModel.ArtistsMore.class);
+                                adapterMoreArtist = new AdapterMoreArtist(More.this, artistsMore);
+                                listViewMore.setAdapter(adapterMoreArtist);
+                                break;
                             case 2:
                                 MoreModel.AlbumMore albumMore = gson.fromJson(object.toString(), MoreModel.AlbumMore.class);
                                 adapterMoreAlbum = new AdapterMoreAlbum(albumMore, getApplicationContext());
