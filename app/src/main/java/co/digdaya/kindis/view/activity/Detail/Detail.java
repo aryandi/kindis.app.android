@@ -139,7 +139,6 @@ public class Detail extends BottomPlayerActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
-                Log.d("kontoljson", json);
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));

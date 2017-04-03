@@ -59,7 +59,7 @@ public class Kisah extends Fragment {
 
                 TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
 
-                adapterListTab = new AdapterListTab(getActivity(), tabModel, 2);
+                adapterListTab = new AdapterListTab(getActivity(), tabModel, 2, 9);
                 recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
             }

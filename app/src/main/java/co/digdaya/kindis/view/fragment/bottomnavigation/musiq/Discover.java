@@ -62,7 +62,7 @@ public class Discover extends Fragment {
                 JSONObject result = object.getJSONObject("result");
                 TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
 
-                adapterListTab = new AdapterListTab(getActivity(), tabModel, 1);
+                adapterListTab = new AdapterListTab(getActivity(), tabModel, 1, 1);
                 recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
             }

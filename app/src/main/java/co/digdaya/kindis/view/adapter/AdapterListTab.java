@@ -48,10 +48,12 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
     AdapterGenreNew adapterGenre;
 
     Gson gson;
+    int menuType;
 
-    public AdapterListTab(Activity context, TabModel tabModel, int tab) {
+    public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType) {
         this.context = context;
         this.tabModel = tabModel;
+        this.menuType = menuType;
         switch (tab){
             case 1:
                 tabs = tabModel.tab1;
@@ -86,15 +88,21 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         }
 
         title.setText(tabs.get(position).name);
-        btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, More.class);
-                intent.putExtra("title", tabModel.tab1.get(position).name);
-                intent.putExtra("type", getItemViewType(position));
-                context.startActivity(intent);
-            }
-        });
+
+        if (tabs.get(position).is_more.equals("1")){
+            btnMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, More.class);
+                    intent.putExtra("title", tabs.get(position).name);
+                    intent.putExtra("type", getItemViewType(position));
+                    intent.putExtra("menuType", menuType);
+                    context.startActivity(intent);
+                }
+            });
+        }else {
+            btnMore.setVisibility(View.GONE);
+        }
 
         if (tabs.get(position).type_id.equals("1")){
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));

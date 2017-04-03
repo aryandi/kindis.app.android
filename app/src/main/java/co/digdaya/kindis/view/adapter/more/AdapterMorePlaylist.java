@@ -1,7 +1,6 @@
-package co.digdaya.kindis.view.adapter.item;
+package co.digdaya.kindis.view.adapter.more;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,37 +15,28 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
-import co.digdaya.kindis.model.DataPlaylist;
+import co.digdaya.kindis.model.MoreModel;
 import co.digdaya.kindis.view.activity.Detail.Detail;
-import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.Item;
 
+import static android.R.attr.data;
+
 /**
- * Created by DELL on 3/30/2017.
+ * Created by DELL on 4/3/2017.
  */
 
-public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
+public class AdapterMorePlaylist extends RecyclerView.Adapter<Item> {
     Activity context;
-    Dialog dialogPremium;
-    DialogGetPremium dialogGetPremium;
-    DataPlaylist dataPlaylist;
-    int type;
+    MoreModel.PlaylisMore playlisMore;
 
-    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist, int type){
+    public AdapterMorePlaylist(Activity context, MoreModel.PlaylisMore playlisMore) {
         this.context = context;
-        this.dataPlaylist = dataPlaylist;
-        this.type = type;
-        dialogGetPremium = new DialogGetPremium(context, dialogPremium);
+        this.playlisMore = playlisMore;
     }
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
-        if (type == 1){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
-        }else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more, parent, false);
-        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more, parent, false);
         Item item= new Item(view);
         return item;
     }
@@ -59,25 +49,26 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        final DataPlaylist.Data data = dataPlaylist.data.get(position);
-        badgePremium.setVisibility(View.VISIBLE);
-        if (getItemViewType(position) == 0){
-            badgePremium.setImageResource(R.drawable.ic_badge_sponsored);
-        }
-        title.setText(data.name);
+        title.setText(playlisMore.result.get(position).name);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+data.image)
+                .load(ApiHelper.BASE_URL_IMAGE+playlisMore.result.get(position).image)
+                .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
+
+        badgePremium.setVisibility(View.VISIBLE);
+        if (getItemViewType(position) == 0){
+            badgePremium.setImageResource(R.drawable.ic_badge_sponsored);
+        }
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("uid", data.uid);
+                intent.putExtra("uid", playlisMore.result.get(position).uid);
                 intent.putExtra("type", "premium");
                 intent.putExtra("isMyPlaylist", "");
                 intent.putExtra("playlisttype", getItemViewType(position));
@@ -88,11 +79,11 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return dataPlaylist.data.size();
+        return playlisMore.result.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return Integer.parseInt(dataPlaylist.data.get(position).is_premium);
+        return Integer.parseInt(playlisMore.result.get(position).is_premium);
     }
 }

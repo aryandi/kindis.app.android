@@ -61,7 +61,7 @@ public class RecentlyAdded extends Fragment {
 
                 TabModel model = gson.fromJson(result.toString(), TabModel.class);
 
-                adapterListTab = new AdapterListTab(getActivity(), model, 2);
+                adapterListTab = new AdapterListTab(getActivity(), model, 2, 1);
                 recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

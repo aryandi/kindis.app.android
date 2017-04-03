@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_more"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="co.digdaya.kindis.view.activity.Detail.More">
 
     <LinearLayout
+        android:id="@+id/cont_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/dark_jungle_green"
@@ -27,8 +27,24 @@
             android:textColor="@color/white"
             android:textSize="20sp"/>
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_more"
+        android:layout_below="@+id/cont_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:paddingBottom="58dp"
+        android:background="@drawable/background"/>
+
+    <LinearLayout
+        android:id="@+id/cont_bottom_player"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true">
+        <include
+            layout="@layout/layout_bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>
