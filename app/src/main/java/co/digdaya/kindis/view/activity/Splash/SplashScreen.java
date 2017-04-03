@@ -6,8 +6,16 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.view.activity.Account.SignInActivity;
 
 public class SplashScreen extends AppCompatActivity {
     SessionHelper sessionHelper;
@@ -43,14 +51,47 @@ public class SplashScreen extends AppCompatActivity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 if (sessionHelper.getPreferences(getApplicationContext(), "status").equals("1")){
-                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                    startActivity(i);
+                    wasLogin();
                 }else {
-                    Intent i = new Intent(SplashScreen.this, Walkthrough.class);
-                    startActivity(i);
+                    notLogin();
                 }
-                finish();
             }
         }, 1000);
+    }
+
+    private void notLogin(){
+        Intent i = new Intent(SplashScreen.this, Walkthrough.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void wasLogin(){
+        System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_refresh")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        HashMap<String, String> param = new HashMap<>();
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                System.out.println(response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("status")){
+                        JSONObject result = object.getJSONObject("result");
+                        sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
+                        sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        startActivity(i);
+                    }else {
+                        Intent i = new Intent(SplashScreen.this, SignInActivity.class);
+                        startActivity(i);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }
