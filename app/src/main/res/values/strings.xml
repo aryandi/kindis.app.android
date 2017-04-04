@@ -14,9 +14,17 @@
     <string name="taklim">Taklim</string>
     <string name="infaq">Infaq</string>
     <string name="playlist">My Playlist</string>
+
+    <!--fb-->
     <string name="facebook_app_id">640290122840990</string>
     <string name="fb_login_protocol_scheme">fb640290122840990</string>
+    <!--twitter-->
     <string name="twitter_key">PdLzmoJOddNBQclBKDrsqYA07</string>
     <string name="twitter_secret">WQ3ZM5uEFSPtpc3a2G3cfBAMZnSHgNHIwc6ljhLW7PaiRj0mez</string>
+    <!--in-app billing-->
     <string name="base64EncodedPublicKey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmsi9LnWnTTi3vUtA+y6hl97zL5sGBfkKm86Qy6PbR91Far2T8vamjTX1jTD+7hHbyb5hwmbdW71vvufeD5rkFDDNwE37JSINzbPqEe97KJ/2DGvS+2pTI/OBxw24B1sdTsaMjO+fqgc38oMHn722fHeuYLuyOkEaAzjrhGmILaYBvuD/yy8KdMD0VLhy1JOb08XKOxdu9Uusq9OH4oslSC2IVosdNmUWQeMoQzjHbyaEB2NHJSshSaRb3+CDZ7eVCkh7whPjdvbH5X+3yUrfiU66ajs46IL0dVA+2jD6cHP9jlULdkOhKV0GN0F5NKaiAawukklOdwMZBcw7P1SH3wIDAQAB</string>
+    <!--midtrans-->
+    <string name="md_merchant_id">M101999</string>
+    <string name="md_client_key">VT-client-gqjNZEwZrA-tGvQj</string>
+    <string name="md_secret_key">VT-server-W1j6hQExX51hPp-p8hjiuEKq</string>
 </resources>

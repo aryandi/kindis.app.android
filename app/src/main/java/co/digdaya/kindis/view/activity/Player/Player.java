@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -34,7 +35,7 @@ import co.digdaya.kindis.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.view.adapter.AdapterListSong;
 
 public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
-    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList;
+    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList, btnShuffle;
     ImageView icPlay;
     ViewPager viewPager;
     AdapterListSong adapterListSong;
@@ -68,6 +69,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         btnLooping = (ImageButton) findViewById(R.id.btn_looping);
         btnMenu = (ImageButton) findViewById(R.id.btn_songlis);
         btnList = (ImageButton) findViewById(R.id.btn_list);
+        btnShuffle = (ImageButton) findViewById(R.id.btn_shuffle);
         icPlay = (ImageView) findViewById(R.id.btn_play);
         viewPager = (ViewPager) findViewById(R.id.list_player);
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
@@ -135,6 +137,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         btnMenu.setOnClickListener(this);
         btnList.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
+        btnShuffle.setOnClickListener(this);
 
         viewPager.addOnPageChangeListener(this);
     }
@@ -242,6 +245,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         }else if (view.getId() == R.id.btn_next){
             viewPager.setCurrentItem(playlistPosition+1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
+        }else if (view.getId() == R.id.btn_shuffle){
+
         }
     }
 

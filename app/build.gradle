@@ -31,6 +31,18 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
+
+    productFlavors {
+        sandbox {
+            buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-gqjNZEwZrA-tGvQj\""
+        }
+
+        /*production {
+            buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-CLIENT-production-client-key\""
+        }*/
+    }
 }
 
 repositories {
@@ -58,6 +70,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:10.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.midtrans:corekit:1.4.1-SANDBOX'
+    compile 'com.midtrans:uikit:1.4.1-SANDBOX'
 }
 
 apply plugin: 'com.google.gms.google-services'

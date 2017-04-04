@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import co.digdaya.kindis.helper.PlayerSessionHelper;
@@ -24,6 +25,7 @@ public class ParseJsonPlaylist {
     ArrayList<String> songPlaylist = new ArrayList<>();
     ArrayList<String> imgList = new ArrayList<>();
 
+    ArrayList<HashMap<String, String>> shuffleListSong = new ArrayList<HashMap<String, String>>();
     public ParseJsonPlaylist(Context context){
         this.context = context;
         type = new PlayerSessionHelper().getPreferences(context, "type");
