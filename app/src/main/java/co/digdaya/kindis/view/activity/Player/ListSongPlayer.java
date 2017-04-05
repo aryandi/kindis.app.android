@@ -26,6 +26,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
     PlayerSessionHelper playerSessionHelper;
 
     RecyclerView listViewSong;
+    LinearLayoutManager linearLayoutManager;
     RelativeLayout contSingle;
     AdapterSong adapterSong;
 
@@ -49,7 +50,8 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
 
         contSingle = (RelativeLayout) findViewById(R.id.cont_single);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
-        listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        listViewSong.setLayoutManager(linearLayoutManager);
 
         imgSong = (ImageView) findViewById(R.id.image_song);
         titlePlay = (TextView) findViewById(R.id.title_play);
@@ -76,13 +78,15 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
         titlePlay.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         subtitlePlay.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
 
-        if (new PlayerSessionHelper().getPreferences(getApplicationContext(), "index").equals("1")){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
             labelPlayNext.setVisibility(View.GONE);
         }else {
             listViewSong.setVisibility(View.VISIBLE);
             adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getSongPlaylist());
             listViewSong.setAdapter(adapterSong);
             listViewSong.setNestedScrollingEnabled(true);
+            int pos = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"))+1;
+            linearLayoutManager.scrollToPosition(pos);
         }
     }
 
