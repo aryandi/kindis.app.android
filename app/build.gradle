@@ -34,7 +34,7 @@ android {
 
     productFlavors {
         sandbox {
-            buildConfigField "String", "BASE_URL", "\"http://vincenttp.id/\""
+            buildConfigField "String", "BASE_URL", "\"http://vincenttp.id/charge\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-gqjNZEwZrA-tGvQj\""
         }
 

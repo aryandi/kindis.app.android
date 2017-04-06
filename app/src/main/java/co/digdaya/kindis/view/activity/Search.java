@@ -36,6 +36,7 @@ import co.digdaya.kindis.view.adapter.item.AdapterArtist;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 
 public class Search extends BottomPlayerActivity {
+
     ImageButton back, clear;
     EditText search;
     InputMethodManager imm;

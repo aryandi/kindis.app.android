@@ -87,7 +87,8 @@ public class DialogGetPremium implements View.OnClickListener{
                 premium.dismiss();
                 break;
             case R.id.btn_premium:
-                MidtransSDK.getInstance().startPaymentUiFlow(activity);
+                MidtransSDK.getInstance().startMandiriBankTransferUIFlow(activity.getApplicationContext());
+
 
                 //MidtransSDK.getInstance().startPaymentUiFlow(activity);
                 break;
@@ -124,12 +125,6 @@ public class DialogGetPremium implements View.OnClickListener{
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequest.setBillInfoModel(billInfoModel);
 
-        CreditCard creditCard = new CreditCard();
-        creditCard.setBank(BankType.MANDIRI);
-        creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
-        creditCard.setSecure(false);
-        transactionRequest.setCreditCard(creditCard);
-
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
         expiryModel.setDuration(1);
@@ -151,6 +146,13 @@ public class DialogGetPremium implements View.OnClickListener{
         ArrayList<ShippingAddress> shippingAddressList = new ArrayList<>();
         shippingAddressList.add(shippingAddress1);
         transactionRequest.setShippingAddressArrayList(shippingAddressList);
+
+        CreditCard creditCard = new CreditCard();
+        creditCard.setSaveCard(false);
+        creditCard.setSecure(false);
+        creditCard.setBank(BankType.MANDIRI);
+        transactionRequest.setCreditCard(creditCard);
+        transactionRequest.setCardPaymentInfo("one_click", false);
 
         MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
     }
