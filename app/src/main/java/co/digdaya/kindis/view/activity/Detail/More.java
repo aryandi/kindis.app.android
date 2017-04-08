@@ -98,27 +98,31 @@ public class More extends BottomPlayerActivity {
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
-
-                        switch (type){
-                            case 1:
-                                MoreModel.ArtistsMore artistsMore = gson.fromJson(object.toString(), MoreModel.ArtistsMore.class);
-                                adapterMoreArtist = new AdapterMoreArtist(More.this, artistsMore);
-                                listViewMore.setAdapter(adapterMoreArtist);
-                                break;
-                            case 2:
-                                MoreModel.AlbumMore albumMore = gson.fromJson(object.toString(), MoreModel.AlbumMore.class);
-                                adapterMoreAlbum = new AdapterMoreAlbum(albumMore, getApplicationContext());
-                                listViewMore.setAdapter(adapterMoreAlbum);
-                                break;
-                            case 3:
-                                MoreModel.SinggleMore singgleMore = gson.fromJson(object.toString(), MoreModel.SinggleMore.class);
-                                adapterMoreSingle = new AdapterMoreSingle(More.this, singgleMore);
-                                listViewMore.setAdapter(adapterMoreSingle);
-                                break;
-                            case 5:
-                                MoreModel.PlaylisMore playlisMore = gson.fromJson(object.toString(), MoreModel.PlaylisMore.class);
-                                adapterMorePlaylist = new AdapterMorePlaylist(More.this, playlisMore);
-                                listViewMore.setAdapter(adapterMorePlaylist);
+                        if (object.getBoolean("status")){
+                            switch (type){
+                                case 1:
+                                    MoreModel.ArtistsMore artistsMore = gson.fromJson(object.toString(), MoreModel.ArtistsMore.class);
+                                    adapterMoreArtist = new AdapterMoreArtist(More.this, artistsMore);
+                                    listViewMore.setAdapter(adapterMoreArtist);
+                                    break;
+                                case 2:
+                                    MoreModel.AlbumMore albumMore = gson.fromJson(object.toString(), MoreModel.AlbumMore.class);
+                                    adapterMoreAlbum = new AdapterMoreAlbum(albumMore, getApplicationContext());
+                                    listViewMore.setAdapter(adapterMoreAlbum);
+                                    break;
+                                case 3:
+                                    MoreModel.SinggleMore singgleMore = gson.fromJson(object.toString(), MoreModel.SinggleMore.class);
+                                    adapterMoreSingle = new AdapterMoreSingle(More.this, singgleMore);
+                                    listViewMore.setAdapter(adapterMoreSingle);
+                                    break;
+                                case 5:
+                                    MoreModel.PlaylisMore playlisMore = gson.fromJson(object.toString(), MoreModel.PlaylisMore.class);
+                                    adapterMorePlaylist = new AdapterMorePlaylist(More.this, playlisMore);
+                                    listViewMore.setAdapter(adapterMorePlaylist);
+                            }
+                        }else {
+                            finish();
+                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {

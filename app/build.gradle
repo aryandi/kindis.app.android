@@ -34,8 +34,8 @@ android {
 
     productFlavors {
         sandbox {
-            buildConfigField "String", "BASE_URL", "\"http://vincenttp.id/charge\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-client-gqjNZEwZrA-tGvQj\""
+            buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/payment/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
         }
 
         /*production {
@@ -70,8 +70,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:10.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.midtrans:corekit:1.4.1-SANDBOX'
-    compile 'com.midtrans:uikit:1.4.1-SANDBOX'
+    compile 'com.midtrans:uikit:1.1.5-SANDBOX'
 }
 
 apply plugin: 'com.google.gms.google-services'

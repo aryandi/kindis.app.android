@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
+import co.digdaya.kindis.view.dialog.DialogGift;
 import co.digdaya.kindis.view.fragment.navigationview.Cookies;
 import co.digdaya.kindis.view.fragment.navigationview.FAQ;
 import co.digdaya.kindis.view.fragment.navigationview.Home;
@@ -46,6 +47,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     LinearLayout menuProfile;
     LinearLayout menuNotif;
     LinearLayout menuPremium;
+    LinearLayout menuGift;
     TextView menuFAQ;
     TextView menuPrivacy;
     TextView menuTerms;
@@ -54,9 +56,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     ImageView icMenuHome, icMenuNotif, icMenuProfile;
     TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
 
-    Dialog dialogPremium;
+    Dialog dialogPremium, dialogGft;
 
     DialogGetPremium dialogGetPremium;
+    DialogGift dialogGift;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
+        dialogGift = new DialogGift(dialogGft, this);
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
@@ -82,6 +87,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuProfile = (LinearLayout) findViewById(R.id.menu_profile);
         menuNotif = (LinearLayout) findViewById(R.id.menu_notif);
         menuPremium = (LinearLayout) findViewById(R.id.menu_premium);
+        menuGift = (LinearLayout) findViewById(R.id.menu_gift);
         menuFAQ = (TextView) findViewById(R.id.menu_faq);
         menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
         menuTerms = (TextView) findViewById(R.id.menu_terms);
@@ -129,6 +135,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuHome.setOnClickListener(this);
         menuNotif.setOnClickListener(this);
         menuPremium.setOnClickListener(this);
+        menuGift.setOnClickListener(this);
         menuProfile.setOnClickListener(this);
         menuFAQ.setOnClickListener(this);
         menuPrivacy.setOnClickListener(this);
@@ -157,6 +164,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+        }else if (view.getId() == R.id.menu_gift) {
+            dialogGift.showDialog();
         }else if (view.getId() == R.id.menu_faq){
             transaction.replace(R.id.cont_main, faqFragment);
 
