@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Enter your gift code here lorem ipsum dolor sit"
+            android:text="Enter your gift code"
             android:textColor="@color/dark_gray"
             android:textSize="20sp"/>
         <co.digdaya.kindis.custom.EditTextRegular

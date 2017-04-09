@@ -29,6 +29,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.ZoomOutPageTransformer;
@@ -43,7 +44,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     TextView txtDuration, txtProgress, title, subtitle;
     AppCompatSeekBar seekBar;
 
-    Dialog dialogPlaylis;
+    Dialog dialogPlaylis, dialogPremium;
+    DialogGetPremium dialogGetPremium;
+    DialogPlaylist dialogPlaylist;
     ParseJsonPlaylist parseJsonPlaylist;
 
     int index, playlistPosition;
@@ -62,6 +65,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         setContentView(R.layout.activity_player);
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
+
+        dialogGetPremium = new DialogGetPremium(this, dialogPremium);
+        dialogPlaylist = new DialogPlaylist(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -184,7 +190,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         }
 
-        Log.d("kontolll", playlistPosition+" : "+index);
         if (index == 1){
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
@@ -221,7 +226,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         }else if (view.getId() == R.id.btn_songlis){
-            new DialogPlaylist(Player.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid")).showDialog();
+            dialogPlaylist.showDialog();
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);
             startActivity(intent);
@@ -273,8 +278,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
                     startService(intent);
                 }else {
-                    Toast.makeText(getApplicationContext(), "Disable swipe left", Toast.LENGTH_SHORT).show();
                     viewPager.setCurrentItem(playlistPosition, true);
+                    dialogGetPremium.showDialog();
                 }
             }
         }

@@ -44,34 +44,6 @@ public class MidtransPayment {
         SdkUIFlowBuilder.init(activity.getApplicationContext(), BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, new TransactionFinishedCallback() {
             @Override
             public void onTransactionFinished(TransactionResult result) {
-                System.out.println("midtrans getApprovalCode : "+result.getResponse().getApprovalCode());
-                System.out.println("midtrans getBank : "+result.getResponse().getBank());
-                System.out.println("midtrans getOrderId : "+result.getResponse().getOrderId());
-                System.out.println("midtrans getMaskedCard : "+result.getResponse().getMaskedCard());
-                System.out.println("midtrans getKiosonExpireTime : "+result.getResponse().getKiosonExpireTime());
-                System.out.println("midtrans getCompanyCode : "+result.getResponse().getCompanyCode());
-                System.out.println("midtrans getEci : "+result.getResponse().getEci());
-                System.out.println("midtrans getFinishRedirectUrl : "+result.getResponse().getFinishRedirectUrl());
-                System.out.println("midtrans getFraudStatus : "+result.getResponse().getFraudStatus());
-                System.out.println("midtrans getGrossAmount : "+result.getResponse().getGrossAmount());
-                System.out.println("midtrans getPaymentCode : "+result.getResponse().getPaymentCode());
-                System.out.println("midtrans getPaymentCodeResponse : "+result.getResponse().getPaymentCodeResponse());
-                System.out.println("midtrans getPaymentType : "+result.getResponse().getPaymentType());
-                System.out.println("midtrans getPdfUrl : "+result.getResponse().getPdfUrl());
-                System.out.println("midtrans getPermataVANumber : "+result.getResponse().getPermataVANumber());
-                System.out.println("midtrans getRedirectUrl : "+result.getResponse().getRedirectUrl());
-                System.out.println("midtrans getSavedTokenId : "+result.getResponse().getSavedTokenId());
-                System.out.println("midtrans getFinishRedirectUrl : "+result.getResponse().getFinishRedirectUrl());
-                System.out.println("midtrans getGrossAmount : "+result.getResponse().getGrossAmount());
-                System.out.println("midtrans getSavedTokenIdExpiredAt : "+result.getResponse().getSavedTokenIdExpiredAt());
-                System.out.println("midtrans getStatusMessage : "+result.getResponse().getStatusMessage());
-                System.out.println("midtrans getTransactionId : "+result.getResponse().getTransactionId());
-                System.out.println("midtrans getTransactionStatus : "+result.getResponse().getTransactionStatus());
-                System.out.println("midtrans getTransactionTime : "+result.getResponse().getTransactionTime());
-                System.out.println("midtrans getXlTunaiExpiration : "+result.getResponse().getXlTunaiExpiration());
-                System.out.println("midtrans getXlTunaiMerchantId : "+result.getResponse().getXlTunaiMerchantId());
-                System.out.println("midtrans getXlTunaiOrderId : "+result.getResponse().getXlTunaiOrderId());
-
             }
         })
                 .enableLog(true)

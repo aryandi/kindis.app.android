@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.util.Payment.GooglePayment;
 import co.digdaya.kindis.util.Payment.MidtransPayment;
 
 /**
@@ -24,9 +25,10 @@ public class DialogPayment implements View.OnClickListener {
     LayoutInflater li;
     View dialogView;
     TextView btnCancel;
-    ImageButton btnPaymentGoogle;
-    ImageButton btnPaymentMidtrans;
+    ImageButton btnPaymentGoogle, btnPaymentMidtrans;
+
     MidtransPayment midtransPayment;
+    GooglePayment googlePayment;
 
     public DialogPayment(Dialog dialogPayment, Activity activity) {
         this.dialogPayment = dialogPayment;
@@ -36,6 +38,7 @@ public class DialogPayment implements View.OnClickListener {
         dialogView = li.inflate(R.layout.dialog_payment, null);
 
         midtransPayment = new MidtransPayment(activity);
+        googlePayment = new GooglePayment(activity);
 
         alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setView(dialogView);
@@ -62,6 +65,9 @@ public class DialogPayment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_payment_midtrans:
                 midtransPayment.startPayment();
+                break;
+            case R.id.btn_payment_google:
+                googlePayment.buyClick();
                 break;
         }
         dialogPayment.dismiss();

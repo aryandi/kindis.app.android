@@ -48,6 +48,9 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
     ImageButton btnDrawer;
     ImageButton btnSearch;
 
+    public Home() {
+    }
+
     public Home(DrawerLayout drawer) {
         this.drawer = drawer;
     }

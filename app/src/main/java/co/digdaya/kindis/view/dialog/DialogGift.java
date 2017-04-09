@@ -14,7 +14,7 @@ import co.digdaya.kindis.R;
  * Created by DELL on 4/9/2017.
  */
 
-public class DialogGift {
+public class DialogGift implements View.OnClickListener {
     Dialog dialog;
     Dialog dialogGift;
     Activity activity;
@@ -32,6 +32,10 @@ public class DialogGift {
 
         alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setView(dialogView);
+
+        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+
+        btnCancel.setOnClickListener(this);
     }
 
     public void showDialog(){
@@ -40,5 +44,10 @@ public class DialogGift {
         }
         dialog = alertDialog.create();
         dialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        dialog.dismiss();
     }
 }

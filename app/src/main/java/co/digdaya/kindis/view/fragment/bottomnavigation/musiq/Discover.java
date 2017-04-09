@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.TabModel;
-import co.digdaya.kindis.view.adapter.AdapterListTab;
+import co.digdaya.kindis.view.adapter.tab.AdapterListTab;
 
 
 /**

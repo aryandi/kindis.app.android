@@ -69,7 +69,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
-        dialogGift = new DialogGift(dialogGft, this);
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
@@ -165,6 +164,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_gift) {
+            dialogGift = new DialogGift(dialogGft, this);
             dialogGift.showDialog();
         }else if (view.getId() == R.id.menu_faq){
             transaction.replace(R.id.cont_main, faqFragment);

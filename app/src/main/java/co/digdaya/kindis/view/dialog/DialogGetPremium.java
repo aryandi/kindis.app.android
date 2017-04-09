@@ -85,7 +85,9 @@ public class DialogGetPremium implements View.OnClickListener{
             ((ViewGroup)dialogView.getParent()).removeView(dialogView);
         }
         premium = alertDialog.create();
-        premium.show();
+        if(!activity.isFinishing()){
+            premium.show();
+        }
     }
 
     @Override
@@ -97,8 +99,10 @@ public class DialogGetPremium implements View.OnClickListener{
             case R.id.btn_premium:
                 premium.dismiss();
                 dialogPayment = new DialogPayment(dialogPay, activity);
-
                 dialogPayment.showDialog();
+                break;
+            default:
+                premium.dismiss();
                 break;
         }
     }

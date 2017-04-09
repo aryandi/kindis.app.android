@@ -32,8 +32,6 @@ public class DetailInfaq extends BottomPlayerActivity implements View.OnClickLis
     DialogDonate dialogDonate;
     Dialog dialog;
 
-    IabHelper mHelper;
-
     public DetailInfaq(){
         layout = R.layout.activity_detail_infaq;
     }
@@ -92,20 +90,6 @@ public class DetailInfaq extends BottomPlayerActivity implements View.OnClickLis
         initDetailInfaq();
 
         btnDonate.setOnClickListener(this);
-
-        mHelper = new IabHelper(this, getString(R.string.base64EncodedPublicKey));
-
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result)
-            {
-                if (!result.isSuccess()) {
-                    Log.d("billinggoogle", "In-app Billing setup failed: " +
-                            result);
-                } else {
-                    Log.d("billinggoogle", "In-app Billing is set up OK");
-                }
-            }
-        });
     }
 
     private void initDetailInfaq(){
@@ -118,63 +102,8 @@ public class DetailInfaq extends BottomPlayerActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.btn_donate:
                 //dialogDonate.showDialog();
-                buyClick(view);
+                //buyClick(view);
                 break;
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mHelper.handleActivityResult(requestCode,
-                resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    public void buyClick(View view) {
-        mHelper.launchPurchaseFlow(this, "co.digdaya.kindis.premium", 10001,
-                mPurchaseFinishedListener, "kindis123");
-    }
-
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
-            = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result,
-                                          Purchase purchase)
-        {
-            if (result.isFailure()) {
-                // Handle error
-                return;
-            }
-            else if (purchase.getSku().equals("purchased")) {
-                consumeItem();
-            }
-
-        }
-    };
-
-    public void consumeItem() {
-        mHelper.queryInventoryAsync(mReceivedInventoryListener);
-    }
-
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
-            = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result,
-                                             Inventory inventory) {
-
-
-            if (result.isFailure()) {
-                // Handle failure
-            } else {
-                mHelper.consumeAsync(inventory.getPurchase("purchased"),
-                        mConsumeFinishedListener);
-            }
-        }
-    };
-
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
-            new IabHelper.OnConsumeFinishedListener() {
-                public void onConsumeFinished(Purchase purchase,
-                                              IabResult result) {
-                }
-            };
 }

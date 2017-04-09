@@ -214,7 +214,6 @@ public class Search extends BottomPlayerActivity {
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put("uid", data.getString("uid"));
                                     map.put("name", data.getString("name"));
-                                    map.put("description", data.getString("description"));
                                     map.put("image", data.getString("image"));
                                     listArtist.add(map);
                                 }

@@ -1,4 +1,4 @@
-package co.digdaya.kindis.view.adapter;
+package co.digdaya.kindis.view.adapter.tab;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +24,7 @@ import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemHome;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemMore;
 import co.digdaya.kindis.view.activity.Detail.More;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterArtistNew;
@@ -109,7 +110,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
             recyclerView.addItemDecoration(new MarginItemHorizontal(context));
         }else if (tabs.get(position).type_id.equals("2")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,2));
-            recyclerView.addItemDecoration(new SpacingItemHome(context.getApplicationContext()));
+            recyclerView.addItemDecoration(new SpacingItemMore(context));
         }else if (tabs.get(position).type_id.equals("3")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
             recyclerView.addItemDecoration(new SpacingItemGenre(context));

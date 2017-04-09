@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.TabModel;
-import co.digdaya.kindis.view.adapter.AdapterListTab;
+import co.digdaya.kindis.view.adapter.tab.AdapterListTab;
 
 
 /**
@@ -39,14 +39,14 @@ public class RecentlyAdded extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recently_added, container, false);
+        return inflater.inflate(R.layout.fragment_most_played, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
 
         gson = new Gson();
 

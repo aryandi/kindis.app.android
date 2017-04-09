@@ -18,7 +18,12 @@ public class SpacingItemMore extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        outRect.left = getDP(16);
+        final int itemPosition = parent.getChildAdapterPosition(view);
+        if (itemPosition%2 == 0){
+            outRect.left = getDP(16);
+        }else {
+            outRect.right = getDP(16);
+        }
         outRect.top = getDP(16);
     }
 
