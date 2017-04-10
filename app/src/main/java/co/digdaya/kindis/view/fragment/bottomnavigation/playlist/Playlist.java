@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ import co.digdaya.kindis.view.adapter.item.AdapterPlaylist;
  * A simple {@link Fragment} subclass.
  */
 public class Playlist extends Fragment implements View.OnClickListener {
-    LinearLayout contCreatePlaylist;
+    ScrollView contCreatePlaylist;
     EditText inputPlaylist;
     Button btnCreate;
 
@@ -73,7 +74,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
 
         sessionHelper = new SessionHelper();
 
-        contCreatePlaylist = (LinearLayout) view.findViewById(R.id.layout_create_playlist);
+        contCreatePlaylist = (ScrollView) view.findViewById(R.id.layout_create_playlist);
         inputPlaylist = (EditText) view.findViewById(R.id.input_playlist);
         btnCreate = (Button) view.findViewById(R.id.btn_create);
 

@@ -86,20 +86,6 @@ public class Taklim extends Fragment {
 
         getBanner();
 
-        if (responses != null){
-            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
-            viewPager.setAdapter(adapter);
-            viewPager.setOffscreenPageLimit(3);
-            tabLayout.setupWithViewPager(viewPager);
-
-            for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                tab.setCustomView(adapter.getTabView(i));
-            }
-        }else {
-            setLayout();
-        }
-
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +174,20 @@ public class Taklim extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+
+                if (responses != null){
+                    adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
+                    viewPager.setAdapter(adapter);
+                    viewPager.setOffscreenPageLimit(3);
+                    tabLayout.setupWithViewPager(viewPager);
+
+                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                        TabLayout.Tab tab = tabLayout.getTabAt(i);
+                        tab.setCustomView(adapter.getTabView(i));
+                    }
+                }else {
+                    setLayout();
                 }
             }
         });

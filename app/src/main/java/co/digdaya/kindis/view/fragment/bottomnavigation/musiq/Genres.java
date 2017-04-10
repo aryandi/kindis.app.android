@@ -46,9 +46,6 @@ public class Genres extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*volleyHelper = new VolleyHelper();
-        gridView = (RecyclerView) view.findViewById(R.id.listview_genre);
-        gridView.setLayoutManager(new GridLayoutManager(getContext(),3));*/
         recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
 
         gson = new Gson();

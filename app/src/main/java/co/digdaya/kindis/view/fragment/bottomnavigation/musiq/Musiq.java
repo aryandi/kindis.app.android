@@ -2,7 +2,9 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -87,21 +89,6 @@ public class Musiq extends Fragment {
         loading.setCancelable(false);
 
         getBanner();
-
-        if (responses != null){
-            Log.d("responses", responses);
-            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
-            viewPager.setAdapter(adapter);
-            viewPager.setOffscreenPageLimit(3);
-            tabLayout.setupWithViewPager(viewPager);
-
-            for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                tab.setCustomView(adapter.getTabView(i));
-            }
-        }else {
-            setLayout();
-        }
 
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +184,20 @@ public class Musiq extends Fragment {
                 }else {
                     adapterBannerEmpty = new AdapterBannerEmpty(getContext());
                     imageSlider.setAdapter(adapterBannerEmpty);
+                }
+
+                if (responses != null){
+                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
+                    viewPager.setAdapter(adapter);
+                    viewPager.setOffscreenPageLimit(3);
+                    tabLayout.setupWithViewPager(viewPager);
+
+                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                        TabLayout.Tab tab = tabLayout.getTabAt(i);
+                        tab.setCustomView(adapter.getTabView(i));
+                    }
+                }else {
+                    setLayout();
                 }
             }
         });

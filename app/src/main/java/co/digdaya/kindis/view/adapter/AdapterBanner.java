@@ -58,8 +58,6 @@ public class AdapterBanner extends PagerAdapter {
 
         Glide.with(mContext)
                 .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
-                .thumbnail( 0.1f )
-                .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);

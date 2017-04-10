@@ -5,7 +5,7 @@
     tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist"
     android:background="@drawable/background">
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/layout_create_playlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             layout="@layout/layout_create_playlist"/>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/empty_state"
