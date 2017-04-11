@@ -36,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,7 @@ import co.digdaya.kindis.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.view.activity.Account.SignInActivity;
 import co.digdaya.kindis.view.activity.Account.TransactionHistory;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,6 +126,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     } /* OnConnectionFailedListener */)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
+        }else if (loginType.equals("2")){
+            TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
+            Fabric.with(getContext(), new Twitter(authConfig));
         }
 
         inputNama.setText(sessionHelper.getPreferences(getContext(), "fullname"));
@@ -273,13 +278,14 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     Twitter.getSessionManager().clearActiveSession();
                     Twitter.logOut();
                 }else if (loginType.equals("3")){
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                            new ResultCallback<Status>() {
-                                @Override
-                                public void onResult(Status status) {
-                                    System.out.println("logoutsosmed : "+status);
-                                }
-                            });
+                    if(mGoogleApiClient.isConnected()){
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                new ResultCallback<Status>() {
+                                    @Override
+                                    public void onResult(Status status) {
+                                    }
+                                });
+                    }
                 }
                 sessionHelper.setPreferences(getContext(), "status", "0");
                 sessionHelper.setPreferences(getContext(), "profile_picture", null);

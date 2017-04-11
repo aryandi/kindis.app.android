@@ -33,6 +33,7 @@
             android:textColor="@color/dark_gray"
             android:textSize="20sp"/>
         <co.digdaya.kindis.custom.EditTextRegular
+            android:id="@+id/input_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
         <co.digdaya.kindis.custom.TextViewSemiBold
-            android:id="@+id/btn_premium"
+            android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

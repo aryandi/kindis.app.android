@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.view.dialog.DialogBanner;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.dialog.DialogGift;
 import co.digdaya.kindis.view.fragment.navigationview.Cookies;
@@ -56,10 +57,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     ImageView icMenuHome, icMenuNotif, icMenuProfile;
     TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
 
-    Dialog dialogPremium, dialogGft;
+    Dialog dialogPremium, dialogGft, dialogBnnr;
 
     DialogGetPremium dialogGetPremium;
     DialogGift dialogGift;
+    DialogBanner dialogBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
+        dialogBanner = new DialogBanner(this, dialogBnnr);
+        dialogBanner.showDialog();
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);

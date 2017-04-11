@@ -12,6 +12,7 @@ public class ApiHelper {
     //ads
     public static final String ADS_INFAQ = BASE_URL + "infaq/highlight";
     public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
+    public static final String ADS_INTERTSTITIAL = BASE_URL + "ads/pop?code=71&uid=";
 
     //sign
     public static final String LOGOUT = BASE_URL+ "sign/logout";
@@ -58,4 +59,6 @@ public class ApiHelper {
     public static final String CHANGE_PASSWORD = BASE_URL + "profile/update_password";
 
     public static final String LIST_INFAQ = BASE_URL + "infaq/list";
+
+    public static final String GIFT = BASE_URL + "gift/items";
 }
