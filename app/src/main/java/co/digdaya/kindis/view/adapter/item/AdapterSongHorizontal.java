@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -34,11 +35,20 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     Dialog dialogPremium;
     DialogGetPremium dialogGetPremium;
     DataSingle dataSingle;
+    int from;
+    List<DataSingle.Data> datas;
 
-    public AdapterSongHorizontal(Activity context, DataSingle dataSingle){
+    public AdapterSongHorizontal(Activity context, DataSingle dataSingle, int from){
         this.context = context;
         this.dataSingle = dataSingle;
+        this.from = from;
+
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
+        if (from == 0){
+            datas = dataSingle.data;
+        }else if (from == 1){
+            datas = dataSingle.single;
+        }
     }
 
     @Override
@@ -56,10 +66,10 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        title.setText(dataSingle.data.get(position).title);
-        subTitle.setText(dataSingle.data.get(position).artist);
+        title.setText(datas.get(position).title);
+        subTitle.setText(datas.get(position).artist);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSingle.data.get(position).image)
+                .load(ApiHelper.BASE_URL_IMAGE+datas.get(position).image)
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -71,7 +81,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         }
 
 
-        final String uid = dataSingle.data.get(position).uid;
+        final String uid = datas.get(position).uid;
         final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
         click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +102,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return dataSingle.data.size();
+        return datas.size();
     }
 
     @Override
@@ -102,7 +112,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemViewType(int position) {
-        int isPremium = Integer.parseInt(dataSingle.data.get(position).is_premium);
+        int isPremium = Integer.parseInt(datas.get(position).is_premium);
         return isPremium;
     }
 }

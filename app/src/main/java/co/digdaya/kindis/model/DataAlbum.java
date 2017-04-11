@@ -13,6 +13,9 @@ public class DataAlbum {
     @SerializedName("data")
     public List<Data> data;
 
+    @SerializedName("albums")
+    public List<Data> album;
+
     public static class Data {
         @SerializedName("uid")
         public String uid;

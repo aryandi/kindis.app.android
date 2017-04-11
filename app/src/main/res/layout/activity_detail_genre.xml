@@ -89,11 +89,92 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="45dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_songs"
+            android:paddingTop="32dp">
+
+            <LinearLayout
+                android:id="@+id/cont_artist"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <co.digdaya.kindis.custom.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="14sp"
+                    android:text="ARTIST"
+                    android:textColor="@color/white"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cont_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <co.digdaya.kindis.custom.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="14sp"
+                    android:text="PLAYLIST"
+                    android:textColor="@color/white"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_playlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cont_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <co.digdaya.kindis.custom.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="14sp"
+                    android:text="ALBUM"
+                    android:textColor="@color/white"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_album"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cont_single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <co.digdaya.kindis.custom.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="14sp"
+                    android:text="SONGS"
+                    android:textColor="@color/white"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_songs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -124,17 +205,5 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:background="@drawable/button_rounded"/>
-
-
-        <co.digdaya.kindis.custom.ButtonSemiBold
-            android:id="@+id/btn_premium"
-            android:layout_width="108dp"
-            android:layout_height="40dp"
-            android:visibility="gone"
-            android:layout_marginLeft="16dp"
-            android:text="BUY"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:background="@drawable/button_rounded_orange"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

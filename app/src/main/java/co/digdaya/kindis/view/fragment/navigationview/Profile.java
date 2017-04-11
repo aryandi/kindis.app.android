@@ -239,6 +239,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         param.put("fullname", inputNama.getText().toString());
         param.put("birth_date", inputBirtday.getText().toString());
         param.put("gender", gender);
+        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.UPDATE_PROFILE, param, new VolleyHelper.HttpListener<String>() {
             @Override

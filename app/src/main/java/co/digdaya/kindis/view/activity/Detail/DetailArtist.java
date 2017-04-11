@@ -126,6 +126,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
 
         adapter = new AdapterDetailArtist(getSupportFragmentManager());
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         getDetail();
 
         btnPlayAll.setOnClickListener(this);
@@ -147,75 +148,72 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     }
 
     private void getDetail(){
-        if (getIntent().getStringExtra("type").equals("artist")){
-            new VolleyHelper().get(ApiHelper.ITEM_ARTIST + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    if (status){
-                        Log.d("responseartist", response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            JSONObject result = object.getJSONObject("result");
-                            JSONObject summary = result.getJSONObject("summary");
+        new VolleyHelper().get(ApiHelper.ITEM_ARTIST + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject result = object.getJSONObject("result");
+                        JSONObject summary = result.getJSONObject("summary");
 
-                            String subtitles = result.getInt("total_album")+" album | "+result.getInt("total_single")+" Single";
+                        String subtitles = result.getInt("total_album")+" album | "+result.getInt("total_single")+" Single";
 
-                            adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), subtitles), "Recently Added");
-                            adapter.addFragment(new DetailAbout(summary.getString("about")), "Genres");
-                            imageSlider.setAdapter(adapter);
+                        adapter.addFragment(new DetailMain(summary.getString("image"), summary.getString("name"), subtitles), "Recently Added");
+                        adapter.addFragment(new DetailAbout(summary.getString("about")), "Genres");
+                        imageSlider.setAdapter(adapter);
 
-                            titleToolbar.setText(summary.getString("name"));
-                            indicator.setViewPager(imageSlider);
-                            adapter.registerDataSetObserver(indicator.getDataSetObserver());
+                        titleToolbar.setText(summary.getString("name"));
+                        indicator.setViewPager(imageSlider);
+                        adapter.registerDataSetObserver(indicator.getDataSetObserver());
 
-                            JSONArray album = result.getJSONArray("album");
-                            json = album.toString();
-                            if (album.length()>=1){
-                                for (int i=0; i<album.length(); i++){
-                                    JSONObject data = album.getJSONObject(i);
-                                    JSONObject smry = data.getJSONObject("summary");
-                                    HashMap<String, String> map = new HashMap<String, String>();
-                                    map.put("uid", smry.getString("uid"));
-                                    map.put("title", smry.getString("title"));
-                                    map.put("year", smry.getString("year"));
-                                    map.put("image", smry.getString("image"));
-                                    listAlbum.add(map);
+                        JSONArray album = result.getJSONArray("album");
+                        json = album.toString();
+                        if (album.length()>=1){
+                            for (int i=0; i<album.length(); i++){
+                                JSONObject data = album.getJSONObject(i);
+                                JSONObject smry = data.getJSONObject("summary");
+                                HashMap<String, String> map = new HashMap<String, String>();
+                                map.put("uid", smry.getString("uid"));
+                                map.put("title", smry.getString("title"));
+                                map.put("year", smry.getString("year"));
+                                map.put("image", smry.getString("image"));
+                                listAlbum.add(map);
 
-                                    JSONArray single = data.getJSONArray("single");
-                                    if (single.length()>0){
-                                        for (int j=0; j<single.length(); j++){
-                                            JSONObject song = single.getJSONObject(j);
-                                            HashMap<String, String> maps = new HashMap<String, String>();
-                                            maps.put("uid", song.optString("uid"));
-                                            maps.put("title", song.optString("title"));
-                                            maps.put("subtitle", smry.getString("title"));
-                                            map.put("is_premium", data.optString("is_premium"));
-                                            listSong.add(maps);
-                                            songPlaylist.add(song.optString("uid"));
-                                        }
+                                JSONArray single = data.getJSONArray("single");
+                                if (single.length()>0){
+                                    for (int j=0; j<single.length(); j++){
+                                        JSONObject song = single.getJSONObject(j);
+                                        HashMap<String, String> maps = new HashMap<String, String>();
+                                        maps.put("uid", song.optString("uid"));
+                                        maps.put("title", song.optString("title"));
+                                        maps.put("subtitle", smry.getString("title"));
+                                        map.put("is_premium", data.optString("is_premium"));
+                                        listSong.add(maps);
+                                        songPlaylist.add(song.optString("uid"));
                                     }
                                 }
-
-                                adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
-                                listViewAlbum.setAdapter(adapterAlbum);
-                                listViewAlbum.setNestedScrollingEnabled(false);
-
-                                adapterSong = new AdapterSong(DetailArtist.this, listSong, "", null);
-                                listViewSong.setAdapter(adapterSong);
-                                listViewSong.setNestedScrollingEnabled(true);
-
-                                onClickMenuSong();
                             }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
+                            listViewAlbum.setAdapter(adapterAlbum);
+                            listViewAlbum.setNestedScrollingEnabled(false);
+
+                            adapterSong = new AdapterSong(DetailArtist.this, listSong, "", null);
+                            listViewSong.setAdapter(adapterSong);
+                            listViewSong.setNestedScrollingEnabled(true);
+
+                            onClickMenuSong();
                         }
-                    }else {
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }else {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            }
+        });
     }
 
     private void onClickMenuSong(){

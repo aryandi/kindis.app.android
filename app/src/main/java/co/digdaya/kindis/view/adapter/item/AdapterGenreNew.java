@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.DataGenre;
 import co.digdaya.kindis.view.activity.Detail.Detail;
+import co.digdaya.kindis.view.activity.Detail.DetailGenre;
 import co.digdaya.kindis.view.holder.ItemGenre;
 
 /**
@@ -35,7 +38,7 @@ public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
     }
 
     @Override
-    public void onBindViewHolder(ItemGenre holder, int position) {
+    public void onBindViewHolder(ItemGenre holder, final int position) {
         TextView title = holder.title;
         RelativeLayout click = holder.click;
 
@@ -45,8 +48,11 @@ public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Detail.class);
+                Intent intent = new Intent(context, DetailGenre.class);
                 intent.putExtra("uid", uid);
+                intent.putExtra("title", dataGenre.data.get(position).title);
+                intent.putExtra("image", dataGenre.data.get(position).image);
+                intent.putExtra("desc", dataGenre.data.get(position).description);
                 intent.putExtra("type", "genre");
                 context.startActivity(intent);
             }

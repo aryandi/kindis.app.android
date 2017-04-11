@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.List;
+
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.model.DataAlbum;
@@ -26,13 +28,20 @@ import co.digdaya.kindis.view.holder.Item;
 
 public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
     Activity context;
+    int from;
     DataAlbum dataAlbum;
+    List<DataAlbum.Data> datas;
 
-    public AdapterAlbumNew(Activity context, DataAlbum dataAlbum){
+    public AdapterAlbumNew(Activity context, DataAlbum dataAlbum, int from){
         this.context = context;
         this.dataAlbum = dataAlbum;
+        this.from = from;
 
-        Log.d("AdapterAlbumNew", "true");
+        if (from == 0){
+            datas = dataAlbum.data;
+        }else if (from == 1){
+            datas = dataAlbum.album;
+        }
     }
 
 
@@ -50,16 +59,16 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        title.setText(dataAlbum.data.get(position).title);
-        subTitle.setText(dataAlbum.data.get(position).year);
+        title.setText(datas.get(position).title);
+        subTitle.setText(datas.get(position).year);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataAlbum.data.get(position).image)
+                .load(ApiHelper.BASE_URL_IMAGE+datas.get(position).image)
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
 
-        final String uid = dataAlbum.data.get(position).uid;
+        final String uid = datas.get(position).uid;
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +85,7 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return dataAlbum.data.size();
+        return datas.size();
     }
 
 

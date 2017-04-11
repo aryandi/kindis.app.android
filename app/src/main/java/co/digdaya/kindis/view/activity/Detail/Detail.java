@@ -98,10 +98,7 @@ public class Detail extends BottomPlayerActivity {
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-        if (getIntent().getStringExtra("type").equals("genre")){
-            String url = ApiHelper.DETAIL_GENRE+getIntent().getStringExtra("uid");
-            getDetail(url);
-        }else if (getIntent().getStringExtra("type").equals("album")){
+        if (getIntent().getStringExtra("type").equals("album")){
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
         }else if (getIntent().getStringExtra("type").equals("playlist")){
@@ -254,7 +251,7 @@ public class Detail extends BottomPlayerActivity {
 
     //from genre
     private void getSong(){
-        new VolleyHelper().get(ApiHelper.SINGLE_GENRE + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.SINGLE_GENRE + getIntent().getStringExtra("uid")+"&page=&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
@@ -300,6 +297,7 @@ public class Detail extends BottomPlayerActivity {
         new VolleyHelper().post(ApiHelper.DETAIL_PLAYLIST_PREMIUM, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                System.out.println("playlistpremium"+ response);
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
@@ -313,12 +311,12 @@ public class Detail extends BottomPlayerActivity {
                             for (int i=0; i<single.length(); i++){
                                 JSONObject data = single.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
-                                map.put("uid", data.optString("uid"));
+                                map.put("uid", data.getString("single_id"));
                                 map.put("title", data.optString("title"));
                                 map.put("subtitle", data.optString("artist"));
                                 map.put("is_premium", data.optString("is_premium"));
                                 listSong.add(map);
-                                songPlaylist.add(data.optString("uid"));
+                                songPlaylist.add(data.optString("single_id"));
                             }
 
                             adapterSong = new AdapterSong(Detail.this, listSong, "", null);

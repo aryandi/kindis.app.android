@@ -13,6 +13,9 @@ public class DataSingle {
     @SerializedName("data")
     public List<Data> data;
 
+    @SerializedName("single")
+    public List<Data> single;
+
     public static class Data {
         @SerializedName("uid")
         public String uid;

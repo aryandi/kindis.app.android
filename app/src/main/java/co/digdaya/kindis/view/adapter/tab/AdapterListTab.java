@@ -160,7 +160,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
         DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
         System.out.println("AdapterAlbumNew : "+dataAlbum.data.get(0).title);
-        adapterAlbum = new AdapterAlbumNew(context, dataAlbum);
+        adapterAlbum = new AdapterAlbumNew(context, dataAlbum, 0);
         recyclerView.setAdapter(adapterAlbum);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -170,7 +170,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
         DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
 
-        adapterSong = new AdapterSongHorizontal(context, dataSingle);
+        adapterSong = new AdapterSongHorizontal(context, dataSingle, 0);
         recyclerView.setAdapter(adapterSong);
         recyclerView.setNestedScrollingEnabled(false);
     }

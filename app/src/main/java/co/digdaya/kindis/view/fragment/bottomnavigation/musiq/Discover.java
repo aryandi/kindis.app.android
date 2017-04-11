@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.view.adapter.tab.AdapterListTab;
+import co.digdaya.kindis.view.dialog.DialogLoading;
 
 
 /**
@@ -45,11 +46,8 @@ public class Discover extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
-
         gson = new Gson();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         getJSON();
