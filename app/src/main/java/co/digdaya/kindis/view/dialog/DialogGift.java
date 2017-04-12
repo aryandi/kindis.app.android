@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
@@ -62,9 +65,10 @@ public class DialogGift implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        dialog.dismiss();
         if (v.getId() == R.id.btn_send){
             checkGift();
+        }else if (v.getId() == R.id.btn_cancel){
+            dialog.dismiss();
         }
     }
 
@@ -80,7 +84,23 @@ public class DialogGift implements View.OnClickListener {
             new VolleyHelper().post(ApiHelper.GIFT, param, new VolleyHelper.HttpListener<String>() {
                 @Override
                 public void onReceive(boolean status, String message, String response) {
-                    System.out.println("GiftResponse: "+response);
+                    if (status){
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.getBoolean("status")){
+                                JSONObject result = object.getJSONObject("result");
+                                sessionHelper.setPreferences(activity.getApplicationContext(), "is_premium", result.getString("is_premium"));
+                                sessionHelper.setPreferences(activity.getApplicationContext(), "access_token", result.getString("access_token"));
+                                sessionHelper.setPreferences(activity.getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                                dialog.dismiss();
+                                Toast.makeText(activity.getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(activity.getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             });
         }

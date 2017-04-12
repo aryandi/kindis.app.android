@@ -47,26 +47,28 @@ public class MidtransPayment {
         SdkUIFlowBuilder.init(activity.getApplicationContext(), BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, new TransactionFinishedCallback() {
             @Override
             public void onTransactionFinished(TransactionResult result) {
-                HashMap<String, String> param = new HashMap<String, String>();
-                param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
-                param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
-                param.put("dev_id", "2");
-                param.put("client_id", "");
-                param.put("package", "");
-                param.put("trans_id", result.getResponse().getTransactionId());
-                param.put("order", "");
-                param.put("payment_type", result.getResponse().getPaymentType());
-                param.put("payment_status", result.getResponse().getStatusCode());
-                param.put("payment_status_msg", result.getResponse().getStatusMessage());
-                param.put("price", result.getResponse().getGrossAmount());
-                param.put("trans_time", result.getResponse().getTransactionTime());
+                if (result != null){
+                    HashMap<String, String> param = new HashMap<String, String>();
+                    param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
+                    param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
+                    param.put("dev_id", "2");
+                    param.put("client_id", "");
+                    param.put("package", "");
+                    param.put("trans_id", result.getResponse().getTransactionId());
+                    param.put("order", "");
+                    param.put("payment_type", result.getResponse().getPaymentType());
+                    param.put("payment_status", result.getResponse().getStatusCode());
+                    param.put("payment_status_msg", result.getResponse().getStatusMessage());
+                    param.put("price", result.getResponse().getGrossAmount());
+                    param.put("trans_time", result.getResponse().getTransactionTime());
 
-                new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
-                    @Override
-                    public void onReceive(boolean status, String message, String response) {
-                        System.out.println("Response payment: "+response);
-                    }
-                });
+                    new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
+                        @Override
+                        public void onReceive(boolean status, String message, String response) {
+                            System.out.println("Response payment: "+response);
+                        }
+                    });
+                }
             }
         })
                 .enableLog(true)
