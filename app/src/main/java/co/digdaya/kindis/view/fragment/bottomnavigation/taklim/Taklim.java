@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +35,11 @@ import co.digdaya.kindis.view.adapter.tab.AdapterTaklim;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Taklim extends Fragment {
+public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     AdapterBanner adapterBanner;
     AdapterBannerEmpty adapterBannerEmpty;
@@ -71,6 +73,7 @@ public class Taklim extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) view.findViewById(R.id.indicator);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -92,6 +95,7 @@ public class Taklim extends Fragment {
                 setLayout();
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -191,5 +195,11 @@ public class Taklim extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        setLayout();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

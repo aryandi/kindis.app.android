@@ -45,7 +45,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         if (type == 1){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
         }else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
         }
         Item item= new Item(view);
         return item;

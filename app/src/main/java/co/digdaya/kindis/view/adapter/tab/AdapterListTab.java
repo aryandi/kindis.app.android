@@ -108,13 +108,16 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         if (tabs.get(position).type_id.equals("1")){
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             recyclerView.addItemDecoration(new MarginItemHorizontal(context));
-        }else if (tabs.get(position).type_id.equals("2")){
-            recyclerView.setLayoutManager(new GridLayoutManager(context,2));
+        }else{
+            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+            recyclerView.addItemDecoration(new SpacingItemGenre(context));
+        }/*else if (tabs.get(position).type_id.equals("2")){
+            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
             recyclerView.addItemDecoration(new SpacingItemMore(context));
         }else if (tabs.get(position).type_id.equals("3")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
             recyclerView.addItemDecoration(new SpacingItemGenre(context));
-        }
+        }*/
 
         switch (getItemViewType(position)){
             case 1:

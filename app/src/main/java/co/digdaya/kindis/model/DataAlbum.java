@@ -29,5 +29,7 @@ public class DataAlbum {
         public String year;
         @SerializedName("is_premium")
         public String is_premium;
+        @SerializedName("artist")
+        public String artist;
     }
 }

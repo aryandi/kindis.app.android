@@ -61,4 +61,6 @@ public class ApiHelper {
     public static final String LIST_INFAQ = BASE_URL + "infaq/list";
 
     public static final String GIFT = BASE_URL + "gift/items";
+
+    public static final String PAYMENT = BASE_URL + "payment/pay";
 }

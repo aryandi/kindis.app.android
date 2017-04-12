@@ -50,26 +50,31 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/htab_viewpager"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <include android:layout_height="match_parent"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/htab_viewpager"
                 android:layout_width="match_parent"
-                layout="@layout/layout_empty_state"/>
-        </android.support.v4.widget.NestedScrollView>
-    </RelativeLayout>
+                android:layout_height="match_parent" />
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+                <include android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    layout="@layout/layout_empty_state"/>
+            </android.support.v4.widget.NestedScrollView>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

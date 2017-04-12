@@ -75,22 +75,25 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 System.out.println(response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.getBoolean("status")){
-                        JSONObject result = object.getJSONObject("result");
-                        sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
-                        sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
-                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                        startActivity(i);
-                    }else {
-                        Intent i = new Intent(SplashScreen.this, SignInActivity.class);
-                        startActivity(i);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                            startActivity(i);
+                        }else {
+                            Intent i = new Intent(SplashScreen.this, SignInActivity.class);
+                            startActivity(i);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }else {
+                    finish();
                 }
-
             }
         });
     }
