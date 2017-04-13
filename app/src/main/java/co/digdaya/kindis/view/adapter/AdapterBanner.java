@@ -1,6 +1,8 @@
 package co.digdaya.kindis.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -57,10 +59,19 @@ public class AdapterBanner extends PagerAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.image_musiq_slider);
 
         Glide.with(mContext)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
+                .load(dataSinggle.get("image"))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(dataSinggle.get("link")));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);*/
+            }
+        });
 
         if (type.equals("infaq")){
             title.setVisibility(View.VISIBLE);

@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuPrivacy;
     TextView menuTerms;
     TextView menuCookies;
+    Button profileStatus;
 
     ImageView icMenuHome, icMenuNotif, icMenuProfile;
     TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
@@ -104,6 +106,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         labelMenuNotif = (TextView) findViewById(R.id.label_menu_notif);
         labelMenuProfile = (TextView) findViewById(R.id.label_menu_profile);
 
+        profileStatus = (Button) findViewById(R.id.profile_status);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_main, homeFragment);
         transaction.commit();
@@ -117,6 +121,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            profileStatus.setText("PREMIUM");
+            profileStatus.setBackground(getDrawable(R.drawable.button_rounded_orange));
         }
     }
 

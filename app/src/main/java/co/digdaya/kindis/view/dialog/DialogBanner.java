@@ -67,7 +67,7 @@ public class DialogBanner implements View.OnClickListener {
                         JSONObject result = object.getJSONObject("result");
                         clickUrl = result.getString("click_url");
                         Glide.with(activity)
-                                .load(ApiHelper.BASE_URL_IMAGE+result.getString("image"))
+                                .load(result.getString("image"))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .centerCrop()
                                 .into(imageView);

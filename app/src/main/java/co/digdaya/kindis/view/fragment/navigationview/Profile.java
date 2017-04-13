@@ -60,7 +60,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     DrawerLayout drawer;
     ImageButton btnDrawer;
     ImageButton btnMenu;
-    Button btnSave;
+    Button btnSave, profileStatus;
 
     EditText inputNama;
     EditText inputBirtday;
@@ -97,6 +97,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnMenu = (ImageButton) view.findViewById(R.id.btn_menu);
         btnSave = (Button) view.findViewById(R.id.btn_save);
+        profileStatus = (Button) view.findViewById(R.id.profile_status);
 
         inputNama = (EditText) view.findViewById(R.id.input_nama);
         inputBirtday = (EditText) view.findViewById(R.id.input_birthday);
@@ -111,6 +112,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         loading.setCancelable(false);
 
         loginType = sessionHelper.getPreferences(getContext(), "login_type");
+
+        if (sessionHelper.getPreferences(getContext(), "is_premium").equals("1")){
+            profileStatus.setText("PREMIUM");
+            profileStatus.setBackground(getActivity().getDrawable(R.drawable.button_rounded_orange));
+        }
 
         if (loginType.equals("3")){
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

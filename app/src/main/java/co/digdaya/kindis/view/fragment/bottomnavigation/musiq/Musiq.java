@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import co.digdaya.kindis.model.TabModel;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
@@ -54,9 +57,9 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
     String[] title = {"DISCOVER","RECENTLY","GENRE"};
-    String responses = null;
 
     CircleIndicator indicator;
+    Gson gson;
     public Musiq() {
         // Required empty public constructor
     }
@@ -76,7 +79,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) view.findViewById(R.id.indicator);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        gson = new Gson();
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -129,8 +133,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            responses = response;
-                            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
+                            adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), 3, response, title);
                             viewPager.setAdapter(adapter);
                             viewPager.setOffscreenPageLimit(3);
                             tabLayout.setupWithViewPager(viewPager);
@@ -159,6 +162,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    System.out.println("getBanner: "+response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
@@ -191,26 +195,14 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                     imageSlider.setAdapter(adapterBannerEmpty);
                 }
 
-                if (responses != null){
-                    adapter = new AdapterMusiq(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
-                    viewPager.setAdapter(adapter);
-                    viewPager.setOffscreenPageLimit(3);
-                    tabLayout.setupWithViewPager(viewPager);
-
-                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                        TabLayout.Tab tab = tabLayout.getTabAt(i);
-                        tab.setCustomView(adapter.getTabView(i));
-                    }
-                }else {
-                    setLayout();
-                }
+                setLayout();
             }
         });
     }
 
     @Override
     public void onRefresh() {
-        setLayout();
+        getJSON();
         swipeRefreshLayout.setRefreshing(false);
     }
 }

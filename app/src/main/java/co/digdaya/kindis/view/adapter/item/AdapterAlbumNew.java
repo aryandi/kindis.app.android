@@ -40,6 +40,8 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
         if (from == 0){
             datas = dataAlbum.data;
         }else if (from == 1){
+            datas = dataAlbum.albums;
+        }else if (from == 2){
             datas = dataAlbum.album;
         }
     }

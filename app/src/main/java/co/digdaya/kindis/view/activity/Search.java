@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,13 @@ import java.util.HashMap;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.model.DataAlbum;
+import co.digdaya.kindis.model.DataSingle;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.view.activity.Detail.DetailGenre;
+import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
+import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 import co.digdaya.kindis.view.dialog.DialogPlaylist;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
@@ -49,13 +57,14 @@ public class Search extends BottomPlayerActivity {
 
     RecyclerView listViewAlbum, listViewArtist, listViewSingle;
 
-    AdapterAlbum adapterAlbum;
+    AdapterAlbumNew adapterAlbum;
     AdapterArtist adapterArtist;
-    AdapterSong adapterSong;
+    AdapterSongHorizontal adapterSong;
 
     TextView keywords;
     Dialog dialogPlaylis;
     ProgressDialog loading;
+    Gson gson;
 
     public Search(){
         layout = R.layout.activity_search;
@@ -69,6 +78,7 @@ public class Search extends BottomPlayerActivity {
         clear = (ImageButton) findViewById(R.id.btn_clear);
         search = (EditText) findViewById(R.id.input_search);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        gson = new Gson();
 
         contResult = (LinearLayout) findViewById(R.id.cont_result);
         contAlbum = (LinearLayout) findViewById(R.id.cont_album);
@@ -82,7 +92,11 @@ public class Search extends BottomPlayerActivity {
 
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listViewArtist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        listViewSingle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        listViewSingle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        listViewAlbum.addItemDecoration(new MarginItemHorizontal(Search.this));
+        listViewArtist.addItemDecoration(new MarginItemHorizontal(Search.this));
+        listViewSingle.addItemDecoration(new MarginItemHorizontal(Search.this));
 
         loading = new ProgressDialog(Search.this, R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -168,43 +182,26 @@ public class Search extends BottomPlayerActivity {
                             contResult.setVisibility(View.VISIBLE);
                             keywords.setText(keyword);
                             JSONObject result = object.getJSONObject("result");
-
+                            String json = result.toString();
                             JSONArray album = result.getJSONArray("album");
+
                             if (album.length()>=1){
-                                for (int i=0; i<album.length(); i++){
-                                    JSONObject data = album.getJSONObject(i);
-                                    HashMap<String, String> map = new HashMap<String, String>();
-                                    map.put("uid", data.getString("uid"));
-                                    map.put("title", data.getString("title"));
-                                    map.put("description", data.getString("description"));
-                                    map.put("image", data.getString("image"));
-                                    map.put("year", data.getString("year"));
-                                    listAlbum.add(map);
-                                }
+                                DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
                                 contAlbum.setVisibility(View.VISIBLE);
-                                adapterAlbum = new AdapterAlbum(getApplicationContext(), listAlbum);
+                                adapterAlbum = new AdapterAlbumNew(Search.this, dataAlbum, 2);
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(true);
                             }
 
                             JSONArray single = result.getJSONArray("single");
                             if (single.length()>=1){
-                                for (int i=0; i<single.length(); i++){
-                                    JSONObject data = single.getJSONObject(i);
-                                    HashMap<String, String> map = new HashMap<String, String>();
-                                    map.put("uid", data.getString("uid"));
-                                    map.put("title", data.getString("title"));
-                                    map.put("image", data.getString("image"));
-                                    map.put("file", data.getString("file"));
-                                    map.put("subtitle", data.getString("year"));
-                                    map.put("is_premium", data.optString("is_premium"));
-                                    listSingle.add(map);
-                                }
+                                DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
+
+                                adapterSong = new AdapterSongHorizontal(Search.this, dataSingle, 1);
                                 contSingle.setVisibility(View.VISIBLE);
-                                adapterSong = new AdapterSong(Search.this, listSingle, "", null);
                                 listViewSingle.setAdapter(adapterSong);
                                 listViewSingle.setNestedScrollingEnabled(true);
-                                onClickMenuSong();
+                                //onClickMenuSong();
                             }
 
                             JSONArray artist = result.getJSONArray("artist");
@@ -232,15 +229,6 @@ public class Search extends BottomPlayerActivity {
                 }else {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-    }
-
-    private void onClickMenuSong(){
-        adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
-            @Override
-            public void onClick(String uid, ImageButton imageButton) {
-                new DialogPlaylist(Search.this, dialogPlaylis, uid).showDialog();
             }
         });
     }

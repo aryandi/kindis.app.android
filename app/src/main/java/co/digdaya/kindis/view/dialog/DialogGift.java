@@ -81,10 +81,12 @@ public class DialogGift implements View.OnClickListener {
             param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
             param.put("gift_code", inputCode.getText().toString());
             param.put("dev_id", "2");
+            System.out.println("checkGift: "+inputCode.getText().toString());
             new VolleyHelper().post(ApiHelper.GIFT, param, new VolleyHelper.HttpListener<String>() {
                 @Override
                 public void onReceive(boolean status, String message, String response) {
                     if (status){
+                        System.out.println("checkGift: "+response);
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){

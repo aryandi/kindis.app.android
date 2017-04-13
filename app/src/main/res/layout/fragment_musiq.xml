@@ -51,7 +51,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
@@ -76,5 +76,4 @@
             </android.support.v4.widget.NestedScrollView>
         </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </android.support.design.widget.CoordinatorLayout>

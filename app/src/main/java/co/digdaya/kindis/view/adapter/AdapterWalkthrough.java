@@ -32,7 +32,13 @@ public class AdapterWalkthrough extends PagerAdapter {
     };
 
     private String[] titles = new String[]{
-            "Musiq interesting things", "Taklim interesting things", "Infaq interesting things"
+            "Musiq\nEntertaining\nYour Soul", "Taklim\nEnlightening\nYour Soul", "Infaq\nEriching\nYour Soul"
+    };
+
+    private String[] subtitles = new String[]{
+            "Explore your favorite Islamic spiritual songs, play it, and let your soul be entertained.",
+            "Step your finger to reach for spiritual inspiration and let your soul be enlightened.",
+            "Kindness will never lessen, specify your donation, and let your soul enriched."
     };
 
     private String[] btntxt = new String[]{
@@ -71,6 +77,7 @@ public class AdapterWalkthrough extends PagerAdapter {
 
         layout.setBackgroundResource(img[position]);
         title.setText(titles[position]);
+        subTitle.setText(subtitles[position]);
         btn.setText(btntxt[position]);
 
         btn.setOnClickListener(new View.OnClickListener() {

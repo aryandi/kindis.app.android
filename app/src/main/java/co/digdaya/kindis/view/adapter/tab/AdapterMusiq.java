@@ -1,14 +1,22 @@
 package co.digdaya.kindis.view.adapter.tab;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Genres;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
@@ -17,11 +25,12 @@ import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
  * Created by vincenttp on 1/26/2017.
  */
 
-public class AdapterMusiq extends FragmentPagerAdapter {
+public class AdapterMusiq extends FragmentStatePagerAdapter{
     Context context;
     int mNumOfTabs;
     String json;
     String[] title;
+    Gson gson;
 
     public AdapterMusiq(FragmentManager manager, Context context, int mNumOfTabs, String json, String[] title) {
         super(manager);
@@ -29,19 +38,17 @@ public class AdapterMusiq extends FragmentPagerAdapter {
         this.mNumOfTabs = mNumOfTabs;
         this.json = json;
         this.title = title;
+        gson = new Gson();
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                //Fragement for Android Tab
                 return new Discover(json);
             case 1:
-                //Fragment for Ios Tab
                 return new RecentlyAdded(json);
             case 2:
-                //Fragment for Windows Tab
                 return new Genres(json);
             default:
                 return null;
@@ -50,7 +57,12 @@ public class AdapterMusiq extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return 3;
+    }
+
+    @Override
+    public void restoreState(Parcelable state, ClassLoader loader) {
+
     }
 
     public View getTabView(int position) {

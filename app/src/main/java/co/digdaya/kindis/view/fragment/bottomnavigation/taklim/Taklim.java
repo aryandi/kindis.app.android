@@ -50,7 +50,6 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     ProgressDialog loading;
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
-    String responses = null;
     String[] title = {"SYIAR","KISAH","MUROTTAL"};
 
     CircleIndicator indicator;
@@ -73,13 +72,13 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) view.findViewById(R.id.indicator);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText(""));
-        tabLayout.addTab(tabLayout.newTab().setText(""));
-        tabLayout.addTab(tabLayout.newTab().setText(""));
+        tabLayout.addTab(tabLayout.newTab().setText("SYIAR"));
+        tabLayout.addTab(tabLayout.newTab().setText("KISAH"));
+        tabLayout.addTab(tabLayout.newTab().setText("MUROTTAL"));
 
         emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
@@ -95,6 +94,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                 setLayout();
             }
         });
+
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -124,8 +124,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            responses = response;
-                            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), response, title);
+                            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), 3, response, title);
                             viewPager.setAdapter(adapter);
                             viewPager.setOffscreenPageLimit(3);
                             tabLayout.setupWithViewPager(viewPager);
@@ -179,27 +178,14 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                         e.printStackTrace();
                     }
                 }
-
-                if (responses != null){
-                    adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), responses, title);
-                    viewPager.setAdapter(adapter);
-                    viewPager.setOffscreenPageLimit(3);
-                    tabLayout.setupWithViewPager(viewPager);
-
-                    for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                        TabLayout.Tab tab = tabLayout.getTabAt(i);
-                        tab.setCustomView(adapter.getTabView(i));
-                    }
-                }else {
-                    setLayout();
-                }
+                setLayout();
             }
         });
     }
 
     @Override
     public void onRefresh() {
-        setLayout();
+        getJSON();
         swipeRefreshLayout.setRefreshing(false);
     }
 }

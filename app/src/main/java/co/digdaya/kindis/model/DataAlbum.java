@@ -14,6 +14,9 @@ public class DataAlbum {
     public List<Data> data;
 
     @SerializedName("albums")
+    public List<Data> albums;
+
+    @SerializedName("album")
     public List<Data> album;
 
     public static class Data {
