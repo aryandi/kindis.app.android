@@ -1,5 +1,6 @@
 package co.digdaya.kindis.view.activity.Detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,12 +27,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.custom.ButtonSemiBold;
 import co.digdaya.kindis.custom.TextViewBold;
 import co.digdaya.kindis.custom.TextViewRegular;
 import co.digdaya.kindis.custom.TextViewSemiBold;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.PlayerActionHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DataAlbum;
@@ -56,7 +63,10 @@ public class DetailGenre extends BottomPlayerActivity {
     LinearLayout contArtist, contPlaylist, contSingle, contAlbum;
     RecyclerView recyclerViewArtist, recyclerViewPlaylist, recyclerViewSingle, recyclerViewAlbum;
 
+    ArrayList<String> songPlaylist = new ArrayList<>();
+
     SessionHelper sessionHelper;
+    PlayerSessionHelper playerSessionHelper;
     Gson gson;
 
     AdapterAlbumNew adapterAlbum;
@@ -99,7 +109,23 @@ public class DetailGenre extends BottomPlayerActivity {
         recyclerViewSingle = (RecyclerView) findViewById(R.id.list_songs);
 
         sessionHelper = new SessionHelper();
+        playerSessionHelper = new PlayerSessionHelper();
         gson = new Gson();
+
+        btnPlayAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
+                Intent intent = new Intent(Detail.this, PlayerService.class);
+                intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+                intent.putExtra("single_id", songPlaylist.get(0));
+                intent.putExtra("list_uid", songPlaylist);
+                startService(intent);*/
+            }
+        });
     }
 
     private void init(){
@@ -139,6 +165,7 @@ public class DetailGenre extends BottomPlayerActivity {
         });
 
         titleToolbar.setText(getIntent().getStringExtra("title"));
+        playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", getIntent().getStringExtra("title"));
         titleDetail.setText(getIntent().getStringExtra("title"));
         description.setText(getIntent().getStringExtra("desc"));
         Glide.with(getApplicationContext())
@@ -176,6 +203,8 @@ public class DetailGenre extends BottomPlayerActivity {
                             adapterSongHorizontal = new AdapterSongHorizontal(DetailGenre.this, dataSingle, 1);
                             recyclerViewSingle.setAdapter(adapterAlbum);
                             recyclerViewSingle.setNestedScrollingEnabled(false);
+
+                            //for (int i=0; i)
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

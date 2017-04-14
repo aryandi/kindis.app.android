@@ -9,8 +9,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="14sp"
-        android:text="PREMIUM"
-        android:textAllCaps="true"
         android:textColor="@color/white"/>
 
     <co.digdaya.kindis.custom.TextViewRegular
@@ -20,7 +18,7 @@
         android:layout_alignParentRight="true"
         android:padding="16dp"
         android:textSize="14sp"
-        android:text="MORE"
+        android:text="More"
         android:textColor="@color/white" />
 
     <android.support.v7.widget.RecyclerView

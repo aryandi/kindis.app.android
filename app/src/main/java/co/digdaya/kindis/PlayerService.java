@@ -322,11 +322,16 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 title = result.getString("title");
                                 subtitle = result.getString("artist") +" | "+result.getString("album");
                                 sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
-                                Log.d("titlesongplay", result.getString("title"));
-
-                                playMediaPlayer();
-                                if (noti != null) {
-                                    updateNotification();
+                                Log.d("is_premium", result.getString("is_premium"));
+                                if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+                                    playMediaPlayer();
+                                    if (noti != null) {
+                                        updateNotification();
+                                    }
+                                }else {
+                                    if (cekSizePlaylist()){
+                                        playNext();
+                                    }
                                 }
                             }else {
                                 Toast.makeText(getApplicationContext(), "Song can't played", Toast.LENGTH_SHORT).show();

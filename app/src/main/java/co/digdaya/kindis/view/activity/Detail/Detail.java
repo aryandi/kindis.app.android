@@ -61,6 +61,7 @@ public class Detail extends BottomPlayerActivity {
     Dialog dialogPlaylis;
 
     SessionHelper sessionHelper;
+    PlayerSessionHelper playerSessionHelper;
     String json;
     public Detail(){
         layout = R.layout.activity_detail;
@@ -95,6 +96,7 @@ public class Detail extends BottomPlayerActivity {
         });
 
         sessionHelper = new SessionHelper();
+        playerSessionHelper = new PlayerSessionHelper();
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -177,6 +179,7 @@ public class Detail extends BottomPlayerActivity {
                             titleToolbar.setText(summary.getString("title"));
                             titleDetail.setText(summary.getString("title"));
                             description.setText(summary.getString("description"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", summary.getString("title"));
 
                             Glide.with(getApplicationContext())
                                     .load(ApiHelper.BASE_URL_IMAGE+summary.getString("image"))
@@ -218,6 +221,7 @@ public class Detail extends BottomPlayerActivity {
                             JSONObject playlist = result.getJSONObject("playlist");
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
 
                             JSONArray singles = playlist.getJSONArray("singles");
                             json = singles.toString();
@@ -308,6 +312,7 @@ public class Detail extends BottomPlayerActivity {
                             JSONObject playlist = result.getJSONObject("playlist");
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
 
                             JSONArray single = playlist.getJSONArray("singles");
                             for (int i=0; i<single.length(); i++){

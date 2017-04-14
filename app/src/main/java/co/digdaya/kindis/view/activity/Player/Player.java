@@ -37,7 +37,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     ViewPager viewPager;
     AdapterListSong adapterListSong;
     RelativeLayout btnPlay;
-    TextView txtDuration, txtProgress, title, subtitle;
+    TextView txtDuration, txtProgress, title, subtitle, titleActivity, subtitleActivity;
     AppCompatSeekBar seekBar;
 
     Dialog dialogPlaylis, dialogPremium;
@@ -80,6 +80,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         title = (TextView) findViewById(R.id.title);
         subtitle = (TextView) findViewById(R.id.subtitle);
         seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+        titleActivity = (TextView) findViewById(R.id.title_activity);
+        subtitleActivity = (TextView) findViewById(R.id.subtitle_activity);
 
         index = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "index"));
         isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(getApplicationContext(), "is_premium"));
@@ -102,12 +104,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             adapterListSong = new AdapterListSong(getApplicationContext(), imgList);
             viewPager.setAdapter(adapterListSong);
             viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            titleActivity.setText("Single");
+            subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         }else {
             adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
             viewPager.setAdapter(adapterListSong);
             viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle_player"));
         }
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -131,6 +135,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")){
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
+            seekBar.setEnabled(false);
         }
 
         btnNext.setOnClickListener(this);

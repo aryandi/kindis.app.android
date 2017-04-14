@@ -28,12 +28,14 @@
             android:orientation="vertical"
             android:layout_centerVertical="true">
             <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/title_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"
                 android:text="Playlist"/>
             <co.digdaya.kindis.custom.TextViewBold
+                android:id="@+id/subtitle_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"

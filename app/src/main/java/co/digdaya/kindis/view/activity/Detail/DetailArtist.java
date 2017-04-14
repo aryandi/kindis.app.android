@@ -66,7 +66,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
 
     Dialog dialogPlaylis;
     String json;
-
+    PlayerSessionHelper playerSessionHelper;
     public DetailArtist(){
         layout = R.layout.activity_detail_artist;
     }
@@ -85,6 +85,8 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
         listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
+
+        playerSessionHelper = new PlayerSessionHelper();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -166,6 +168,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                         imageSlider.setAdapter(adapter);
 
                         titleToolbar.setText(summary.getString("name"));
+                        playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", summary.getString("name"));
                         indicator.setViewPager(imageSlider);
                         adapter.registerDataSetObserver(indicator.getDataSetObserver());
 
