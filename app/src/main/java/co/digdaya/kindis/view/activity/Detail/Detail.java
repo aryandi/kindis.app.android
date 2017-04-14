@@ -39,7 +39,7 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.view.dialog.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 
@@ -228,6 +228,7 @@ public class Detail extends BottomPlayerActivity {
                                 map.put("title", data.optString("title"));
                                 map.put("subtitle", data.optString("artist"));
                                 map.put("is_premium", data.optString("is_premium"));
+                                map.put("artist_id", data.getString("artist_id"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -267,6 +268,7 @@ public class Detail extends BottomPlayerActivity {
                             map.put("title", data.optString("title"));
                             map.put("subtitle", data.optString("artist"));
                             map.put("is_premium", data.optString("is_premium"));
+                            map.put("artist_id", data.getString("artist_id"));
                             listSong.add(map);
                             songPlaylist.add(data.optString("uid"));
                         }
@@ -315,6 +317,7 @@ public class Detail extends BottomPlayerActivity {
                                 map.put("title", data.optString("title"));
                                 map.put("subtitle", data.optString("artist"));
                                 map.put("is_premium", data.optString("is_premium"));
+                                map.put("artist_id", data.getString("artist_id"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -343,6 +346,7 @@ public class Detail extends BottomPlayerActivity {
                 map.put("title", summary.optString("title"));
                 map.put("subtitle", subtitle);
                 map.put("is_premium", summary.getString("is_premium"));
+                map.put("artist_id", summary.getString("artist_id"));
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }
@@ -361,7 +365,7 @@ public class Detail extends BottomPlayerActivity {
         if (isMyPlaylist.equals("true")){
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
-                public void onClick(final String uid, ImageButton imageButton) {
+                public void onClick(final String uid, ImageButton imageButton, String artistID) {
                     PopupMenu popup = new PopupMenu(getApplicationContext(), imageButton);
                     popup.getMenuInflater().inflate(R.menu.list_playlist, popup.getMenu());
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -378,8 +382,9 @@ public class Detail extends BottomPlayerActivity {
         }else {
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
-                public void onClick(String uid, ImageButton imageButton) {
-                    new DialogPlaylist(Detail.this, dialogPlaylis, uid).showDialog();
+                public void onClick(String uid, ImageButton imageButton, String artistID) {
+                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, false).showDialog();
+
                 }
             });
         }

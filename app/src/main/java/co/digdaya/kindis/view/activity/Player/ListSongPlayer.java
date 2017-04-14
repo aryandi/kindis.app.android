@@ -17,7 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
-import co.digdaya.kindis.view.dialog.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 
@@ -97,7 +97,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_menu_play:
-                new DialogPlaylist(ListSongPlayer.this, dialogPlaylis, new PlayerSessionHelper().getPreferences(getApplicationContext(), "uid")).showDialog();
+                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), false).showDialog();
                 break;
         }
     }

@@ -2,11 +2,13 @@ package co.digdaya.kindis.view.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,24 +22,29 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.view.activity.Detail.DetailArtist;
 import co.digdaya.kindis.view.adapter.AdapterInsertItemPlaylist;
 
 /**
  * Created by DELL on 2/24/2017.
  */
 
-public class DialogPlaylist {
+public class DialogSingleMenu implements View.OnClickListener {
     Activity activity;
     Dialog dialog;
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
     AdapterInsertItemPlaylist adapterPlaylist;
     RecyclerView listViewPlaylist;
-    String uidSingle;
+    String uidSingle, artistID;
+    Boolean isArtist;
+    TextView btnGotoArtist, btnShare;
 
-    public DialogPlaylist(Activity activity, Dialog dialog, String uidSingle) {
+    public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID, Boolean isArtist) {
         this.activity = activity;
         this.dialog = dialog;
         this.uidSingle = uidSingle;
+        this.artistID = artistID;
+        this.isArtist = isArtist;
     }
 
     public void showDialog(){
@@ -48,10 +55,23 @@ public class DialogPlaylist {
         alertDialog.setView(dialogView);
         dialog = alertDialog.create();
 
-        listViewPlaylist = (RecyclerView) dialogView.findViewById(R.id.list_playlist);
+        initView(dialogView);
+        getPlaylist();
+    }
+
+    private void initView(View view){
+        listViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
         listViewPlaylist.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
 
-        getPlaylist();
+        btnGotoArtist = (TextView) view.findViewById(R.id.btn_goto_artist);
+        btnShare = (TextView) view.findViewById(R.id.btn_share);
+
+        if (isArtist){
+            btnGotoArtist.setVisibility(View.GONE);
+        }
+
+        btnShare.setOnClickListener(this);
+        btnGotoArtist.setOnClickListener(this);
     }
 
     private void getPlaylist(){
@@ -61,7 +81,6 @@ public class DialogPlaylist {
         new VolleyHelper().post(ApiHelper.PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                Log.d("kontollll", response);
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
@@ -90,5 +109,25 @@ public class DialogPlaylist {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                activity.startActivity(sendIntent);
+                break;
+            case R.id.btn_goto_artist:
+                Intent intent = new Intent(activity, DetailArtist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", artistID);
+                intent.putExtra("type", "artist");
+                activity.startActivity(intent);
+                break;
+        }
     }
 }

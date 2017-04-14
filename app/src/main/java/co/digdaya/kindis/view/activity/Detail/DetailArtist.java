@@ -35,7 +35,7 @@ import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.view.dialog.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.AdapterDetailArtist;
@@ -152,6 +152,8 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    System.out.println("getDetailArtist: "+response);
+                    System.out.println("getDetailArtistID: "+getIntent().getStringExtra("uid"));
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONObject result = object.getJSONObject("result");
@@ -219,8 +221,8 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     private void onClickMenuSong(){
         adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
             @Override
-            public void onClick(String uid, ImageButton imageButton) {
-                new DialogPlaylist(DetailArtist.this, dialogPlaylis, uid).showDialog();
+            public void onClick(String uid, ImageButton imageButton, String artistID) {
+                new DialogSingleMenu(DetailArtist.this, dialogPlaylis, uid, artistID, true).showDialog();
             }
         });
     }

@@ -11,18 +11,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -30,7 +26,7 @@ import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
-import co.digdaya.kindis.view.dialog.DialogPlaylist;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.view.adapter.AdapterListSong;
@@ -46,7 +42,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     Dialog dialogPlaylis, dialogPremium;
     DialogGetPremium dialogGetPremium;
-    DialogPlaylist dialogPlaylist;
+    DialogSingleMenu dialogSingleMenu;
     ParseJsonPlaylist parseJsonPlaylist;
 
     int index, playlistPosition;
@@ -67,7 +63,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
-        dialogPlaylist = new DialogPlaylist(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), false);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -226,7 +222,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         }else if (view.getId() == R.id.btn_songlis){
-            dialogPlaylist.showDialog();
+            dialogSingleMenu.showDialog();
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);
             startActivity(intent);

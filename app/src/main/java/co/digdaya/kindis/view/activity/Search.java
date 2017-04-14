@@ -35,13 +35,9 @@ import co.digdaya.kindis.model.DataAlbum;
 import co.digdaya.kindis.model.DataSingle;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
-import co.digdaya.kindis.view.activity.Detail.DetailGenre;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
-import co.digdaya.kindis.view.dialog.DialogPlaylist;
-import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
-import co.digdaya.kindis.view.adapter.item.AdapterSong;
 
 public class Search extends BottomPlayerActivity {
 

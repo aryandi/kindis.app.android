@@ -160,6 +160,7 @@ public class DetailGenre extends BottomPlayerActivity {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    System.out.println("getDetailGenre: "+response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){

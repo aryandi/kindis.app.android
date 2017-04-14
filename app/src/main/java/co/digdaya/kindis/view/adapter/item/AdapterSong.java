@@ -61,6 +61,8 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         final String uid = dataSong.get("uid");
         final String titles = dataSong.get("title");
         final String subTitles = dataSong.get("subtitle");
+        final String artistID = dataSong.get("artist_id");
+        System.out.println("artist_id: "+ artistID);
 
         title.setText(titles);
         subTitle.setText(subTitles);
@@ -95,7 +97,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickMenuListener.onClick(uid, btnMenu);
+                onClickMenuListener.onClick(uid, btnMenu, artistID);
             }
         });
     }
@@ -115,6 +117,6 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     }
 
     public interface OnClickMenuListener{
-        void onClick(String uid, ImageButton imageButton);
+        void onClick(String uid, ImageButton imageButton, String artistID);
     }
 }
