@@ -98,7 +98,8 @@ public class DialogGetPremium implements View.OnClickListener{
                 break;
             case R.id.btn_premium:
                 premium.dismiss();
-                dialogPayment = new DialogPayment(dialogPay, activity);
+                String transID = "PRE"+sessionHelper.getPreferences(activity, "user_id")+random.nextInt(89)+10;
+                dialogPayment = new DialogPayment(dialogPay, activity, transID, 10000, "Akun Premium");
                 dialogPayment.showDialog();
                 break;
             default:

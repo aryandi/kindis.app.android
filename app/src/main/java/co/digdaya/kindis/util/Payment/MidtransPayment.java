@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
@@ -33,9 +34,14 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
+    String transID, transName;
+    int price;
 
-    public MidtransPayment(Activity activity) {
+    public MidtransPayment(Activity activity, String transID, int price, String transName) {
         this.activity = activity;
+        this.transID = transID;
+        this.price = price;
+        this.transName = transName;
 
         sessionHelper = new SessionHelper();
         random = new Random();
@@ -47,7 +53,7 @@ public class MidtransPayment {
         SdkUIFlowBuilder.init(activity.getApplicationContext(), BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, new TransactionFinishedCallback() {
             @Override
             public void onTransactionFinished(TransactionResult result) {
-                if (result != null){
+                if (result.getResponse() != null){
                     HashMap<String, String> param = new HashMap<String, String>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
@@ -76,8 +82,7 @@ public class MidtransPayment {
     }
 
     private void preparePayment(){
-        String transID = "PRE"+sessionHelper.getPreferences(activity, "user_id")+random.nextInt(50) + 1;
-        transactionRequest = new TransactionRequest(transID, 10000);
+        transactionRequest = new TransactionRequest(transID, price);
 
         CustomerDetails customer = new CustomerDetails();
         customer.setFirstName(sessionHelper.getPreferences(activity.getApplicationContext(), "fullname"));
@@ -101,15 +106,12 @@ public class MidtransPayment {
         userDetail.setUserAddresses(userAddresses);
         LocalDataHandler.saveObject("user_details", userDetail);
 
-        /*ItemDetails itemDetails = new ItemDetails("1", 10000, 1, "Trekking Shoes");
+        ItemDetails itemDetails = new ItemDetails("1", price, 1, transName);
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
-        transactionRequest.setItemDetails(itemDetailsArrayList);*/
-
-        /*BillInfoModel billInfoModel = new BillInfoModel("004", "Premium User");
-        transactionRequest.setBillInfoModel(billInfoModel);*/
+        transactionRequest.setItemDetails(itemDetailsArrayList);
 
         CreditCard creditCardOptions = new CreditCard();
         creditCardOptions.setSaveCard(false);

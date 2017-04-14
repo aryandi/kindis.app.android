@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -39,11 +40,12 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.view.dialog.DialogPayment;
 import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
 
-public class Detail extends BottomPlayerActivity {
+public class Detail extends BottomPlayerActivity implements View.OnClickListener {
     AppBarLayout appBarLayout;
     LinearLayout contFloatingButton;
     RelativeLayout contLabel;
@@ -58,7 +60,9 @@ public class Detail extends BottomPlayerActivity {
     AdapterSong adapterSong;
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     ArrayList<String> songPlaylist = new ArrayList<>();
-    Dialog dialogPlaylis;
+
+    Dialog dialogPlaylis, dialogPay;
+    DialogPayment dialogPayment;
 
     SessionHelper sessionHelper;
     PlayerSessionHelper playerSessionHelper;
@@ -97,6 +101,7 @@ public class Detail extends BottomPlayerActivity {
 
         sessionHelper = new SessionHelper();
         playerSessionHelper = new PlayerSessionHelper();
+        btnPremium.setOnClickListener(this);
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -303,9 +308,9 @@ public class Detail extends BottomPlayerActivity {
         new VolleyHelper().post(ApiHelper.DETAIL_PLAYLIST_PREMIUM, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                System.out.println("playlistpremium"+ response);
                 if (status){
                     try {
+                        System.out.println("playlistpremium"+ response);
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
@@ -313,6 +318,7 @@ public class Detail extends BottomPlayerActivity {
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"));
 
                             JSONArray single = playlist.getJSONArray("singles");
                             for (int i=0; i<single.length(); i++){
@@ -422,5 +428,14 @@ public class Detail extends BottomPlayerActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_premium:
+                dialogPayment.showDialog();
+                break;
+        }
     }
 }
