@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
@@ -36,6 +37,7 @@ import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     PlayerSessionHelper playerSessionHelper;
     SessionHelper sessionHelper;
+    VolleyHelper volleyHelper;
     MediaPlayer mediaPlayer = null;
 
     Notification.Builder noti;
@@ -49,6 +51,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     int playlistPosition = 0;
 
     String title, subtitle;
+    int countAds;
 
     public PlayerService() {
     }
@@ -61,6 +64,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         playerSessionHelper = new PlayerSessionHelper();
         sessionHelper = new SessionHelper();
+        volleyHelper = new VolleyHelper();
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
         if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
@@ -83,6 +87,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         views.setOnClickPendingIntent(R.id.btn_close, retreivePlaybackAction(3));
 
         notification();
+
+        countAds = new Random().nextInt(6)+1;
     }
 
     @Override
@@ -281,7 +287,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     private void playMediaPlayer(){
         isDataSources = true;
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
-        Log.d("songresource", song);
 
         mediaPlayer.reset();
         try {
@@ -303,7 +308,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         System.out.println("Paramssongresource : "+uid+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
 
         playerSessionHelper.setPreferences(getApplicationContext(), "uid", uid);
-        new VolleyHelper().post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
+        volleyHelper.post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
@@ -319,12 +324,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "artist_id", result.getString("artist_id"));
-                                title = result.getString("title");
-                                subtitle = result.getString("artist") +" | "+result.getString("album");
-                                sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
-                                Log.d("is_premium", result.getString("is_premium"));
                                 if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
                                     playMediaPlayer();
+                                    title = result.getString("title");
+                                    subtitle = result.getString("artist") +" | "+result.getString("album");
+                                    sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
                                     if (noti != null) {
                                         updateNotification();
                                     }
@@ -362,11 +366,18 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void playNext(){
-        playlistPosition++;
-        if (mediaPlayer.isPlaying()){
-            mediaPlayer.stop();
+        countAds--;
+        System.out.println("playAds: "+countAds);
+        if (countAds==0 && sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("0")){
+            playAds();
+            countAds = new Random().nextInt(6)+1;
+        }else {
+            playlistPosition++;
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+            }
+            getSongResources(songPlaylist.get(playlistPosition));
         }
-        getSongResources(songPlaylist.get(playlistPosition));
     }
 
     private void playBack(){
@@ -423,5 +434,37 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 break;
         }
         return null;
+    }
+
+    private void playAds(){
+        volleyHelper.get(ApiHelper.ADS_SONG+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access"), new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                System.out.println("playAds: "+response);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            playerSessionHelper.setPreferences(getApplicationContext(), "title", result.getString("title"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "subtitle", result.getString("artist"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
+                            playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
+                            playMediaPlayer();
+                        }else {
+                            if (cekSizePlaylist()){
+                                playNext();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    if (cekSizePlaylist()){
+                        playNext();
+                    }
+                }
+            }
+        });
     }
 }
