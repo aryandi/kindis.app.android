@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.activity;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,6 +36,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;
     DrawerLayout drawer;
 
+    FragmentTransaction transaction;
     Fragment profileFragment;
     Fragment homeFragment;
     Fragment notifFragment;
@@ -58,6 +61,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     ImageView icMenuHome, icMenuNotif, icMenuProfile;
     TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
+    Boolean exit = false;
 
     Dialog dialogPremium, dialogGft, dialogBnnr;
 
@@ -108,8 +112,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         profileStatus = (Button) findViewById(R.id.profile_status);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.cont_main, homeFragment);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.cont_main, homeFragment, "home");
         transaction.commit();
 
         initSidebar();
@@ -120,7 +124,24 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().findFragmentByTag("home").isVisible()){
+                if (exit) {
+                    this.finishAffinity();
+                } else {
+                    Toast.makeText(this, "Press Back again to Exit.",
+                            Toast.LENGTH_SHORT).show();
+                    exit = true;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            exit = false;
+                        }
+                    }, 3 * 1000);
+
+                }
+            }else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -220,4 +241,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
     }
+
+
 }

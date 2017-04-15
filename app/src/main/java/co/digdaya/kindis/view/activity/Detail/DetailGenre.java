@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
@@ -64,6 +65,7 @@ public class DetailGenre extends BottomPlayerActivity {
     RecyclerView recyclerViewArtist, recyclerViewPlaylist, recyclerViewSingle, recyclerViewAlbum;
 
     ArrayList<String> songPlaylist = new ArrayList<>();
+    String json;
 
     SessionHelper sessionHelper;
     PlayerSessionHelper playerSessionHelper;
@@ -115,15 +117,15 @@ public class DetailGenre extends BottomPlayerActivity {
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
-                Intent intent = new Intent(Detail.this, PlayerService.class);
+                Intent intent = new Intent(DetailGenre.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                 intent.putExtra("single_id", songPlaylist.get(0));
                 intent.putExtra("list_uid", songPlaylist);
-                startService(intent);*/
+                startService(intent);
             }
         });
     }
@@ -201,10 +203,15 @@ public class DetailGenre extends BottomPlayerActivity {
 
                             DataSingle dataSingle = gson.fromJson(result.toString(), DataSingle.class);
                             adapterSongHorizontal = new AdapterSongHorizontal(DetailGenre.this, dataSingle, 1);
-                            recyclerViewSingle.setAdapter(adapterAlbum);
+                            recyclerViewSingle.setAdapter(adapterSongHorizontal);
                             recyclerViewSingle.setNestedScrollingEnabled(false);
 
-                            //for (int i=0; i)
+                            JSONArray singles = result.getJSONArray("single");
+                            json = singles.toString();
+                            for (int i=0; i<singles.length(); i++){
+                                JSONObject data = singles.getJSONObject(i);
+                                songPlaylist.add(data.optString("uid"));
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

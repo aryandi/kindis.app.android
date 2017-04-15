@@ -15,10 +15,12 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
 import co.digdaya.kindis.view.activity.Account.SignInActivity;
 
 public class SplashScreen extends AppCompatActivity {
     SessionHelper sessionHelper;
+    RefreshToken refreshToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         sessionHelper = new SessionHelper();
+        refreshToken = new RefreshToken(getApplicationContext());
 
         new Handler().postDelayed(new Runnable() {
 
@@ -85,8 +88,13 @@ public class SplashScreen extends AppCompatActivity {
                             Intent i = new Intent(SplashScreen.this, Bismillah.class);
                             startActivity(i);
                         }else {
-                            Intent i = new Intent(SplashScreen.this, SignInActivity.class);
-                            startActivity(i);
+                            if (refreshToken.refreshToken()){
+                                Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                                startActivity(i);
+                            }else {
+                                Intent i = new Intent(SplashScreen.this, SignInActivity.class);
+                                startActivity(i);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
