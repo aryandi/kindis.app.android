@@ -317,8 +317,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
+        if (mGoogleApiClient!=null){
+            mGoogleApiClient.stopAutoManage(getActivity());
+            mGoogleApiClient.disconnect();
+        }
     }
 
     public class LogOut extends AsyncTask<String, String, String>{

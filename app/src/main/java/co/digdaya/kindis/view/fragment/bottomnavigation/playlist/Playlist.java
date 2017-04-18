@@ -238,8 +238,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
 
     private void deletePlaylist(String uid){
         HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", new SessionHelper().getPreferences(getContext(), "user_id"));
+        param.put("user_id", sessionHelper.getPreferences(getContext(), "user_id"));
         param.put("playlist_id", uid);
+        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.DELETE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override

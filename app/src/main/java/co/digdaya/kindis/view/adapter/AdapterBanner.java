@@ -67,7 +67,8 @@ public class AdapterBanner extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(dataSinggle.get("link")));
+                /*Uri uri = Uri.parse(dataSinggle.get("link"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);*/
             }
