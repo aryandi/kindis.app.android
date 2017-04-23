@@ -78,7 +78,6 @@ public class AdapterBanner extends PagerAdapter {
             title.setVisibility(View.VISIBLE);
             subtitle.setVisibility(View.VISIBLE);
             btnDonate.setVisibility(View.VISIBLE);
-
             title.setText(dataSinggle.get("title"));
         }
         container.addView(view);

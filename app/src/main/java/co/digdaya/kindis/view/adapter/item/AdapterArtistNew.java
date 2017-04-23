@@ -60,7 +60,7 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
                 .centerCrop()
                 .into(imageView);
         title.setText(dataArtist.data.get(position).name);
-        subTitle.setText("Artist");
+        subTitle.setText(dataArtist.data.get(position).name);
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override

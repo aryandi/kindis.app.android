@@ -36,9 +36,9 @@ public class AdapterWalkthrough extends PagerAdapter {
     };
 
     private String[] subtitles = new String[]{
-            "Explore your favorite Islamic spiritual songs, play it, and let your soul be entertained.",
-            "Step your finger to reach for spiritual inspiration and let your soul be enlightened.",
-            "Kindness will never lessen, specify your donation, and let your soul enriched."
+            "Explore your favorite Islamic spiritual songs, play it, and let your soul entertained.",
+            "Step your finger to reach for spiritual inspiration and let your soul enlightened.",
+            "Kindness will never lessen. Do good, and let your soul enriched."
     };
 
     private String[] btntxt = new String[]{

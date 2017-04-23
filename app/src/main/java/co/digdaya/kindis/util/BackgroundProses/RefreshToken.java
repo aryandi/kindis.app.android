@@ -34,8 +34,8 @@ public class RefreshToken {
         new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                System.out.println("refreshToken: "+response);
                 if (status){
-                    System.out.println("refreshToken: "+response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
