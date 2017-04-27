@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +46,7 @@ public class Infaq extends Fragment {
     RecyclerView listViewInfaq;
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
-    ArrayList<InfaqModel> listInfaq = new ArrayList<>();
+    Gson gson;
 
     String responses = null;
     public Infaq() {
@@ -63,6 +65,7 @@ public class Infaq extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loading = new DialogLoading(getActivity());
+        gson = new Gson();
 
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) view.findViewById(R.id.indicator);
@@ -73,7 +76,8 @@ public class Infaq extends Fragment {
         getBanner();
 
         if (responses != null){
-            adapterInfaq = new AdapterInfaq(listInfaq, getContext());
+            InfaqModel infaqModel = gson.fromJson(responses, InfaqModel.class);
+            adapterInfaq = new AdapterInfaq(infaqModel, getContext());
             listViewInfaq.setAdapter(adapterInfaq);
             listViewInfaq.setNestedScrollingEnabled(true);
             listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
@@ -89,7 +93,13 @@ public class Infaq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismisLoading();
                 Log.d("infaqresponse", response);
-                if (status){
+                InfaqModel infaqModel = gson.fromJson(response, InfaqModel.class);
+
+                adapterInfaq = new AdapterInfaq(infaqModel, getContext());
+                listViewInfaq.setAdapter(adapterInfaq);
+                listViewInfaq.setNestedScrollingEnabled(true);
+                listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
+                /*if (status){
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
@@ -113,7 +123,7 @@ public class Infaq extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
             }
         });
     }
