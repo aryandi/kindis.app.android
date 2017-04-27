@@ -57,11 +57,11 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         final ImageButton btnMenu = holder.btnMenu;
         dataSong = listSong.get(position);
 
-        System.out.println("kontol : "+dataSong);
         final String uid = dataSong.get("uid");
         final String titles = dataSong.get("title");
         final String subTitles = dataSong.get("subtitle");
         final String artistID = dataSong.get("artist_id");
+        final String shareLink = dataSong.get("share_link");
         System.out.println("artist_id: "+ artistID);
 
         title.setText(titles);
@@ -97,7 +97,8 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickMenuListener.onClick(uid, btnMenu, artistID);
+                onClickMenuListener.onClick(uid, btnMenu, artistID, shareLink);
+                //Toast.makeText(context, "test", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -117,6 +118,6 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     }
 
     public interface OnClickMenuListener{
-        void onClick(String uid, ImageButton imageButton, String artistID);
+        void onClick(String uid, ImageButton imageButton, String artistID, String shareLink);
     }
 }

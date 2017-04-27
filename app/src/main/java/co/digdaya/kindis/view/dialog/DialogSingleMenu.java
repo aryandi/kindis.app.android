@@ -35,15 +35,16 @@ public class DialogSingleMenu implements View.OnClickListener {
     ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
     AdapterInsertItemPlaylist adapterPlaylist;
     RecyclerView listViewPlaylist;
-    String uidSingle, artistID;
+    String uidSingle, artistID, shareLink;
     Boolean isArtist;
-    TextView btnGotoArtist, btnShare;
+    TextView btnGotoArtist, btnShare, btnAddToPlaylist;
 
-    public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID, Boolean isArtist) {
+    public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID, String shareLink, Boolean isArtist) {
         this.activity = activity;
         this.dialog = dialog;
         this.uidSingle = uidSingle;
         this.artistID = artistID;
+        this.shareLink = shareLink;
         this.isArtist = isArtist;
     }
 
@@ -65,6 +66,7 @@ public class DialogSingleMenu implements View.OnClickListener {
 
         btnGotoArtist = (TextView) view.findViewById(R.id.btn_goto_artist);
         btnShare = (TextView) view.findViewById(R.id.btn_share);
+        btnAddToPlaylist = (TextView) view.findViewById(R.id.btn_add_to_playlist);
 
         if (isArtist){
             btnGotoArtist.setVisibility(View.GONE);
@@ -98,17 +100,17 @@ public class DialogSingleMenu implements View.OnClickListener {
                             adapterPlaylist = new AdapterInsertItemPlaylist(activity, listPlaylist, uidSingle, dialog);
                             listViewPlaylist.setAdapter(adapterPlaylist);
                             listViewPlaylist.setNestedScrollingEnabled(true);
-
-                            dialog.show();
+                        }else {
+                            btnAddToPlaylist.setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
-
                 }
             }
         });
+
+        dialog.show();
     }
 
     @Override
@@ -117,7 +119,7 @@ public class DialogSingleMenu implements View.OnClickListener {
             case R.id.btn_share:
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shareLink);
                 sendIntent.setType("text/plain");
                 activity.startActivity(sendIntent);
                 break;
@@ -130,4 +132,6 @@ public class DialogSingleMenu implements View.OnClickListener {
                 break;
         }
     }
+
+
 }

@@ -24,6 +24,7 @@
         android:textColor="@color/white"/>
 
     <co.digdaya.kindis.custom.TextViewBold
+        android:id="@+id/btn_add_to_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"

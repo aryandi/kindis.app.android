@@ -67,7 +67,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         RelativeLayout click = holder.click;
 
         title.setText(datas.get(position).title);
-        subTitle.setText(datas.get(position).artist);
+        subTitle.setText(datas.get(position).artist+" | "+datas.get(position).album_name);
         Glide.with(context)
                 .load(ApiHelper.BASE_URL_IMAGE+datas.get(position).image)
                 .thumbnail( 0.1f )

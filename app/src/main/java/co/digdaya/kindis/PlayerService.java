@@ -324,6 +324,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "artist_id", result.getString("artist_id"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "share_link", result.getString("share_link"));
                                 if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
                                     playMediaPlayer();
                                     title = result.getString("title");

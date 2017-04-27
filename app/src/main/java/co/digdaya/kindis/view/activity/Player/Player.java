@@ -63,7 +63,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
-        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), false);
+        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);

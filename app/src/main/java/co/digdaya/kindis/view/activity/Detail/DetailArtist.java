@@ -194,6 +194,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                                         maps.put("title", song.optString("title"));
                                         maps.put("subtitle", smry.getString("title"));
                                         map.put("is_premium", data.optString("is_premium"));
+                                        map.put("share_link", data.optString("share_link"));
                                         listSong.add(maps);
                                         songPlaylist.add(song.optString("uid"));
                                     }
@@ -224,8 +225,8 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     private void onClickMenuSong(){
         adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
             @Override
-            public void onClick(String uid, ImageButton imageButton, String artistID) {
-                new DialogSingleMenu(DetailArtist.this, dialogPlaylis, uid, artistID, true).showDialog();
+            public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
+                new DialogSingleMenu(DetailArtist.this, dialogPlaylis, uid, artistID, shareLink, true).showDialog();
             }
         });
     }

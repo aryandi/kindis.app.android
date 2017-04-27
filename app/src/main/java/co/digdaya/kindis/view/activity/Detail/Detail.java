@@ -238,6 +238,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                                 map.put("subtitle", data.optString("artist"));
                                 map.put("is_premium", data.optString("is_premium"));
                                 map.put("artist_id", data.getString("artist_id"));
+                                map.put("share_link", data.optString("share_link"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -278,6 +279,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             map.put("subtitle", data.optString("artist"));
                             map.put("is_premium", data.optString("is_premium"));
                             map.put("artist_id", data.getString("artist_id"));
+                            map.put("share_link", data.optString("share_link"));
                             listSong.add(map);
                             songPlaylist.add(data.optString("uid"));
                         }
@@ -329,6 +331,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                                 map.put("subtitle", data.optString("artist"));
                                 map.put("is_premium", data.optString("is_premium"));
                                 map.put("artist_id", data.getString("artist_id"));
+                                map.put("share_link", data.optString("share_link"));
                                 listSong.add(map);
                                 songPlaylist.add(data.optString("single_id"));
                             }
@@ -336,6 +339,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             adapterSong = new AdapterSong(Detail.this, listSong, "", null);
                             listViewSong.setAdapter(adapterSong);
                             listViewSong.setNestedScrollingEnabled(true);
+                            onClickMenuSong();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -358,14 +362,16 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                 map.put("subtitle", subtitle);
                 map.put("is_premium", summary.getString("is_premium"));
                 map.put("artist_id", summary.getString("artist_id"));
+                map.put("share_link", summary.optString("share_link"));
                 listSong.add(map);
                 songPlaylist.add(summary.optString("uid"));
             }
             adapterSong = new AdapterSong(Detail.this, listSong, "", null);
             listViewSong.setAdapter(adapterSong);
             listViewSong.setNestedScrollingEnabled(true);
-
             onClickMenuSong();
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -375,8 +381,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         String isMyPlaylist = ""+getIntent().getStringExtra("isMyPlaylist");
         if (isMyPlaylist.equals("true")){
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+
                 @Override
-                public void onClick(final String uid, ImageButton imageButton, String artistID) {
+                public void onClick(final String uid, ImageButton imageButton, String artistID, String shareLink) {
                     PopupMenu popup = new PopupMenu(getApplicationContext(), imageButton);
                     popup.getMenuInflater().inflate(R.menu.list_playlist, popup.getMenu());
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -393,9 +400,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }else {
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
-                public void onClick(String uid, ImageButton imageButton, String artistID) {
-                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, false).showDialog();
-
+                public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
+                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, shareLink, false).showDialog();
                 }
             });
         }

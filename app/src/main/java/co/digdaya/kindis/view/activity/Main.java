@@ -69,6 +69,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     DialogGift dialogGift;
     DialogBanner dialogBanner;
 
+    public Main() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

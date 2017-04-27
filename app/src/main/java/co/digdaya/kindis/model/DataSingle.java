@@ -27,5 +27,7 @@ public class DataSingle {
         public String is_premium;
         @SerializedName("artist")
         public String artist;
+        @SerializedName("album_name")
+        public String album_name;
     }
 }

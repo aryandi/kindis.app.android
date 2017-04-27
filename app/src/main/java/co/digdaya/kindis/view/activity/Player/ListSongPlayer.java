@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
+import co.digdaya.kindis.view.activity.Detail.Detail;
 import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
@@ -87,6 +90,13 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
             listViewSong.setNestedScrollingEnabled(true);
             int pos = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"))+1;
             linearLayoutManager.scrollToPosition(pos);
+
+            adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
+                @Override
+                public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
+                    new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false).showDialog();
+                }
+            });
         }
     }
 
@@ -97,7 +107,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_menu_play:
-                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), false).showDialog();
+                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false).showDialog();
                 break;
         }
     }
