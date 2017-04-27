@@ -112,7 +112,10 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemViewType(int position) {
-        int isPremium = Integer.parseInt(datas.get(position).is_premium);
+        int isPremium = 0;
+        if (datas.get(position).is_premium!=null){
+            isPremium = Integer.parseInt(datas.get(position).is_premium);
+        }
         return isPremium;
     }
 }

@@ -13,29 +13,14 @@
         android:layout_height="match_parent"
         android:src="@drawable/ic_default_img"/>
 
-    <LinearLayout
+    <co.digdaya.kindis.custom.TextViewBold
+        android:id="@+id/label_masjid_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:orientation="vertical"
-        android:layout_centerVertical="true">
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_masjid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="MASJID"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <co.digdaya.kindis.custom.TextViewBold
-            android:id="@+id/label_masjid_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="JAMA"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
-    </LinearLayout>
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
 </RelativeLayout>

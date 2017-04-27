@@ -60,6 +60,7 @@ public class ApiHelper {
     public static final String CHANGE_PASSWORD = BASE_URL + "profile/update_password";
 
     public static final String LIST_INFAQ = BASE_URL + "infaq/list";
+    public static final String ITEM_INFAQ = BASE_URL + "infaq/items?infaq_id=";
 
     public static final String GIFT = BASE_URL + "gift/items";
 

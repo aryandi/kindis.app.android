@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.view.activity.Detail.DetailInfaq;
 
 /**
  * Created by vincenttp on 1/27/2017.
@@ -59,7 +61,7 @@ public class AdapterBanner extends PagerAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.image_musiq_slider);
 
         Glide.with(mContext)
-                .load(dataSinggle.get("image"))
+                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
@@ -78,7 +80,33 @@ public class AdapterBanner extends PagerAdapter {
             title.setVisibility(View.VISIBLE);
             subtitle.setVisibility(View.VISIBLE);
             btnDonate.setVisibility(View.VISIBLE);
-            title.setText(dataSinggle.get("title"));
+
+            final String url = dataSinggle.get("redirect_url");
+            final String uid = dataSinggle.get("uid");
+            final String titlee = dataSinggle.get("title");
+            final String isUrl = dataSinggle.get("is_url");
+
+            if (isUrl.equals("0")){
+                btnDonate.setText("MORE");
+            }
+            title.setText(titlee);
+
+            btnDonate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isUrl.equals("1")){
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        mContext.startActivity(i);
+                    }else {
+                        Intent intent = new Intent(mContext, DetailInfaq.class);
+                        intent.putExtra("uid", uid);
+                        intent.putExtra("title", titlee);
+                        intent.putExtra("image", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
         }
         container.addView(view);
 

@@ -173,6 +173,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_CLOSE)){
             notificationManager.cancel(1);
+            stopSelf();
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){

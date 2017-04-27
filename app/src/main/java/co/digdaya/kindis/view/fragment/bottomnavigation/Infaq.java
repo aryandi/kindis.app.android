@@ -99,31 +99,6 @@ public class Infaq extends Fragment {
                 listViewInfaq.setAdapter(adapterInfaq);
                 listViewInfaq.setNestedScrollingEnabled(true);
                 listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
-                /*if (status){
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            responses = response;
-                            JSONArray result = object.getJSONArray("result");
-                            for (int i=0; i<result.length(); i++){
-                                JSONObject data = result.getJSONObject(i);
-                                InfaqModel infaqModel = new InfaqModel();
-                                infaqModel.setUid(data.getString("uid"));
-                                infaqModel.setTitle(data.getString("title"));
-                                infaqModel.setMain_image(data.getString("main_image"));
-                                infaqModel.setDate_created(data.getString("date_created"));
-                                listInfaq.add(infaqModel);
-                            }
-
-                            adapterInfaq = new AdapterInfaq(listInfaq, getContext());
-                            listViewInfaq.setAdapter(adapterInfaq);
-                            listViewInfaq.setNestedScrollingEnabled(true);
-                            listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }*/
             }
         });
     }
@@ -144,6 +119,8 @@ public class Infaq extends Fragment {
                                 map.put("uid", data.getString("uid"));
                                 map.put("title", data.getString("title"));
                                 map.put("image", data.getString("main_image"));
+                                map.put("is_url", data.getString("is_url"));
+                                map.put("redirect_url", data.getString("redirect_url"));
                                 listBanner.add(map);
                             }
                             adapterBanner = new AdapterBanner(getActivity(), listBanner, "infaq");

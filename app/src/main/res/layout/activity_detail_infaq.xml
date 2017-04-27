@@ -90,11 +90,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="45dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_songs"
+            android:layout_margin="16dp">
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:id="@+id/detail_infaq"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -110,7 +112,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/cont_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -125,5 +127,5 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:background="@drawable/button_rounded"/>
-    </LinearLayout>
+    </LinearLayout>-->
 </android.support.design.widget.CoordinatorLayout>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,14 +45,14 @@ public class AdapterInfaq extends RecyclerView.Adapter<ItemInfaq> {
         final String uid = infaqModel.result.get(position).uid;
         final String titles = infaqModel.result.get(position).title;
         final String url = infaqModel.result.get(position).redirect_url;
-        String imageUrl = ApiHelper.BASE_URL_IMAGE+infaqModel.result.get(position).main_image;
+        final String imageUrl = ApiHelper.BASE_URL_IMAGE+infaqModel.result.get(position).main_image;
 
         TextView title = holder.labelNama;
         ImageView imageView = holder.imageView;
 
         title.setText(titles);
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+imageUrl)
+                .load(imageUrl)
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
@@ -68,6 +69,7 @@ public class AdapterInfaq extends RecyclerView.Adapter<ItemInfaq> {
                     Intent intent = new Intent(context, DetailInfaq.class);
                     intent.putExtra("uid", uid);
                     intent.putExtra("title", titles);
+                    intent.putExtra("image", imageUrl);
                     context.startActivity(intent);
                 }
             }

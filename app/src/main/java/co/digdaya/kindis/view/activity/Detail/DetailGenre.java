@@ -114,7 +114,8 @@ public class DetailGenre extends BottomPlayerActivity {
         playerSessionHelper = new PlayerSessionHelper();
         gson = new Gson();
 
-        btnPlayAll.setOnClickListener(new View.OnClickListener() {
+        btnPlayAll.setVisibility(View.GONE);
+        /*btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
@@ -127,7 +128,7 @@ public class DetailGenre extends BottomPlayerActivity {
                 intent.putExtra("list_uid", songPlaylist);
                 startService(intent);
             }
-        });
+        });*/
     }
 
     private void init(){
