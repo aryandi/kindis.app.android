@@ -126,9 +126,11 @@
         <activity
             android:name=".view.activity.Account.TransactionHistory"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Detail.More"
+        <activity
+            android:name=".view.activity.Detail.More"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".view.activity.Premium"></activity>
     </application>
 
 </manifest>

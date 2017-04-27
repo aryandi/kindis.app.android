@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -65,7 +66,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     Dialog dialogPremium, dialogGft, dialogBnnr;
 
-    DialogGetPremium dialogGetPremium;
     DialogGift dialogGift;
     DialogBanner dialogBanner;
 
@@ -79,7 +79,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        dialogGetPremium = new DialogGetPremium(this, dialogPremium);
         dialogBanner = new DialogBanner(this, dialogBnnr);
         dialogBanner.showDialog();
 
@@ -198,7 +197,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             icMenuNotif.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuNotif.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if(view.getId() == R.id.menu_premium) {
-            dialogGetPremium.showDialog();
+            Intent intent = new Intent(this, Premium.class);
+            startActivity(intent);
         }else if (view.getId() == R.id.menu_profile){
             transaction.replace(R.id.cont_main, profileFragment);
 

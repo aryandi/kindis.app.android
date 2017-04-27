@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_premium"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_bckgrnd3"
+    android:paddingLeft="26dp"
+    android:paddingRight="26dp"
+    android:paddingTop="100dp"
+    tools:context="co.digdaya.kindis.view.activity.Premium">
+
+    <LinearLayout
+        android:id="@+id/ic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="11dp"
+            android:src="@drawable/ic_money"/>
+        <co.digdaya.kindis.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ic"
+            android:text="Get Premium"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+    </LinearLayout>
+
+    <co.digdaya.kindis.custom.TextViewSemiBold
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ic"
+        android:layout_marginTop="48dp"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:text="Rasakan pengalaman lebih menyenangka dengan menjadi pengguna premium Kindis." />
+
+    <co.digdaya.kindis.custom.TextViewSemiBold
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="21dp"
+        android:text="• Bisa mendengarkan secara offline\n• Bebas mengakses semua konten\n• Bebas iklan (kecuali saat mengakses \n   sponsored playlist)\n• Bebas menyusun playlist sendiri"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <co.digdaya.kindis.custom.TextViewSemiBold
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:text="CANCEL"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
+        <co.digdaya.kindis.custom.TextViewSemiBold
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:text="OK"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+</RelativeLayout>

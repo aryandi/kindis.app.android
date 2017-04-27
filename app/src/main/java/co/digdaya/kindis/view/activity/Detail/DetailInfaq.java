@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class DetailInfaq extends BottomPlayerActivity{
     Toolbar toolbar;
     TextView titleToolbar, titleDetail, description, detailInfaq;
     ImageView backdrop;
+    RecyclerView gallery;
     DialogDonate dialogDonate;
     Dialog dialog;
     Gson gson;
@@ -62,6 +64,7 @@ public class DetailInfaq extends BottomPlayerActivity{
         description = (TextView) findViewById(R.id.description);
         detailInfaq = (TextView) findViewById(R.id.detail_infaq);
         backdrop = (ImageView) findViewById(R.id.backdrop);
+        gallery = (RecyclerView) findViewById(R.id.gallery_infaq);
 
         dialogDonate = new DialogDonate(this, dialog);
         gson = new Gson();
