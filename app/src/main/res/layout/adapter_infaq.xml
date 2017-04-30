@@ -7,7 +7,7 @@
     android:layout_height="156dp"
     tools:context="co.digdaya.kindis.view.adapter.item.AdapterInfaq">
     
-    <ImageView
+    <co.digdaya.kindis.custom.ImageViewRounded
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

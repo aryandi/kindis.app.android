@@ -31,6 +31,7 @@ import co.digdaya.kindis.view.fragment.navigationview.Home;
 import co.digdaya.kindis.view.fragment.navigationview.Notification;
 import co.digdaya.kindis.view.fragment.navigationview.Privacy;
 import co.digdaya.kindis.view.fragment.navigationview.Profile;
+import co.digdaya.kindis.view.fragment.navigationview.SaveOffline;
 import co.digdaya.kindis.view.fragment.navigationview.Terms;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
@@ -39,6 +40,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     FragmentTransaction transaction;
     Fragment profileFragment;
+    Fragment saveOffline;
     Fragment homeFragment;
     Fragment notifFragment;
     Fragment faqFragment;
@@ -51,6 +53,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView fullname;
     LinearLayout menuHome;
     LinearLayout menuProfile;
+    LinearLayout menuOffline;
     LinearLayout menuNotif;
     LinearLayout menuPremium;
     LinearLayout menuGift;
@@ -60,8 +63,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuCookies;
     Button profileStatus;
 
-    ImageView icMenuHome, icMenuNotif, icMenuProfile;
-    TextView labelMenuHome, labelMenuNotif, labelMenuProfile;
+    ImageView icMenuHome, icMenuNotif, icMenuProfile, icMenuOffline;
+    TextView labelMenuHome, labelMenuNotif, labelMenuProfile, labelMenuOffline;
     Boolean exit = false;
 
     Dialog dialogPremium, dialogGft, dialogBnnr;
@@ -84,6 +87,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);
+        saveOffline = new SaveOffline(drawer);
         notifFragment = new Notification(drawer);
         faqFragment = new FAQ(drawer);
         privacyFragment = new Privacy(drawer);
@@ -96,6 +100,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         fullname = (TextView) findViewById(R.id.fullname);
         menuHome = (LinearLayout) findViewById(R.id.menu_home);
         menuProfile = (LinearLayout) findViewById(R.id.menu_profile);
+        menuOffline = (LinearLayout) findViewById(R.id.menu_offline);
         menuNotif = (LinearLayout) findViewById(R.id.menu_notif);
         menuPremium = (LinearLayout) findViewById(R.id.menu_premium);
         menuGift = (LinearLayout) findViewById(R.id.menu_gift);
@@ -107,10 +112,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         icMenuHome = (ImageView) findViewById(R.id.ic_menu_home);
         icMenuNotif = (ImageView) findViewById(R.id.ic_menu_notif);
         icMenuProfile = (ImageView) findViewById(R.id.ic_menu_profile);
+        icMenuOffline = (ImageView) findViewById(R.id.ic_menu_offline);
 
         labelMenuHome = (TextView) findViewById(R.id.label_menu_home);
         labelMenuNotif = (TextView) findViewById(R.id.label_menu_notif);
         labelMenuProfile = (TextView) findViewById(R.id.label_menu_profile);
+        labelMenuOffline = (TextView) findViewById(R.id.label_menu_offline);
 
         profileStatus = (Button) findViewById(R.id.profile_status);
 
@@ -176,6 +183,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuPremium.setOnClickListener(this);
         menuGift.setOnClickListener(this);
         menuProfile.setOnClickListener(this);
+        menuOffline.setOnClickListener(this);
         menuFAQ.setOnClickListener(this);
         menuPrivacy.setOnClickListener(this);
         menuTerms.setOnClickListener(this);
@@ -204,6 +212,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+        }else if (view.getId() == R.id.menu_offline){
+            transaction.replace(R.id.cont_main, saveOffline);
+
+            icMenuOffline.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+            labelMenuOffline.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_gift) {
             dialogGift = new DialogGift(dialogGft, this);
             dialogGift.showDialog();
@@ -238,6 +251,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
         labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+
+        icMenuOffline.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        labelMenuOffline.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
 
         menuFAQ.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));

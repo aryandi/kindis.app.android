@@ -110,7 +110,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
             recyclerView.addItemDecoration(new MarginItemHorizontal(context));
         }else{
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
-            recyclerView.addItemDecoration(new SpacingItemGenre(context));
+            recyclerView.addItemDecoration(new SpacingItemGenre(context, ""));
         }/*else if (tabs.get(position).type_id.equals("2")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
             recyclerView.addItemDecoration(new SpacingItemMore(context));

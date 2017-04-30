@@ -11,14 +11,21 @@ import android.view.View;
 
 public class SpacingItemGenre extends RecyclerView.ItemDecoration {
     Context context;
+    String type;
 
-    public SpacingItemGenre(Context context) {
+    public SpacingItemGenre(Context context, String type) {
         this.context = context;
+        this.type = type;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int itemPosition = parent.getChildAdapterPosition(view);
+        if (type.equals("more")) {
+            if (itemPosition == 0 || itemPosition == 1 || itemPosition == 2){
+                outRect.top = getDP(16);
+            }
+        }
         if (((itemPosition+1)%3)==0){
             outRect.right = getDP(16);
         }else if (itemPosition%3==0){

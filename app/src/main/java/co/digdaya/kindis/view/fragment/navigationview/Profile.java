@@ -78,6 +78,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
     boolean isEditButton = true;
 
+    public Profile() {
+    }
+
     public Profile(DrawerLayout drawer) {
         // Required empty public constructor
         this.drawer = drawer;
@@ -315,8 +318,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         if (mGoogleApiClient!=null){
             mGoogleApiClient.stopAutoManage(getActivity());
             mGoogleApiClient.disconnect();

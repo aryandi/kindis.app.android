@@ -35,7 +35,7 @@ public class AdapterMoreAlbum extends RecyclerView.Adapter<Item>{
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
         Item item= new Item(view);
         return item;
     }

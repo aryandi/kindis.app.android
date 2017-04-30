@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="co.digdaya.kindis.view.fragment.navigationview.SaveOffline">
+
+    <LinearLayout
+        android:id="@+id/cont_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:background="@color/dark_jungle_green">
+        <ImageButton
+            android:id="@+id/btn_drawer"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_drawer"
+            android:background="@android:color/transparent"/>
+        <co.digdaya.kindis.custom.TextViewSemiBold
+            android:id="@+id/title"
+            android:layout_toRightOf="@+id/btn_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:text="Save Offline"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/htab_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/dark_jungle_green"
+        app:tabIndicatorColor="@color/medium_sea_green" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/htab_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

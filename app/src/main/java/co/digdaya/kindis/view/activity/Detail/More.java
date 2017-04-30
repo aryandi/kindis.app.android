@@ -25,6 +25,7 @@ import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DataAlbum;
 import co.digdaya.kindis.model.MoreModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemMore;
 import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.view.adapter.more.AdapterMoreAlbum;
@@ -58,8 +59,8 @@ public class More extends BottomPlayerActivity {
         title = (TextView) findViewById(R.id.title);
         btnBack = (ImageButton) findViewById(R.id.btn_back);
         listViewMore = (RecyclerView) findViewById(R.id.list_more);
-        listViewMore.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
-        listViewMore.addItemDecoration(new SpacingItemMore(getApplicationContext()));
+        listViewMore.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
+        listViewMore.addItemDecoration(new SpacingItemGenre(getApplicationContext(), "more"));
 
         title.setText(getIntent().getStringExtra("title"));
         btnBack.setOnClickListener(new View.OnClickListener() {
