@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.activity.Detail;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -105,6 +106,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
+        backDrop.setColorFilter(Color.parseColor("#70000000"));
+
         if (getIntent().getStringExtra("type").equals("album")){
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
@@ -186,8 +189,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             description.setText(summary.getString("description"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", summary.getString("title"));
 
+
                             Glide.with(getApplicationContext())
-                                    .load(ApiHelper.BASE_URL_IMAGE+summary.getString("image"))
+                                    .load(ApiHelper.BASE_URL_IMAGE+summary.getString("banner_image"))
                                     .thumbnail( 0.1f )
                                     .placeholder(R.drawable.ic_default_img)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -299,9 +303,6 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
     //from premium
     private void getListPremium(){
-        if (getIntent().getIntExtra("playlisttype", 0)==1){
-            btnPremium.setVisibility(View.VISIBLE);
-        }
         HashMap<String, String> param = new HashMap<>();
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
@@ -321,6 +322,18 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"));
+                            if (playlist.getString("is_premium").equals("1")){
+                                btnPremium.setVisibility(View.VISIBLE);
+                            }
+
+                            Glide.with(getApplicationContext())
+                                    .load(ApiHelper.BASE_URL_IMAGE+playlist.getString("banner_image"))
+                                    .thumbnail( 0.1f )
+                                    .placeholder(R.drawable.ic_default_img)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .centerCrop()
+                                    .into(backDrop);
+
 
                             JSONArray single = playlist.getJSONArray("singles");
                             for (int i=0; i<single.length(); i++){

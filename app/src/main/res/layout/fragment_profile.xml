@@ -48,6 +48,7 @@
             android:layout_marginBottom="8dp"/>
         
         <ImageButton
+            android:id="@+id/btn_edit_photo"
             android:layout_toRightOf="@+id/photo"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="72dp"

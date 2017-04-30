@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.activity.Detail;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -171,8 +172,9 @@ public class DetailGenre extends BottomPlayerActivity {
         playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", getIntent().getStringExtra("title"));
         titleDetail.setText(getIntent().getStringExtra("title"));
         description.setText(getIntent().getStringExtra("desc"));
+        backDrop.setColorFilter(Color.parseColor("#70000000"));
         Glide.with(getApplicationContext())
-                .load(ApiHelper.BASE_URL_IMAGE+getIntent().getStringExtra("image"))
+                .load(ApiHelper.BASE_URL_IMAGE+getIntent().getStringExtra("banner_image"))
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()

@@ -30,10 +30,12 @@ import co.digdaya.kindis.view.holder.Item;
 public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
     Activity context;
     DataArtist dataArtist;
+    String subtitles;
 
-    public AdapterArtistNew (Activity context, DataArtist dataArtist){
+    public AdapterArtistNew (Activity context, DataArtist dataArtist, String subtitle){
         this.context = context;
         this.dataArtist = dataArtist;
+        this.subtitles = subtitle;
     }
 
 
@@ -60,7 +62,7 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
                 .centerCrop()
                 .into(imageView);
         title.setText(dataArtist.data.get(position).name);
-        subTitle.setText(dataArtist.data.get(position).name);
+        subTitle.setText(subtitles);
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -158,7 +158,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
 
     private void getBanner(){
         listBanner.clear();
-        new VolleyHelper().get(ApiHelper.ADS_BANNER, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
@@ -171,8 +171,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                                 JSONObject data = result.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("title", data.getString("title"));
-                                map.put("image", data.getString("image_path"));
-                                map.put("link", data.getString("url_link"));
+                                map.put("image", data.getString("image"));
+                                map.put("link", data.getString("click_url"));
                                 listBanner.add(map);
                             }
                             adapterBanner = new AdapterBanner(getActivity(), listBanner, "");

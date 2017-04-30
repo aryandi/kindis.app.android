@@ -11,7 +11,7 @@ public class ApiHelper {
 
     //ads
     public static final String ADS_INFAQ = BASE_URL + "infaq/highlight";
-    public static final String ADS_BANNER = BASE_URL + "ads/position/banner";
+    public static final String ADS_BANNER = BASE_URL + "ads/position/banner?dev_id=2&uid=";
     public static final String ADS_INTERTSTITIAL = BASE_URL + "ads/pop?code=71&uid=";
     public static final String ADS_SONG = BASE_URL + "ads/sound?dev_id=2&uid=";
 

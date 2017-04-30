@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="32dp">
+            android:paddingTop="16dp">
 
             <LinearLayout
                 android:id="@+id/cont_artist"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:textSize="14sp"
-                    android:text="SONGS"
+                    android:text="SINGLE"
                     android:textColor="@color/white"/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_songs"

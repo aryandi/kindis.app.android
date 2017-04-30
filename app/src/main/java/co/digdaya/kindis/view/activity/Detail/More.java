@@ -39,7 +39,7 @@ public class More extends BottomPlayerActivity {
     RecyclerView listViewMore;
     SessionHelper sessionHelper;
 
-    String url;
+    String url, param, urlMore;
     int type;
     Gson gson;
 
@@ -47,6 +47,11 @@ public class More extends BottomPlayerActivity {
     AdapterMoreSingle adapterMoreSingle;
     AdapterMorePlaylist adapterMorePlaylist;
     AdapterMoreArtist adapterMoreArtist;
+
+    MoreModel.ArtistsMore artistsMore;
+    MoreModel.AlbumMore albumMore;
+    MoreModel.SinggleMore singgleMore;
+    MoreModel.PlaylisMore playlisMore;
 
     public More() {
         layout = R.layout.activity_more;
@@ -74,18 +79,20 @@ public class More extends BottomPlayerActivity {
         gson = new Gson();
 
         type = getIntent().getIntExtra("type", 1);
+        param = getIntent().getStringExtra("param");
+        System.out.println("paramextra: "+param);
         switch (type){
             case 1:
-                url = "home/artist_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                url = "home/artist_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12"+param;
                 break;
             case 2:
-                url = "home/album_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                url = "home/album_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12"+param;
                 break;
             case 3:
-                url = "home/single_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                url = "home/single_more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12"+param;
                 break;
             case 5:
-                url = "playlist/more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12";
+                url = "playlist/more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12"+param;
                 break;
         }
 
@@ -99,25 +106,26 @@ public class More extends BottomPlayerActivity {
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
+                        urlMore = object.getString("next_page");
                         if (object.getBoolean("status")){
                             switch (type){
                                 case 1:
-                                    MoreModel.ArtistsMore artistsMore = gson.fromJson(object.toString(), MoreModel.ArtistsMore.class);
+                                    artistsMore = gson.fromJson(object.toString(), MoreModel.ArtistsMore.class);
                                     adapterMoreArtist = new AdapterMoreArtist(More.this, artistsMore);
                                     listViewMore.setAdapter(adapterMoreArtist);
                                     break;
                                 case 2:
-                                    MoreModel.AlbumMore albumMore = gson.fromJson(object.toString(), MoreModel.AlbumMore.class);
+                                    albumMore = gson.fromJson(object.toString(), MoreModel.AlbumMore.class);
                                     adapterMoreAlbum = new AdapterMoreAlbum(albumMore, getApplicationContext());
                                     listViewMore.setAdapter(adapterMoreAlbum);
                                     break;
                                 case 3:
-                                    MoreModel.SinggleMore singgleMore = gson.fromJson(object.toString(), MoreModel.SinggleMore.class);
+                                    singgleMore = gson.fromJson(object.toString(), MoreModel.SinggleMore.class);
                                     adapterMoreSingle = new AdapterMoreSingle(More.this, singgleMore);
                                     listViewMore.setAdapter(adapterMoreSingle);
                                     break;
                                 case 5:
-                                    MoreModel.PlaylisMore playlisMore = gson.fromJson(object.toString(), MoreModel.PlaylisMore.class);
+                                    playlisMore = gson.fromJson(object.toString(), MoreModel.PlaylisMore.class);
                                     adapterMorePlaylist = new AdapterMorePlaylist(More.this, playlisMore);
                                     listViewMore.setAdapter(adapterMorePlaylist);
                             }
@@ -135,4 +143,6 @@ public class More extends BottomPlayerActivity {
             }
         });
     }
+
+
 }

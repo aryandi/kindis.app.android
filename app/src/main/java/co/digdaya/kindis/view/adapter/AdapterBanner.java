@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.view.activity.Detail.Detail;
 import co.digdaya.kindis.view.activity.Detail.DetailInfaq;
 
 /**
@@ -60,8 +61,15 @@ public class AdapterBanner extends PagerAdapter {
         Button btnDonate = (Button) view.findViewById(R.id.btn_donate);
         ImageView imageView = (ImageView) view.findViewById(R.id.image_musiq_slider);
 
+        String image_url;
+        final String clickUrl = dataSinggle.get("link");
+        if (dataSinggle.get("image").contains("cdn.kindis")){
+            image_url = dataSinggle.get("image");
+        }else {
+            image_url = ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image");
+        }
         Glide.with(mContext)
-                .load(ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"))
+                .load(image_url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
@@ -69,10 +77,14 @@ public class AdapterBanner extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Uri uri = Uri.parse(dataSinggle.get("link"));
+                if (clickUrl.contains("kindis:")){
+                    handleClickAds(clickUrl);
+                }else {
+                    Uri uri = Uri.parse(clickUrl);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);*/
+                mContext.startActivity(intent);
+                }
             }
         });
 
@@ -117,5 +129,20 @@ public class AdapterBanner extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         //((ViewPager) container).removeView((ImageView) object);
         container.removeView((View) object);
+    }
+
+    private void handleClickAds(String path){
+        String[] data = path.split("/");
+        switch (data[1]){
+            case "playlist":
+                Intent intent = new Intent(mContext, Detail.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", data[2]);
+                intent.putExtra("type", "premium");
+                intent.putExtra("isMyPlaylist", "false");
+                mContext.startActivity(intent);
+                break;
+            //TODO artist, album
+        }
     }
 }

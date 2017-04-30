@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.util.CheckPermission;
 import co.digdaya.kindis.view.dialog.DialogBanner;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.dialog.DialogGift;
@@ -37,6 +39,7 @@ import co.digdaya.kindis.view.fragment.navigationview.Terms;
 public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;
     DrawerLayout drawer;
+    CheckPermission checkPermission;
 
     FragmentTransaction transaction;
     Fragment profileFragment;
@@ -82,6 +85,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        checkPermission = new CheckPermission(this);
         dialogBanner = new DialogBanner(this, dialogBnnr);
         dialogBanner.showDialog();
 
@@ -126,6 +130,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         transaction.commit();
 
         initSidebar();
+
+        if (!checkPermission.checkPermission()){
+            checkPermission.showPermission();
+        }
     }
 
     @Override
@@ -242,6 +250,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         drawer.closeDrawers();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     private void setDefaultSelectedMenuColor(){
         icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
         labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
@@ -260,6 +273,4 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
     }
-
-
 }

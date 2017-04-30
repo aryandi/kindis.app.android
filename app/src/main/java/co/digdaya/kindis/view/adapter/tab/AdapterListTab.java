@@ -49,11 +49,14 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
     AdapterGenreNew adapterGenre;
 
     Gson gson;
-    int menuType;
+    int menuType, tabType;
+
+    String paramMore = "";
 
     public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType) {
         this.context = context;
         this.tabModel = tabModel;
+        this.tabType = tab;
         this.menuType = menuType;
         switch (tab){
             case 1:
@@ -94,10 +97,14 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
             btnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (tabType == 2 && menuType == 1){
+                        paramMore = "&ob=3";
+                    }
                     Intent intent = new Intent(context, More.class);
                     intent.putExtra("title", tabs.get(position).name);
                     intent.putExtra("type", getItemViewType(position));
                     intent.putExtra("menuType", menuType);
+                    intent.putExtra("param", paramMore);
                     context.startActivity(intent);
                 }
             });
@@ -121,7 +128,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
         switch (getItemViewType(position)){
             case 1:
-                parseArtist(tabs.get(position).data, recyclerView);
+                parseArtist(tabs.get(position).data, recyclerView, tabs.get(position).name);
                 break;
             case 2:
                 parseAlbum(tabs.get(position).data, recyclerView);
@@ -178,12 +185,12 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void parseArtist (String s, RecyclerView recyclerView){
+    private void parseArtist (String s, RecyclerView recyclerView, String subtitle){
         String json = "{ \"data\":"+s+"}";
 
         DataArtist dataArtist = gson.fromJson(json, DataArtist.class);
 
-        adapterArtistNew = new AdapterArtistNew(context, dataArtist);
+        adapterArtistNew = new AdapterArtistNew(context, dataArtist, subtitle);
         recyclerView.setAdapter(adapterArtistNew);
         recyclerView.setNestedScrollingEnabled(false);
     }

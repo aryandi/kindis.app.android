@@ -32,7 +32,7 @@ public class AdapterWalkthrough extends PagerAdapter {
     };
 
     private String[] titles = new String[]{
-            "Musiq\nEntertaining\nYour Soul", "Taklim\nEnlightening\nYour Soul", "Infaq\nEriching\nYour Soul"
+            "Musiq\nEntertaining\nYour Soul", "Taklim\nEnlightening\nYour Soul", "Infaq\nEnriching\nYour Soul"
     };
 
     private String[] subtitles = new String[]{

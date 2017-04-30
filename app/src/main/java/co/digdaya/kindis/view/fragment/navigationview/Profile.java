@@ -4,15 +4,20 @@ package co.digdaya.kindis.view.fragment.navigationview;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,10 +29,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -41,6 +49,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
@@ -58,8 +67,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class Profile extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     DrawerLayout drawer;
-    ImageButton btnDrawer;
-    ImageButton btnMenu;
+    ImageButton btnDrawer, btnMenu, btnEditPhoto;
+    ImageView photoProfile;
     Button btnSave, profileStatus;
 
     EditText inputNama;
@@ -99,6 +108,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         super.onViewCreated(view, savedInstanceState);
         btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
         btnMenu = (ImageButton) view.findViewById(R.id.btn_menu);
+        btnEditPhoto = (ImageButton) view.findViewById(R.id.btn_edit_photo);
+        photoProfile = (ImageView) view.findViewById(R.id.photo);
         btnSave = (Button) view.findViewById(R.id.btn_save);
         profileStatus = (Button) view.findViewById(R.id.profile_status);
 
@@ -115,6 +126,14 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         loading.setCancelable(false);
 
         loginType = sessionHelper.getPreferences(getContext(), "login_type");
+
+        if (sessionHelper.getPreferences(getContext(), "profile_picture").length()>10){
+            Glide.with(getContext())
+                    .load(sessionHelper.getPreferences(getContext(), "profile_picture"))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(photoProfile);
+        }
 
         if (sessionHelper.getPreferences(getContext(), "is_premium").equals("1")){
             profileStatus.setText("PREMIUM");
@@ -155,6 +174,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         btnDrawer.setOnClickListener(this);
         btnMenu.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        btnEditPhoto.setOnClickListener(this);
     }
 
     @Override
@@ -190,6 +210,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     btnSave.setText("EDIT");
                     saveProfileInfo();
                 }
+                break;
+            case R.id.btn_edit_photo:
+                //Toast.makeText(getContext(), "edit", Toast.LENGTH_SHORT).show();
+                startDialog();
                 break;
         }
     }
@@ -323,6 +347,46 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         if (mGoogleApiClient!=null){
             mGoogleApiClient.stopAutoManage(getActivity());
             mGoogleApiClient.disconnect();
+        }
+    }
+
+    private void startDialog() {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                getActivity());
+        myAlertDialog.setTitle("Upload Pictures Option");
+        myAlertDialog.setMessage("How do you want to set your picture?");
+
+        myAlertDialog.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent pictureActionIntent = null;
+                        pictureActionIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pictureActionIntent, 1);
+
+                    }
+                });
+
+        myAlertDialog.setNegativeButton("Camera",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 0);
+
+                    }
+                });
+        myAlertDialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("onActivityResult: "+requestCode+" "+resultCode);
+        if (requestCode==0){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photoProfile.setImageBitmap(imageBitmap);
+        }else if (requestCode==1){
+            
         }
     }
 
