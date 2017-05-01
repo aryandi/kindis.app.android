@@ -23,9 +23,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.SessionHelper;
-import co.digdaya.kindis.util.CheckPermission;
+import co.digdaya.kindis.helper.CheckPermission;
 import co.digdaya.kindis.view.dialog.DialogBanner;
-import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.dialog.DialogGift;
 import co.digdaya.kindis.view.fragment.navigationview.Cookies;
 import co.digdaya.kindis.view.fragment.navigationview.FAQ;
@@ -132,8 +131,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         initSidebar();
 
         if (!checkPermission.checkPermission()){
-            checkPermission.showPermission();
+            checkPermission.showPermission(1);
         }
+
+        System.out.println("token_access: "+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
     }
 
     @Override
@@ -253,6 +254,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        System.out.println("onRequestPermissionsResultMain: "+permissions+"\n"+grantResults+"\n"+requestCode);
+        if (requestCode==2){
+            if (checkPermission.checkPermission()){
+                new Profile().startDialogPhoto(this);
+            }
+        }
     }
 
     private void setDefaultSelectedMenuColor(){

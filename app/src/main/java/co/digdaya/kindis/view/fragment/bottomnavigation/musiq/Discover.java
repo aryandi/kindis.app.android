@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.model.TabModel;
 import co.digdaya.kindis.view.adapter.tab.AdapterListTab;
-import co.digdaya.kindis.view.dialog.DialogLoading;
 
 
 /**
@@ -30,6 +29,9 @@ public class Discover extends Fragment {
 
     String json;
     Gson gson;
+
+    public Discover() {
+    }
 
     public Discover(String json) {
         this.json = json;

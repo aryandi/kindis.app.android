@@ -23,6 +23,8 @@ public class ApiHelper {
     public static final String LOGIN_SOCIAL = BASE_URL + "sign/login_social";
 
     public static final String PROFILE = BASE_URL + "profile/info";
+    public static final String UPDATE_AVATAR = BASE_URL + "profile/update_avatar";
+
     public static final String GENRE_LIST = BASE_URL + "genre/list";
     public static final String TERMS = BASE_URL + "statics/page/terms_of_use";
     public static final String PRIVACY = BASE_URL + "statics/page/privacy_policy";

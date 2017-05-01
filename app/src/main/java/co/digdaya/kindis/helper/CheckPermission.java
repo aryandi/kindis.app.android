@@ -1,4 +1,4 @@
-package co.digdaya.kindis.util;
+package co.digdaya.kindis.helper;
 
 import android.Manifest;
 import android.app.Activity;
@@ -41,9 +41,9 @@ public class CheckPermission {
         }
     }
 
-    public void showPermission(){
+    public void showPermission(int code){
         ActivityCompat.requestPermissions(activity,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-                1);
+                code);
     }
 }

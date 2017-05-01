@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.fragment.navigationview;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -49,11 +50,13 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.CheckPermission;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.view.activity.Account.ChangeEmail;
@@ -61,6 +64,12 @@ import co.digdaya.kindis.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.view.activity.Account.SignInActivity;
 import co.digdaya.kindis.view.activity.Account.TransactionHistory;
 import io.fabric.sdk.android.Fabric;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +93,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
     String loginType;
     GoogleApiClient mGoogleApiClient;
+    CheckPermission checkPermission;
 
     boolean isEditButton = true;
 
@@ -121,6 +131,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         sessionHelper = new SessionHelper();
+        checkPermission = new CheckPermission(getActivity());
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
@@ -212,8 +223,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 }
                 break;
             case R.id.btn_edit_photo:
-                //Toast.makeText(getContext(), "edit", Toast.LENGTH_SHORT).show();
-                startDialog();
+                if (checkPermission.checkPermission()){
+                    startDialogPhoto(getActivity());
+                }else {
+                    checkPermission.showPermission(2);
+                }
                 break;
         }
     }
@@ -350,28 +364,28 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         }
     }
 
-    private void startDialog() {
-        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
-                getActivity());
+    public void startDialogPhoto(Activity activity) {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(activity);
         myAlertDialog.setTitle("Upload Pictures Option");
         myAlertDialog.setMessage("How do you want to set your picture?");
 
         myAlertDialog.setPositiveButton("Gallery",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Intent pictureActionIntent = null;
-                        pictureActionIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(pictureActionIntent, 1);
-
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
                     }
                 });
 
         myAlertDialog.setNegativeButton("Camera",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 0);
-
+                        if (isAdded()){
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, 0);
+                        }
                     }
                 });
         myAlertDialog.show();
@@ -385,13 +399,76 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             photoProfile.setImageBitmap(imageBitmap);
+            uploadImage(imageBitmap);
         }else if (requestCode==1){
-            
+            Uri uri = data.getData();
+            try {
+                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                photoProfile.setImageBitmap(imageBitmap);
+                uploadImage(imageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public class LogOut extends AsyncTask<String, String, String>{
+    private void uploadImage(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        final byte[] imageBytes = baos.toByteArray();
 
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                OkHttpClient client = new OkHttpClient();
+
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("user_id", sessionHelper.getPreferences(getContext(), "user_id"))
+                        .addFormDataPart("token_access", sessionHelper.getPreferences(getContext(), "token_access"))
+                        .addFormDataPart("file", "IMG_"+System.currentTimeMillis()+ ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
+                        .build();
+
+                Request request = new Request.Builder()
+                        .url(ApiHelper.UPDATE_AVATAR)
+                        .post(requestBody)
+                        .build();
+
+                Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        Log.d("uploadImage", "doInBackground: upload success");
+                        Log.d("uploadImage", response.toString());
+                        Log.d("uploadImage", response.body().string());
+                    } else {
+                        Log.d("uploadImage", "doInBackground: upload failed");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+
+        }.execute();
+
+        /*HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", sessionHelper.getPreferences(getContext(),"user_id"));
+        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
+        param.put("file", imageString);
+
+        new VolleyHelper().post(ApiHelper.UPDATE_AVATAR, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                System.out.println("uploadImage: "+ response);
+                System.out.println("uploadImage: "+ status);
+                System.out.println("uploadImage: "+ message);
+            }
+        });*/
+    }
+
+    public class LogOut extends AsyncTask<String, String, String>{
         @Override
         protected String doInBackground(String... strings) {
             HashMap<String, String> param = new HashMap<>();
