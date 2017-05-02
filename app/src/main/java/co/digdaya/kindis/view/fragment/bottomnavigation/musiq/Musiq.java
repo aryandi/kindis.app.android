@@ -2,16 +2,13 @@ package co.digdaya.kindis.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +24,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import co.digdaya.kindis.model.TabModel;
-import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckConnection;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.view.adapter.AdapterBanner;
 import co.digdaya.kindis.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.view.adapter.tab.AdapterMusiq;
-import co.digdaya.kindis.view.adapter.AdapterBanner;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -195,7 +191,9 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                     imageSlider.setAdapter(adapterBannerEmpty);
                 }
 
-                setLayout();
+                if (isAdded()){
+                    setLayout();
+                }
             }
         });
     }

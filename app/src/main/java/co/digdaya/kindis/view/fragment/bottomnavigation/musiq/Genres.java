@@ -30,6 +30,9 @@ public class Genres extends Fragment {
     String json;
     Gson gson;
 
+    public Genres() {
+    }
+
     public Genres(String json) {
         this.json = json;
     }
@@ -50,7 +53,9 @@ public class Genres extends Fragment {
 
         gson = new Gson();
 
-        getListGenre();
+        if (json!=null){
+            getListGenre();
+        }
     }
 
     void getListGenre(){

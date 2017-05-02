@@ -30,6 +30,9 @@ public class RecentlyAdded extends Fragment {
     String json;
     Gson gson;
 
+    public RecentlyAdded() {
+    }
+
     public RecentlyAdded(String json) {
         this.json = json;
     }
@@ -50,7 +53,9 @@ public class RecentlyAdded extends Fragment {
 
         gson = new Gson();
 
-        getJSON();
+        if (json!=null){
+            getJSON();
+        }
     }
 
     private void getJSON(){

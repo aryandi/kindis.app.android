@@ -26,9 +26,8 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.fragment.bottomnavigation.Infaq;
-import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.NewPlaylist;
-import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Musiq;
+import co.digdaya.kindis.view.fragment.bottomnavigation.playlist.NewPlaylist;
 import co.digdaya.kindis.view.fragment.bottomnavigation.taklim.Taklim;
 
 /**
@@ -107,7 +106,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_drawer:
                 drawer.openDrawer(GravityCompat.START);
                 break;
@@ -120,18 +119,17 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
 
     @Override
     public void onResume() {
-
-        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()){
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
-            switch (metrics.densityDpi){
-                case DisplayMetrics.DENSITY_MEDIUM :
+            switch (metrics.densityDpi) {
+                case DisplayMetrics.DENSITY_MEDIUM:
                     params.setMargins(0, 56, 0, 0);
                     break;
-                case DisplayMetrics.DENSITY_HIGH :
+                case DisplayMetrics.DENSITY_HIGH:
                     params.setMargins(0, 80, 0, 0);
                     break;
                 case DisplayMetrics.DENSITY_XHIGH:
@@ -149,7 +147,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         FragmentTransaction transactionBottomNavigation = getActivity().getSupportFragmentManager().beginTransaction();
-        switch (position){
+        switch (position) {
             case 0:
                 titleToolbar.setText("Explore Musiq");
                 transactionBottomNavigation.replace(R.id.cont_home, musiqFragment);

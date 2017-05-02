@@ -37,6 +37,7 @@ public class BottomPlayerFragment extends Fragment {
     LinearLayout contBottomPlayer;
     PlayerSessionHelper playerSessionHelper;
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

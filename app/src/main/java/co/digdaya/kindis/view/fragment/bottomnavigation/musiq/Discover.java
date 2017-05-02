@@ -52,7 +52,9 @@ public class Discover extends Fragment {
         gson = new Gson();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        getJSON();
+        if (json != null){
+            getJSON();
+        }
     }
 
     private void getJSON(){
