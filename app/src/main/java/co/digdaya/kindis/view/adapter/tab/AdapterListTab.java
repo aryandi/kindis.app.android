@@ -105,6 +105,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
                     intent.putExtra("type", getItemViewType(position));
                     intent.putExtra("menuType", menuType);
                     intent.putExtra("param", paramMore);
+                    intent.putExtra("urlMore", tabs.get(position).is_more_endpoint);
                     context.startActivity(intent);
                 }
             });

@@ -32,6 +32,8 @@ public class TabModel {
         public String type_content_id;
         @SerializedName("is_more")
         public String is_more;
+        @SerializedName("is_more_endpoint")
+        public String is_more_endpoint;
         @SerializedName("data")
         public String data;
     }

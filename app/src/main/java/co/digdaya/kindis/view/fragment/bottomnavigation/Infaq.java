@@ -79,7 +79,7 @@ public class Infaq extends Fragment {
             InfaqModel infaqModel = gson.fromJson(responses, InfaqModel.class);
             adapterInfaq = new AdapterInfaq(infaqModel, getContext());
             listViewInfaq.setAdapter(adapterInfaq);
-            listViewInfaq.setNestedScrollingEnabled(true);
+            listViewInfaq.setNestedScrollingEnabled(false);
             listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
         }else {
             getInfaq();
@@ -97,7 +97,7 @@ public class Infaq extends Fragment {
 
                 adapterInfaq = new AdapterInfaq(infaqModel, getContext());
                 listViewInfaq.setAdapter(adapterInfaq);
-                listViewInfaq.setNestedScrollingEnabled(true);
+                listViewInfaq.setNestedScrollingEnabled(false);
                 listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
             }
         });

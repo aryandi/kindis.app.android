@@ -83,8 +83,10 @@ public class More extends BottomPlayerActivity {
         sessionHelper = new SessionHelper();
         gson = new Gson();
 
+        urlMore = getIntent().getStringExtra("urlMore");
+
         type = getIntent().getIntExtra("type", 1);
-        param = getIntent().getStringExtra("param");
+        /*param = getIntent().getStringExtra("param");
         System.out.println("paramextra: "+param);
         switch (type){
             case 1:
@@ -99,7 +101,7 @@ public class More extends BottomPlayerActivity {
             case 5:
                 url = "playlist/more?channel_id="+getIntent().getIntExtra("menuType", 1)+"&uid="+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&page=0&limit=12"+param;
                 break;
-        }
+        }*/
 
         getDataMore();
         listViewMore.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -120,7 +122,7 @@ public class More extends BottomPlayerActivity {
     }
 
     private void getDataMore(){
-        new VolleyHelper().get(ApiHelper.BASE_URL + url, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(urlMore, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
