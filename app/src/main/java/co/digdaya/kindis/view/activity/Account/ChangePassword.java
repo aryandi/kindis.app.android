@@ -14,9 +14,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,9 +40,10 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
     ImageButton btnBack, btnMenu;
     EditText inputCurrentPassword, inputNewPassword, inputRetypePassword;
-    Button btnSave;
+    Button btnSave, profileStatus;
     LinearLayout contCurrent, contNew, contRetype;
     TextView errorCurrent, errorNew, errorRetype;
+    ImageView photoProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,21 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         errorCurrent = (TextView) findViewById(R.id.error_current);
         errorNew = (TextView) findViewById(R.id.error_new);
         errorRetype = (TextView) findViewById(R.id.error_retype);
+        photoProfile = (ImageView) findViewById(R.id.photo);
+        profileStatus = (Button) findViewById(R.id.profile_status);
+
+        if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length()>10){
+            Glide.with(getApplicationContext())
+                    .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(photoProfile);
+        }
+
+        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            profileStatus.setText("PREMIUM");
+            profileStatus.setBackground(getApplicationContext().getDrawable(R.drawable.button_rounded_orange));
+        }
 
         btnBack.setOnClickListener(this);
         btnMenu.setOnClickListener(this);

@@ -14,9 +14,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,9 +37,10 @@ public class ChangeEmail extends AppCompatActivity implements View.OnClickListen
     ImageButton btnDrawer;
     ImageButton btnMenu;
     EditText inputEmail;
-    Button btnEdit;
+    Button btnEdit, profileStatus;
     LinearLayout contError;
     TextView errorText;
+    ImageView photoProfile;
 
     SessionHelper sessionHelper;
     DialogLoading loading;
@@ -56,6 +61,21 @@ public class ChangeEmail extends AppCompatActivity implements View.OnClickListen
         btnEdit = (Button) findViewById(R.id.btn_save);
         contError = (LinearLayout) findViewById(R.id.cont_error_message);
         errorText = (TextView) findViewById(R.id.error_message);
+        photoProfile = (ImageView) findViewById(R.id.photo);
+        profileStatus = (Button) findViewById(R.id.profile_status);
+
+        if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length()>10){
+            Glide.with(getApplicationContext())
+                    .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(photoProfile);
+        }
+
+        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            profileStatus.setText("PREMIUM");
+            profileStatus.setBackground(getApplicationContext().getDrawable(R.drawable.button_rounded_orange));
+        }
 
         btnDrawer.setOnClickListener(this);
         btnMenu.setOnClickListener(this);
