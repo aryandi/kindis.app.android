@@ -3,6 +3,7 @@
   <component name="assetNames">
     <option name="mapping">
       <map>
+        <entry key="background" value="ic_bckgrnd3" />
         <entry key="ceklist" value="ic_ceklist" />
         <entry key="ic_taklim_inactive_new" value="ic_taklim" />
         <entry key="premium" value="img_premium" />
