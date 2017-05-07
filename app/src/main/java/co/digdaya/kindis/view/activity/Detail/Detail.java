@@ -40,6 +40,7 @@ import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.view.dialog.DialogPayment;
 import co.digdaya.kindis.view.dialog.DialogSingleMenu;
@@ -67,7 +68,11 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
     SessionHelper sessionHelper;
     PlayerSessionHelper playerSessionHelper;
+    RefreshToken refreshToken;
+
     String json;
+    int isPremium = 0;
+    int premiumUser;
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -102,6 +107,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
         sessionHelper = new SessionHelper();
         playerSessionHelper = new PlayerSessionHelper();
+        refreshToken = new RefreshToken(getApplicationContext());
         btnPremium.setOnClickListener(this);
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -118,6 +124,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }
 
         titleToolbar.setVisibility(View.INVISIBLE);
+
+        premiumUser = Integer.parseInt(sessionHelper.getPreferences(getApplicationContext(), "is_premium"));
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
@@ -145,15 +153,20 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
-                Intent intent = new Intent(Detail.this, PlayerService.class);
-                intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
-                intent.putExtra("single_id", songPlaylist.get(0));
-                intent.putExtra("list_uid", songPlaylist);
-                startService(intent);
+                System.out.println("isPremium= "+isPremium+"\npremiumUser= "+premiumUser);
+                if (isPremium==1 && premiumUser==0){
+                    dialogPayment.showDialog();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
+                    Intent intent = new Intent(Detail.this, PlayerService.class);
+                    intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+                    intent.putExtra("single_id", songPlaylist.get(0));
+                    intent.putExtra("list_uid", songPlaylist);
+                    startService(intent);
+                }
             }
         });
     }
@@ -322,7 +335,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"));
-                            if (playlist.getString("is_premium").equals("1")){
+                            isPremium = Integer.parseInt(playlist.getString("is_premium"));
+                            if (isPremium == 1 && premiumUser==0){
                                 btnPremium.setVisibility(View.VISIBLE);
                             }
 
@@ -349,10 +363,18 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                                 songPlaylist.add(data.optString("single_id"));
                             }
 
-                            adapterSong = new AdapterSong(Detail.this, listSong, "", null);
+                            if (isPremium==1 && premiumUser==0){
+                                adapterSong = new AdapterSong(Detail.this, listSong, "premium", null);
+                            }else {
+                                adapterSong = new AdapterSong(Detail.this, listSong, "", null);
+                            }
                             listViewSong.setAdapter(adapterSong);
                             listViewSong.setNestedScrollingEnabled(true);
                             onClickMenuSong();
+                        }else {
+                            if (refreshToken.refreshToken()){
+                                getListPremium();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

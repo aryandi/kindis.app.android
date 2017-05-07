@@ -79,6 +79,8 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                     intent.putExtra("position", position);
                     intent.putExtra("list_uid", songPlaylist);
                     context.startService(intent);
+                }else if (type.equals("premium")){
+                    dialogGetPremium.showDialog();
                 }else {
                     if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")) {
                         Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();

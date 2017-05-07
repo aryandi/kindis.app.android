@@ -72,6 +72,8 @@ public class Infaq extends Fragment {
 
         listViewInfaq = (RecyclerView) view.findViewById(R.id.list_infaq);
         listViewInfaq.setLayoutManager(new GridLayoutManager(getContext(),2));
+        listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
+        listViewInfaq.setNestedScrollingEnabled(false);
 
         getBanner();
 
@@ -79,8 +81,6 @@ public class Infaq extends Fragment {
             InfaqModel infaqModel = gson.fromJson(responses, InfaqModel.class);
             adapterInfaq = new AdapterInfaq(infaqModel, getContext());
             listViewInfaq.setAdapter(adapterInfaq);
-            listViewInfaq.setNestedScrollingEnabled(false);
-            listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
         }else {
             getInfaq();
         }
@@ -97,8 +97,6 @@ public class Infaq extends Fragment {
 
                 adapterInfaq = new AdapterInfaq(infaqModel, getContext());
                 listViewInfaq.setAdapter(adapterInfaq);
-                listViewInfaq.setNestedScrollingEnabled(false);
-                listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
             }
         });
     }

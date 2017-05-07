@@ -153,7 +153,8 @@
                             android:id="@+id/ic_menu_offline"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_account"
+                            android:padding="0dp"
+                            android:src="@drawable/ic_offline"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
                         <co.digdaya.kindis.custom.TextViewSemiBold

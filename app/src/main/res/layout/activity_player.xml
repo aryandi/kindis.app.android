@@ -177,6 +177,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:src="@drawable/ic_add_circle"
             android:background="@android:color/transparent"/>
     </RelativeLayout>
 
