@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
 import me.relex.circleindicator.CircleIndicator;
-import co.digdaya.kindis.PlayerService;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;

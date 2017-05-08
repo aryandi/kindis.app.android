@@ -1,6 +1,5 @@
 package co.digdaya.kindis.view.fragment.navigationview.saveoffline;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,17 +12,15 @@ import android.widget.TextView;
 import co.digdaya.kindis.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by DELL on 5/8/2017.
  */
-public class AlbumSaveOffline extends Fragment {
+
+public class SingleSaveOffline extends Fragment {
     TextView title, subtitle;
     Button btnRefresh;
 
-
-    public AlbumSaveOffline() {
-        // Required empty public constructor
+    public SingleSaveOffline() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +41,6 @@ public class AlbumSaveOffline extends Fragment {
 
         subtitle.setVisibility(View.GONE);
         btnRefresh.setVisibility(View.GONE);
-        title.setText("No offline album");
+        title.setText("No offline single");
     }
 }

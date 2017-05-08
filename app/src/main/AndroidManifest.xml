@@ -35,7 +35,7 @@
             android:value="c6229c8d29c990a9c1f7b6255576191c79c5d767" />
 
         <service
-            android:name=".PlayerService"
+            android:name=".service.PlayerService"
             android:enabled="true"
             android:exported="true" />
 
@@ -133,7 +133,12 @@
             android:name=".view.activity.Detail.More"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Premium"></activity>
+        <activity android:name=".view.activity.Premium" />
+
+        <service
+            android:name=".service.DownloadService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

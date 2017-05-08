@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import co.digdaya.kindis.PlayerService;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;

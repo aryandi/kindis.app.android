@@ -13,6 +13,7 @@ import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Genres;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
 import co.digdaya.kindis.view.fragment.navigationview.saveoffline.AlbumSaveOffline;
+import co.digdaya.kindis.view.fragment.navigationview.saveoffline.SingleSaveOffline;
 
 /**
  * Created by DELL on 4/30/2017.
@@ -32,7 +33,7 @@ public class AdapterTabSaveOffline extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new AlbumSaveOffline();
+                return new SingleSaveOffline();
             case 1:
                 return new AlbumSaveOffline();
             case 2:

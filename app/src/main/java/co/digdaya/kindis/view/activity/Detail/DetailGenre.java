@@ -1,24 +1,18 @@
 package co.digdaya.kindis.view.activity.Detail;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -29,16 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import co.digdaya.kindis.PlayerService;
 import co.digdaya.kindis.R;
-import co.digdaya.kindis.custom.ButtonSemiBold;
-import co.digdaya.kindis.custom.TextViewBold;
-import co.digdaya.kindis.custom.TextViewRegular;
-import co.digdaya.kindis.custom.TextViewSemiBold;
 import co.digdaya.kindis.helper.ApiHelper;
-import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
@@ -46,7 +33,6 @@ import co.digdaya.kindis.model.DataAlbum;
 import co.digdaya.kindis.model.DataSingle;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
-import co.digdaya.kindis.view.adapter.item.AdapterAlbum;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 

@@ -1,4 +1,4 @@
-package co.digdaya.kindis;
+package co.digdaya.kindis.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;

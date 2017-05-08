@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import co.digdaya.kindis.PlayerService;
+import co.digdaya.kindis.helper.CheckPermission;
+import co.digdaya.kindis.helper.ExtraKey;
+import co.digdaya.kindis.service.DownloadService;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
@@ -32,7 +36,7 @@ import co.digdaya.kindis.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.view.adapter.AdapterListSong;
 
 public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
-    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList, btnShuffle;
+    ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList, btnShuffle, btnDownload;
     ImageView icPlay;
     ViewPager viewPager;
     AdapterListSong adapterListSong;
@@ -72,6 +76,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         btnMenu = (ImageButton) findViewById(R.id.btn_songlis);
         btnList = (ImageButton) findViewById(R.id.btn_list);
         btnShuffle = (ImageButton) findViewById(R.id.btn_shuffle);
+        btnDownload = (ImageButton) findViewById(R.id.btn_download);
         icPlay = (ImageView) findViewById(R.id.btn_play);
         viewPager = (ViewPager) findViewById(R.id.list_player);
         btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
@@ -145,6 +150,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         btnList.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
         btnShuffle.setOnClickListener(this);
+        btnDownload.setOnClickListener(this);
 
         viewPager.addOnPageChangeListener(this);
     }
@@ -253,6 +259,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             icPlay.setImageResource(R.drawable.ic_pause_large);
         }else if (view.getId() == R.id.btn_shuffle){
 
+        }else if (view.getId() == R.id.btn_download){
+            if (new CheckPermission(this).checkPermissionStorage()){
+                Intent intent = new Intent(this, DownloadService.class);
+                intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
+                startService(intent);
+            }else {
+                new CheckPermission(this).showPermissionStorage(2);
+            }
         }
     }
 
@@ -359,5 +373,17 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 .append(String.format("%02d", seconds));
 
         return buf.toString();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==2){
+            if (new CheckPermission(this).checkPermissionStorage()){
+                Intent intent = new Intent(this, DownloadService.class);
+                intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
+                startService(intent);
+            }
+        }
     }
 }

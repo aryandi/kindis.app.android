@@ -7,7 +7,6 @@ package co.digdaya.kindis.helper;
 public class ApiHelper {
     public static final String BASE_URL = "http://api.stg.kindis.co/";
     public static final String BASE_URL_IMAGE = "https://cdn.kindis.co";
-    public static final String TOKEN = "&token=";
 
     //ads
     public static final String ADS_INFAQ = BASE_URL + "infaq/highlight";
@@ -67,4 +66,8 @@ public class ApiHelper {
     public static final String GIFT = BASE_URL + "gift/items";
 
     public static final String PAYMENT = BASE_URL + "payment/pay";
+
+    //offline
+    public static final String TOKEN = BASE_URL + "offline/json_token";
+    public static final String GET_DATA = BASE_URL + "offline/offline_data";
 }

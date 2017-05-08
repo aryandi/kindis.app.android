@@ -46,4 +46,10 @@ public class CheckPermission {
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                 code);
     }
+
+    public void showPermissionStorage(int code){
+        ActivityCompat.requestPermissions(activity,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                code);
+    }
 }

@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import co.digdaya.kindis.PlayerService;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;

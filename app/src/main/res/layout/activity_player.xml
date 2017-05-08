@@ -172,7 +172,7 @@
                 android:textColor="@color/white"/>
         </LinearLayout>
         <ImageButton
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_download"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:layout_centerVertical="true"
