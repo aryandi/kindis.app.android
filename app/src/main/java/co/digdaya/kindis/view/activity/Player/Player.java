@@ -261,9 +261,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         }else if (view.getId() == R.id.btn_download){
             if (new CheckPermission(this).checkPermissionStorage()){
-                Intent intent = new Intent(this, DownloadService.class);
-                intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
-                startService(intent);
+                startDownload();
             }else {
                 new CheckPermission(this).showPermissionStorage(2);
             }
@@ -380,10 +378,15 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==2){
             if (new CheckPermission(this).checkPermissionStorage()){
-                Intent intent = new Intent(this, DownloadService.class);
-                intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
-                startService(intent);
+                startDownload();
             }
         }
+    }
+
+    private void startDownload(){
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
+        intent.putExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+        startService(intent);
     }
 }

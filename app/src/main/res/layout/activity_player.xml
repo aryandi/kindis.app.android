@@ -144,7 +144,7 @@
             android:background="@android:color/transparent"/>
         <LinearLayout
             android:layout_toRightOf="@+id/btn_songlis"
-            android:layout_toLeftOf="@+id/btn_add"
+            android:layout_toLeftOf="@+id/btn_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
