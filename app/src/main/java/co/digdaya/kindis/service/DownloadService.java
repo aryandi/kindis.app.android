@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 
+import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.ExtraKey;
 import co.digdaya.kindis.helper.SessionHelper;
@@ -22,6 +23,7 @@ public class DownloadService extends Service {
     SessionHelper sessionHelper;
     VolleyHelper volleyHelper;
     String path;
+    String uid;
 
     public DownloadService() {
     }
@@ -45,8 +47,9 @@ public class DownloadService extends Service {
         switch (intent.getAction()){
             case ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE:
                 createSubFolder(path+"single");
-                int uid = intent.getIntExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID, 0);
+                uid = intent.getStringExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
                 data = "[{\"single_id\":"+uid+"}]";
+                System.out.println("downloadresponses param: "+data);
                 getToken("1", data);
                 break;
         }
@@ -87,6 +90,7 @@ public class DownloadService extends Service {
         param.put("dev_id", "2");
         param.put("type_id", type);
         param.put("data", data);
+        System.out.println("downloadresponses param: "+data);
 
         volleyHelper.post(ApiHelper.TOKEN, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -119,6 +123,24 @@ public class DownloadService extends Service {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 System.out.println("downloadresponses data: "+response);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            new KindisDBHelper(getApplicationContext()).addToDatabase(
+                                    uid,
+                                    result.getString("title"),
+                                    result.getString("file"),
+                                    result.getString("album"),
+                                    result.getString("artist"),
+                                    result.getString("artist_id")
+                            );
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
