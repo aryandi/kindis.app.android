@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import co.digdaya.kindis.helper.ApiHelper;
+
 /**
  * Created by DELL on 5/11/2017.
  */
@@ -22,10 +24,11 @@ public class KindisDBHelper extends SQLiteOpenHelper {
                 KindisDBname.COLUMN_ID + " INTEGER PRIMARY KEY," +
                 KindisDBname.COLUMN_TITLE+ " VARCHAR(255) NOT NULL, " +
                 KindisDBname.COLUMN_PATH + " TEXT NOT NULL, " +
+                KindisDBname.COLUMN_IMAGE + " TEXT NOT NULL, " +
                 KindisDBname.COLUMN_ALBUM + " VARCHAR(255) NOT NULL, " +
                 KindisDBname.COLUMN_ARTIST + " VARCHAR(255) NOT NULL, " +
-                KindisDBname.COLUMN_ARTIST_ID + " INTEGER NOT NULL" +
-                "); ";
+                KindisDBname.COLUMN_ARTIST_ID + " INTEGER NOT NULL, " +
+                " UNIQUE (" + KindisDBname.COLUMN_ID + ") ON CONFLICT REPLACE);";
 
         // COMPLETED (7) Execute the query by calling execSQL on sqLiteDatabase and pass the string query SQL_CREATE_WAITLIST_TABLE
         db.execSQL(SQL_CREATE_WAITLIST_TABLE);
@@ -37,12 +40,13 @@ public class KindisDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addToDatabase(String uid, String title, String path, String album, String artist, String artist_id){
+    public void addToDatabase(String uid, String title, String path, String image, String album, String artist, String artist_id){
         SQLiteDatabase mDb = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KindisDBname.COLUMN_ID, uid);
         values.put(KindisDBname.COLUMN_TITLE, title);
         values.put(KindisDBname.COLUMN_PATH, path);
+        values.put(KindisDBname.COLUMN_IMAGE, ApiHelper.BASE_URL_IMAGE+image);
         values.put(KindisDBname.COLUMN_ALBUM, album);
         values.put(KindisDBname.COLUMN_ARTIST, artist);
         values.put(KindisDBname.COLUMN_ARTIST_ID, artist_id);

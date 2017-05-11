@@ -75,6 +75,14 @@ public class DownloadService extends Service {
         if (!subFolder.exists()){
             if (subFolder.mkdirs()){
                 System.out.println("DownloadServices: subFolder created");
+                File nomedia = new File(subFolder, ".nomedia");
+                /*if (!nomedia.exists()){
+                    if (nomedia.mkdirs()){
+                        System.out.println("DownloadServices: nomedia created");
+                    }else {
+                        System.out.println("DownloadServices: nomedia not created");
+                    }
+                }*/
             }else {
                 System.out.println("DownloadServices: subFolder not created");
             }
@@ -132,6 +140,7 @@ public class DownloadService extends Service {
                                     uid,
                                     result.getString("title"),
                                     result.getString("file"),
+                                    result.getString("image"),
                                     result.getString("album"),
                                     result.getString("artist"),
                                     result.getString("artist_id")
