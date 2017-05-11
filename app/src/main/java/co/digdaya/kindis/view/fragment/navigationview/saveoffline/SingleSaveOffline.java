@@ -63,6 +63,7 @@ public class SingleSaveOffline extends Fragment {
         if (cursor.moveToFirst()){
             while (cursor.isAfterLast()==false){
                 System.out.println("DBData: "+cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_TITLE)));
+                System.out.println("DBData: "+cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PATH)));
                 DataSingleOffline dataSingleOffline = new DataSingleOffline();
                 dataSingleOffline.setUid(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ID)));
                 dataSingleOffline.setTitle(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_TITLE)));

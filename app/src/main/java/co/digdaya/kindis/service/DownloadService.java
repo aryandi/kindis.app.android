@@ -1,8 +1,10 @@
 package co.digdaya.kindis.service;
 
+import android.app.DownloadManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -22,7 +24,9 @@ import co.digdaya.kindis.helper.VolleyHelper;
 public class DownloadService extends Service {
     SessionHelper sessionHelper;
     VolleyHelper volleyHelper;
-    String path;
+    DownloadManager downloadManager;
+    long enque;
+    String path, singlePath;
     String uid;
 
     public DownloadService() {
@@ -46,7 +50,8 @@ public class DownloadService extends Service {
         String data;
         switch (intent.getAction()){
             case ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE:
-                createSubFolder(path+"single");
+                singlePath = path+"single/";
+                createSubFolder(singlePath);
                 uid = intent.getStringExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
                 data = "[{\"single_id\":"+uid+"}]";
                 System.out.println("downloadresponses param: "+data);
@@ -57,7 +62,7 @@ public class DownloadService extends Service {
     }
 
     private void createBaseFolder(){
-        path = Environment.getExternalStorageDirectory().getPath().toString()+ "/Android/data/id.digdaya.kindis/files/";
+        path = Environment.getExternalStorageDirectory().getPath().toString()+ "/Android/data/co.digdaya.kindis/files/";
         File baseFolder = new File(path);
         if (!baseFolder.exists()){
             if (baseFolder.mkdirs()){
@@ -139,12 +144,13 @@ public class DownloadService extends Service {
                             new KindisDBHelper(getApplicationContext()).addToDatabase(
                                     uid,
                                     result.getString("title"),
-                                    result.getString("file"),
+                                    singlePath+result.getString("title"),
                                     result.getString("image"),
                                     result.getString("album"),
                                     result.getString("artist"),
                                     result.getString("artist_id")
                             );
+                            downloadRequest(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), result.getString("title"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -152,5 +158,14 @@ public class DownloadService extends Service {
                 }
             }
         });
+    }
+
+    private void downloadRequest(Uri file, String path){
+        downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(file);
+        request.setTitle("Kindis");
+        request.setDescription("Downloading "+path);
+        request.setDestinationInExternalFilesDir(getApplicationContext(), singlePath, path);
+        enque = downloadManager.enqueue(request);
     }
 }
