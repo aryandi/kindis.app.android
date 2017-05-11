@@ -2,12 +2,17 @@ package co.digdaya.kindis.service;
 
 import android.app.DownloadManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +30,6 @@ public class DownloadService extends Service {
     SessionHelper sessionHelper;
     VolleyHelper volleyHelper;
     DownloadManager downloadManager;
-    long enque;
     String path, singlePath;
     String uid;
 
@@ -166,6 +170,36 @@ public class DownloadService extends Service {
         request.setTitle("Kindis");
         request.setDescription("Downloading "+path);
         request.setDestinationInExternalFilesDir(getApplicationContext(), singlePath, path);
-        enque = downloadManager.enqueue(request);
+        long enque = downloadManager.enqueue(request);
+        registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        //isCompletedDownload(enque);
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                System.out.println("ACTION_DOWNLOAD_COMPLETE func");
+            }
+        }
+    };
+
+    /*private boolean isCompletedDownload(long downloadId){
+        Cursor c= downloadManager.query(new DownloadManager.Query().setFilterById(downloadId));
+        if (c.moveToFirst()){
+            int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+            if(status == DownloadManager.STATUS_SUCCESSFUL){
+                Log.d("isCompletedDownload", "STATUS_SUCCESSFUL");
+                return true;
+            }else{
+                int reason = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
+                Log.d("isCompletedDownload", "Download not correct, status [" + status + "] reason [" + reason + "]");
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }*/
 }
