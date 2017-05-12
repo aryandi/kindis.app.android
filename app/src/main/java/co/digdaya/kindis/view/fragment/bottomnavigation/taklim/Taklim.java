@@ -177,6 +177,9 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                    imageSlider.setAdapter(adapterBannerEmpty);
                 }
                 setLayout();
             }

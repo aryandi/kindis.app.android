@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.CheckConnection;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
@@ -53,8 +54,14 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
+
                 if (sessionHelper.getPreferences(getApplicationContext(), "status").equals("1")){
-                    wasLogin();
+                    if (new CheckConnection().isInternetAvailable(getApplicationContext())){
+                        wasLogin();
+                    }else {
+                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        startActivity(i);
+                    }
                 }else {
                     notLogin();
                 }

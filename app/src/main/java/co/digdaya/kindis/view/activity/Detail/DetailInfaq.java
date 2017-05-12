@@ -56,7 +56,7 @@ public class DetailInfaq extends BottomPlayerActivity{
         super.onCreate(savedInstanceState);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
-        contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
+        //contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         contLabel = (RelativeLayout) findViewById(R.id.cont_label);
         titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
@@ -93,12 +93,12 @@ public class DetailInfaq extends BottomPlayerActivity{
                 }
                 if (scrollRange + verticalOffset == 0) {
                     contLabel.setVisibility(View.INVISIBLE);
-                    contFloatingButton.setVisibility(View.INVISIBLE);
+                    //contFloatingButton.setVisibility(View.INVISIBLE);
                     titleToolbar.setVisibility(View.VISIBLE);
                     isShow = true;
                 } else if (isShow) {
                     contLabel.setVisibility(View.VISIBLE);
-                    contFloatingButton.setVisibility(View.VISIBLE);
+                    //contFloatingButton.setVisibility(View.VISIBLE);
                     titleToolbar.setVisibility(View.INVISIBLE);
                     isShow = false;
                 }

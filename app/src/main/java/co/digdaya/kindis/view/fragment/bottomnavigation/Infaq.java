@@ -92,11 +92,13 @@ public class Infaq extends Fragment {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismisLoading();
-                Log.d("infaqresponse", response);
-                InfaqModel infaqModel = gson.fromJson(response, InfaqModel.class);
+                if (status){
+                    InfaqModel infaqModel = gson.fromJson(response, InfaqModel.class);
+                    adapterInfaq = new AdapterInfaq(infaqModel, getContext());
+                    listViewInfaq.setAdapter(adapterInfaq);
+                }else {
 
-                adapterInfaq = new AdapterInfaq(infaqModel, getContext());
-                listViewInfaq.setAdapter(adapterInfaq);
+                }
             }
         });
     }
@@ -136,6 +138,9 @@ public class Infaq extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                    imageSlider.setAdapter(adapterBannerEmpty);
                 }
             }
         });

@@ -61,25 +61,27 @@ public class DialogBanner implements View.OnClickListener {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 System.out.println("bannerAds: "+response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.getBoolean("status")){
-                        JSONObject result = object.getJSONObject("result");
-                        clickUrl = result.getString("click_url");
-                        Glide.with(activity)
-                                .load(result.getString("image"))
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .centerCrop()
-                                .into(imageView);
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")){
+                            JSONObject result = object.getJSONObject("result");
+                            clickUrl = result.getString("click_url");
+                            Glide.with(activity)
+                                    .load(result.getString("image"))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .centerCrop()
+                                    .into(imageView);
 
-                        if (dialogView.getParent()!=null){
-                            ((ViewGroup)dialogView.getParent()).removeView(dialogView);
+                            if (dialogView.getParent()!=null){
+                                ((ViewGroup)dialogView.getParent()).removeView(dialogView);
+                            }
+                            dialog = alertDialog.create();
+                            dialog.show();
                         }
-                        dialog = alertDialog.create();
-                        dialog.show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         });
