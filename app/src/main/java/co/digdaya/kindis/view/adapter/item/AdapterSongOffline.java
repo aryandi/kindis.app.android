@@ -18,6 +18,7 @@ import java.util.List;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.view.holder.Item;
@@ -27,12 +28,14 @@ import co.digdaya.kindis.view.holder.Item;
  */
 
 public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
+    PlayerSessionHelper playerSessionHelper;
     Activity activity;
     List<DataSingleOffline> dataSingleOfflines;
 
     public AdapterSongOffline(Activity activity, List<DataSingleOffline> dataSingleOfflines) {
         this.activity = activity;
         this.dataSingleOfflines = dataSingleOfflines;
+        playerSessionHelper = new PlayerSessionHelper();
     }
 
     @Override
@@ -61,12 +64,19 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
                 .into(imageView);
 
         final String songResource = dataSingleOffline.getPath();
+        final String titles = dataSingleOffline.getTitle();
+        final String subtitle = dataSingleOffline.getArtist();
+        final String image = dataSingleOffline.getImage();
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE);
                 intent.putExtra("songresource", songResource);
+                playerSessionHelper.setPreferences(activity, "title", titles);
+                playerSessionHelper.setPreferences(activity, "subtitle", subtitle);
+                playerSessionHelper.setPreferences(activity, "file", songResource);
+                playerSessionHelper.setPreferences(activity, "image", image);
                 activity.startService(intent);
             }
         });

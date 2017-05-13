@@ -62,7 +62,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public void onCreate() {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         playerSessionHelper = new PlayerSessionHelper();
         sessionHelper = new SessionHelper();
@@ -298,6 +297,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void playMediaPlayer(){
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         isDataSources = true;
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
 
@@ -481,9 +481,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     private void playOffline(String song){
         isDataSources = true;
-        //String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
-        System.out.println("setDataSource: "+song);
-        String audioPath = song;
         FileDescriptor fd;
         mediaPlayer.reset();
         try {
