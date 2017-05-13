@@ -30,8 +30,8 @@ public class DownloadService extends Service {
     SessionHelper sessionHelper;
     VolleyHelper volleyHelper;
     DownloadManager downloadManager;
-    String path, singlePath;
     String uid;
+    String dir;
 
     public DownloadService() {
     }
@@ -46,7 +46,8 @@ public class DownloadService extends Service {
         super.onCreate();
         sessionHelper = new SessionHelper();
         volleyHelper = new VolleyHelper();
-        createBaseFolder();
+        dir = getApplicationContext().getExternalFilesDir("single/").toString()+"/";
+        //createBaseFolder();
     }
 
     @Override
@@ -54,19 +55,18 @@ public class DownloadService extends Service {
         String data;
         switch (intent.getAction()){
             case ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE:
-                singlePath = path+"single/";
-                createSubFolder(singlePath);
+                //singlePath = path+"single/";
+                //createSubFolder(singlePath);
                 uid = intent.getStringExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
                 data = "[{\"single_id\":"+uid+"}]";
-                System.out.println("downloadresponses param: "+data);
                 getToken("1", data);
                 break;
         }
         return START_STICKY;
     }
 
-    private void createBaseFolder(){
-        path = Environment.getExternalStorageDirectory().getPath().toString()+ "/Android/data/co.digdaya.kindis/files/";
+    /*private void createBaseFolder(){
+        path = Environment.getExternalStorageDirectory().getPath()+ "/Android/data/co.digdaya.kindis/files/";
         File baseFolder = new File(path);
         if (!baseFolder.exists()){
             if (baseFolder.mkdirs()){
@@ -84,21 +84,13 @@ public class DownloadService extends Service {
         if (!subFolder.exists()){
             if (subFolder.mkdirs()){
                 System.out.println("DownloadServices: subFolder created");
-                File nomedia = new File(subFolder, ".nomedia");
-                /*if (!nomedia.exists()){
-                    if (nomedia.mkdirs()){
-                        System.out.println("DownloadServices: nomedia created");
-                    }else {
-                        System.out.println("DownloadServices: nomedia not created");
-                    }
-                }*/
             }else {
                 System.out.println("DownloadServices: subFolder not created");
             }
         }else {
             System.out.println("DownloadServices: subFolder exist");
         }
-    }
+    }*/
 
     private void getToken(String type, String data){
         HashMap<String, String> param = new HashMap<>();
@@ -148,7 +140,7 @@ public class DownloadService extends Service {
                             new KindisDBHelper(getApplicationContext()).addToDatabase(
                                     uid,
                                     result.getString("title"),
-                                    singlePath+result.getString("title"),
+                                    dir+result.getString("title"),
                                     result.getString("image"),
                                     result.getString("album"),
                                     result.getString("artist"),
@@ -169,10 +161,10 @@ public class DownloadService extends Service {
         DownloadManager.Request request = new DownloadManager.Request(file);
         request.setTitle("Kindis");
         request.setDescription("Downloading "+path);
-        request.setDestinationInExternalFilesDir(getApplicationContext(), singlePath, path);
+        request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
+        //request.setDestinationUri(Uri.parse(dir+path));
         long enque = downloadManager.enqueue(request);
         registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        //isCompletedDownload(enque);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -185,21 +177,4 @@ public class DownloadService extends Service {
             }
         }
     };
-
-    /*private boolean isCompletedDownload(long downloadId){
-        Cursor c= downloadManager.query(new DownloadManager.Query().setFilterById(downloadId));
-        if (c.moveToFirst()){
-            int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
-            if(status == DownloadManager.STATUS_SUCCESSFUL){
-                Log.d("isCompletedDownload", "STATUS_SUCCESSFUL");
-                return true;
-            }else{
-                int reason = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
-                Log.d("isCompletedDownload", "Download not correct, status [" + status + "] reason [" + reason + "]");
-                return false;
-            }
-        }else {
-            return false;
-        }
-    }*/
 }

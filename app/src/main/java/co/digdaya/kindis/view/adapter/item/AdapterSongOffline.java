@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.adapter.item;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,16 @@ import java.util.List;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.model.DataSingleOffline;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.view.holder.Item;
 
 /**
  * Created by DELL on 5/11/2017.
  */
 
-public class AdapterSongOffline extends RecyclerView.Adapter<Item> {
+public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
     Activity activity;
     List<DataSingleOffline> dataSingleOfflines;
 
@@ -43,7 +46,6 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item> {
     public void onBindViewHolder(Item holder, int position) {
         DataSingleOffline dataSingleOffline = dataSingleOfflines.get(position);
         ImageView imageView = holder.imageView;
-        ImageView badgePremium = holder.badgePremium;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
@@ -57,6 +59,17 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
+
+        final String songResource = dataSingleOffline.getPath();
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, PlayerService.class);
+                intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE);
+                intent.putExtra("songresource", songResource);
+                activity.startService(intent);
+            }
+        });
     }
 
     @Override

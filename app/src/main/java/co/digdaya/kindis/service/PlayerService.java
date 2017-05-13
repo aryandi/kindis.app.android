@@ -19,6 +19,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,6 +184,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 mediaPlayer.pause();
                 onPrepared(mediaPlayer);
             }
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY_OFFLINE)){
+            songPlaylist = new ArrayList<>();
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            playOffline(intent.getStringExtra("songresource"));
         }
 
         return START_STICKY;
@@ -465,5 +477,24 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 }
             }
         });
+    }
+
+    private void playOffline(String song){
+        isDataSources = true;
+        //String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
+        System.out.println("setDataSource: "+song);
+        String audioPath = song;
+        FileDescriptor fd;
+        mediaPlayer.reset();
+        try {
+            FileInputStream fis = new FileInputStream(song);
+            fd = fis.getFD();
+            mediaPlayer.setDataSource(fd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.prepareAsync();
+        mediaPlayer.setOnErrorListener(this);
     }
 }
