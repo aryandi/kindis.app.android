@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
 
 /**
  * Created by DELL on 1/27/2017.
@@ -23,11 +24,13 @@ public class AdapterListSong extends PagerAdapter {
     Context mContext;
     private LayoutInflater layoutInflater;
     ArrayList<String> imgList;
+    PlayerSessionHelper playerSessionHelper;
 
     public AdapterListSong(Context context, ArrayList<String> imgList) {
         this.mContext = context;
         this.imgList = imgList;
         this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        playerSessionHelper = new PlayerSessionHelper();
     }
 
 
@@ -46,9 +49,14 @@ public class AdapterListSong extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.adapter_list_song, container, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.item_list_song);
-
+        String image;
+        if (Boolean.parseBoolean(playerSessionHelper.getPreferences(mContext, "is_offline_mode"))){
+            image = imgList.get(position);
+        }else {
+            image = ApiHelper.BASE_URL_IMAGE+imgList.get(position);
+        }
         Glide.with(mContext)
-                .load(ApiHelper.BASE_URL_IMAGE+imgList.get(position))
+                .load(image)
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

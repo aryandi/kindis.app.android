@@ -70,8 +70,14 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
         type = playerSessionHelper.getPreferences(getApplicationContext(), "type");
         json = playerSessionHelper.getPreferences(getApplicationContext(), "json");
 
+        String images;
+        if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"))){
+            images = playerSessionHelper.getPreferences(getApplicationContext(), "image");
+        }else {
+            images = ApiHelper.BASE_URL_IMAGE+playerSessionHelper.getPreferences(getApplicationContext(), "image");
+        }
         Glide.with(getApplicationContext())
-                .load(ApiHelper.BASE_URL_IMAGE+playerSessionHelper.getPreferences(getApplicationContext(), "image"))
+                .load(images)
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

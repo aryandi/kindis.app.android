@@ -67,6 +67,7 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
         final String titles = dataSingleOffline.getTitle();
         final String subtitle = dataSingleOffline.getArtist();
         final String image = dataSingleOffline.getImage();
+        final String artist_id = dataSingleOffline.getArtist_id();
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +76,8 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
                 intent.putExtra("songresource", songResource);
                 playerSessionHelper.setPreferences(activity, "title", titles);
                 playerSessionHelper.setPreferences(activity, "subtitle", subtitle);
-                playerSessionHelper.setPreferences(activity, "file", songResource);
                 playerSessionHelper.setPreferences(activity, "image", image);
+                playerSessionHelper.setPreferences(activity, "artist_id", artist_id);
                 activity.startService(intent);
             }
         });

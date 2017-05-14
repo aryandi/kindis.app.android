@@ -32,6 +32,7 @@ public class DownloadService extends Service {
     DownloadManager downloadManager;
     String uid;
     String dir;
+    JSONObject result;
 
     public DownloadService() {
     }
@@ -64,33 +65,6 @@ public class DownloadService extends Service {
         }
         return START_STICKY;
     }
-
-    /*private void createBaseFolder(){
-        path = Environment.getExternalStorageDirectory().getPath()+ "/Android/data/co.digdaya.kindis/files/";
-        File baseFolder = new File(path);
-        if (!baseFolder.exists()){
-            if (baseFolder.mkdirs()){
-                System.out.println("DownloadServices: Folder created");
-            }else {
-                System.out.println("DownloadServices: Folder not created");
-            }
-        }else {
-            System.out.println("DownloadServices: Folder exist");
-        }
-    }
-
-    private void createSubFolder(String pathFolder){
-        File subFolder = new File(pathFolder);
-        if (!subFolder.exists()){
-            if (subFolder.mkdirs()){
-                System.out.println("DownloadServices: subFolder created");
-            }else {
-                System.out.println("DownloadServices: subFolder not created");
-            }
-        }else {
-            System.out.println("DownloadServices: subFolder exist");
-        }
-    }*/
 
     private void getToken(String type, String data){
         HashMap<String, String> param = new HashMap<>();
@@ -136,16 +110,7 @@ public class DownloadService extends Service {
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            JSONObject result = object.getJSONObject("result");
-                            new KindisDBHelper(getApplicationContext()).addToDatabase(
-                                    uid,
-                                    result.getString("title"),
-                                    dir+result.getString("title"),
-                                    result.getString("image"),
-                                    result.getString("album"),
-                                    result.getString("artist"),
-                                    result.getString("artist_id")
-                            );
+                            result = object.getJSONObject("result");
                             downloadRequest(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), result.getString("title"));
                         }
                     } catch (JSONException e) {
@@ -162,7 +127,6 @@ public class DownloadService extends Service {
         request.setTitle("Kindis");
         request.setDescription("Downloading "+path);
         request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
-        //request.setDestinationUri(Uri.parse(dir+path));
         long enque = downloadManager.enqueue(request);
         registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
@@ -173,7 +137,19 @@ public class DownloadService extends Service {
             String action = intent.getAction();
 
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                System.out.println("ACTION_DOWNLOAD_COMPLETE func");
+                try {
+                    new KindisDBHelper(getApplicationContext()).addToDatabase(
+                            uid,
+                            result.getString("title"),
+                            dir+result.getString("title"),
+                            result.getString("image"),
+                            result.getString("album"),
+                            result.getString("artist"),
+                            result.getString("artist_id")
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };

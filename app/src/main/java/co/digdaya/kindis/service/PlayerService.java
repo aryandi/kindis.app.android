@@ -96,6 +96,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent.getAction().equals(PlayerActionHelper.UPDATE_RESOURCE)){
+            playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "false");
             songPlaylist = new ArrayList<>();
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
@@ -105,10 +106,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY)){
+            Boolean isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
             if (isDataSources){
                 onPrepared(mediaPlayer);
             }else {
-                playMediaPlayer();
+                if (isOfflineMode){
+                    playOffline();
+                }else {
+                    playMediaPlayer();
+                }
             }
 
             views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
@@ -186,12 +192,14 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY_OFFLINE)){
+            playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
             songPlaylist = new ArrayList<>();
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
             }
-            playOffline(intent.getStringExtra("songresource"));
+            playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
+            playOffline();
         }
 
         return START_STICKY;
@@ -479,12 +487,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         });
     }
 
-    private void playOffline(String song){
+    private void playOffline(){
         isDataSources = true;
         FileDescriptor fd;
         mediaPlayer.reset();
         try {
-            FileInputStream fis = new FileInputStream(song);
+            FileInputStream fis = new FileInputStream(playerSessionHelper.getPreferences(getApplicationContext(), "file"));
             fd = fis.getFD();
             mediaPlayer.setDataSource(fd);
         } catch (IOException e) {
