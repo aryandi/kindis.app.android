@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import co.digdaya.kindis.helper.Constanta;
+import co.digdaya.kindis.service.DownloadService;
 import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
@@ -70,7 +72,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     PlayerSessionHelper playerSessionHelper;
     RefreshToken refreshToken;
 
-    String json;
+    String json, types;
     int isPremium = 0;
     int premiumUser;
     public Detail(){
@@ -114,12 +116,15 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
         backDrop.setColorFilter(Color.parseColor("#70000000"));
 
-        if (getIntent().getStringExtra("type").equals("album")){
+        types = getIntent().getStringExtra("type");
+        if (types.equals("album")){
+            btnPremium.setVisibility(View.VISIBLE);
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
-        }else if (getIntent().getStringExtra("type").equals("playlist")){
+        }else if (types.equals("playlist")){
             getDetailPlaylist();
-        }else if (getIntent().getStringExtra("type").equals("premium")){
+        }else if (types.equals("premium")){
+            btnPremium.setVisibility(View.VISIBLE);
             getListPremium();
         }
 
@@ -160,7 +165,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
-                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
+                    new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", types);
                     Intent intent = new Intent(Detail.this, PlayerService.class);
                     intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                     intent.putExtra("single_id", songPlaylist.get(0));
@@ -211,9 +216,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                                     .centerCrop()
                                     .into(backDrop);
 
-                            if (getIntent().getStringExtra("type").equals("genre")){
+                            if (types.equals("genre")){
                                 getSong();
-                            }else if (getIntent().getStringExtra("type").equals("album")){
+                            }else if (types.equals("album")){
                                 json = result.getJSONArray("single").toString();
                                 getListSong(result.getJSONArray("single").toString(), summary.getString("title"));
                             }
@@ -337,7 +342,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"));
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
                             if (isPremium == 1 && premiumUser==0){
-                                btnPremium.setVisibility(View.VISIBLE);
+                                btnPremium.setText("RENT");
                             }
 
                             Glide.with(getApplicationContext())
@@ -475,7 +480,21 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_premium:
-                dialogPayment.showDialog();
+                if (types.equals("album")){
+                    Intent intent = new Intent(this, DownloadService.class);
+                    intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM);
+                    intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, getIntent().getStringExtra("uid"));
+                    startService(intent);
+                }else if (types.equals("premium")){
+                    if (isPremium == 1 && premiumUser==0){
+                        dialogPayment.showDialog();
+                    }else {
+                        Intent intent = new Intent(this, DownloadService.class);
+                        intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
+                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
+                        startService(intent);
+                    }
+                }
                 break;
         }
     }

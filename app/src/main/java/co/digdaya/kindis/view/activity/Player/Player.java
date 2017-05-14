@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import co.digdaya.kindis.helper.CheckPermission;
-import co.digdaya.kindis.helper.ExtraKey;
+import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.service.DownloadService;
 import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
@@ -385,8 +385,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     private void startDownload(){
         Intent intent = new Intent(this, DownloadService.class);
-        intent.setAction(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE);
-        intent.putExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+        intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE);
+        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
         startService(intent);
     }
 }

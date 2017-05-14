@@ -6,23 +6,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.helper.ApiHelper;
-import co.digdaya.kindis.helper.ExtraKey;
+import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 
@@ -55,18 +49,28 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String data;
         switch (intent.getAction()){
-            case ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE:
+            case Constanta.INTENT_ACTION_DOWNLOAD_SINGLE:
                 //singlePath = path+"single/";
                 //createSubFolder(singlePath);
-                uid = intent.getStringExtra(ExtraKey.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
+                uid = intent.getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
                 data = "[{\"single_id\":"+uid+"}]";
                 getToken("1", data);
+                break;
+            case Constanta.INTENT_ACTION_DOWNLOAD_ALBUM:
+                uid = intent.getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID);
+                data = "[{\"album_id\":"+uid+"}]";
+                getToken("2", data);
+                break;
+            case Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST:
+                uid = intent.getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID);
+                data = "[{\"playlist_id\":"+uid+"}]";
+                getToken("3", data);
                 break;
         }
         return START_STICKY;
     }
 
-    private void getToken(String type, String data){
+    private void getToken(final String type, String data){
         HashMap<String, String> param = new HashMap<>();
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
@@ -84,7 +88,7 @@ public class DownloadService extends Service {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
-                            getData(result.getString("token"), result.getString("data"));
+                            getData(result.getString("token"), result.getString("data"), Integer.parseInt(type));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -94,7 +98,7 @@ public class DownloadService extends Service {
         });
     }
 
-    private void getData(String token, String data){
+    private void getData(String token, String data, final int type){
         HashMap<String, String> param = new HashMap<>();
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
@@ -111,7 +115,11 @@ public class DownloadService extends Service {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             result = object.getJSONObject("result");
-                            downloadRequest(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), result.getString("title"));
+                            switch (type){
+                                case 1:
+                                    downloadRequest(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), result.getString("title"));
+                                    break;
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
