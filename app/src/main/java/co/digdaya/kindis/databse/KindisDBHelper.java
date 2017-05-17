@@ -20,7 +20,7 @@ public class KindisDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_WAITLIST_TABLE = "CREATE TABLE " + KindisDBname.TABLE_NAME+ " (" +
+        final String SQL_CREATE_SINGLE_TABLE = "CREATE TABLE " + KindisDBname.TABLE_SINGLE + " (" +
                 KindisDBname.COLUMN_ID + " INTEGER PRIMARY KEY," +
                 KindisDBname.COLUMN_TITLE+ " VARCHAR(255) NOT NULL, " +
                 KindisDBname.COLUMN_PATH + " TEXT NOT NULL, " +
@@ -28,19 +28,29 @@ public class KindisDBHelper extends SQLiteOpenHelper {
                 KindisDBname.COLUMN_ALBUM + " VARCHAR(255) NOT NULL, " +
                 KindisDBname.COLUMN_ARTIST + " VARCHAR(255) NOT NULL, " +
                 KindisDBname.COLUMN_ARTIST_ID + " INTEGER NOT NULL, " +
+                KindisDBname.COLUMN_FK + " VARCHAR(25) NOT NULL, " +
                 " UNIQUE (" + KindisDBname.COLUMN_ID + ") ON CONFLICT REPLACE);";
+        db.execSQL(SQL_CREATE_SINGLE_TABLE);
 
-        // COMPLETED (7) Execute the query by calling execSQL on sqLiteDatabase and pass the string query SQL_CREATE_WAITLIST_TABLE
-        db.execSQL(SQL_CREATE_WAITLIST_TABLE);
+        final String SQL_CREATE_ALBUM_TABLE = "CREATE TABLE " + KindisDBname.TABLE_ALBUM + " (" +
+                KindisDBname.COLUMN_ALBUM_ID + " INTEGER PRIMARY KEY," +
+                KindisDBname.COLUMN_ALBUM+ " VARCHAR(255) NOT NULL, " +
+                KindisDBname.COLUMN_ARTIST + " VARCHAR(255) NOT NULL, " +
+                KindisDBname.COLUMN_ALBUM_DESC + " TEXT NOT NULL, " +
+                KindisDBname.COLUMN_IMAGE + " TEXT NOT NULL, " +
+                KindisDBname.COLUMN_BANNER_IMAGE + " TEXT NOT NULL, " +
+                " UNIQUE (" + KindisDBname.COLUMN_ALBUM_ID + ") ON CONFLICT REPLACE);";
+        db.execSQL(SQL_CREATE_ALBUM_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_SINGLE);
+        db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_ALBUM);
         onCreate(db);
     }
 
-    public void addToDatabase(String uid, String title, String path, String image, String album, String artist, String artist_id){
+    public void addToTableSingle(String uid, String title, String path, String image, String album, String artist, String artist_id, String fk){
         SQLiteDatabase mDb = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KindisDBname.COLUMN_ID, uid);
@@ -50,7 +60,21 @@ public class KindisDBHelper extends SQLiteOpenHelper {
         values.put(KindisDBname.COLUMN_ALBUM, album);
         values.put(KindisDBname.COLUMN_ARTIST, artist);
         values.put(KindisDBname.COLUMN_ARTIST_ID, artist_id);
-        mDb.insert(KindisDBname.TABLE_NAME, null, values);
+        values.put(KindisDBname.COLUMN_FK, fk);
+        mDb.insert(KindisDBname.TABLE_SINGLE, null, values);
+        mDb.close();
+    }
+
+    public void addToTableAlbum(String album_id, String album, String artist, String desc, String image, String banner){
+        SQLiteDatabase mDb = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KindisDBname.COLUMN_ALBUM_ID, album_id);
+        values.put(KindisDBname.COLUMN_ALBUM, album);
+        values.put(KindisDBname.COLUMN_ARTIST, artist);
+        values.put(KindisDBname.COLUMN_ALBUM_DESC, desc);
+        values.put(KindisDBname.COLUMN_IMAGE, ApiHelper.BASE_URL_IMAGE+image);
+        values.put(KindisDBname.COLUMN_BANNER_IMAGE, ApiHelper.BASE_URL_IMAGE+banner);
+        mDb.insert(KindisDBname.TABLE_ALBUM, null, values);
         mDb.close();
     }
 }

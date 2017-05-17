@@ -288,16 +288,20 @@ public class SignInActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result){
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
-            sessionHelper.setPreferences(getApplicationContext(), "login_type", "3");
-            String fullname = acct.getDisplayName();
-            String gender = "";
-            String birth_date = "";
-            String type_social = "3";
-            String app_id = acct.getId();
-            String email = acct.getEmail();
-            String phone = "";
-            loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+            if (acct!=null){
+                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
+                sessionHelper.setPreferences(getApplicationContext(), "login_type", "3");
+                String fullname = acct.getDisplayName();
+                String gender = "";
+                String birth_date = "";
+                String type_social = "3";
+                String app_id = acct.getId();
+                String email = acct.getEmail();
+                String phone = "";
+                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+            }else {
+                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+            }
         } else {
             System.out.println("googlelogin "+result.getStatus());
         }

@@ -21,7 +21,6 @@ import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
-import co.digdaya.kindis.view.activity.Player.ListSongPlayer;
 import co.digdaya.kindis.view.adapter.item.AdapterSongOffline;
 
 /**
@@ -59,7 +58,7 @@ public class SingleSaveOffline extends Fragment {
         dataSingleOfflines.clear();
         KindisDBHelper kindisDBHelper = new KindisDBHelper(getContext());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+KindisDBname.TABLE_NAME+" ORDER BY "+KindisDBname.COLUMN_ID+" DESC",null);
+        Cursor cursor = db.rawQuery("select * from "+KindisDBname.TABLE_SINGLE +" ORDER BY "+KindisDBname.COLUMN_ID+" DESC",null);
         if (cursor.moveToFirst()){
             while (cursor.isAfterLast()==false){
                 System.out.println("DBData: "+cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_TITLE)));
