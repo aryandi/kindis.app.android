@@ -67,6 +67,8 @@ public class ApiHelper {
 
     public static final String PAYMENT = BASE_URL + "payment/pay";
 
+    public static final String PRICE = BASE_URL + "payment/base_premium?uid=";
+
     //offline
     public static final String TOKEN = BASE_URL + "offline/json_token";
     public static final String GET_DATA = BASE_URL + "offline/offline_data";

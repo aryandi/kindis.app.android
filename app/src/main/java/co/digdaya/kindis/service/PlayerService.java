@@ -30,11 +30,13 @@ import java.util.Random;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.CheckAppRunning;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
+import co.digdaya.kindis.view.activity.Player.Player;
 
 public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener{
     PlayerSessionHelper playerSessionHelper;
@@ -86,6 +88,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         views.setOnClickPendingIntent(R.id.btn_play, retreivePlaybackAction(1));
         views.setOnClickPendingIntent(R.id.btn_next, retreivePlaybackAction(2));
         views.setOnClickPendingIntent(R.id.btn_close, retreivePlaybackAction(3));
+        views.setOnClickPendingIntent(R.id.notif_body, retreivePlaybackAction(4));
 
         notification();
 
@@ -180,8 +183,25 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_CLOSE)){
             notificationManager.cancel(1);
-            int pid = android.os.Process.myPid();
-            android.os.Process.killProcess(pid);
+            if (!CheckAppRunning.isAppRunning(getApplicationContext())){
+                System.out.println("isAppRunning false");
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid);
+            }else {
+                System.out.println("isAppRunning true");
+            }
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_LOG_OUT)){
+            notificationManager.cancel(1);
+            mediaPlayer.pause();
+            System.out.println("ACTION_LOG_OUT ok");
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_OPEN)){
+            Intent player = new Intent(this, Player.class);
+            player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(player);
         }
 
         if (intent.getAction().equals(PlayerActionHelper.ACTION_LOOPING)){
@@ -445,6 +465,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                 action = new Intent(PlayerActionHelper.ACTION_CLOSE);
                 action.setComponent(serviceName);
                 pendingIntent = PendingIntent.getService(this, 2, action, 0);
+                return pendingIntent;
+            case 4:
+                action = new Intent(PlayerActionHelper.ACTION_OPEN);
+                action.setComponent(serviceName);
+                pendingIntent = PendingIntent.getService(this, 4, action, 0);
                 return pendingIntent;
             default:
                 break;

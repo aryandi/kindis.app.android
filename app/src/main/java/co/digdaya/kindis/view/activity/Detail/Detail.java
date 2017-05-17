@@ -339,7 +339,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"));
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"), "");
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
                             if (isPremium == 1 && premiumUser==0){
                                 btnPremium.setText("RENT");

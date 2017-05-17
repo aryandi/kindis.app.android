@@ -118,7 +118,7 @@ public class Infaq extends Fragment {
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("uid", data.getString("uid"));
                                 map.put("title", data.getString("title"));
-                                map.put("image", data.getString("main_image"));
+                                map.put("image", data.getString("banner_image"));
                                 map.put("is_url", data.getString("is_url"));
                                 map.put("redirect_url", data.getString("redirect_url"));
                                 listBanner.add(map);

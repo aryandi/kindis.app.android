@@ -60,7 +60,9 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         RelativeLayout click = holder.click;
 
         final DataPlaylist.Data data = dataPlaylist.data.get(position);
-        badgePremium.setVisibility(View.VISIBLE);
+        if (type!=5){
+            badgePremium.setVisibility(View.VISIBLE);
+        }
         if (getItemViewType(position) == 0){
             badgePremium.setImageResource(R.drawable.ic_badge_sponsored);
         }

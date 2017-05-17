@@ -18,9 +18,11 @@ import co.digdaya.kindis.util.GoogleBilling.Purchase;
 public class GooglePayment {
     Activity activity;
     IabHelper mHelper;
+    String googleCode;
 
-    public GooglePayment(Activity activity) {
+    public GooglePayment(Activity activity, String googleCode) {
         this.activity = activity;
+        this.googleCode = googleCode;
 
         init();
     }
@@ -50,7 +52,7 @@ public class GooglePayment {
     }*/
 
     public void buyClick() {
-        mHelper.launchPurchaseFlow(activity, "co.digdaya.kindis.premium", 10001,
+        mHelper.launchPurchaseFlow(activity, googleCode, 10001,
                 mPurchaseFinishedListener, "kindis123");
     }
 

@@ -13,6 +13,8 @@ public class PlayerActionHelper {
     public static final String ACTION_CLOSE = "com.example.android.musicplayer.action.CLOSE";
     public static final String ACTION_PLAYBACK = "com.example.android.musicplayer.action.PLAYBACK";
     public static final String ACTION_PLAY_OFFLINE = "com.example.android.musicplayer.action.PLAYOFFLINE";
+    public static final String ACTION_LOG_OUT = "logout";
+    public static final String ACTION_OPEN = "open";
 
     public static final String BROADCAST = "player";
     public static final String BROADCAST_MAX_DURATION = "max_duration";

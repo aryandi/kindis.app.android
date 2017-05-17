@@ -57,8 +57,11 @@ import java.util.HashMap;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckPermission;
+import co.digdaya.kindis.helper.PlayerActionHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.view.activity.Account.SignInActivity;
@@ -319,6 +322,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
+                sessionHelper.clearSession(getContext());
+                new PlayerSessionHelper().clearSession(getContext());
+                Intent in = new Intent(getActivity(), PlayerService.class);
+                in.setAction(PlayerActionHelper.ACTION_LOG_OUT);
+                getActivity().startService(in);
                 if (loginType.equals("1")){
                     LoginManager.getInstance().logOut();
                 }else if (loginType.equals("2")){
@@ -334,8 +342,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 });
                     }
                 }
-                sessionHelper.setPreferences(getContext(), "status", "0");
-                sessionHelper.setPreferences(getContext(), "profile_picture", null);
                 Intent intent = new Intent(getActivity(), SignInActivity.class);
                 startActivity(intent);
                 new LogOut().execute();

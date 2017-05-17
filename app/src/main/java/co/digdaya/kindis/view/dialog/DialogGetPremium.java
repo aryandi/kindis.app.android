@@ -3,6 +3,7 @@ package co.digdaya.kindis.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,9 @@ import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -42,6 +46,7 @@ import co.digdaya.kindis.BuildConfig;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.helper.VolleyHelper;
 
 /**
  * Created by DELL on 3/11/2017.
@@ -59,6 +64,10 @@ public class DialogGetPremium implements View.OnClickListener{
 
     SessionHelper sessionHelper;
     Random random;
+
+    boolean isGetPrice = false;
+    int price;
+    String googleCode;
 
     public DialogGetPremium(Activity activity, Dialog premium){
         this.activity = activity;
@@ -99,12 +108,43 @@ public class DialogGetPremium implements View.OnClickListener{
             case R.id.btn_premium:
                 premium.dismiss();
                 String transID = "PRE"+sessionHelper.getPreferences(activity, "user_id")+random.nextInt(89)+10;
-                dialogPayment = new DialogPayment(dialogPay, activity, transID, 10000, "Akun Premium");
+                dialogPayment = new DialogPayment(dialogPay, activity, transID, price, "Akun Premium", googleCode);
                 dialogPayment.showDialog();
                 break;
             default:
                 premium.dismiss();
                 break;
+        }
+    }
+
+    private class GetPrice extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = sessionHelper.getPreferences(activity, "user_id") +
+                    "&token_access="+sessionHelper.getPreferences(activity, "token_access") +
+                    "&dev_id=2" +
+                    "&client_id=xBc3w11";
+            new VolleyHelper().get(ApiHelper.PRICE + url, new VolleyHelper.HttpListener<String>() {
+                @Override
+                public void onReceive(boolean status, String message, String response) {
+                    System.out.println("GetPrice: "+response);
+                    if (status){
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.getBoolean("status")){
+                                JSONObject result = object.getJSONObject("result");
+                                price = result.getInt("price");
+                                googleCode = result.getString("google_code");
+                                isGetPrice = true;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            return null;
         }
     }
 }

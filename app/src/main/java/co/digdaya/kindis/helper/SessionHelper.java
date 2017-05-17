@@ -18,4 +18,10 @@ public class SessionHelper {
         String position = prefs.getString(key, "");
         return position;
     }
+
+    public void clearSession(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences("kindis", Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
+    }
 }

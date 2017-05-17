@@ -74,25 +74,7 @@ public class AdapterBanner extends PagerAdapter {
                 .centerCrop()
                 .into(imageView);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (clickUrl.contains("kindis:")){
-                    handleClickAds(clickUrl);
-                }else {
-                    Uri uri = Uri.parse(clickUrl);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-                }
-            }
-        });
-
         if (type.equals("infaq")){
-            title.setVisibility(View.VISIBLE);
-            subtitle.setVisibility(View.VISIBLE);
-            btnDonate.setVisibility(View.VISIBLE);
-
             final String url = dataSinggle.get("redirect_url");
             final String uid = dataSinggle.get("uid");
             final String titlee = dataSinggle.get("title");
@@ -103,7 +85,7 @@ public class AdapterBanner extends PagerAdapter {
             }
             title.setText(titlee);
 
-            btnDonate.setOnClickListener(new View.OnClickListener() {
+            imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isUrl.equals("1")){
@@ -115,6 +97,20 @@ public class AdapterBanner extends PagerAdapter {
                         intent.putExtra("uid", uid);
                         intent.putExtra("title", titlee);
                         intent.putExtra("image", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+        }else {
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (clickUrl.contains("kindis:")){
+                        handleClickAds(clickUrl);
+                    }else {
+                        Uri uri = Uri.parse(clickUrl);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                     }
                 }

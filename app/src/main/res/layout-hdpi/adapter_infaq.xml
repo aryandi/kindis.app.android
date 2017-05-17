@@ -4,23 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/adapter_infaq"
     android:layout_width="136dp"
-    android:layout_height="136dp"
+    android:layout_height="wrap_content"
     tools:context="co.digdaya.kindis.view.adapter.item.AdapterInfaq">
 
     <co.digdaya.kindis.custom.ImageViewRounded
         android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="136dp"
+        android:layout_height="136dp"
         android:src="@drawable/ic_default_img"/>
 
     <co.digdaya.kindis.custom.TextViewBold
         android:id="@+id/label_masjid_name"
+        android:layout_below="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="24sp" />
+        android:textSize="14sp" />
 </RelativeLayout>
