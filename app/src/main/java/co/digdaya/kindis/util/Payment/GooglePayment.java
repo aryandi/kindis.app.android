@@ -43,14 +43,6 @@ public class GooglePayment {
         });
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mHelper.handleActivityResult(requestCode,
-                resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }*/
-
     public void buyClick() {
         mHelper.launchPurchaseFlow(activity, googleCode, 10001,
                 mPurchaseFinishedListener, "kindis123");

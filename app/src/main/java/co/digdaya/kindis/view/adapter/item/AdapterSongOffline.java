@@ -71,6 +71,7 @@ public class AdapterSongOffline extends RecyclerView.Adapter<Item>{
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new PlayerSessionHelper().setPreferences(activity, "index", "1");
                 Intent intent = new Intent(activity, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE);
                 intent.putExtra("songresource", songResource);
