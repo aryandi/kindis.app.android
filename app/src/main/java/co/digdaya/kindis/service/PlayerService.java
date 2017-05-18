@@ -526,5 +526,12 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.prepareAsync();
         mediaPlayer.setOnErrorListener(this);
+
+        title = playerSessionHelper.getPreferences(getApplicationContext(), "title");
+        subtitle = playerSessionHelper.getPreferences(getApplicationContext(), "subtitle");
+        sendBroadcestInfo(title, subtitle, playlistPosition);
+        if (noti != null) {
+            updateNotification();
+        }
     }
 }

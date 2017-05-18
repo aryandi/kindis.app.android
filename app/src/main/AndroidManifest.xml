@@ -134,11 +134,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".view.activity.Premium" />
+        <activity android:name=".view.activity.Detail.DetailOffline"/>
 
         <service
             android:name=".service.DownloadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
     </application>
 
 </manifest>

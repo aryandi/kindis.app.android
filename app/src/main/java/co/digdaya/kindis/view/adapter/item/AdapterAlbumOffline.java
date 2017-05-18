@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.adapter.item;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.model.DataAlbumOffline;
 import co.digdaya.kindis.model.DataSingleOffline;
+import co.digdaya.kindis.view.activity.Detail.DetailOffline;
 import co.digdaya.kindis.view.holder.Item;
 
 /**
@@ -33,8 +36,14 @@ public class AdapterAlbumOffline extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public Item onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Item onCreateViewHolder(ViewGroup parent, final int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClicked(viewType);
+            }
+        });
         Item item= new Item(view);
         return item;
     }
@@ -62,5 +71,18 @@ public class AdapterAlbumOffline extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemCount() {
         return dataAlbumOfflines.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    private void onClicked(int pos){
+        Intent intent = new Intent(activity, DetailOffline.class);
+        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM, dataAlbumOfflines.get(pos).getAlbum());
+        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, dataAlbumOfflines.get(pos).getAlbum_id());
+        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_DESC, dataAlbumOfflines.get(pos).getDesc());
+        activity.startActivity(intent);
     }
 }
