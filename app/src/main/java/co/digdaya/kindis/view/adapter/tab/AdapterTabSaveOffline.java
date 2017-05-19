@@ -13,6 +13,7 @@ import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Genres;
 import co.digdaya.kindis.view.fragment.bottomnavigation.musiq.RecentlyAdded;
 import co.digdaya.kindis.view.fragment.navigationview.saveoffline.AlbumSaveOffline;
+import co.digdaya.kindis.view.fragment.navigationview.saveoffline.PlaylistSaveOffline;
 import co.digdaya.kindis.view.fragment.navigationview.saveoffline.SingleSaveOffline;
 
 /**
@@ -37,7 +38,7 @@ public class AdapterTabSaveOffline extends FragmentStatePagerAdapter {
             case 1:
                 return new AlbumSaveOffline();
             case 2:
-                return new AlbumSaveOffline();
+                return new PlaylistSaveOffline();
             default:
                 return null;
         }

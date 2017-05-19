@@ -41,12 +41,21 @@ public class KindisDBHelper extends SQLiteOpenHelper {
                 KindisDBname.COLUMN_BANNER_IMAGE + " TEXT NOT NULL, " +
                 " UNIQUE (" + KindisDBname.COLUMN_ALBUM_ID + ") ON CONFLICT REPLACE);";
         db.execSQL(SQL_CREATE_ALBUM_TABLE);
+
+        final String SQL_CREATE_PLAYLIST_TABLE = "CREATE TABLE " + KindisDBname.TABLE_PLAYLIST + " (" +
+                KindisDBname.COLUMN_PLAYLIST_ID + " INTEGER PRIMARY KEY," +
+                KindisDBname.COLUMN_PLAYLIST+ " VARCHAR(255) NOT NULL, " +
+                KindisDBname.COLUMN_IMAGE + " TEXT NOT NULL, " +
+                KindisDBname.COLUMN_BANNER_IMAGE + " TEXT NOT NULL, " +
+                " UNIQUE (" + KindisDBname.COLUMN_PLAYLIST_ID + ") ON CONFLICT REPLACE);";
+        db.execSQL(SQL_CREATE_PLAYLIST_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_SINGLE);
         db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_ALBUM);
+        db.execSQL("DROP TABLE IF EXISTS " + KindisDBname.TABLE_PLAYLIST);
         onCreate(db);
     }
 
@@ -75,6 +84,17 @@ public class KindisDBHelper extends SQLiteOpenHelper {
         values.put(KindisDBname.COLUMN_IMAGE, ApiHelper.BASE_URL_IMAGE+image);
         values.put(KindisDBname.COLUMN_BANNER_IMAGE, ApiHelper.BASE_URL_IMAGE+banner);
         mDb.insert(KindisDBname.TABLE_ALBUM, null, values);
+        mDb.close();
+    }
+
+    public void addToTablePlaylist(String playlist_id, String playlist, String image, String banner){
+        SQLiteDatabase mDb = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KindisDBname.COLUMN_PLAYLIST_ID, playlist_id);
+        values.put(KindisDBname.COLUMN_PLAYLIST, playlist);
+        values.put(KindisDBname.COLUMN_IMAGE, ApiHelper.BASE_URL_IMAGE+image);
+        values.put(KindisDBname.COLUMN_BANNER_IMAGE, ApiHelper.BASE_URL_IMAGE+banner);
+        mDb.insert(KindisDBname.TABLE_PLAYLIST, null, values);
         mDb.close();
     }
 }

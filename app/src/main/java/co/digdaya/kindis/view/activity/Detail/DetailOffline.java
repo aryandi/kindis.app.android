@@ -2,17 +2,22 @@ package co.digdaya.kindis.view.activity.Detail;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,19 +28,21 @@ import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.view.adapter.item.AdapterDetailSongOffline;
+import co.digdaya.kindis.view.adapter.offline.AdapterDetailSongOffline;
 
 /**
  * Created by DELL on 5/18/2017.
  */
 
-public class DetailOffline extends BottomPlayerActivity {
+public class DetailOffline extends BottomPlayerActivity implements View.OnClickListener {
     TextView titleDetail, titleToolbar, desc;
     AppBarLayout appBarLayout;
     LinearLayout contFloatingButton;
     RelativeLayout contLabel;
     Toolbar toolbar;
     RecyclerView listViewSong;
+    ImageView backDrop;
+    Button btnPlayAll;
     AdapterDetailSongOffline adapterDetailSongOffline;
     List<DataSingleOffline> dataSingleOfflines = new ArrayList<>();
 
@@ -52,6 +59,8 @@ public class DetailOffline extends BottomPlayerActivity {
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
         contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        backDrop = (ImageView) findViewById(R.id.backdrop);
+        btnPlayAll = (Button) findViewById(R.id.btn_play_all);
         contLabel = (RelativeLayout) findViewById(R.id.cont_label);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
@@ -96,7 +105,15 @@ public class DetailOffline extends BottomPlayerActivity {
         titleToolbar.setText(getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM));
         titleDetail.setText(getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM));
         desc.setText(getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_DESC));
-
+        backDrop.setColorFilter(Color.parseColor("#70000000"));
+        Glide.with(getApplicationContext())
+                .load(getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_IMAGE))
+                .thumbnail( 0.1f )
+                .placeholder(R.drawable.bg_sign_in)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(backDrop);
+        btnPlayAll.setOnClickListener(this);
         getSong(getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID));
     }
 
@@ -122,5 +139,12 @@ public class DetailOffline extends BottomPlayerActivity {
         }
         adapterDetailSongOffline = new AdapterDetailSongOffline(this, dataSingleOfflines);
         listViewSong.setAdapter(adapterDetailSongOffline);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == btnPlayAll.getId()){
+
+        }
     }
 }

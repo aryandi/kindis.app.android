@@ -1,6 +1,5 @@
 package co.digdaya.kindis.view.fragment.navigationview.saveoffline;
 
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,25 +19,23 @@ import java.util.List;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
-import co.digdaya.kindis.model.DataAlbumOffline;
+import co.digdaya.kindis.model.DataPlaylistOffline;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
-import co.digdaya.kindis.view.adapter.offline.AdapterAlbumOffline;
+import co.digdaya.kindis.view.adapter.offline.AdapterPlaylistOffline;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by DELL on 5/19/2017.
  */
-public class AlbumSaveOffline extends Fragment {
+
+public class PlaylistSaveOffline extends Fragment {
     TextView title, subtitle;
     Button btnRefresh;
     RecyclerView recyclerView;
-    List<DataAlbumOffline> dataSingleOfflines = new ArrayList<>();
-    AdapterAlbumOffline adapterAlbumOffline;
+    List<DataPlaylistOffline> dataPlaylistOfflines = new ArrayList<>();
+    AdapterPlaylistOffline adapterPlaylistOffline;
 
-
-    public AlbumSaveOffline() {
-        // Required empty public constructor
+    public PlaylistSaveOffline() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +63,7 @@ public class AlbumSaveOffline extends Fragment {
 
         subtitle.setVisibility(View.GONE);
         btnRefresh.setVisibility(View.GONE);
-        title.setText("No offline album");
+        title.setText("No offline playlist");
     }
 
     private void initView(View view){
@@ -74,25 +71,23 @@ public class AlbumSaveOffline extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.addItemDecoration(new SpacingItemGenre(getContext(), "more"));
 
-        adapterAlbumOffline = new AdapterAlbumOffline(getActivity(), dataSingleOfflines);
-        recyclerView.setAdapter(adapterAlbumOffline);
+        adapterPlaylistOffline = new AdapterPlaylistOffline(getActivity(), dataPlaylistOfflines);
+        recyclerView.setAdapter(adapterPlaylistOffline);
     }
 
     private boolean getData(){
-        dataSingleOfflines.clear();
+        dataPlaylistOfflines.clear();
         KindisDBHelper kindisDBHelper = new KindisDBHelper(getContext());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_ALBUM +" ORDER BY "+KindisDBname.COLUMN_ALBUM_ID+" DESC",null);
+        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_PLAYLIST +" ORDER BY "+KindisDBname.COLUMN_PLAYLIST_ID+" DESC",null);
         if (cursor.moveToFirst()){
             while (cursor.isAfterLast()==false){
-                DataAlbumOffline dataAlbumOffline = new DataAlbumOffline();
-                dataAlbumOffline.setAlbum_id(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ALBUM_ID)));
-                dataAlbumOffline.setAlbum(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ALBUM)));
-                dataAlbumOffline.setArtist(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ARTIST)));
-                dataAlbumOffline.setDesc(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ALBUM_DESC)));
+                DataPlaylistOffline dataAlbumOffline = new DataPlaylistOffline();
+                dataAlbumOffline.setPlaylist_id(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PLAYLIST_ID)));
+                dataAlbumOffline.setPlaylist(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PLAYLIST)));
                 dataAlbumOffline.setImage(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_IMAGE)));
                 dataAlbumOffline.setBanner(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_BANNER_IMAGE)));
-                dataSingleOfflines.add(dataAlbumOffline);
+                dataPlaylistOfflines.add(dataAlbumOffline);
                 cursor.moveToNext();
             }
             return true;

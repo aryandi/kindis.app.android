@@ -1,4 +1,4 @@
-package co.digdaya.kindis.view.adapter.item;
+package co.digdaya.kindis.view.adapter.offline;
 
 import android.app.Activity;
 import android.content.Intent;

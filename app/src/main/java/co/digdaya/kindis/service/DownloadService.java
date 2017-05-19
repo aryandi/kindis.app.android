@@ -25,6 +25,7 @@ import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DownloadAlbumModel;
+import co.digdaya.kindis.model.DownloadPlaylistModel;
 
 public class DownloadService extends Service {
     SessionHelper sessionHelper;
@@ -35,6 +36,7 @@ public class DownloadService extends Service {
     JSONObject result;
     Gson gson;
     DownloadAlbumModel downloadAlbumModel;
+    DownloadPlaylistModel downloadPlaylistModel;
     List<Long> listDownloadID = new ArrayList<>();
     KindisDBHelper kindisDBHelper;
 
@@ -135,6 +137,10 @@ public class DownloadService extends Service {
                                     downloadAlbumModel = gson.fromJson(response, DownloadAlbumModel.class);
                                     downloadRequestAlbum();
                                     break;
+                                case 3:
+                                    downloadPlaylistModel = gson.fromJson(response, DownloadPlaylistModel.class);
+                                    downloadRequestPlaylist();
+                                    break;
                             }
                         }
                     } catch (JSONException e) {
@@ -173,12 +179,33 @@ public class DownloadService extends Service {
             request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
             long enque = downloadManager.enqueue(request);
             listDownloadID.add(enque);
-            System.out.println("broadcastReceiverAlbum enque: "+enque);
             registerReceiver(broadcastReceiverAlbum, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
             index++;
             System.out.println("downloadRequestAlbum: "+index);
         }while (index!=downloadAlbumModel.result.offline_single.size());
 
+    }
+
+    private void downloadRequestPlaylist(){
+        kindisDBHelper.addToTablePlaylist(
+                uid,
+                downloadPlaylistModel.result.summary.playlist_name,
+                downloadPlaylistModel.result.summary.image,
+                downloadPlaylistModel.result.summary.banner_image
+        );
+        int index = 0;
+        do {
+            Uri file = Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+downloadPlaylistModel.result.offline_single.get(index).file);
+            String path = downloadPlaylistModel.result.offline_single.get(index).title;
+            DownloadManager.Request request = new DownloadManager.Request(file);
+            request.setTitle("Kindis");
+            request.setDescription("Downloading "+path);
+            request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
+            long enque = downloadManager.enqueue(request);
+            listDownloadID.add(enque);
+            registerReceiver(broadcastReceiverPlaylist, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            index++;
+        }while (index!=downloadPlaylistModel.result.offline_single.size());
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -218,6 +245,25 @@ public class DownloadService extends Service {
                     downloadAlbumModel.result.offline_single.get(index).album,
                     downloadAlbumModel.result.offline_single.get(index).artist,
                     downloadAlbumModel.result.offline_single.get(index).artist_id,
+                    uid
+            );
+        }
+    };
+
+    private BroadcastReceiver broadcastReceiverPlaylist = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            Long downloaded_id = extras.getLong(DownloadManager.EXTRA_DOWNLOAD_ID);
+            int index = listDownloadID.indexOf(downloaded_id);
+            kindisDBHelper.addToTableSingle(
+                    uid+index,
+                    downloadPlaylistModel.result.offline_single.get(index).title,
+                    dir+downloadPlaylistModel.result.offline_single.get(index).title,
+                    downloadPlaylistModel.result.offline_single.get(index).image,
+                    downloadPlaylistModel.result.offline_single.get(index).album,
+                    downloadPlaylistModel.result.offline_single.get(index).artist,
+                    downloadPlaylistModel.result.offline_single.get(index).artist_id,
                     uid
             );
         }

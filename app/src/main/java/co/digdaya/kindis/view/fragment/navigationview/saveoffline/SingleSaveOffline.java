@@ -21,7 +21,7 @@ import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
-import co.digdaya.kindis.view.adapter.item.AdapterSongOffline;
+import co.digdaya.kindis.view.adapter.offline.AdapterSongOffline;
 
 /**
  * Created by DELL on 5/8/2017.

@@ -1,4 +1,4 @@
-package co.digdaya.kindis.view.adapter.item;
+package co.digdaya.kindis.view.adapter.offline;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -83,6 +83,7 @@ public class AdapterAlbumOffline extends RecyclerView.Adapter<Item> {
         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM, dataAlbumOfflines.get(pos).getAlbum());
         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, dataAlbumOfflines.get(pos).getAlbum_id());
         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_DESC, dataAlbumOfflines.get(pos).getDesc());
+        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_IMAGE, dataAlbumOfflines.get(pos).getBanner());
         activity.startActivity(intent);
     }
 }
