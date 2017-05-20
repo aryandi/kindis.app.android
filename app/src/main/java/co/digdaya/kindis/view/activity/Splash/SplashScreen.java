@@ -109,7 +109,8 @@ public class SplashScreen extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }else {
-                    finish();
+                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                    startActivity(i);
                 }
             }
         });

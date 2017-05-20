@@ -32,12 +32,12 @@ public class VolleyHelper {
     private RetryPolicy retryPolicy = new RetryPolicy() {
         @Override
         public int getCurrentTimeout() {
-            return 50000;
+            return 1800;
         }
 
         @Override
         public int getCurrentRetryCount() {
-            return 50000;
+            return 1800;
         }
 
         @Override

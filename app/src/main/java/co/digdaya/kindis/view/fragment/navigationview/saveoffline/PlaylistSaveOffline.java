@@ -19,6 +19,7 @@ import java.util.List;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
+import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.model.DataPlaylistOffline;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
 import co.digdaya.kindis.view.adapter.offline.AdapterPlaylistOffline;
@@ -39,7 +40,7 @@ public class PlaylistSaveOffline extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getData()){
+        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getContext(), "is_premium"))==1){
             return inflater.inflate(R.layout.fragment_save_offline_list, container, false);
         }else {
             return inflater.inflate(R.layout.layout_empty_state, container, false);
@@ -49,7 +50,7 @@ public class PlaylistSaveOffline extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getData()){
+        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getContext(), "is_premium"))==1){
             initView(view);
         }else {
             initEmptyState(view);

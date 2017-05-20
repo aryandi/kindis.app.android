@@ -29,6 +29,7 @@ import co.digdaya.kindis.view.dialog.DialogGift;
 import co.digdaya.kindis.view.fragment.navigationview.Cookies;
 import co.digdaya.kindis.view.fragment.navigationview.FAQ;
 import co.digdaya.kindis.view.fragment.navigationview.Home;
+import co.digdaya.kindis.view.fragment.navigationview.Intelectual;
 import co.digdaya.kindis.view.fragment.navigationview.Notification;
 import co.digdaya.kindis.view.fragment.navigationview.Privacy;
 import co.digdaya.kindis.view.fragment.navigationview.Profile;
@@ -49,6 +50,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     Fragment privacyFragment;
     Fragment termsFragment;
     Fragment cookiesFragment;
+    Fragment intelectualFragment;
 
     //sidebar
     ImageView profilePicture;
@@ -63,6 +65,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     TextView menuPrivacy;
     TextView menuTerms;
     TextView menuCookies;
+    TextView menuIR;
     Button profileStatus;
 
     ImageView icMenuHome, icMenuNotif, icMenuProfile, icMenuOffline;
@@ -96,6 +99,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         privacyFragment = new Privacy(drawer);
         termsFragment = new Terms(drawer);
         cookiesFragment = new Cookies(drawer);
+        intelectualFragment = new Intelectual(drawer);
         sessionHelper = new SessionHelper();
 
         //sidebar
@@ -111,6 +115,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
         menuTerms = (TextView) findViewById(R.id.menu_terms);
         menuCookies = (TextView) findViewById(R.id.menu_cookies);
+        menuIR = (TextView) findViewById(R.id.menu_ir);
 
         icMenuHome = (ImageView) findViewById(R.id.ic_menu_home);
         icMenuNotif = (ImageView) findViewById(R.id.ic_menu_notif);
@@ -197,6 +202,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuPrivacy.setOnClickListener(this);
         menuTerms.setOnClickListener(this);
         menuCookies.setOnClickListener(this);
+        menuIR.setOnClickListener(this);
     }
 
     @Override
@@ -245,6 +251,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             transaction.replace(R.id.cont_main, cookiesFragment);
 
             menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+        }else if (view.getId() == menuIR.getId()){
+            transaction.replace(R.id.cont_main, intelectualFragment);
+            menuIR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }
         transaction.addToBackStack(null);
         transaction.commit();
@@ -279,5 +288,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        menuIR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
     }
 }

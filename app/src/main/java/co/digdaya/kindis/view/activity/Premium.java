@@ -1,6 +1,7 @@
 package co.digdaya.kindis.view.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,6 +89,31 @@ public class Premium extends AppCompatActivity {
                 }
             });
             return null;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10001) {
+            int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+            String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+
+            System.out.println("onActivityResult: "+responseCode);
+            System.out.println("onActivityResult: "+purchaseData);
+            System.out.println("onActivityResult: "+dataSignature);
+
+            if (resultCode == RESULT_OK) {
+                try {
+                    JSONObject jo = new JSONObject(purchaseData);
+                    String sku = jo.getString("productId");
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

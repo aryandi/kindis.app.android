@@ -2,7 +2,10 @@ package co.digdaya.kindis.view.activity.Detail;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +36,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import co.digdaya.kindis.databse.KindisDBHelper;
+import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.Constanta;
+import co.digdaya.kindis.model.DataPlaylistOffline;
 import co.digdaya.kindis.service.DownloadService;
 import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
@@ -75,6 +81,11 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     String json, types;
     int isPremium = 0;
     int premiumUser;
+    boolean buyStatus;
+
+    boolean isGetPrice = false;
+    int price;
+    String googleCode;
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -321,6 +332,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
     //from premium
     private void getListPremium(){
+        new GetPrice().execute();
         HashMap<String, String> param = new HashMap<>();
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
@@ -339,9 +351,18 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), Integer.parseInt(playlist.getString("price")), "Playlist : "+playlist.getString("playlist_name"), "");
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), price, "Playlist : "+playlist.getString("playlist_name"), googleCode);
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
+
+                            checkPlaylistExist(playlist.getString("uid"));
                             if (isPremium == 1 && premiumUser==0){
+                                btnPremium.setText("RENT");
+                            }
+
+                            buyStatus = playlist.getBoolean("buy_status");
+                            if (buyStatus){
+                                btnPremium.setText("SAVE");
+                            }else {
                                 btnPremium.setText("RENT");
                             }
 
@@ -486,16 +507,95 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, getIntent().getStringExtra("uid"));
                     startService(intent);
                 }else if (types.equals("premium")){
-                    if (isPremium == 1 && premiumUser==0){
-                        dialogPayment.showDialog();
+                    if (btnPremium.getText().equals("RENT")){
+                        if (isGetPrice){
+                            dialogPayment.showDialog();
+                        }
                     }else {
                         Intent intent = new Intent(this, DownloadService.class);
                         intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
                         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
                         startService(intent);
                     }
+                    /*if (buyStatus){
+                        dialogPayment.showDialog();
+                    }else {
+                        Intent intent = new Intent(this, DownloadService.class);
+                        intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
+                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
+                        startService(intent);
+                    }*/
                 }
                 break;
+        }
+    }
+
+    private void checkPlaylistExist(String id){
+        KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
+        SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_PLAYLIST +" WHERE "+KindisDBname.COLUMN_PLAYLIST_ID+" = "+id,null);
+        if (cursor.moveToFirst()){
+            while (cursor.isAfterLast()==false){
+                btnPremium.setVisibility(View.GONE);
+                cursor.moveToNext();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10001) {
+            int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+            String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+
+            System.out.println("onActivityResult: "+responseCode);
+            System.out.println("onActivityResult: "+purchaseData);
+            System.out.println("onActivityResult: "+dataSignature);
+
+            if (resultCode == RESULT_OK) {
+                try {
+                    JSONObject jo = new JSONObject(purchaseData);
+                    String sku = jo.getString("productId");
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class GetPrice extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = sessionHelper.getPreferences(getApplicationContext(), "user_id") +
+                    "&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access") +
+                    "&dev_id=2" +
+                    "&client_id=xBc3w11"+
+                    "&type=playlist7";
+            new VolleyHelper().get(ApiHelper.PRICE + url, new VolleyHelper.HttpListener<String>() {
+                @Override
+                public void onReceive(boolean status, String message, String response) {
+                    System.out.println("GetPrice: "+response);
+                    if (status){
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.getBoolean("status")){
+                                JSONObject result = object.getJSONObject("result");
+                                price = result.getInt("price");
+                                googleCode = result.getString("google_code");
+                                isGetPrice = true;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            return null;
         }
     }
 }
