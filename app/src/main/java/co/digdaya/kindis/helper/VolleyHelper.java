@@ -59,15 +59,17 @@ public class VolleyHelper {
                         if (error instanceof NoConnectionError) {
                             listener.onReceive(false, NO_CONNECTION, null);
                         } else {
-                            try {
-                                String responseBody = new String( error.networkResponse.data, "utf-8" );
-                                Log.d("volleyresponse", responseBody);
-                                JSONObject jsonObject = new JSONObject( responseBody );
-                                listener.onReceive(true, SUCCESS, jsonObject.toString());
-                            } catch ( JSONException e ) {
-                                e.printStackTrace();
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
+                            if (error.networkResponse.data!=null){
+                                try {
+                                    String responseBody = new String(error.networkResponse.data, "utf-8" );
+                                    Log.d("volleyresponse", responseBody);
+                                    JSONObject jsonObject = new JSONObject( responseBody );
+                                    listener.onReceive(true, SUCCESS, jsonObject.toString());
+                                } catch ( JSONException e ) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }

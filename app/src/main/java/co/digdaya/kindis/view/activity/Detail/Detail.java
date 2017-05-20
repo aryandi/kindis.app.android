@@ -85,7 +85,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
     boolean isGetPrice = false;
     int price;
-    String googleCode;
+    String googleCode, transID, playlistID;
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -351,19 +351,21 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleToolbar.setText(playlist.getString("playlist_name"));
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, playlist.getString("order_id")+(new Random().nextInt(89)+10), price, "Playlist : "+playlist.getString("playlist_name"), googleCode);
+                            playlistID = playlist.getString("uid");
+                            transID = playlist.getString("order_id")+(new Random().nextInt(89)+10);
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode);
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
-                            if (isPremium == 1 && premiumUser==0){
-                                btnPremium.setText("RENT");
-                            }
-
                             buyStatus = playlist.getBoolean("buy_status");
-                            if (buyStatus){
+                            if (isPremium == 1 && premiumUser==1){
                                 btnPremium.setText("SAVE");
-                            }else {
-                                btnPremium.setText("RENT");
+                            }else if(premiumUser==0){
+                                if (buyStatus){
+                                    btnPremium.setText("SAVE");
+                                }else {
+                                    btnPremium.setText("RENT");
+                                }
                             }
 
                             Glide.with(getApplicationContext())
@@ -555,14 +557,29 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             System.out.println("onActivityResult: "+dataSignature);
 
             if (resultCode == RESULT_OK) {
-                try {
-                    JSONObject jo = new JSONObject(purchaseData);
-                    String sku = jo.getString("productId");
+                HashMap<String, String> param = new HashMap<String, String>();
+                param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+                param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+                param.put("dev_id", "2");
+                param.put("client_id", "xBc3w11");
+                param.put("package", "2");
+                param.put("trans_id", transID);
+                param.put("order", "["+playlistID+"]");
+                param.put("payment_type", "google_play");
+                param.put("payment_status", "200");
+                param.put("payment_status_msg", "success");
+                param.put("price", String.valueOf(price));
+                param.put("trans_time", "");
 
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
+                    @Override
+                    public void onReceive(boolean status, String message, String response) {
+                        System.out.println("Response payment: "+response);
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }

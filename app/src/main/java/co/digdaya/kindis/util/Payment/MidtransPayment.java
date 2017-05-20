@@ -54,14 +54,15 @@ public class MidtransPayment {
             @Override
             public void onTransactionFinished(TransactionResult result) {
                 if (result.getResponse() != null){
+                    System.out.println("Response payment: "+result.getResponse().getPaymentType());
                     HashMap<String, String> param = new HashMap<String, String>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
                     param.put("dev_id", "2");
-                    param.put("client_id", "");
-                    param.put("package", "");
+                    param.put("client_id", "xBc3w11");
+                    param.put("package", "1");
                     param.put("trans_id", result.getResponse().getTransactionId());
-                    param.put("order", "");
+                    param.put("order", "[]");
                     param.put("payment_type", result.getResponse().getPaymentType());
                     param.put("payment_status", result.getResponse().getStatusCode());
                     param.put("payment_status_msg", result.getResponse().getStatusMessage());
@@ -102,7 +103,7 @@ public class MidtransPayment {
         UserDetail userDetail = new UserDetail();
         userDetail.setUserFullName(sessionHelper.getPreferences(activity.getApplicationContext(), "fullname"));
         userDetail.setEmail(sessionHelper.getPreferences(activity.getApplicationContext(), "email"));
-        userDetail.setPhoneNumber("");
+        userDetail.setPhoneNumber("081234567890");
         userDetail.setUserAddresses(userAddresses);
         LocalDataHandler.saveObject("user_details", userDetail);
 

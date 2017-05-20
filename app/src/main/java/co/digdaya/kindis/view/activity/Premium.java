@@ -9,10 +9,12 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import co.digdaya.kindis.R;
@@ -29,7 +31,7 @@ public class Premium extends AppCompatActivity {
     Dialog dialogPay;
     boolean isGetPrice = false;
     int price;
-    String googleCode;
+    String googleCode, transID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class Premium extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isGetPrice){
-                    String transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
+                    transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
                     dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode);
                     dialogPayment.showDialog();
                 }
@@ -105,14 +107,29 @@ public class Premium extends AppCompatActivity {
             System.out.println("onActivityResult: "+dataSignature);
 
             if (resultCode == RESULT_OK) {
-                try {
-                    JSONObject jo = new JSONObject(purchaseData);
-                    String sku = jo.getString("productId");
+                HashMap<String, String> param = new HashMap<String, String>();
+                param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+                param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+                param.put("dev_id", "2");
+                param.put("client_id", "xBc3w11");
+                param.put("package", "1");
+                param.put("trans_id", transID);
+                param.put("order", "[]");
+                param.put("payment_type", "google_play");
+                param.put("payment_status", "200");
+                param.put("payment_status_msg", "success");
+                param.put("price", String.valueOf(price));
+                param.put("trans_time", "");
 
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
+                    @Override
+                    public void onReceive(boolean status, String message, String response) {
+                        System.out.println("Response payment: "+response);
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
