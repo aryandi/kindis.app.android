@@ -7,6 +7,8 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -29,12 +31,15 @@ import java.util.Map;
 import java.util.Random;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.databse.KindisDBHelper;
+import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckAppRunning;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.model.DataAlbumOffline;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.view.activity.Player.Player;
 
@@ -220,6 +225,30 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             }
             playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
             playOffline();
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY_OFFLINE_ALL)){
+            playlistPosition = 0;
+            playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
+            songPlaylist = new ArrayList<>();
+            songPlaylist = intent.getStringArrayListExtra("list_uid");
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
+            playOffline();
+        }
+
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_PLAY_OFFLINE_NEXT)){
+            playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
+            songPlaylist = intent.getStringArrayListExtra("songPlaylist");
+            playlistPosition = intent.getIntExtra("position", playlistPosition);
+            if (mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+            }
+            getSongOffline();
         }
 
         return START_STICKY;
@@ -418,7 +447,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             if (mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
             }
-            getSongResources(songPlaylist.get(playlistPosition));
+            if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"))){
+                getSongOffline();
+            }else {
+                getSongResources(songPlaylist.get(playlistPosition));
+            }
         }
     }
 
@@ -533,5 +566,21 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         if (noti != null) {
             updateNotification();
         }
+    }
+
+    private void getSongOffline(){
+        KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
+        SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_ID+" = "+songPlaylist.get(playlistPosition),null);
+        if (cursor.moveToFirst()){
+            while (cursor.isAfterLast()==false){
+                playerSessionHelper.setPreferences(getApplicationContext(), "file", cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PATH)));
+                playerSessionHelper.setPreferences(getApplicationContext(), "title", cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_TITLE)));
+                playerSessionHelper.setPreferences(getApplicationContext(), "subtitle", cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ARTIST)));
+                playerSessionHelper.setPreferences(getApplicationContext(), "image", cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_IMAGE)));
+                cursor.moveToNext();
+            }
+        }
+        playOffline();
     }
 }

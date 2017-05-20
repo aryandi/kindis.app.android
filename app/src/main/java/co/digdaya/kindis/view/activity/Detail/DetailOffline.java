@@ -1,5 +1,6 @@
 package co.digdaya.kindis.view.activity.Detail;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -26,7 +27,10 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.Constanta;
+import co.digdaya.kindis.helper.PlayerActionHelper;
+import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.model.DataSingleOffline;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.view.adapter.offline.AdapterDetailSongOffline;
 
@@ -45,6 +49,8 @@ public class DetailOffline extends BottomPlayerActivity implements View.OnClickL
     Button btnPlayAll;
     AdapterDetailSongOffline adapterDetailSongOffline;
     List<DataSingleOffline> dataSingleOfflines = new ArrayList<>();
+    ArrayList<String> songPlaylist = new ArrayList<>();
+    PlayerSessionHelper playerSessionHelper;
 
     public DetailOffline() {
         layout = R.layout.activity_detail;
@@ -63,6 +69,7 @@ public class DetailOffline extends BottomPlayerActivity implements View.OnClickL
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
         contLabel = (RelativeLayout) findViewById(R.id.cont_label);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
+        playerSessionHelper = new PlayerSessionHelper();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -134,6 +141,7 @@ public class DetailOffline extends BottomPlayerActivity implements View.OnClickL
                 dataSingleOffline.setArtist(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ARTIST)));
                 dataSingleOffline.setArtist_id(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ARTIST_ID)));
                 dataSingleOfflines.add(dataSingleOffline);
+                songPlaylist.add(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ID)));
                 cursor.moveToNext();
             }
         }
@@ -144,7 +152,17 @@ public class DetailOffline extends BottomPlayerActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v.getId() == btnPlayAll.getId()){
-
+            playerSessionHelper.setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+            playerSessionHelper.setPreferences(getApplicationContext(), "fkid", (getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID)));
+            playerSessionHelper.setPreferences(getApplicationContext(), "title", dataSingleOfflines.get(0).getTitle());
+            playerSessionHelper.setPreferences(getApplicationContext(), "subtitle", dataSingleOfflines.get(0).getArtist());
+            playerSessionHelper.setPreferences(getApplicationContext(), "image", dataSingleOfflines.get(0).getImage());
+            playerSessionHelper.setPreferences(getApplicationContext(), "artist_id", dataSingleOfflines.get(0).getArtist_id());
+            Intent intent = new Intent(this, PlayerService.class);
+            intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE_ALL);
+            intent.putExtra("songresource", dataSingleOfflines.get(0).getPath());
+            intent.putExtra("list_uid", songPlaylist);
+            startService(intent);
         }
     }
 }

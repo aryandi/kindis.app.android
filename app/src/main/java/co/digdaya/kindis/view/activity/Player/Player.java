@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -21,8 +23,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import co.digdaya.kindis.databse.KindisDBHelper;
+import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.CheckPermission;
 import co.digdaya.kindis.helper.Constanta;
+import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.service.DownloadService;
 import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
@@ -54,8 +59,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     int isAccountPremium;
 
     boolean isChangeViewPager = false;
+    boolean isOfflineMode;
 
     ArrayList<String> imgList = new ArrayList<>();
+    ArrayList<String> songPlaylist = new ArrayList<>();
 
     PlayerSessionHelper playerSessionHelper = new PlayerSessionHelper();
 
@@ -90,6 +97,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         index = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "index"));
         isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(getApplicationContext(), "is_premium"));
+        isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
 
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,10 +120,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             titleActivity.setText("Single");
             subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         }else {
-            adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
-            viewPager.setAdapter(adapterListSong);
             viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-            subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle_player"));
+            if (isOfflineMode){
+                listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
+            }else {
+                adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
+                viewPager.setAdapter(adapterListSong);
+                subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle_player"));
+            }
         }
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -276,12 +288,20 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     public void onPageSelected(int position) {
         if (isChangeViewPager){
             if (isAccountPremium == 1){
-                Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-                intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-                intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-                intent.putExtra("position", position);
-                intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-                startService(intent);
+                if (isOfflineMode){
+                    Intent intent = new Intent(this, PlayerService.class);
+                    intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE_NEXT);
+                    intent.putExtra("position", position);
+                    intent.putExtra("songPlaylist", songPlaylist);
+                    startService(intent);
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                    intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
+                    intent.putExtra("position", position);
+                    intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
+                    startService(intent);
+                }
             }else {
                 if (position > playlistPosition){
                     Intent intent = new Intent(getApplicationContext(), PlayerService.class);
@@ -388,5 +408,20 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE);
         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
         startService(intent);
+    }
+
+    private void listOfflineSong(String fkID){
+        KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
+        SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_FK+" = "+fkID,null);
+        if (cursor.moveToFirst()){
+            while (cursor.isAfterLast()==false){
+                imgList.add(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_IMAGE)));
+                songPlaylist.add(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ID)));
+                cursor.moveToNext();
+            }
+        }
+        adapterListSong = new AdapterListSong(getApplicationContext(), imgList);
+        viewPager.setAdapter(adapterListSong);
     }
 }
