@@ -353,7 +353,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             playlistID = playlist.getString("uid");
                             transID = playlist.getString("order_id")+(new Random().nextInt(89)+10);
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode);
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"));
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
@@ -564,6 +564,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                 param.put("client_id", "xBc3w11");
                 param.put("package", "2");
                 param.put("trans_id", transID);
+                param.put("order_id", transID);
                 param.put("order", "["+playlistID+"]");
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");

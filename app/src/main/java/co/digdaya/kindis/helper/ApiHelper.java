@@ -67,7 +67,6 @@ public class ApiHelper {
     public static final String GIFT = BASE_URL + "gift/items";
 
     public static final String PAYMENT = BASE_URL + "payment/pay";
-
     public static final String PRICE = BASE_URL + "payment/base_premium?uid=";
 
     //offline

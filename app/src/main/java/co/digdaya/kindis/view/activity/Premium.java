@@ -31,7 +31,7 @@ public class Premium extends AppCompatActivity {
     Dialog dialogPay;
     boolean isGetPrice = false;
     int price;
-    String googleCode, transID;
+    String googleCode, transID, order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class Premium extends AppCompatActivity {
             public void onClick(View v) {
                 if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
-                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode);
+                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "");
                     dialogPayment.showDialog();
                 }
             }
@@ -82,6 +82,7 @@ public class Premium extends AppCompatActivity {
                                 JSONObject result = object.getJSONObject("result");
                                 price = result.getInt("price");
                                 googleCode = result.getString("google_code");
+                                order = result.getString("order_id");
                                 isGetPrice = true;
                             }
                         } catch (JSONException e) {
@@ -114,6 +115,7 @@ public class Premium extends AppCompatActivity {
                 param.put("client_id", "xBc3w11");
                 param.put("package", "1");
                 param.put("trans_id", transID);
+                param.put("order_id", transID);
                 param.put("order", "[]");
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");

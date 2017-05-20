@@ -34,14 +34,16 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
-    String transID, transName;
+    String transID, transName, orderID, orders;
     int price;
 
-    public MidtransPayment(Activity activity, String transID, int price, String transName) {
+    public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders) {
         this.activity = activity;
         this.transID = transID;
         this.price = price;
         this.transName = transName;
+        this.orderID = orderID;
+        this.orders = orders;
 
         sessionHelper = new SessionHelper();
         random = new Random();
@@ -55,6 +57,7 @@ public class MidtransPayment {
             public void onTransactionFinished(TransactionResult result) {
                 if (result.getResponse() != null){
                     System.out.println("Response payment: "+result.getResponse().getPaymentType());
+                    System.out.println("Response payment uid: "+sessionHelper.getPreferences(activity, "user_id"));
                     HashMap<String, String> param = new HashMap<String, String>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
@@ -62,13 +65,15 @@ public class MidtransPayment {
                     param.put("client_id", "xBc3w11");
                     param.put("package", "1");
                     param.put("trans_id", result.getResponse().getTransactionId());
-                    param.put("order", "[]");
+                    param.put("order_id", orderID);
+                    param.put("order", "["+orders+"]");
                     param.put("payment_type", result.getResponse().getPaymentType());
                     param.put("payment_status", result.getResponse().getStatusCode());
                     param.put("payment_status_msg", result.getResponse().getStatusMessage());
-                    param.put("price", result.getResponse().getGrossAmount());
+                    param.put("price", String.valueOf(price));
                     param.put("trans_time", result.getResponse().getTransactionTime());
 
+                    System.out.println("Response payment: "+param);
                     new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                         @Override
                         public void onReceive(boolean status, String message, String response) {

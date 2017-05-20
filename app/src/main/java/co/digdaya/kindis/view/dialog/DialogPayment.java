@@ -30,21 +30,22 @@ public class DialogPayment implements View.OnClickListener {
     MidtransPayment midtransPayment;
     GooglePayment googlePayment;
 
-    String transID, transName, googleCode;
+    String transID, transName, googleCode, orders;
     int price;
 
-    public DialogPayment(Dialog dialogPayment, Activity activity, String transID, int price, String transName, String googleCode) {
+    public DialogPayment(Dialog dialogPayment, Activity activity, String transID, int price, String transName, String googleCode, String orderID, String orders) {
         this.dialogPayment = dialogPayment;
         this.activity = activity;
         this.transID = transID;
         this.price = price;
         this.transName = transName;
         this.googleCode = googleCode;
+        this.orders = orders;
 
         li = LayoutInflater.from(activity);
         dialogView = li.inflate(R.layout.dialog_payment, null);
 
-        midtransPayment = new MidtransPayment(activity, transID, price, transName);
+        midtransPayment = new MidtransPayment(activity, transID, price, transName, orderID, orders);
         googlePayment = new GooglePayment(activity, googleCode);
 
         alertDialog = new AlertDialog.Builder(activity);
