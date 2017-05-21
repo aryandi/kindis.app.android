@@ -49,6 +49,7 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
+import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.view.dialog.DialogPayment;
 import co.digdaya.kindis.view.dialog.DialogSingleMenu;
@@ -353,7 +354,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             playlistID = playlist.getString("uid");
                             transID = playlist.getString("order_id")+(new Random().nextInt(89)+10);
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"));
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"), "2");
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
@@ -576,7 +577,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     @Override
                     public void onReceive(boolean status, String message, String response) {
                         System.out.println("Response payment: "+response);
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        if (status){
+                            new ResultPayment(Detail.this).execute(response);
+                        }
                     }
                 });
             }else {

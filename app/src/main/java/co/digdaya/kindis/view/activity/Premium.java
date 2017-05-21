@@ -21,6 +21,8 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
+import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.view.dialog.DialogPayment;
 
 public class Premium extends AppCompatActivity {
@@ -56,7 +58,7 @@ public class Premium extends AppCompatActivity {
             public void onClick(View v) {
                 if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
-                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "");
+                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1");
                     dialogPayment.showDialog();
                 }
             }
@@ -127,7 +129,17 @@ public class Premium extends AppCompatActivity {
                     @Override
                     public void onReceive(boolean status, String message, String response) {
                         System.out.println("Response payment: "+response);
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        if (status){
+                            try {
+                                JSONObject object = new JSONObject(response);
+                                if (object.getBoolean("status")){
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            new ResultPayment(Premium.this).execute(response);
+                        }
                     }
                 });
             }else {

@@ -15,6 +15,9 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -24,7 +27,9 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
+import co.digdaya.kindis.view.activity.Premium;
 
 /**
  * Created by DELL on 4/9/2017.
@@ -35,16 +40,17 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
-    String transID, transName, orderID, orders;
+    String transID, transName, orderID, orders, packages;
     int price;
 
-    public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders) {
+    public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
         this.activity = activity;
         this.transID = transID;
         this.price = price;
         this.transName = transName;
         this.orderID = orderID;
         this.orders = orders;
+        this.packages = packages;
 
         sessionHelper = new SessionHelper();
         random = new Random();
@@ -64,7 +70,7 @@ public class MidtransPayment {
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
                     param.put("dev_id", "2");
                     param.put("client_id", "xBc3w11");
-                    param.put("package", "1");
+                    param.put("package", packages);
                     param.put("trans_id", result.getResponse().getTransactionId());
                     param.put("order_id", orderID);
                     param.put("order", "["+orders+"]");
@@ -79,7 +85,16 @@ public class MidtransPayment {
                         public void onReceive(boolean status, String message, String response) {
                             System.out.println("Response payment: "+response);
                             if (status){
+                                try {
+                                    JSONObject object = new JSONObject(response);
+                                    if (object.getBoolean("status")&&packages.equals("1")){
+                                        activity.finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 new ResultPayment(activity).execute(response);
+                                //new ProfileInfo(activity).execute(sessionHelper.getPreferences(activity, "user_id"));
                             }
 
                         }
