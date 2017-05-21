@@ -24,6 +24,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 
 /**
  * Created by DELL on 4/9/2017.
@@ -73,11 +74,14 @@ public class MidtransPayment {
                     param.put("price", String.valueOf(price));
                     param.put("trans_time", result.getResponse().getTransactionTime());
 
-                    System.out.println("Response payment: "+param);
                     new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                         @Override
                         public void onReceive(boolean status, String message, String response) {
                             System.out.println("Response payment: "+response);
+                            if (status){
+                                new ResultPayment(activity).execute(response);
+                            }
+
                         }
                     });
                 }
