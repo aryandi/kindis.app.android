@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
@@ -128,10 +129,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
                     viewPager.setAdapter(adapterListSong);
                     btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    songPlaylist = parseJsonPlaylist.getShuffleSongPlaylist();
                 }else {
                     adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
                     viewPager.setAdapter(adapterListSong);
                     btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                    songPlaylist = parseJsonPlaylist.getSongPlaylist();
                 }
                 subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle_player"));
             }
@@ -277,20 +280,28 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             viewPager.setCurrentItem(playlistPosition+1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
         }else if (view.getId() == R.id.btn_shuffle){
+            playlistPosition = 0;
+            playerSessionHelper.setPreferences(getApplicationContext(), "playlistPosition", "0");
+            btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+            btnBack.setEnabled(false);
             if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+                songPlaylist = parseJsonPlaylist.getSongPlaylist();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(parseJsonPlaylist.getImageList().size()));
                 btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
                 adapterListSong.notifyDataSetChanged();
                 viewPager.setAdapter(adapterListSong);
                 playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
             }else {
-                parseJsonPlaylist.setShuffleJson();
+                songPlaylist = parseJsonPlaylist.getShuffleSongPlaylist();
+                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(parseJsonPlaylist.getShuffleImageList().size()));
                 btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                 adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
                 adapterListSong.notifyDataSetChanged();
                 viewPager.setAdapter(adapterListSong);
                 playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "true");
             }
+            nextPlay(0);
         }else if (view.getId() == R.id.btn_download){
             if (new CheckPermission(this).checkPermissionStorage()){
                 startDownload();
@@ -315,21 +326,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     intent.putExtra("songPlaylist", songPlaylist);
                     startService(intent);
                 }else {
-                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-                    intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-                    intent.putExtra("position", position);
-                    intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-                    startService(intent);
+                    nextPlay(position);
                 }
             }else {
                 if (position > playlistPosition){
-                    Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-                    intent.putExtra("single_id", parseJsonPlaylist.getSongPlaylist().get(position));
-                    intent.putExtra("position", position);
-                    intent.putExtra("list_uid", parseJsonPlaylist.getSongPlaylist());
-                    startService(intent);
+                    nextPlay(position);
                 }else {
                     viewPager.setCurrentItem(playlistPosition, true);
                     dialogGetPremium.showDialog();
@@ -341,6 +342,15 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private void nextPlay(int position){
+        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+        intent.putExtra("single_id", songPlaylist.get(position));
+        intent.putExtra("position", position);
+        intent.putExtra("list_uid", songPlaylist);
+        startService(intent);
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

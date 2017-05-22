@@ -174,6 +174,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 System.out.println("isPremium= "+isPremium+"\npremiumUser= "+premiumUser);
+                playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
+                playerSessionHelper.setPreferences(getApplicationContext(), "setShuffle", "true");
                 if (isPremium==1 && premiumUser==0){
                     dialogPayment.showDialog();
                 }else {
@@ -381,9 +383,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .centerCrop()
                                     .into(backDrop);
-
-
                             JSONArray single = playlist.getJSONArray("singles");
+                            json = single.toString();
                             for (int i=0; i<single.length(); i++){
                                 JSONObject data = single.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();

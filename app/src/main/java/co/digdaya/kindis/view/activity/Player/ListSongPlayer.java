@@ -113,7 +113,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
             }else {
                 if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
-                    adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getShuffleSongPlaylist());
+                    adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getShuffleListSong(), "list", parseJsonPlaylist.getShuffleSongPlaylist());
                     listViewSong.setAdapter(adapterSong);
                 }else {
                     adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getSongPlaylist());

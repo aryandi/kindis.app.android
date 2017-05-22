@@ -251,6 +251,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             getSongOffline();
         }
 
+        if (intent.getAction().equals(PlayerActionHelper.ACTION_SHUFFLE)){
+            playlistPosition = 0;
+            songPlaylist = new ArrayList<>();
+            songPlaylist = intent.getStringArrayListExtra("list_uid");
+            System.out.println("ACTION_SHUFFLE: "+songPlaylist);
+        }
+
+
+
         return START_STICKY;
     }
 

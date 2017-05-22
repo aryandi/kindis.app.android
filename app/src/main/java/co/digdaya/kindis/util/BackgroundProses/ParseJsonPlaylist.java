@@ -28,15 +28,14 @@ public class ParseJsonPlaylist {
     ArrayList<String> songPlaylist = new ArrayList<>();
     ArrayList<String> imgList = new ArrayList<>();
 
-    ArrayList<HashMap<String, String>> shuffleListSong = new ArrayList<HashMap<String, String>>();
-    ArrayList<String> shufflesongPlaylist = new ArrayList<>();
-    ArrayList<String> shuffleimgList = new ArrayList<>();
+    ArrayList<HashMap<String, String>> shuffleListSong;
+    ArrayList<String> shufflesongPlaylist;
+    ArrayList<String> shuffleimgList;
 
     public ParseJsonPlaylist(Context context){
         this.context = context;
         type = new PlayerSessionHelper().getPreferences(context, "type");
         json = new PlayerSessionHelper().getPreferences(context, "json");
-        shuffle = new PlayerSessionHelper().getPreferences(context, "shuffle");
         Log.d("ParseJsonPlaylist", type+" : "+json);
         if (type.equals("album")){
             try {
@@ -82,6 +81,24 @@ public class ParseJsonPlaylist {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }else if (type.equals("premium")){
+            try {
+                JSONArray result = new JSONArray(json);
+                for (int i=0; i<result.length(); i++){
+                    JSONObject data = result.getJSONObject(i);
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("uid", data.optString("single_id"));
+                    map.put("title", data.optString("title"));
+                    map.put("subtitle", data.optString("artist"));
+                    map.put("image", data.optString("image"));
+                    listSong.add(map);
+                    songPlaylist.add(data.optString("single_id"));
+                    imgList.add(data.optString("image"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                System.out.println("parssssseee: "+e.getMessage());
+            }
         }else {
             try {
                 JSONArray result = new JSONArray(json);
@@ -100,6 +117,13 @@ public class ParseJsonPlaylist {
                 e.printStackTrace();
             }
         }
+
+        if (Boolean.parseBoolean(new PlayerSessionHelper().getPreferences(context, "setShuffle"))){
+            shuffleListSong = listSong;
+            Collections.shuffle(shuffleListSong);
+            String shfl = new Gson().toJson(shuffleListSong);
+            new PlayerSessionHelper().setPreferences(context, "shuffle", shfl);
+        }
         shufflePlaylist();
     }
 
@@ -116,36 +140,32 @@ public class ParseJsonPlaylist {
     }
 
     private void shufflePlaylist(){
-        if (shuffle.length()<=10){
-            shuffleListSong = listSong;
-            Collections.shuffle(shuffleListSong);
-            for (int i=0; i<shuffleListSong.size(); i++){
-                HashMap<String, String> map = listSong.get(i);
-                shufflesongPlaylist.add(map.get("uid"));
-                shuffleimgList.add(map.get("image"));
+        new PlayerSessionHelper().setPreferences(context, "setShuffle", "false");
+        shuffle = new PlayerSessionHelper().getPreferences(context, "shuffle");
+
+        shuffleListSong = new ArrayList<>();
+        shufflesongPlaylist = new ArrayList<>();
+        shuffleimgList = new ArrayList<>();
+
+        try {
+            JSONArray jsonArray = new JSONArray(shuffle);
+            for (int i=0; i<jsonArray.length(); i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("uid", object.optString("uid"));
+                map.put("title", object.optString("title"));
+                map.put("subtitle", object.optString("subtitle"));
+                map.put("image", object.optString("image"));
+                shuffleListSong.add(map);
+                shufflesongPlaylist.add(object.getString("uid"));
+                shuffleimgList.add(object.getString("image"));
             }
-        }else {
-            try {
-                JSONArray jsonArray = new JSONArray(shuffle);
-                for (int i=0; i<jsonArray.length(); i++){
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("uid", object.optString("uid"));
-                    map.put("title", object.optString("title"));
-                    map.put("subtitle", object.optString("subtitle"));
-                    map.put("image", object.optString("image"));
-                    shuffleListSong.add(map);
-                    shufflesongPlaylist.add(object.getString("uid"));
-                    shuffleimgList.add(object.getString("image"));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         System.out.println("Shuffleplayyy: "+songPlaylist);
         System.out.println("Shuffleplayyy: "+shufflesongPlaylist);
-        System.out.println("Shuffleplayyy: "+shuffle);
     }
 
     public ArrayList<HashMap<String, String>> getShuffleListSong(){
@@ -157,11 +177,5 @@ public class ParseJsonPlaylist {
 
     public ArrayList<String> getShuffleImageList(){
         return shuffleimgList;
-    }
-
-    public void setShuffleJson(){
-        shuffleListSong = listSong;
-        String shfl = new Gson().toJson(shuffleListSong);
-        new PlayerSessionHelper().setPreferences(context, "shuffle", shfl);
     }
 }

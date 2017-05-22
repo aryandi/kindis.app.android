@@ -17,6 +17,7 @@ public class PlayerActionHelper {
     public static final String ACTION_PLAY_OFFLINE_NEXT = "PLAYOFFLINENEXT";
     public static final String ACTION_LOG_OUT = "logout";
     public static final String ACTION_OPEN = "open";
+    public static final String ACTION_SHUFFLE = "shuffle";
 
     public static final String BROADCAST = "player";
     public static final String BROADCAST_MAX_DURATION = "max_duration";
