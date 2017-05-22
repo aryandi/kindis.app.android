@@ -125,12 +125,17 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         btnPremium.setOnClickListener(this);
 
         listViewSong.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        premiumUser = Integer.parseInt(sessionHelper.getPreferences(getApplicationContext(), "is_premium"));
 
         backDrop.setColorFilter(Color.parseColor("#70000000"));
 
         types = getIntent().getStringExtra("type");
         if (types.equals("album")){
-            btnPremium.setVisibility(View.VISIBLE);
+            if (premiumUser==0){
+                btnPremium.setVisibility(View.GONE);
+            }else {
+                btnPremium.setVisibility(View.VISIBLE);
+            }
             String url = ApiHelper.ITEM_ALBUM+getIntent().getStringExtra("uid");
             getDetail(url);
         }else if (types.equals("playlist")){
@@ -141,8 +146,6 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }
 
         titleToolbar.setVisibility(View.INVISIBLE);
-
-        premiumUser = Integer.parseInt(sessionHelper.getPreferences(getApplicationContext(), "is_premium"));
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             int scrollRange = -1;
@@ -361,12 +364,14 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             buyStatus = playlist.getBoolean("buy_status");
                             if (isPremium == 1 && premiumUser==1){
                                 btnPremium.setText("SAVE");
-                            }else if(premiumUser==0){
+                            }else if(premiumUser==0 && isPremium==1){
                                 if (buyStatus){
                                     btnPremium.setText("SAVE");
                                 }else {
                                     btnPremium.setText("RENT");
                                 }
+                            }else if (isPremium == 0 && premiumUser==0){
+                                btnPremium.setVisibility(View.GONE);
                             }
 
                             Glide.with(getApplicationContext())

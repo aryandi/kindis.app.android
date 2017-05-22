@@ -112,8 +112,13 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
             if (isOfflineMode){
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
             }else {
-                adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getSongPlaylist());
-                listViewSong.setAdapter(adapterSong);
+                if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+                    adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getShuffleSongPlaylist());
+                    listViewSong.setAdapter(adapterSong);
+                }else {
+                    adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getListSong(), "list", parseJsonPlaylist.getSongPlaylist());
+                    listViewSong.setAdapter(adapterSong);
+                }
                 adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                     @Override
                     public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {

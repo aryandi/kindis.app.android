@@ -2,6 +2,7 @@ package co.digdaya.kindis.view.activity.Detail;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.ParseHtml;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DetailInfaqModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
@@ -39,7 +42,8 @@ public class DetailInfaq extends BottomPlayerActivity{
     LinearLayout contFloatingButton;
     RelativeLayout contLabel;
     Toolbar toolbar;
-    TextView titleToolbar, titleDetail, description, detailInfaq;
+    TextView titleToolbar, titleDetail, description;
+    WebView detailInfaq;
     ImageView backdrop;
     RecyclerView gallery;
     DialogDonate dialogDonate;
@@ -62,7 +66,7 @@ public class DetailInfaq extends BottomPlayerActivity{
         titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
         titleDetail = (TextView) findViewById(R.id.title_detail);
         description = (TextView) findViewById(R.id.description);
-        detailInfaq = (TextView) findViewById(R.id.detail_infaq);
+        detailInfaq = (WebView) findViewById(R.id.detail_infaq);
         backdrop = (ImageView) findViewById(R.id.backdrop);
         gallery = (RecyclerView) findViewById(R.id.gallery_infaq);
 
@@ -114,16 +118,6 @@ public class DetailInfaq extends BottomPlayerActivity{
         new VolleyHelper().get(ApiHelper.ITEM_INFAQ + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                /*try {
-                    JSONObject object = new JSONObject(response);
-                    JSONObject result = object.getJSONObject("result");
-                    JSONArray main = result.getJSONArray("main");
-                    JSONObject data = main.getJSONObject(0);
-                    String desc = data.getString("description");
-                    detailInfaq.setText(Html.fromHtml(desc));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
                 detailInfaqModel = gson.fromJson(response, DetailInfaqModel.class);
                 initDetailInfaq();
             }
@@ -131,6 +125,8 @@ public class DetailInfaq extends BottomPlayerActivity{
     }
 
     private void initDetailInfaq(){
+        detailInfaq.setBackgroundColor(Color.TRANSPARENT);
+        detailInfaq.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         titleDetail.setText(getIntent().getStringExtra("title"));
         titleToolbar.setText(getIntent().getStringExtra("title"));
         Glide.with(getApplicationContext())
@@ -140,6 +136,13 @@ public class DetailInfaq extends BottomPlayerActivity{
                 .centerCrop()
                 .into(backdrop);
 
-        detailInfaq.setText(Html.fromHtml(detailInfaqModel.result.main.get(0).description));
+        detailInfaq.loadDataWithBaseURL("", detailInfaqModel.result.main.get(0).description, "text/html", "UTF-8", "");
+        System.out.println("detailInfaq: "+detailInfaqModel.result.main.get(0).description);
+        /*new ParseHtml().parse(detailInfaqModel.result.main.get(0).description, new ParseHtml.ResultListener<String>() {
+            @Override
+            public void onResult(String html) {
+                detailInfaq.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+            }
+        });*/
     }
 }

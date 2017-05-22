@@ -11,14 +11,22 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        kindis {
+            keyAlias 'kindis'
+            keyPassword 'Digdayavisi123'
+            storeFile file('E:/Codigo/SignApk/kindis.jks')
+            storePassword 'Digdayavisi123'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "co.digdaya.kindis"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,7 +39,6 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
-
     productFlavors {
         sandbox {
             buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/payment/\""
@@ -51,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

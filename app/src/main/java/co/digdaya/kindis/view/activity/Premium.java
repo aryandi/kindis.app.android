@@ -2,10 +2,15 @@ package co.digdaya.kindis.view.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +19,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -119,16 +126,18 @@ public class Premium extends AppCompatActivity {
                 param.put("trans_id", transID);
                 param.put("order_id", transID);
                 param.put("order", "[]");
+                param.put("order_id", order);
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
                 param.put("price", String.valueOf(price));
                 param.put("trans_time", "");
+                System.out.println("onActivityResult: "+param);
 
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {
-                        System.out.println("Response payment: "+response);
+                        System.out.println("onActivityResult: "+response);
                         if (status){
                             try {
                                 JSONObject object = new JSONObject(response);

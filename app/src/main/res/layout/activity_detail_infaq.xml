@@ -90,13 +90,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <co.digdaya.kindis.custom.TextViewRegular
+            <!--<co.digdaya.kindis.custom.TextViewRegular
                 android:id="@+id/detail_infaq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:textSize="14sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"/>-->
+            <WebView
+                android:id="@+id/detail_infaq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/gallery_infaq"
                 android:layout_width="match_parent"

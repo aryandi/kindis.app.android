@@ -124,8 +124,15 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             if (isOfflineMode){
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
             }else {
-                adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
-                viewPager.setAdapter(adapterListSong);
+                if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+                    adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
+                    viewPager.setAdapter(adapterListSong);
+                    btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                }else {
+                    adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
+                    viewPager.setAdapter(adapterListSong);
+                    btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                }
                 subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle_player"));
             }
         }
@@ -270,7 +277,20 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             viewPager.setCurrentItem(playlistPosition+1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
         }else if (view.getId() == R.id.btn_shuffle){
-
+            if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+                btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+                adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
+                adapterListSong.notifyDataSetChanged();
+                viewPager.setAdapter(adapterListSong);
+                playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
+            }else {
+                parseJsonPlaylist.setShuffleJson();
+                btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
+                adapterListSong.notifyDataSetChanged();
+                viewPager.setAdapter(adapterListSong);
+                playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "true");
+            }
         }else if (view.getId() == R.id.btn_download){
             if (new CheckPermission(this).checkPermissionStorage()){
                 startDownload();

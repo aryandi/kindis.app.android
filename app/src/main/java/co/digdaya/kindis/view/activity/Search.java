@@ -32,10 +32,15 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DataAlbum;
+import co.digdaya.kindis.model.DataPlaylist;
+import co.digdaya.kindis.model.DataPlaylistOffline;
 import co.digdaya.kindis.model.DataSingle;
+import co.digdaya.kindis.model.PlaylistModelSearch;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
+import co.digdaya.kindis.view.adapter.item.AdapterPlaylistHorizontal;
+import co.digdaya.kindis.view.adapter.item.AdapterPlaylistSearch;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 import co.digdaya.kindis.view.adapter.item.AdapterArtist;
 
@@ -45,17 +50,18 @@ public class Search extends BottomPlayerActivity {
     EditText search;
     InputMethodManager imm;
 
-    LinearLayout contResult, contAlbum, contArtist, contSingle;
+    LinearLayout contResult, contAlbum, contArtist, contSingle, contPlaylist;
 
     ArrayList<HashMap<String, String>> listAlbum = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listArtist = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> listSingle = new ArrayList<HashMap<String, String>>();
 
-    RecyclerView listViewAlbum, listViewArtist, listViewSingle;
+    RecyclerView listViewAlbum, listViewArtist, listViewSingle, listViewPlaylist;
 
     AdapterAlbumNew adapterAlbum;
     AdapterArtist adapterArtist;
     AdapterSongHorizontal adapterSong;
+    AdapterPlaylistSearch adapterPlaylistHorizontal;
 
     TextView keywords;
     Dialog dialogPlaylis;
@@ -80,19 +86,23 @@ public class Search extends BottomPlayerActivity {
         contAlbum = (LinearLayout) findViewById(R.id.cont_album);
         contArtist = (LinearLayout) findViewById(R.id.cont_artist);
         contSingle = (LinearLayout) findViewById(R.id.cont_single);
+        contPlaylist = (LinearLayout) findViewById(R.id.cont_playlist);
         keywords = (TextView) findViewById(R.id.keyword);
 
         listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
         listViewArtist = (RecyclerView) findViewById(R.id.list_artist);
         listViewSingle = (RecyclerView) findViewById(R.id.list_single);
+        listViewPlaylist = (RecyclerView) findViewById(R.id.list_playlist);
 
         listViewAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listViewArtist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listViewSingle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        listViewPlaylist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         listViewAlbum.addItemDecoration(new MarginItemHorizontal(Search.this));
         listViewArtist.addItemDecoration(new MarginItemHorizontal(Search.this));
         listViewSingle.addItemDecoration(new MarginItemHorizontal(Search.this));
+        listViewPlaylist.addItemDecoration(new MarginItemHorizontal(Search.this));
 
         loading = new ProgressDialog(Search.this, R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -179,8 +189,17 @@ public class Search extends BottomPlayerActivity {
                             keywords.setText(keyword);
                             JSONObject result = object.getJSONObject("result");
                             String json = result.toString();
-                            JSONArray album = result.getJSONArray("album");
 
+                            JSONArray playlist = result.getJSONArray("playlist");
+                            if (playlist.length()>=1){
+                                contPlaylist.setVisibility(View.VISIBLE);
+                                PlaylistModelSearch dataPlaylist = gson.fromJson(json, PlaylistModelSearch.class);
+                                adapterPlaylistHorizontal = new AdapterPlaylistSearch(Search.this, dataPlaylist);
+                                listViewPlaylist.setAdapter(adapterPlaylistHorizontal);
+                                listViewPlaylist.setNestedScrollingEnabled(true);
+                            }
+
+                            JSONArray album = result.getJSONArray("album");
                             if (album.length()>=1){
                                 DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
                                 contAlbum.setVisibility(View.VISIBLE);

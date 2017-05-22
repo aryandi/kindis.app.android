@@ -55,17 +55,19 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private void forgot(){
+        System.out.println("forgotpasswordssss: true");
         Map<String, String> params = new HashMap<String, String>();
         params.put("email", email.getText().toString());
 
         new VolleyHelper().post(ApiHelper.FORGOT, params, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
+                System.out.println("forgotpasswordssss: "+response);
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            loading.dismiss();
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
