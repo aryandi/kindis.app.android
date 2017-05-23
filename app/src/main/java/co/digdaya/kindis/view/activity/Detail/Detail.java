@@ -141,7 +141,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }else if (types.equals("playlist")){
             getDetailPlaylist();
         }else if (types.equals("premium")){
-            btnPremium.setVisibility(View.VISIBLE);
+            //btnPremium.setVisibility(View.VISIBLE);
             getListPremium();
         }
 

@@ -96,8 +96,6 @@ public class Infaq extends Fragment {
                     InfaqModel infaqModel = gson.fromJson(response, InfaqModel.class);
                     adapterInfaq = new AdapterInfaq(infaqModel, getContext());
                     listViewInfaq.setAdapter(adapterInfaq);
-                }else {
-
                 }
             }
         });
