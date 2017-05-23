@@ -1,17 +1,13 @@
 package co.digdaya.kindis.view.activity.Detail;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,20 +17,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
-import co.digdaya.kindis.helper.ParseHtml;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DetailInfaqModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.util.GoogleBilling.IabHelper;
-import co.digdaya.kindis.util.GoogleBilling.IabResult;
-import co.digdaya.kindis.util.GoogleBilling.Inventory;
-import co.digdaya.kindis.util.GoogleBilling.Purchase;
 import co.digdaya.kindis.view.dialog.DialogDonate;
 
 public class DetailInfaq extends BottomPlayerActivity{
@@ -136,12 +123,14 @@ public class DetailInfaq extends BottomPlayerActivity{
                 .centerCrop()
                 .into(backdrop);
 
+        //String content = "<p style=\"color:#ffffff\">"+detailInfaqModel.result.main.get(0).description+"</p>";
         detailInfaq.loadDataWithBaseURL("", detailInfaqModel.result.main.get(0).description, "text/html", "UTF-8", "");
         System.out.println("detailInfaq: "+detailInfaqModel.result.main.get(0).description);
         /*new ParseHtml().parse(detailInfaqModel.result.main.get(0).description, new ParseHtml.ResultListener<String>() {
             @Override
             public void onResult(String html) {
                 detailInfaq.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                System.out.println("detailInfaq: "+html);
             }
         });*/
     }

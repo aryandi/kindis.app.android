@@ -5,21 +5,24 @@ package co.digdaya.kindis.helper;
  */
 
 public class ParseHtml {
-    String style = "<style type=\"text/css\">\n" +
-            "@font-face {\n" +
-            "    font-family: MyFont;\n" +
-            "    src: url(\"file:///android_asset/CitrixSans-Regular.ttf\")\n" +
-            "}\n" +
-            "body {\n" +
-            "    font-family: MyFont;\n" +
-            "    font-size: medium;\n" +
-            "    text-align: justify;\n" +
-            "    padding: 16px 16px 16px 16px;\n" +
-            "}\n" +
+    String style = "<style type=\"text/css\">" +
+            "@font-face {" +
+            "    font-family: MyFont;" +
+            "    src: url(\"file:///android_asset/CitrixSans-Regular.ttf\")" +
+            "}" +
+            "body {" +
+            "    font-family: MyFont;" +
+            "    font-size: medium;" +
+            "    text-align: justify;" +
+            "    padding: 16px 16px 16px 16px;" +
+            "}" +
             "</style>";
 
     public void parse(String tag, ResultListener<String> listener){
-        String html = style+"<font color='white'>"+tag+"</font>";
+        System.out.println("ParseHtml: "+style);
+        System.out.println("ParseHtml: "+tag);
+        String html = style+"<font color='#ffffff'>"+tag+"</font>";
+        System.out.println("ParseHtml: "+html);
         listener.onResult(html);
     }
 

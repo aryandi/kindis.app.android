@@ -2,25 +2,16 @@ package co.digdaya.kindis.view.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Base64;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -28,7 +19,6 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.view.dialog.DialogPayment;
 
@@ -65,7 +55,7 @@ public class Premium extends AppCompatActivity {
             public void onClick(View v) {
                 if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
-                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1");
+                    dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1", "");
                     dialogPayment.showDialog();
                 }
             }

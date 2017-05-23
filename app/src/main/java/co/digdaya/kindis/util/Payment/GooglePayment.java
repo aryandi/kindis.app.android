@@ -1,9 +1,7 @@
 package co.digdaya.kindis.util.Payment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.util.GoogleBilling.IabHelper;
@@ -19,10 +17,12 @@ public class GooglePayment {
     Activity activity;
     IabHelper mHelper;
     String googleCode;
+    String dataExtra;
 
-    public GooglePayment(Activity activity, String googleCode) {
+    public GooglePayment(Activity activity, String googleCode, String dataExtra) {
         this.activity = activity;
         this.googleCode = googleCode;
+        this.dataExtra = dataExtra;
 
         init();
     }
@@ -45,7 +45,7 @@ public class GooglePayment {
 
     public void buyClick() {
         mHelper.launchPurchaseFlow(activity, googleCode, 10001,
-                mPurchaseFinishedListener, "kindis123");
+                mPurchaseFinishedListener, dataExtra);
     }
 
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener

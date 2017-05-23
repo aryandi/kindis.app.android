@@ -2,47 +2,18 @@ package co.digdaya.kindis.view.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.midtrans.sdk.corekit.callback.CheckoutCallback;
-import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
-import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.BillInfoModel;
-import com.midtrans.sdk.corekit.models.BillingAddress;
-import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ExpiryModel;
-import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.ShippingAddress;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.corekit.models.snap.CreditCard;
-import com.midtrans.sdk.corekit.models.snap.Token;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import co.digdaya.kindis.BuildConfig;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
@@ -108,7 +79,7 @@ public class DialogGetPremium implements View.OnClickListener{
             case R.id.btn_premium:
                 premium.dismiss();
                 String transID = "PRE"+sessionHelper.getPreferences(activity, "user_id")+random.nextInt(89)+10;
-                dialogPayment = new DialogPayment(dialogPay, activity, transID, price, "Akun Premium", googleCode, "", "", "1");
+                dialogPayment = new DialogPayment(dialogPay, activity, transID, price, "Akun Premium", googleCode, "", "", "1", "");
                 dialogPayment.showDialog();
                 break;
             default:

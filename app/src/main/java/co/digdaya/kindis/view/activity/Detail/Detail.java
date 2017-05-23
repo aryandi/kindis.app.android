@@ -34,27 +34,25 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
+import co.digdaya.kindis.R;
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
-import co.digdaya.kindis.helper.Constanta;
-import co.digdaya.kindis.model.DataPlaylistOffline;
-import co.digdaya.kindis.service.DownloadService;
-import co.digdaya.kindis.service.PlayerService;
-import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
+import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
+import co.digdaya.kindis.service.DownloadService;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
 import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
-import co.digdaya.kindis.view.dialog.DialogPayment;
-import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.view.activity.Search;
 import co.digdaya.kindis.view.adapter.item.AdapterSong;
+import co.digdaya.kindis.view.dialog.DialogPayment;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 
 public class Detail extends BottomPlayerActivity implements View.OnClickListener {
     AppBarLayout appBarLayout;
@@ -86,7 +84,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
     boolean isGetPrice = false;
     int price;
-    String googleCode, transID, playlistID;
+    String googleCode;
+    String transID;
+    String playlistID;
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -141,7 +141,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }else if (types.equals("playlist")){
             getDetailPlaylist();
         }else if (types.equals("premium")){
-            //btnPremium.setVisibility(View.VISIBLE);
+            btnPremium.setVisibility(View.VISIBLE);
             getListPremium();
         }
 
@@ -358,8 +358,9 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             playlistID = playlist.getString("uid");
-                            transID = playlist.getString("order_id")+(new Random().nextInt(89)+10);
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"), "2");
+                            transID = playlist.getString("order_id");
+
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), "android.test.purchased", playlist.getString("order_id"), playlist.getString("uid"), "2", playlistID);
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
@@ -549,6 +550,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                 cursor.moveToNext();
             }
         }
+        db.close();
     }
 
     @Override
@@ -563,22 +565,28 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             System.out.println("onActivityResult: "+purchaseData);
             System.out.println("onActivityResult: "+dataSignature);
 
+            /*String transIDr = data.getStringExtra("transID");
+            String playlistIDr = data.getStringExtra("playlistID");
+            String pricer = data.getStringExtra("price");*/
+
             if (resultCode == RESULT_OK) {
+                System.out.println("onActivityResult extras: "+data.getExtras());
                 HashMap<String, String> param = new HashMap<String, String>();
                 param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
                 param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
                 param.put("dev_id", "2");
                 param.put("client_id", "xBc3w11");
                 param.put("package", "2");
-                param.put("trans_id", transID);
-                param.put("order_id", transID);
-                param.put("order", "["+playlistID+"]");
+                param.put("trans_id", "");
+                param.put("order_id", "");
+                param.put("order", "["+""+"]");
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
-                param.put("price", String.valueOf(price));
+                param.put("price", String.valueOf(""));
                 param.put("trans_time", "");
 
+                System.out.println("Response payment: "+param);
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {

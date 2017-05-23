@@ -59,7 +59,7 @@ public class VolleyHelper {
                         if (error instanceof NoConnectionError) {
                             listener.onReceive(false, NO_CONNECTION, null);
                         } else {
-                            if (error.networkResponse.data!=null){
+                            if (error!=null){
                                 try {
                                     String responseBody = new String(error.networkResponse.data, "utf-8" );
                                     Log.d("volleyresponse", responseBody);

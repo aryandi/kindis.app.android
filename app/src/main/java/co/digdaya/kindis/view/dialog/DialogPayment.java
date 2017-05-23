@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.digdaya.kindis.R;
@@ -30,10 +29,10 @@ public class DialogPayment implements View.OnClickListener {
     MidtransPayment midtransPayment;
     GooglePayment googlePayment;
 
-    String transID, transName, googleCode, orders, packages;
+    String transID, transName, googleCode, orders, packages, playlistID;
     int price;
 
-    public DialogPayment(Dialog dialogPayment, Activity activity, String transID, int price, String transName, String googleCode, String orderID, String orders, String packages) {
+    public DialogPayment(Dialog dialogPayment, Activity activity, String transID, int price, String transName, String googleCode, String orderID, String orders, String packages, String playlistId) {
         this.dialogPayment = dialogPayment;
         this.activity = activity;
         this.transID = transID;
@@ -42,12 +41,15 @@ public class DialogPayment implements View.OnClickListener {
         this.googleCode = googleCode;
         this.orders = orders;
         this.packages = packages;
+        this.playlistID = playlistId;
 
         li = LayoutInflater.from(activity);
         dialogView = li.inflate(R.layout.dialog_payment, null);
 
+        String dataExtra = transID+","+price+","+playlistID;
+
         midtransPayment = new MidtransPayment(activity, transID, price, transName, orderID, orders, packages);
-        googlePayment = new GooglePayment(activity, googleCode);
+        googlePayment = new GooglePayment(activity, googleCode, dataExtra);
 
         alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setView(dialogView);

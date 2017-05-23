@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +25,11 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.InfaqModel;
-import co.digdaya.kindis.view.dialog.DialogLoading;
 import co.digdaya.kindis.util.SpacingItem.SpacingItemInfaq;
 import co.digdaya.kindis.view.adapter.AdapterBanner;
 import co.digdaya.kindis.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.view.adapter.item.AdapterInfaq;
+import co.digdaya.kindis.view.dialog.DialogLoading;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -44,11 +44,15 @@ public class Infaq extends Fragment {
     AdapterBanner adapterBanner;
     AdapterBannerEmpty adapterBannerEmpty;
     RecyclerView listViewInfaq;
+    NestedScrollView nestedScrollView;
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
     Gson gson;
+    InfaqModel infaqModel;
 
     String responses = null;
+    String urlMore;
+    Boolean isLastItem = false;
     public Infaq() {
         // Required empty public constructor
     }
@@ -69,6 +73,7 @@ public class Infaq extends Fragment {
 
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
         indicator = (CircleIndicator) view.findViewById(R.id.indicator);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedscrollview);
 
         listViewInfaq = (RecyclerView) view.findViewById(R.id.list_infaq);
         listViewInfaq.setLayoutManager(new GridLayoutManager(getContext(),2));
@@ -84,6 +89,15 @@ public class Infaq extends Fragment {
         }else {
             getInfaq();
         }
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && urlMore.length()>10) {
+                    loadMore();
+                }
+            }
+        });
     }
 
     private void getInfaq(){
@@ -93,9 +107,10 @@ public class Infaq extends Fragment {
             public void onReceive(boolean status, String message, String response) {
                 loading.dismisLoading();
                 if (status){
-                    InfaqModel infaqModel = gson.fromJson(response, InfaqModel.class);
+                    infaqModel = gson.fromJson(response, InfaqModel.class);
                     adapterInfaq = new AdapterInfaq(infaqModel, getContext());
                     listViewInfaq.setAdapter(adapterInfaq);
+                    urlMore = infaqModel.next_page;
                 }
             }
         });
@@ -139,6 +154,31 @@ public class Infaq extends Fragment {
                 }else {
                     adapterBannerEmpty = new AdapterBannerEmpty(getContext());
                     imageSlider.setAdapter(adapterBannerEmpty);
+                }
+            }
+        });
+    }
+
+    private void loadMore(){
+        new VolleyHelper().get(urlMore, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                loading.dismisLoading();
+                if (status){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("result");
+                        for (int i=0; i<array.length(); i++){
+                            JSONObject data = array.getJSONObject(i);
+                            InfaqModel.Result result = gson.fromJson(data.toString(), InfaqModel.Result.class);
+                            infaqModel.result.add(result);
+                            adapterInfaq.notifyDataSetChanged();
+                        }
+                        adapterInfaq.notifyDataSetChanged();
+                        urlMore = object.getString("next_page");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
