@@ -55,6 +55,11 @@ public class Premium extends AppCompatActivity {
             public void onClick(View v) {
                 if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
+
+                    sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
+                    sessionHelper.setPreferences(getApplicationContext(), "price", String.valueOf(price));
+                    sessionHelper.setPreferences(getApplicationContext(), "order", String.valueOf(order));
+
                     dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1", "");
                     dialogPayment.showDialog();
                 }
@@ -113,14 +118,14 @@ public class Premium extends AppCompatActivity {
                 param.put("dev_id", "2");
                 param.put("client_id", "xBc3w11");
                 param.put("package", "1");
-                param.put("trans_id", transID);
-                param.put("order_id", transID);
+                param.put("trans_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
+                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
                 param.put("order", "[]");
-                param.put("order_id", order);
+                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "order"));
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
-                param.put("price", String.valueOf(price));
+                param.put("price", sessionHelper.getPreferences(getApplicationContext(), "price"));
                 param.put("trans_time", "");
                 System.out.println("onActivityResult: "+param);
 

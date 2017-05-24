@@ -360,7 +360,11 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             playlistID = playlist.getString("uid");
                             transID = playlist.getString("order_id");
 
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), "android.test.purchased", playlist.getString("order_id"), playlist.getString("uid"), "2", playlistID);
+                            sessionHelper.setPreferences(getApplicationContext(), "playlistID", playlistID);
+                            sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
+                            sessionHelper.setPreferences(getApplicationContext(), "price", String.valueOf(price));
+
+                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"), "2", playlistID);
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
@@ -554,7 +558,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10001) {
             int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
@@ -570,20 +574,19 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             String pricer = data.getStringExtra("price");*/
 
             if (resultCode == RESULT_OK) {
-                System.out.println("onActivityResult extras: "+data.getExtras());
                 HashMap<String, String> param = new HashMap<String, String>();
                 param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
                 param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
                 param.put("dev_id", "2");
                 param.put("client_id", "xBc3w11");
                 param.put("package", "2");
-                param.put("trans_id", "");
-                param.put("order_id", "");
-                param.put("order", "["+""+"]");
+                param.put("trans_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
+                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
+                param.put("order", "["+sessionHelper.getPreferences(getApplicationContext(), "playlistID")+"]");
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
-                param.put("price", String.valueOf(""));
+                param.put("price", sessionHelper.getPreferences(getApplicationContext(), "price"));
                 param.put("trans_time", "");
 
                 System.out.println("Response payment: "+param);
@@ -591,6 +594,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     @Override
                     public void onReceive(boolean status, String message, String response) {
                         System.out.println("Response payment: "+response);
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         if (status){
                             new ResultPayment(Detail.this).execute(response);
                         }
