@@ -32,7 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
@@ -362,9 +364,18 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
                             sessionHelper.setPreferences(getApplicationContext(), "playlistID", playlistID);
                             sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
-                            sessionHelper.setPreferences(getApplicationContext(), "price", String.valueOf(price));
 
-                            dialogPayment = new DialogPayment(dialogPay, Detail.this, transID, price, "Playlist : "+playlist.getString("playlist_name"), googleCode, playlist.getString("order_id"), playlist.getString("uid"), "2", playlistID);
+                            dialogPayment = new DialogPayment(dialogPay,
+                                    Detail.this,
+                                    transID,
+                                    price,
+                                    "Playlist : "+playlist.getString("playlist_name"),
+                                    googleCode,
+                                    playlist.getString("order_id"),
+                                    playlist.getString("uid"),
+                                    "2",
+                                    playlistID);
+
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
                             checkPlaylistExist(playlist.getString("uid"));
@@ -560,6 +571,10 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:mm:ss");
+        String formattedDate = sdf.format(date);
+
         if (requestCode == 10001) {
             int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
@@ -587,7 +602,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
                 param.put("price", sessionHelper.getPreferences(getApplicationContext(), "price"));
-                param.put("trans_time", "");
+                param.put("trans_time", formattedDate);
 
                 System.out.println("Response payment: "+param);
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
@@ -624,6 +639,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
                                 JSONObject result = object.getJSONObject("result");
+                                sessionHelper.setPreferences(getApplicationContext(), "price", result.getString("price"));
                                 price = result.getInt("price");
                                 googleCode = result.getString("google_code");
                                 isGetPrice = true;
