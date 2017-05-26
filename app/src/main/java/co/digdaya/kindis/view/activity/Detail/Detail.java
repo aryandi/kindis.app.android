@@ -609,8 +609,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     @Override
                     public void onReceive(boolean status, String message, String response) {
                         System.out.println("Response payment: "+response);
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         if (status){
+                            btnPremium.setText("SAVE");
                             new ResultPayment(Detail.this).execute(response);
                         }
                     }
