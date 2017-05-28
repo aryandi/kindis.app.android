@@ -1,5 +1,6 @@
 package co.digdaya.kindis.view.activity.Detail;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -30,9 +31,16 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DataAlbum;
+import co.digdaya.kindis.model.DataArtist;
 import co.digdaya.kindis.model.DataSingle;
+import co.digdaya.kindis.model.genre.GenreAlbumModel;
+import co.digdaya.kindis.model.genre.GenreArtistModel;
+import co.digdaya.kindis.model.genre.GenreSingleModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.view.adapter.genre.GenreAlbumAdapter;
+import co.digdaya.kindis.view.adapter.genre.GenreArtistAdapter;
+import co.digdaya.kindis.view.adapter.genre.GenreSingleAdapter;
 import co.digdaya.kindis.view.adapter.item.AdapterAlbumNew;
 import co.digdaya.kindis.view.adapter.item.AdapterSongHorizontal;
 
@@ -48,7 +56,9 @@ public class DetailGenre extends BottomPlayerActivity {
     TextView titleToolbar,titleDetail,description;
     ImageView backDrop;
     Button btnPlayAll;
-    LinearLayout contArtist, contPlaylist, contSingle, contAlbum;
+    RelativeLayout contArtist, contPlaylist, contSingle, contAlbum;
+    TextView btnMoreArtist, btnMorePlaylist, btnMoreSingle, btnMoreAlbum;
+
     RecyclerView recyclerViewArtist, recyclerViewPlaylist, recyclerViewSingle, recyclerViewAlbum;
 
     ArrayList<String> songPlaylist = new ArrayList<>();
@@ -87,35 +97,26 @@ public class DetailGenre extends BottomPlayerActivity {
         backDrop = (ImageView) findViewById(R.id.backdrop);
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
 
-        contAlbum = (LinearLayout) findViewById(R.id.cont_album);
-        contArtist = (LinearLayout) findViewById(R.id.cont_artist);
-        contPlaylist = (LinearLayout) findViewById(R.id.cont_playlist);
-        contSingle = (LinearLayout) findViewById(R.id.cont_single);
+        contAlbum = (RelativeLayout) findViewById(R.id.cont_album);
+        contArtist = (RelativeLayout) findViewById(R.id.cont_artist);
+        contPlaylist = (RelativeLayout) findViewById(R.id.cont_playlist);
+        contSingle = (RelativeLayout) findViewById(R.id.cont_single);
 
         recyclerViewAlbum = (RecyclerView) findViewById(R.id.list_album);
         recyclerViewArtist = (RecyclerView) findViewById(R.id.list_artist);
         recyclerViewPlaylist = (RecyclerView) findViewById(R.id.list_playlist);
         recyclerViewSingle = (RecyclerView) findViewById(R.id.list_songs);
 
+        btnMoreArtist = (TextView) findViewById(R.id.btn_more_artist);
+        btnMorePlaylist = (TextView) findViewById(R.id.btn_more_playlist);
+        btnMoreAlbum = (TextView) findViewById(R.id.btn_more_album);
+        btnMoreSingle = (TextView) findViewById(R.id.btn_more_single);
+
         sessionHelper = new SessionHelper();
         playerSessionHelper = new PlayerSessionHelper();
         gson = new Gson();
 
         btnPlayAll.setVisibility(View.GONE);
-        /*btnPlayAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
-                new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", getIntent().getStringExtra("type"));
-                Intent intent = new Intent(DetailGenre.this, PlayerService.class);
-                intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
-                intent.putExtra("single_id", songPlaylist.get(0));
-                intent.putExtra("list_uid", songPlaylist);
-                startService(intent);
-            }
-        });*/
     }
 
     private void init(){
@@ -156,30 +157,135 @@ public class DetailGenre extends BottomPlayerActivity {
 
         titleToolbar.setText(getIntent().getStringExtra("title"));
         playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", getIntent().getStringExtra("title"));
-        titleDetail.setText(getIntent().getStringExtra("title"));
-        description.setText(getIntent().getStringExtra("desc"));
         backDrop.setColorFilter(Color.parseColor("#70000000"));
+        /*titleDetail.setText(getIntent().getStringExtra("title"));
+        description.setText(getIntent().getStringExtra("desc"));
         Glide.with(getApplicationContext())
                 .load(ApiHelper.BASE_URL_IMAGE+getIntent().getStringExtra("banner_image"))
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
-                .into(backDrop);
+                .into(backDrop);*/
+
+        recyclerViewArtist.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewArtist.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
+        recyclerViewArtist.setNestedScrollingEnabled(false);
 
         recyclerViewAlbum.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewAlbum.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
+        recyclerViewAlbum.setNestedScrollingEnabled(false);
 
         recyclerViewSingle.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSingle.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
+        recyclerViewSingle.setNestedScrollingEnabled(false);
+
+        recyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewPlaylist.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
+        recyclerViewPlaylist.setNestedScrollingEnabled(false);
     }
 
     private void getDetailGenre() {
-        new VolleyHelper().get(ApiHelper.DETAIL_GENRE + getIntent().getStringExtra("uid") + "&page=&uid=" + sessionHelper.getPreferences(getApplicationContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
+        System.out.println("getDetailGenre: "+getIntent().getStringExtra("uid"));
+        System.out.println("getDetailGenre: "+sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        new VolleyHelper().get(ApiHelper.CONTENT_GENRE + getIntent().getStringExtra("uid") + "&uid=" + sessionHelper.getPreferences(getApplicationContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
                     System.out.println("getDetailGenre: "+response);
                     try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject result = object.getJSONObject("result");
+                        JSONObject summary = result.getJSONObject("summary");
+                        titleDetail.setText(summary.getString("title"));
+                        description.setText(summary.getString("description"));
+                        String image;
+                        if (summary.isNull("banner_image")){
+                            image = summary.getString("image");
+                        }else {
+                            image = summary.getString("banner_image");
+                        }
+                        Glide.with(getApplicationContext())
+                                .load(ApiHelper.BASE_URL_IMAGE+image)
+                                .placeholder(R.drawable.ic_default_img)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(backDrop);
+
+                        JSONArray content = result.getJSONArray("content");
+                        for (int i=0; i<content.length(); i++){
+                            JSONObject data = content.getJSONObject(i);
+                            switch (data.getInt("type_content_id")){
+                                case 1:
+                                    contArtist.setVisibility(View.VISIBLE);
+                                    final GenreArtistModel dataArtist = gson.fromJson(data.toString(), GenreArtistModel.class);
+                                    GenreArtistAdapter genreArtistAdapter = new GenreArtistAdapter(DetailGenre.this, dataArtist);
+                                    recyclerViewArtist.setAdapter(genreArtistAdapter);
+
+                                    if (data.getInt("is_more")!=1){
+                                           btnMoreArtist.setVisibility(View.GONE);
+                                    }
+
+                                    btnMoreArtist.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(DetailGenre.this, More.class);
+                                            intent.putExtra("title", dataArtist.name);
+                                            intent.putExtra("type", "1");
+                                            intent.putExtra("urlMore", dataArtist.is_more_endpoint);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    contAlbum.setVisibility(View.VISIBLE);
+                                    final GenreAlbumModel albumModel = gson.fromJson(data.toString(), GenreAlbumModel.class);
+                                    GenreAlbumAdapter genreAlbumAdapter = new GenreAlbumAdapter(DetailGenre.this, albumModel);
+                                    recyclerViewAlbum.setAdapter(genreAlbumAdapter);
+
+                                    if (data.getInt("is_more")!=1){
+                                        btnMoreAlbum.setVisibility(View.GONE);
+                                    }
+
+                                    btnMoreAlbum.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(DetailGenre.this, More.class);
+                                            intent.putExtra("title", albumModel.name);
+                                            intent.putExtra("type", "1");
+                                            intent.putExtra("urlMore", albumModel.is_more_endpoint);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    contSingle.setVisibility(View.VISIBLE);
+                                    final GenreSingleModel singleModel = gson.fromJson(data.toString(), GenreSingleModel.class);
+                                    GenreSingleAdapter genreSingleAdapter = new GenreSingleAdapter(DetailGenre.this, singleModel);
+                                    recyclerViewSingle.setAdapter(genreSingleAdapter);
+
+                                    if (data.getInt("is_more")!=1){
+                                        btnMoreSingle.setVisibility(View.GONE);
+                                    }
+
+                                    btnMoreSingle.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(DetailGenre.this, More.class);
+                                            intent.putExtra("title", singleModel.name);
+                                            intent.putExtra("type", "1");
+                                            intent.putExtra("urlMore", singleModel.is_more_endpoint);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    break;
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    /*try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
@@ -204,7 +310,7 @@ public class DetailGenre extends BottomPlayerActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
             }
         });

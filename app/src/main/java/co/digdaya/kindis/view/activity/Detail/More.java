@@ -38,7 +38,7 @@ public class More extends BottomPlayerActivity {
     GridLayoutManager gridLayoutManager;
     SessionHelper sessionHelper;
 
-    String url, param, urlMore;
+    String url, urlMore;
     int type;
     Boolean isLastItem = false;
     Gson gson;
@@ -219,10 +219,10 @@ public class More extends BottomPlayerActivity {
                                     System.out.println("itemcount: "+playlisMore.result.size());
                                     break;
                             }
-                        }else {
-                            finish();
+                        }/*else {
+                            //finish();
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
 
                     } catch (JSONException e) {
                         e.printStackTrace();

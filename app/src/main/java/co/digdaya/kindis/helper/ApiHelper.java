@@ -44,6 +44,7 @@ public class ApiHelper {
     public static final String FORGOT = BASE_URL + "sign/password_recovery";
     public static final String SEARCH = BASE_URL + "search?q=";
     public static final String SINGLE_GENRE = BASE_URL + "genre/content_by_genre?genre_id=";
+    public static final String CONTENT_GENRE = BASE_URL + "genre/content_home_genre?genre_id=";
 
     public static final String PLAYLIST = BASE_URL + "playlist/user";
     public static final String CREATE_PLAYLIST = BASE_URL + "playlist/create";

@@ -1,4 +1,4 @@
-package co.digdaya.kindis.view.adapter.item;
+package co.digdaya.kindis.view.adapter.genre;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,38 +15,31 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.List;
-
-import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
-import co.digdaya.kindis.model.DataSingle;
+import co.digdaya.kindis.model.genre.GenreSingleModel;
+import co.digdaya.kindis.service.PlayerService;
 import co.digdaya.kindis.view.activity.Premium;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.Item;
 
-public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
-    Activity context;
-    Dialog dialogPremium;
+/**
+ * Created by DELL on 5/28/2017.
+ */
+
+public class GenreSingleAdapter extends RecyclerView.Adapter<Item> {
+    Activity activity;
+    GenreSingleModel genreSingleModel;
     DialogGetPremium dialogGetPremium;
-    DataSingle dataSingle;
-    int from;
-    List<DataSingle.Data> datas;
+    Dialog dialogPremium;
 
-    public AdapterSongHorizontal(Activity context, DataSingle dataSingle, int from){
-        this.context = context;
-        this.dataSingle = dataSingle;
-        this.from = from;
-
-        dialogGetPremium = new DialogGetPremium(context, dialogPremium);
-        if (from == 0){
-            datas = dataSingle.data;
-        }else if (from == 1){
-            datas = dataSingle.single;
-        }
+    public GenreSingleAdapter(Activity activity, GenreSingleModel genreSingleModel) {
+        this.activity = activity;
+        this.genreSingleModel = genreSingleModel;
+        dialogGetPremium = new DialogGetPremium(activity, dialogPremium);
     }
 
     @Override
@@ -64,10 +57,10 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         TextView subTitle = holder.subtitle;
         RelativeLayout click = holder.click;
 
-        title.setText(datas.get(position).title);
-        subTitle.setText(datas.get(position).artist+" | "+datas.get(position).album_name);
-        Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+datas.get(position).image)
+        title.setText(genreSingleModel.data.get(position).title);
+        subTitle.setText(genreSingleModel.data.get(position).artist+" | "+genreSingleModel.data.get(position).album_name);
+        Glide.with(activity)
+                .load(ApiHelper.BASE_URL_IMAGE+genreSingleModel.data.get(position).image)
                 .thumbnail( 0.1f )
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -79,21 +72,21 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
         }
 
 
-        final String uid = datas.get(position).uid;
-        final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
+        final String uid = genreSingleModel.data.get(position).uid;
+        final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(activity, "is_premium"));
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isAccountPremium == getItemViewType(position) || isAccountPremium == 1){
-                    Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
-                    new PlayerSessionHelper().setPreferences(context, "index", "1");
-                    Intent intent = new Intent(context, PlayerService.class);
+                    Toast.makeText(activity, "Loading . . . ", Toast.LENGTH_LONG).show();
+                    new PlayerSessionHelper().setPreferences(activity, "index", "1");
+                    Intent intent = new Intent(activity, PlayerService.class);
                     intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
                     intent.putExtra("single_id", uid);
-                    context.startService(intent);
+                    activity.startService(intent);
                 }else {
-                    Intent intent = new Intent(context, Premium.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(activity, Premium.class);
+                    activity.startActivity(intent);
                 }
             }
         });
@@ -101,7 +94,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return genreSingleModel.data.size();
     }
 
     @Override
@@ -112,8 +105,8 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemViewType(int position) {
         int isPremium = 0;
-        if (datas.get(position).is_premium!=null){
-            isPremium = Integer.parseInt(datas.get(position).is_premium);
+        if (genreSingleModel.data.get(position).is_premium!=null){
+            isPremium = Integer.parseInt(genreSingleModel.data.get(position).is_premium);
         }
         return isPremium;
     }
