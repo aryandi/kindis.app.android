@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,7 @@ import co.digdaya.kindis.model.genre.GenreArtistModel;
 import co.digdaya.kindis.model.genre.GenreSingleModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.util.SpacingItem.SpacingItemGenre;
 import co.digdaya.kindis.view.adapter.genre.GenreAlbumAdapter;
 import co.digdaya.kindis.view.adapter.genre.GenreArtistAdapter;
 import co.digdaya.kindis.view.adapter.genre.GenreSingleAdapter;
@@ -58,6 +60,7 @@ public class DetailGenre extends BottomPlayerActivity {
     Button btnPlayAll;
     RelativeLayout contArtist, contPlaylist, contSingle, contAlbum;
     TextView btnMoreArtist, btnMorePlaylist, btnMoreSingle, btnMoreAlbum;
+    TextView labelArtist, labelPlaylist, labelSingle, labelAlbum;
 
     RecyclerView recyclerViewArtist, recyclerViewPlaylist, recyclerViewSingle, recyclerViewAlbum;
 
@@ -112,6 +115,11 @@ public class DetailGenre extends BottomPlayerActivity {
         btnMoreAlbum = (TextView) findViewById(R.id.btn_more_album);
         btnMoreSingle = (TextView) findViewById(R.id.btn_more_single);
 
+        labelArtist = (TextView) findViewById(R.id.label_artist);
+        labelPlaylist = (TextView) findViewById(R.id.label_playlis);
+        labelAlbum = (TextView) findViewById(R.id.label_album);
+        labelSingle = (TextView) findViewById(R.id.label_single);
+
         sessionHelper = new SessionHelper();
         playerSessionHelper = new PlayerSessionHelper();
         gson = new Gson();
@@ -158,29 +166,10 @@ public class DetailGenre extends BottomPlayerActivity {
         titleToolbar.setText(getIntent().getStringExtra("title"));
         playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", getIntent().getStringExtra("title"));
         backDrop.setColorFilter(Color.parseColor("#70000000"));
-        /*titleDetail.setText(getIntent().getStringExtra("title"));
-        description.setText(getIntent().getStringExtra("desc"));
-        Glide.with(getApplicationContext())
-                .load(ApiHelper.BASE_URL_IMAGE+getIntent().getStringExtra("banner_image"))
-                .placeholder(R.drawable.ic_default_img)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
-                .into(backDrop);*/
 
-        recyclerViewArtist.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewArtist.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
         recyclerViewArtist.setNestedScrollingEnabled(false);
-
-        recyclerViewAlbum.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewAlbum.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
         recyclerViewAlbum.setNestedScrollingEnabled(false);
-
-        recyclerViewSingle.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewSingle.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
         recyclerViewSingle.setNestedScrollingEnabled(false);
-
-        recyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewPlaylist.addItemDecoration(new MarginItemHorizontal(DetailGenre.this));
         recyclerViewPlaylist.setNestedScrollingEnabled(false);
     }
 
@@ -218,7 +207,11 @@ public class DetailGenre extends BottomPlayerActivity {
                                 case 1:
                                     contArtist.setVisibility(View.VISIBLE);
                                     final GenreArtistModel dataArtist = gson.fromJson(data.toString(), GenreArtistModel.class);
-                                    GenreArtistAdapter genreArtistAdapter = new GenreArtistAdapter(DetailGenre.this, dataArtist);
+
+                                    setRecyclerViewLayout(data.getInt("type_id"), recyclerViewArtist);
+                                    labelArtist.setText(dataArtist.name);
+
+                                    GenreArtistAdapter genreArtistAdapter = new GenreArtistAdapter(DetailGenre.this, dataArtist, data.getInt("type_id"));
                                     recyclerViewArtist.setAdapter(genreArtistAdapter);
 
                                     if (data.getInt("is_more")!=1){
@@ -239,7 +232,11 @@ public class DetailGenre extends BottomPlayerActivity {
                                 case 2:
                                     contAlbum.setVisibility(View.VISIBLE);
                                     final GenreAlbumModel albumModel = gson.fromJson(data.toString(), GenreAlbumModel.class);
-                                    GenreAlbumAdapter genreAlbumAdapter = new GenreAlbumAdapter(DetailGenre.this, albumModel);
+
+                                    setRecyclerViewLayout(data.getInt("type_id"), recyclerViewAlbum);
+                                    labelAlbum.setText(albumModel.name);
+
+                                    GenreAlbumAdapter genreAlbumAdapter = new GenreAlbumAdapter(DetailGenre.this, albumModel, data.getInt("type_id"));
                                     recyclerViewAlbum.setAdapter(genreAlbumAdapter);
 
                                     if (data.getInt("is_more")!=1){
@@ -259,8 +256,13 @@ public class DetailGenre extends BottomPlayerActivity {
                                     break;
                                 case 3:
                                     contSingle.setVisibility(View.VISIBLE);
+
                                     final GenreSingleModel singleModel = gson.fromJson(data.toString(), GenreSingleModel.class);
-                                    GenreSingleAdapter genreSingleAdapter = new GenreSingleAdapter(DetailGenre.this, singleModel);
+
+                                    setRecyclerViewLayout(data.getInt("type_id"), recyclerViewSingle);
+                                    labelSingle.setText(singleModel.name);
+
+                                    GenreSingleAdapter genreSingleAdapter = new GenreSingleAdapter(DetailGenre.this, singleModel, data.getInt("type_id"));
                                     recyclerViewSingle.setAdapter(genreSingleAdapter);
 
                                     if (data.getInt("is_more")!=1){
@@ -284,50 +286,18 @@ public class DetailGenre extends BottomPlayerActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    /*try {
-                        JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            JSONObject result = object.getJSONObject("result");
-                            setContent(result);
-
-                            DataAlbum dataAlbum = gson.fromJson(result.toString(), DataAlbum.class);
-                            adapterAlbum = new AdapterAlbumNew(DetailGenre.this, dataAlbum, 1);
-                            recyclerViewAlbum.setAdapter(adapterAlbum);
-                            recyclerViewAlbum.setNestedScrollingEnabled(false);
-
-                            DataSingle dataSingle = gson.fromJson(result.toString(), DataSingle.class);
-                            adapterSongHorizontal = new AdapterSongHorizontal(DetailGenre.this, dataSingle, 1);
-                            recyclerViewSingle.setAdapter(adapterSongHorizontal);
-                            recyclerViewSingle.setNestedScrollingEnabled(false);
-
-                            JSONArray singles = result.getJSONArray("single");
-                            json = singles.toString();
-                            for (int i=0; i<singles.length(); i++){
-                                JSONObject data = singles.getJSONObject(i);
-                                songPlaylist.add(data.optString("uid"));
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
                 }
             }
         });
     }
 
-    private void setContent(JSONObject content){
-        if (content.has("albums")){
-            contAlbum.setVisibility(View.VISIBLE);
-        }
-        if (content.has("single")){
-            contSingle.setVisibility(View.VISIBLE);
-        }
-        if (content.has("playlist")){
-            contPlaylist.setVisibility(View.VISIBLE);
-        }
-        if (content.has("artist")){
-            contArtist.setVisibility(View.VISIBLE);
+    private void setRecyclerViewLayout(int type, RecyclerView recyclerView){
+        if (type==1){
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerView.addItemDecoration(new MarginItemHorizontal(this));
+        }else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
+            recyclerView.addItemDecoration(new SpacingItemGenre(getApplicationContext(), ""));
         }
     }
 }

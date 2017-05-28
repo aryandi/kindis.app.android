@@ -35,16 +35,23 @@ public class GenreSingleAdapter extends RecyclerView.Adapter<Item> {
     GenreSingleModel genreSingleModel;
     DialogGetPremium dialogGetPremium;
     Dialog dialogPremium;
+    int type;
 
-    public GenreSingleAdapter(Activity activity, GenreSingleModel genreSingleModel) {
+    public GenreSingleAdapter(Activity activity, GenreSingleModel genreSingleModel, int type) {
         this.activity = activity;
         this.genreSingleModel = genreSingleModel;
+        this.type = type;
         dialogGetPremium = new DialogGetPremium(activity, dialogPremium);
     }
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        View view;
+        if (type==1){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
+        }
         Item item= new Item(view);
         return item;
     }

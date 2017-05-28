@@ -26,15 +26,22 @@ import co.digdaya.kindis.view.holder.Item;
 public class GenreArtistAdapter extends RecyclerView.Adapter<Item> {
     Activity activity;
     GenreArtistModel genreArtistModel;
+    int type;
 
-    public GenreArtistAdapter(Activity activity, GenreArtistModel genreArtistModel) {
+    public GenreArtistAdapter(Activity activity, GenreArtistModel genreArtistModel, int type) {
         this.activity = activity;
         this.genreArtistModel = genreArtistModel;
+        this.type = type;
     }
 
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        View view;
+        if (type==1){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
+        }
         Item item= new Item(view);
         return item;
     }
