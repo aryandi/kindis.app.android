@@ -166,6 +166,7 @@ public class DetailGenre extends BottomPlayerActivity {
         titleToolbar.setText(getIntent().getStringExtra("title"));
         playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", getIntent().getStringExtra("title"));
         backDrop.setColorFilter(Color.parseColor("#70000000"));
+        description.setTextSize(12);
 
         recyclerViewArtist.setNestedScrollingEnabled(false);
         recyclerViewAlbum.setNestedScrollingEnabled(false);
@@ -187,6 +188,7 @@ public class DetailGenre extends BottomPlayerActivity {
                         JSONObject summary = result.getJSONObject("summary");
                         titleDetail.setText(summary.getString("title"));
                         description.setText(summary.getString("description"));
+                        System.out.println("descriptiongenre: "+summary.getString("description"));
                         String image;
                         if (summary.isNull("banner_image")){
                             image = summary.getString("image");

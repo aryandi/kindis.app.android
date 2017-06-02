@@ -30,6 +30,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.helper.AnalyticHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.CheckPermission;
 import co.digdaya.kindis.view.dialog.DialogBanner;
@@ -147,6 +148,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             checkPermission.showPermission(1);
         }
 
+        new AnalyticHelper(this);
         System.out.println("token_access: "+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
     }
 

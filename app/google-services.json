@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "153105834235",
-    "project_id": "firebase-kindis"
+    "firebase_url": "https://fir-kindis.firebaseio.com",
+    "project_id": "firebase-kindis",
+    "storage_bucket": "firebase-kindis.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,10 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "153105834235-a2epdt5gbr8c1omvnfjgpnjsf7uk9cgv.apps.googleusercontent.com",
           "client_type": 1,
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

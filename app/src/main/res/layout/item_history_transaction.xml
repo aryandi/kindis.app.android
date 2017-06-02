@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingLeft="24dp">
+    <co.digdaya.kindis.custom.TextViewBold
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="11sp"
+        android:textColor="@color/dark_gray"/>
+
+    <co.digdaya.kindis.custom.TextViewSemiBold
+        android:id="@+id/title"
+        android:layout_below="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
+
+    <co.digdaya.kindis.custom.TextViewSemiBold
+        android:id="@+id/status"
+        android:layout_toRightOf="@+id/title"
+        android:layout_below="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        android:textColor="@color/jungle_green"/>
+</RelativeLayout>

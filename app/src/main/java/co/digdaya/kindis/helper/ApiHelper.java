@@ -20,6 +20,7 @@ public class ApiHelper {
     public static final String LOGIN = BASE_URL + "sign/login";
     public static final String REGISTER_SOCIAL = BASE_URL + "sign/register_social";
     public static final String LOGIN_SOCIAL = BASE_URL + "sign/login_social";
+    public static final String TRANSACTION_HISTORY = BASE_URL + "payment/history?uid=";
 
     public static final String PROFILE = BASE_URL + "profile/info";
     public static final String UPDATE_AVATAR = BASE_URL + "profile/update_avatar";

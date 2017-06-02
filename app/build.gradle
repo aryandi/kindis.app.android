@@ -25,8 +25,8 @@ android {
         applicationId "co.digdaya.kindis"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 9
+        versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -74,10 +74,11 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.facebook.android:facebook-android-sdk:4.20.0'
-    compile 'com.google.android.gms:play-services-auth:10.2.0'
+    compile 'com.google.android.gms:play-services-auth:10.2.6'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.midtrans:uikit:1.1.5-SANDBOX'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.firebase:firebase-core:10.2.6'
 }
 
 apply plugin: 'com.google.gms.google-services'
