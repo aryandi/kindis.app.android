@@ -22,6 +22,7 @@ import java.util.List;
 import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.Constanta;
+import co.digdaya.kindis.helper.RandomString;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DownloadAlbumModel;
@@ -39,6 +40,8 @@ public class DownloadService extends Service {
     DownloadPlaylistModel downloadPlaylistModel;
     List<Long> listDownloadID = new ArrayList<>();
     KindisDBHelper kindisDBHelper;
+    RandomString randomString;
+    HashMap<Long, String> fileName = new HashMap<>();
 
     public DownloadService() {
     }
@@ -55,8 +58,9 @@ public class DownloadService extends Service {
         volleyHelper = new VolleyHelper();
         gson = new Gson();
         kindisDBHelper = new KindisDBHelper(getApplicationContext());
+        randomString = new RandomString();
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        dir = getApplicationContext().getExternalFilesDir("single/").toString()+"/";
+        dir = getApplicationContext().getExternalFilesDir("data/").toString()+"/";
     }
 
     @Override
@@ -64,7 +68,7 @@ public class DownloadService extends Service {
         String data;
         switch (intent.getAction()){
             case Constanta.INTENT_ACTION_DOWNLOAD_SINGLE:
-                //singlePath = path+"single/";
+                //singlePath = path+"data/";
                 //createSubFolder(singlePath);
                 uid = intent.getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID);
                 data = "[{\"single_id\":"+uid+"}]";
@@ -131,7 +135,7 @@ public class DownloadService extends Service {
                             result = object.getJSONObject("result");
                             switch (type){
                                 case 1:
-                                    downloadRequestSingle(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), result.getString("title"));
+                                    downloadRequestSingle(Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+result.getString("file")), randomString.getRandomString());
                                     break;
                                 case 2:
                                     downloadAlbumModel = gson.fromJson(response, DownloadAlbumModel.class);
@@ -155,8 +159,11 @@ public class DownloadService extends Service {
         DownloadManager.Request request = new DownloadManager.Request(file);
         request.setTitle("Kindis");
         request.setDescription("Downloading "+path);
-        request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        request.setDestinationInExternalFilesDir(getApplicationContext(), "data/", path);
         long enque = downloadManager.enqueue(request);
+        listDownloadID.add(enque);
+        fileName.put(enque, path);
         registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
@@ -172,13 +179,15 @@ public class DownloadService extends Service {
         int index = 0;
         do {
             Uri file = Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+downloadAlbumModel.result.offline_single.get(index).file);
-            String path = downloadAlbumModel.result.offline_single.get(index).title;
+            String path = randomString.getRandomString();
             DownloadManager.Request request = new DownloadManager.Request(file);
             request.setTitle("Kindis");
             request.setDescription("Downloading "+path);
-            request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+            request.setDestinationInExternalFilesDir(getApplicationContext(), "data/", path);
             long enque = downloadManager.enqueue(request);
             listDownloadID.add(enque);
+            fileName.put(enque, path);
             registerReceiver(broadcastReceiverAlbum, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
             index++;
             System.out.println("downloadRequestAlbum: "+index);
@@ -196,13 +205,15 @@ public class DownloadService extends Service {
         int index = 0;
         do {
             Uri file = Uri.parse(ApiHelper.BASE_URL_IMAGE+"/"+downloadPlaylistModel.result.offline_single.get(index).file);
-            String path = downloadPlaylistModel.result.offline_single.get(index).title;
+            String path = randomString.getRandomString();
             DownloadManager.Request request = new DownloadManager.Request(file);
             request.setTitle("Kindis");
             request.setDescription("Downloading "+path);
-            request.setDestinationInExternalFilesDir(getApplicationContext(), "single/", path);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+            request.setDestinationInExternalFilesDir(getApplicationContext(), "data/", path);
             long enque = downloadManager.enqueue(request);
             listDownloadID.add(enque);
+            fileName.put(enque, path);
             registerReceiver(broadcastReceiverPlaylist, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
             index++;
         }while (index!=downloadPlaylistModel.result.offline_single.size());
@@ -217,7 +228,7 @@ public class DownloadService extends Service {
                     kindisDBHelper.addToTableSingle(
                             uid,
                             result.getString("title"),
-                            dir+result.getString("title"),
+                            dir+fileName.get(listDownloadID.get(0)),
                             result.getString("image"),
                             result.getString("album"),
                             result.getString("artist"),
@@ -240,7 +251,7 @@ public class DownloadService extends Service {
             kindisDBHelper.addToTableSingle(
                     uid+index,
                     downloadAlbumModel.result.offline_single.get(index).title,
-                    dir+downloadAlbumModel.result.offline_single.get(index).title,
+                    dir+fileName.get(downloaded_id),
                     downloadAlbumModel.result.offline_single.get(index).image,
                     downloadAlbumModel.result.offline_single.get(index).album,
                     downloadAlbumModel.result.offline_single.get(index).artist,
@@ -259,7 +270,7 @@ public class DownloadService extends Service {
             kindisDBHelper.addToTableSingle(
                     uid+index,
                     downloadPlaylistModel.result.offline_single.get(index).title,
-                    dir+downloadPlaylistModel.result.offline_single.get(index).title,
+                    dir+fileName.get(downloaded_id),
                     downloadPlaylistModel.result.offline_single.get(index).image,
                     downloadPlaylistModel.result.offline_single.get(index).album,
                     downloadPlaylistModel.result.offline_single.get(index).artist,
@@ -268,4 +279,16 @@ public class DownloadService extends Service {
             );
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("DownloadServiceee: onDestroy");
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        System.out.println("DownloadServiceee: onTaskRemoved");
+    }
 }

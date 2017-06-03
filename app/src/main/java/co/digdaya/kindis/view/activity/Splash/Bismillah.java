@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
@@ -12,6 +13,7 @@ import co.digdaya.kindis.view.activity.Main;
 
 public class Bismillah extends AppCompatActivity {
     Button enter;
+    PlayerSessionHelper playerSessionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class Bismillah extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         enter = (Button) findViewById(R.id.btn_enter);
+        playerSessionHelper = new PlayerSessionHelper();
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,8 +36,12 @@ public class Bismillah extends AppCompatActivity {
             }
         });
 
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "isplaying", "false");
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "pause", "false");
+        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+        playerSessionHelper.setPreferences(getApplicationContext(), "pause", "false");
+
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle").isEmpty()){
+            playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
+        }
     }
 
     @Override

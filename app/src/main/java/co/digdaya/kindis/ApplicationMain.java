@@ -1,6 +1,7 @@
 package co.digdaya.kindis;
 
 import android.app.Application;
+import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;

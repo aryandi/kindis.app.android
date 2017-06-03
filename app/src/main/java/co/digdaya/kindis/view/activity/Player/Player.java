@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.view.activity.Premium;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
@@ -61,6 +63,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     boolean isChangeViewPager = false;
     boolean isOfflineMode;
+    boolean isInFront;
 
     ArrayList<String> imgList = new ArrayList<>();
     ArrayList<String> songPlaylist = new ArrayList<>();
@@ -72,7 +75,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
+        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
+        songPlaylist = new ArrayList<>();
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
         dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false);
@@ -104,6 +108,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             @Override
             public void onClick(View view) {
                 finish();
+                return;
             }
         });
 
@@ -125,6 +130,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             if (isOfflineMode){
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
             }else {
+                System.out.println("isshufflebol: "+playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"));
                 if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
                     adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
                     viewPager.setAdapter(adapterListSong);
@@ -181,6 +187,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     protected void onResume() {
         super.onResume();
 
+        isInFront = true;
         title.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         subtitle.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
         if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
@@ -236,6 +243,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        isInFront = false;
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_looping){
             String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
@@ -258,6 +271,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             dialogSingleMenu.showDialog();
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);
+            intent.putExtra("title", titleActivity.getText());
+            intent.putExtra("subtitle", subtitleActivity.getText());
             startActivity(intent);
         }else if (view.getId() == R.id.cont_play){
             if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
@@ -284,6 +299,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             playerSessionHelper.setPreferences(getApplicationContext(), "playlistPosition", "0");
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
+            songPlaylist = new ArrayList<>();
             if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
                 songPlaylist = parseJsonPlaylist.getSongPlaylist();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(parseJsonPlaylist.getImageList().size()));
@@ -333,7 +349,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     nextPlay(position);
                 }else {
                     viewPager.setCurrentItem(playlistPosition, true);
-                    dialogGetPremium.showDialog();
+                    Intent intent = new Intent(this, Premium.class);
+                    startActivity(intent);
                 }
             }
         }
@@ -345,12 +362,16 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     }
 
     private void nextPlay(int position){
-        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
-        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-        intent.putExtra("single_id", songPlaylist.get(position));
-        intent.putExtra("position", position);
-        intent.putExtra("list_uid", songPlaylist);
-        startService(intent);
+        if (isInFront){
+            System.out.println("nextplay player: "+songPlaylist.get(position));
+            Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+            intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+            intent.putExtra("from", "Player");
+            intent.putExtra("single_id", songPlaylist.get(position));
+            intent.putExtra("position", position);
+            intent.putExtra("list_uid", songPlaylist);
+            startService(intent);
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -434,6 +455,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     }
 
     private void startDownload(){
+        Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, DownloadService.class);
         intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE);
         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));

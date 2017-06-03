@@ -20,6 +20,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
+import co.digdaya.kindis.view.activity.Premium;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.ItemSong;
 
@@ -75,12 +76,14 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                     Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, PlayerService.class);
                     intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                    intent.putExtra("from", "AdapterSong");
                     intent.putExtra("single_id", uid);
                     intent.putExtra("position", position);
                     intent.putExtra("list_uid", songPlaylist);
                     context.startService(intent);
                 }else if (type.equals("premium")){
-                    dialogGetPremium.showDialog();
+                    Intent intent = new Intent(context, Premium.class);
+                    context.startActivity(intent);
                 }else {
                     if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")) {
                         Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
@@ -90,7 +93,8 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
                         intent.putExtra("single_id", uid);
                         context.startService(intent);
                     }else {
-                        dialogGetPremium.showDialog();
+                        Intent intent = new Intent(context, Premium.class);
+                        context.startActivity(intent);
                     }
                 }
             }

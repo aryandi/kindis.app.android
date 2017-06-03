@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.service.PlayerService;
@@ -233,8 +234,8 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        new ParseJsonPlaylist(getApplicationContext(), true);
         Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
-        Log.d("kontoljson", json);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
         new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", "artist");

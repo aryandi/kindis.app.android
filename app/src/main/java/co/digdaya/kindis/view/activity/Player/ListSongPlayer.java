@@ -57,7 +57,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
     ImageView imgSong;
     ImageButton btnMenuPlay;
     TextView titlePlay;
-    TextView subtitlePlay;
+    TextView subtitlePlay, titleActivity, subtitleActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +75,13 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
         titlePlay = (TextView) findViewById(R.id.title_play);
         subtitlePlay = (TextView) findViewById(R.id.subtitle_play);
         btnMenuPlay = (ImageButton) findViewById(R.id.btn_menu_play);
+        titleActivity = (TextView) findViewById(R.id.title_activity);
+        subtitleActivity = (TextView) findViewById(R.id.subtitle_activity);
 
         btnHide.setOnClickListener(this);
         btnMenuPlay.setOnClickListener(this);
 
-        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext());
+        parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
         playerSessionHelper = new PlayerSessionHelper();
 
         isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
@@ -104,6 +106,8 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
 
         titlePlay.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         subtitlePlay.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+        titleActivity.setText(getIntent().getStringExtra("title"));
+        subtitleActivity.setText(getIntent().getStringExtra("subtitle"));
 
         if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
             labelPlayNext.setVisibility(View.GONE);

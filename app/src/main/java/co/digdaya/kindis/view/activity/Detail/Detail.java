@@ -48,6 +48,7 @@ import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.service.DownloadService;
 import co.digdaya.kindis.service.PlayerService;
+import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.BackgroundProses.RefreshToken;
 import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
@@ -185,6 +186,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", types);
+                    new ParseJsonPlaylist(getApplicationContext(), true);
+                    System.out.println("playall activity: "+songPlaylist.get(0));
                     Intent intent = new Intent(Detail.this, PlayerService.class);
                     intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
                     intent.putExtra("single_id", songPlaylist.get(0));
@@ -527,6 +530,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         switch (v.getId()){
             case R.id.btn_premium:
                 if (types.equals("album")){
+                    Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, DownloadService.class);
                     intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM);
                     intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, getIntent().getStringExtra("uid"));
@@ -537,6 +541,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             dialogPayment.showDialog();
                         }
                     }else {
+                        Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(this, DownloadService.class);
                         intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
                         intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));

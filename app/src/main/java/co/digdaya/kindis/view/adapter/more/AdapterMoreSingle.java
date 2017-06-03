@@ -22,6 +22,7 @@ import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.model.MoreModel;
+import co.digdaya.kindis.view.activity.Premium;
 import co.digdaya.kindis.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.view.holder.Item;
 
@@ -82,7 +83,8 @@ public class AdapterMoreSingle extends RecyclerView.Adapter<Item> {
                     intent.putExtra("single_id", singgleMore.result.get(position).uid);
                     context.startService(intent);
                 }else {
-                    dialogGetPremium.showDialog();
+                    Intent intent = new Intent(context, Premium.class);
+                    context.startActivity(intent);
                 }
             }
         });

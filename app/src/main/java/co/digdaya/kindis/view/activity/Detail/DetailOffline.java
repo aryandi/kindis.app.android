@@ -31,6 +31,7 @@ import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.model.DataSingleOffline;
 import co.digdaya.kindis.service.PlayerService;
+import co.digdaya.kindis.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
 import co.digdaya.kindis.view.adapter.offline.AdapterDetailSongOffline;
 
@@ -152,6 +153,7 @@ public class DetailOffline extends BottomPlayerActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v.getId() == btnPlayAll.getId()){
+            new ParseJsonPlaylist(getApplicationContext(), true);
             playerSessionHelper.setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
             playerSessionHelper.setPreferences(getApplicationContext(), "fkid", (getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID)));
             playerSessionHelper.setPreferences(getApplicationContext(), "title", dataSingleOfflines.get(0).getTitle());

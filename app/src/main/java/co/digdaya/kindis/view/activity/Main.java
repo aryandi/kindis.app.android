@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.crashlytics.android.Crashlytics;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -44,6 +45,7 @@ import co.digdaya.kindis.view.fragment.navigationview.Privacy;
 import co.digdaya.kindis.view.fragment.navigationview.Profile;
 import co.digdaya.kindis.view.fragment.navigationview.SaveOffline;
 import co.digdaya.kindis.view.fragment.navigationview.Terms;
+import io.fabric.sdk.android.Fabric;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;
@@ -93,7 +95,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Fabric.with(this, new Crashlytics());
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         checkPermission = new CheckPermission(this);
@@ -196,6 +198,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(profilePicture);
+        }
+
+        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            menuPremium.setVisibility(View.GONE);
         }
 
         icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));

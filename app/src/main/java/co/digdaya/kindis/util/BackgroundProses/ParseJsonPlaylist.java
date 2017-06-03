@@ -23,6 +23,9 @@ import co.digdaya.kindis.helper.PlayerSessionHelper;
 public class ParseJsonPlaylist {
     Context context;
     String type, json, shuffle;
+    String shfl;
+    boolean update;
+    PlayerSessionHelper playerSessionHelper;
 
     ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
     ArrayList<String> songPlaylist = new ArrayList<>();
@@ -32,10 +35,12 @@ public class ParseJsonPlaylist {
     ArrayList<String> shufflesongPlaylist;
     ArrayList<String> shuffleimgList;
 
-    public ParseJsonPlaylist(Context context){
+    public ParseJsonPlaylist(Context context, boolean update){
         this.context = context;
-        type = new PlayerSessionHelper().getPreferences(context, "type");
-        json = new PlayerSessionHelper().getPreferences(context, "json");
+        this.update = update;
+        playerSessionHelper = new PlayerSessionHelper();
+        type = playerSessionHelper.getPreferences(context, "type");
+        json = playerSessionHelper.getPreferences(context, "json");
         Log.d("ParseJsonPlaylist", type+" : "+json);
         if (type.equals("album")){
             try {
@@ -56,6 +61,7 @@ public class ParseJsonPlaylist {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            setShuffle();
         }else if (type.equals("artist")){
             try {
                 JSONArray album = new JSONArray(json);
@@ -81,6 +87,7 @@ public class ParseJsonPlaylist {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            setShuffle();
         }else if (type.equals("premium")){
             try {
                 JSONArray result = new JSONArray(json);
@@ -99,6 +106,7 @@ public class ParseJsonPlaylist {
                 e.printStackTrace();
                 System.out.println("parssssseee: "+e.getMessage());
             }
+            setShuffle();
         }else {
             try {
                 JSONArray result = new JSONArray(json);
@@ -116,14 +124,16 @@ public class ParseJsonPlaylist {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            setShuffle();
         }
 
-        if (Boolean.parseBoolean(new PlayerSessionHelper().getPreferences(context, "setShuffle"))){
-            shuffleListSong = listSong;
+        /*shuffleListSong = listSong;
+        if (update){
+            System.out.println("PLAY_MULTYSOURCE: shuffle");
             Collections.shuffle(shuffleListSong);
-            String shfl = new Gson().toJson(shuffleListSong);
-            new PlayerSessionHelper().setPreferences(context, "shuffle", shfl);
-        }
+            shfl = new Gson().toJson(shuffleListSong);
+            playerSessionHelper.setPreferences(context, "shuffle", shfl);
+        }*/
         shufflePlaylist();
     }
 
@@ -139,9 +149,25 @@ public class ParseJsonPlaylist {
         return imgList;
     }
 
+    private void setShuffle(){
+        if (update){
+            shuffleListSong = listSong;
+            System.out.println("PLAY_MULTYSOURCE: shuffle");
+            Collections.shuffle(shuffleListSong);
+            shfl = new Gson().toJson(shuffleListSong);
+            playerSessionHelper.setPreferences(context, "shuffle", shfl);
+            shufflePlaylist();
+        }
+    }
+
     private void shufflePlaylist(){
         new PlayerSessionHelper().setPreferences(context, "setShuffle", "false");
-        shuffle = new PlayerSessionHelper().getPreferences(context, "shuffle");
+
+        if (update){
+            shuffle = shfl;
+        }else {
+            shuffle = playerSessionHelper.getPreferences(context, "shuffle");
+        }
 
         shuffleListSong = new ArrayList<>();
         shufflesongPlaylist = new ArrayList<>();
@@ -164,8 +190,8 @@ public class ParseJsonPlaylist {
             e.printStackTrace();
         }
 
-        System.out.println("Shuffleplayyy: "+songPlaylist);
-        System.out.println("Shuffleplayyy: "+shufflesongPlaylist);
+        System.out.println("Shuffleplayyy lama: "+songPlaylist);
+        System.out.println("Shuffleplayyy baru: "+shufflesongPlaylist);
     }
 
     public ArrayList<HashMap<String, String>> getShuffleListSong(){
