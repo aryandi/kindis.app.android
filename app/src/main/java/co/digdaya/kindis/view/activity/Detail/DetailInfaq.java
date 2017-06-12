@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +23,8 @@ import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.model.DetailInfaqModel;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.view.adapter.item.AdapterGalleryInfaq;
 import co.digdaya.kindis.view.dialog.DialogDonate;
 
 public class DetailInfaq extends BottomPlayerActivity{
@@ -32,7 +35,7 @@ public class DetailInfaq extends BottomPlayerActivity{
     TextView titleToolbar, titleDetail, description;
     WebView detailInfaq;
     ImageView backdrop;
-    RecyclerView gallery;
+    RecyclerView listGallery;
     DialogDonate dialogDonate;
     Dialog dialog;
     Gson gson;
@@ -55,7 +58,7 @@ public class DetailInfaq extends BottomPlayerActivity{
         description = (TextView) findViewById(R.id.description);
         detailInfaq = (WebView) findViewById(R.id.detail_infaq);
         backdrop = (ImageView) findViewById(R.id.backdrop);
-        gallery = (RecyclerView) findViewById(R.id.gallery_infaq);
+        listGallery = (RecyclerView) findViewById(R.id.gallery_infaq);
 
         dialogDonate = new DialogDonate(this, dialog);
         gson = new Gson();
@@ -133,5 +136,14 @@ public class DetailInfaq extends BottomPlayerActivity{
                 System.out.println("detailInfaq: "+html);
             }
         });*/
+        imageGallery();
+    }
+
+    private void imageGallery(){
+        listGallery.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        listGallery.setNestedScrollingEnabled(false);
+        listGallery.addItemDecoration(new MarginItemHorizontal(this));
+        AdapterGalleryInfaq adapterGalleryInfaq = new AdapterGalleryInfaq(getApplicationContext(), detailInfaqModel);
+        listGallery.setAdapter(adapterGalleryInfaq);
     }
 }

@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.model.DetailInfaqModel;
 import co.digdaya.kindis.view.holder.Item;
 
@@ -16,9 +20,9 @@ import co.digdaya.kindis.view.holder.Item;
 
 public class AdapterGalleryInfaq extends RecyclerView.Adapter<Item> {
     Context context;
-    DetailInfaqModel.Gallery gallery;
+    DetailInfaqModel gallery;
 
-    public AdapterGalleryInfaq(Context context, DetailInfaqModel.Gallery gallery) {
+    public AdapterGalleryInfaq(Context context, DetailInfaqModel gallery) {
         this.context = context;
         this.gallery = gallery;
     }
@@ -32,11 +36,17 @@ public class AdapterGalleryInfaq extends RecyclerView.Adapter<Item> {
 
     @Override
     public void onBindViewHolder(Item holder, int position) {
-
+        Glide.with(context)
+                .load(ApiHelper.BASE_URL_IMAGE+gallery.result.gallery.get(position).media_url)
+                .thumbnail( 0.1f )
+                .placeholder(R.drawable.ic_default_img)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return gallery.result.gallery.size();
     }
 }
