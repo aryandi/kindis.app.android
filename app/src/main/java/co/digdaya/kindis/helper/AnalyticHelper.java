@@ -18,7 +18,15 @@ public class AnalyticHelper {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
     }
 
-    public void logEvent(){
+    public void event(String track){
         Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "kindis");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, track);
+        logEvent(bundle);
+    }
+
+    private void logEvent(Bundle bundle){
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }

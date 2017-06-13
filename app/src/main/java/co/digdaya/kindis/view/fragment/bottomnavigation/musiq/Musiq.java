@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
+import co.digdaya.kindis.helper.AnalyticHelper;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckConnection;
 import co.digdaya.kindis.helper.SessionHelper;
@@ -71,6 +72,9 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        new AnalyticHelper(getActivity()).event("home/music");
+
         tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
