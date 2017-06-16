@@ -38,6 +38,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
     PlayerSessionHelper playerSessionHelper;
 
     public int layout;
+    public boolean showBottomPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,9 @@ public class BottomPlayerActivity extends AppCompatActivity {
 
         if (playerSessionHelper.getPreferences(getApplicationContext(), "file").isEmpty()){
             contBottomPlayer.setVisibility(View.GONE);
+            showBottomPlayer = false;
+        }else {
+            showBottomPlayer = true;
         }
 
         if (playerSessionHelper.getPreferences(getApplicationContext(), "pause").equals("true")){

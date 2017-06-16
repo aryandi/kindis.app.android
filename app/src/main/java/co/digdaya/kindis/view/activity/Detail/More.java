@@ -121,6 +121,14 @@ public class More extends BottomPlayerActivity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!showBottomPlayer){
+            listViewMore.setPadding(0,0,0,0);
+        }
+    }
+
     private void getDataMore(){
         new VolleyHelper().get(urlMore, new VolleyHelper.HttpListener<String>() {
             @Override
