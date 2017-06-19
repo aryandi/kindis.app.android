@@ -14,9 +14,8 @@
         android:layout_marginLeft="44dp"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="16dp"
-        android:text="Musiq Entertaining Your Soul"
         android:textColor="@color/white"
-        android:textSize="36sp"/>
+        android:textSize="@dimen/walkthrough_title"/>
 
     <co.digdaya.kindis.custom.TextViewRegular
         android:id="@+id/subtitle_walkthrough"

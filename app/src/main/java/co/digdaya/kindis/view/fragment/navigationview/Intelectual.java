@@ -21,12 +21,13 @@ import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.ParseHtml;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
+import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerStaticFragment;
 
 /**
  * Created by DELL on 5/20/2017.
  */
 
-public class Intelectual extends BottomPlayerFragment {
+public class Intelectual extends BottomPlayerStaticFragment{
     DrawerLayout drawer;
     ImageButton btnDrawer;
     WebView viewTerms;

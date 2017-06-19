@@ -22,11 +22,12 @@ import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.ParseHtml;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
+import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerStaticFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Cookies extends BottomPlayerFragment {
+public class Cookies extends BottomPlayerStaticFragment {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     WebView viewTerms;

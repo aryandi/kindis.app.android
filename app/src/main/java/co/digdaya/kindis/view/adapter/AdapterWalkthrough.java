@@ -63,18 +63,6 @@ public class AdapterWalkthrough extends PagerAdapter {
         TextView btn = (TextView) view.findViewById(R.id.btn_skip);
         TextView subTitle = (TextView) view.findViewById(R.id.subtitle_walkthrough);
 
-        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
-        switch (metrics.densityDpi){
-            case DisplayMetrics.DENSITY_MEDIUM :
-                title.setTextSize(22);
-                subTitle.setTextSize(10);
-                break;
-            case DisplayMetrics.DENSITY_HIGH :
-                title.setTextSize(24);
-                subTitle.setTextSize(12);
-                break;
-        }
-
         layout.setBackgroundResource(img[position]);
         title.setText(titles[position]);
         subTitle.setText(subtitles[position]);

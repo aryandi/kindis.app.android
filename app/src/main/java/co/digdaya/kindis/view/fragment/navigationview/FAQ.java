@@ -25,12 +25,13 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
 import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerFragment;
+import co.digdaya.kindis.util.BaseBottomPlayer.BottomPlayerStaticFragment;
 import co.digdaya.kindis.view.adapter.AdapterFAQ;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FAQ extends BottomPlayerFragment {
+public class FAQ extends BottomPlayerStaticFragment {
     DrawerLayout drawer;
     ImageButton btnDrawer;
     ArrayList<HashMap<String, String>> listFAQ = new ArrayList<>();
