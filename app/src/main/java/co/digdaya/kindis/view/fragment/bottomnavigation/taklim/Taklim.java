@@ -50,7 +50,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     ProgressDialog loading;
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
-    String[] title = {"SYIAR","KISAH","MUROTTAL"};
+    String[] title = {"Syiar","Kisah","Murottal"};
 
     CircleIndicator indicator;
     public Taklim() {
@@ -76,9 +76,9 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("SYIAR"));
-        tabLayout.addTab(tabLayout.newTab().setText("KISAH"));
-        tabLayout.addTab(tabLayout.newTab().setText("MUROTTAL"));
+        tabLayout.addTab(tabLayout.newTab().setText("Syiar"));
+        tabLayout.addTab(tabLayout.newTab().setText("Kisah"));
+        tabLayout.addTab(tabLayout.newTab().setText("Murottal"));
 
         emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
@@ -148,10 +148,11 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
     private void getBanner(){
         listBanner.clear();
-        new VolleyHelper().get(ApiHelper.ADS_BANNER, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=9", new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
+                    System.out.println("jsonbannertaklim: "+response);
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){

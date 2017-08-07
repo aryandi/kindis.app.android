@@ -78,10 +78,10 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
         infaqFragment = new Infaq();
         playlistFragment = new NewPlaylist();
 
-        AHBottomNavigationItem musiq = new AHBottomNavigationItem(R.string.musiq, R.drawable.ic_explore, R.color.white);
-        AHBottomNavigationItem taklim = new AHBottomNavigationItem(R.string.taklim, R.drawable.ic_taklim, R.color.white);
-        AHBottomNavigationItem infaq = new AHBottomNavigationItem(R.string.infaq, R.drawable.ic_infaq, R.color.white);
-        AHBottomNavigationItem playlist = new AHBottomNavigationItem(R.string.playlist, R.drawable.ic_playlist, R.color.white);
+        AHBottomNavigationItem musiq = new AHBottomNavigationItem(R.string.musiq, R.drawable.ic_explore, R.color.new_white);
+        AHBottomNavigationItem taklim = new AHBottomNavigationItem(R.string.taklim, R.drawable.ic_taklim, R.color.new_white);
+        AHBottomNavigationItem infaq = new AHBottomNavigationItem(R.string.infaq, R.drawable.ic_infaq, R.color.new_white);
+        AHBottomNavigationItem playlist = new AHBottomNavigationItem(R.string.playlist, R.drawable.ic_playlist, R.color.new_white);
 
         bottomNavigation.addItem(musiq);
         bottomNavigation.addItem(taklim);
@@ -89,7 +89,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
         bottomNavigation.addItem(playlist);
 
         bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#212121"));
-        bottomNavigation.setAccentColor(Color.parseColor("#ffffff"));
+        bottomNavigation.setAccentColor(Color.parseColor("#cccccc"));
         bottomNavigation.setInactiveColor(Color.parseColor("#626262"));
         bottomNavigation.setForceTint(true);
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);

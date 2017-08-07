@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/new_white"
         android:textSize="14sp" />
 </RelativeLayout>

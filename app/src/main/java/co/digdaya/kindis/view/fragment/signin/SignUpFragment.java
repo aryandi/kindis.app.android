@@ -181,7 +181,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
-                                Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
                                 tabLayout.getTabAt(0).select();
                             }else {
                                 Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();

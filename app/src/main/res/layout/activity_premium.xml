@@ -4,16 +4,21 @@
     android:id="@+id/activity_premium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_bckgrnd3"
-    android:paddingLeft="26dp"
-    android:paddingTop="57dp"
+    android:background="@color/black"
     tools:context="co.digdaya.kindis.view.activity.Premium">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/kindis_picture_premium"
+        android:layout_above="@id/description"/>
     <ImageView
         android:id="@+id/ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
+        android:layout_above="@id/description"
         android:src="@drawable/img_premium"/>
 
     <co.digdaya.kindis.custom.TextViewSemiBold
@@ -21,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="40dp"
+        android:paddingLeft="26dp"
         android:layout_above="@+id/list"
         android:layout_marginBottom="29dp"
         android:text="Get Premium now"
@@ -33,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_activity"
         android:layout_marginBottom="62dp"
+        android:paddingLeft="26dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,7 +132,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:gravity="center"
-            android:text="CANCEL"
+            android:text="Upgrade Later"
             android:textSize="16sp"
             android:textColor="@color/white"/>
         <co.digdaya.kindis.custom.TextViewSemiBold
@@ -136,7 +143,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:gravity="center"
-            android:text="OK"
+            android:text="Upgrade Now"
             android:textSize="16sp"
             android:textColor="@color/white"/>
     </LinearLayout>

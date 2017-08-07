@@ -53,7 +53,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     ProgressDialog loading;
 
     ArrayList<HashMap<String, String>> listBanner = new ArrayList<>();
-    String[] title = {"DISCOVER","RECENTLY","GENRE"};
+    String[] title = {"Discover","Recently","Genre"};
 
     CircleIndicator indicator;
     Gson gson;
@@ -84,9 +84,9 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
 
         //tab
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("DISCOVER"));
-        tabLayout.addTab(tabLayout.newTab().setText("RECENTLY"));
-        tabLayout.addTab(tabLayout.newTab().setText("GENRE"));
+        tabLayout.addTab(tabLayout.newTab().setText("Discover"));
+        tabLayout.addTab(tabLayout.newTab().setText("Recently"));
+        tabLayout.addTab(tabLayout.newTab().setText("Genre"));
 
         emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
         refresh = (Button) view.findViewById(R.id.btn_refresh);
@@ -158,7 +158,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
 
     private void getBanner(){
         listBanner.clear();
-        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=1", new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){

@@ -134,7 +134,8 @@
             android:name=".view.activity.Detail.More"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".view.activity.Premium" />
+        <activity android:name=".view.activity.Premium"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.Detail.DetailOffline"/>
 
         <service

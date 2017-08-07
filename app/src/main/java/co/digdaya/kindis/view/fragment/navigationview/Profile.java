@@ -7,11 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,16 +49,32 @@ import com.google.android.gms.common.api.Status;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckPermission;
+import co.digdaya.kindis.helper.ImageFilePath;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
@@ -402,76 +420,96 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("onActivityResult: "+requestCode+" "+resultCode);
         if (requestCode==0){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            photoProfile.setImageBitmap(imageBitmap);
-            uploadImage(imageBitmap);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            photoProfile.setImageBitmap(photo);
+            Uri tempUri = getImageUri(getContext(), photo);
+            uploadImage(getRealPathFromURI(tempUri));
         }else if (requestCode==1){
             Uri uri = data.getData();
             try {
                 Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 photoProfile.setImageBitmap(imageBitmap);
-                uploadImage(imageBitmap);
+                uploadImage(ImageFilePath.getPath(getContext(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void uploadImage(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        final byte[] imageBytes = baos.toByteArray();
+    private void uploadImage(final String path){
 
-        new AsyncTask<Void, Void, Void>() {
+        final String id = sessionHelper.getPreferences(getContext(), "user_id");
+        final String token = sessionHelper.getPreferences(getContext(), "token_access");
+
+
+        new AsyncTask<String, Integer, String>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                OkHttpClient client = new OkHttpClient();
+            protected String doInBackground(String... strings) {
+                float totalSize = 0;
+                String responseString;
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(ApiHelper.UPDATE_AVATAR);
 
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("user_id", sessionHelper.getPreferences(getContext(), "user_id"))
-                        .addFormDataPart("token_access", sessionHelper.getPreferences(getContext(), "token_access"))
-                        .addFormDataPart("file", "IMG_"+System.currentTimeMillis()+ ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
-                        .build();
-
-                Request request = new Request.Builder()
-                        .url(ApiHelper.UPDATE_AVATAR)
-                        .post(requestBody)
-                        .build();
-
-                Response response = null;
                 try {
-                    response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        Log.d("uploadImage", "doInBackground: upload success");
-                        Log.d("uploadImage", response.toString());
-                        Log.d("uploadImage", response.body().string());
+                    MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                    File sourceFile = new File(path);
+                    FileBody fb =  new FileBody(sourceFile, sourceFile.getName(), "image/jpeg", "UTF-8");
+                    entity.addPart("file", fb);
+
+                    entity.addPart("user_id", new StringBody(id));
+                    entity.addPart("token_access", new StringBody(token));
+
+                    HttpParams httpparams = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpparams, 6000000);
+                    HttpConnectionParams.setSoTimeout(httpparams, 6000000);
+                    totalSize = entity.getContentLength();
+                    httppost.setEntity(entity);
+
+                    // Making server call
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity r_entity = response.getEntity();
+
+                    int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == 200) {
+                        // Server response
+                        responseString = EntityUtils.toString(r_entity);
+                        System.out.print("RESPONSEedit : " + responseString);
+
                     } else {
-                        Log.d("uploadImage", "doInBackground: upload failed");
+                        responseString = "Error occurred! Http Status Code: "
+                                + statusCode;
                     }
+
+
+                } catch (ClientProtocolException e) {
+                    responseString = "error";
                 } catch (IOException e) {
+                    responseString = "error";
+                }
+
+                return responseString;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    if (result.getBoolean("status")){
+                        JSONObject urlPhoto = result.getJSONObject("result");
+                        String newPath = urlPhoto.getString("avatar").replaceAll("(?<!https:)//", "/");
+                        sessionHelper.setPreferences(getContext(), "profile_picture", newPath);
+                        Toast.makeText(getContext(), "Upload Success", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                return null;
+                super.onPostExecute(s);
             }
-
 
         }.execute();
-
-        /*HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", sessionHelper.getPreferences(getContext(),"user_id"));
-        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
-        param.put("file", imageString);
-
-        new VolleyHelper().post(ApiHelper.UPDATE_AVATAR, param, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
-                System.out.println("uploadImage: "+ response);
-                System.out.println("uploadImage: "+ status);
-                System.out.println("uploadImage: "+ message);
-            }
-        });*/
     }
 
     public class LogOut extends AsyncTask<String, String, String>{
@@ -490,5 +528,19 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             });
             return null;
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, sessionHelper.getPreferences(getContext(), "user_id"), null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 }

@@ -13,6 +13,7 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "co.digdaya.kindis"
         minSdkVersion 16
@@ -41,6 +42,18 @@ android {
             buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-CLIENT-production-client-key\""
         }*/
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -73,6 +86,10 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.2.6'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
+    }
+    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3') {
+        exclude module: "httpclient"
     }
 }
 

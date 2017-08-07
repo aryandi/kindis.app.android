@@ -187,10 +187,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             profileStatus.setText("PREMIUM");
             profileStatus.setBackground(getDrawable(R.drawable.button_rounded_orange));
         }
-    }
-
-    private void initSidebar(){
-        System.out.println("profile_picture: "+sessionHelper.getPreferences(getApplicationContext(), "profile_picture"));
 
         if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length()>10){
             Glide.with(getApplicationContext())
@@ -199,7 +195,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                     .centerCrop()
                     .into(profilePicture);
         }
+    }
 
+    private void initSidebar(){
         if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
             menuPremium.setVisibility(View.GONE);
         }
