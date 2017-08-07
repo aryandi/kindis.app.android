@@ -14,4 +14,8 @@ public class Constanta {
     public static final String INTENT_ACTION_DOWNLOAD_PLAYLIST_ID = "download_playlist_id";
     public static final String INTENT_ACTION_DOWNLOAD_DESC = "desc";
     public static final String INTENT_ACTION_DOWNLOAD_IMAGE = "image";
+
+    public static final String INTENT_EXTRA_IMAGE = "INTENT_EXTRA_IMAGE";
+    public static final String INTENT_EXTRA_TITLE = "INTENT_EXTRA_TITLE";
+    public static final String INTENT_EXTRA_SUBTITLE = "INTENT_EXTRA_SUBTITLE";
 }

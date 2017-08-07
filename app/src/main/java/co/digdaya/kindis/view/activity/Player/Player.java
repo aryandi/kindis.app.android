@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -188,6 +189,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         super.onResume();
 
         isInFront = true;
+        title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        title.setSelected(true);
+        title.setSingleLine(true);
         title.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         subtitle.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
         if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
@@ -268,7 +272,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         }else if (view.getId() == R.id.btn_songlis){
-            dialogSingleMenu.showDialog();
+            //dialogSingleMenu.showDialog();
+            Intent intent = new Intent(this, SongMenu.class);
+            intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+            intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+            intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+            startActivity(intent);
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);
             intent.putExtra("title", titleActivity.getText());
