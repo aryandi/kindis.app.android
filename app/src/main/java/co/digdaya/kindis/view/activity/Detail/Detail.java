@@ -132,8 +132,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
         backDrop.setColorFilter(Color.parseColor("#70000000"));
 
-        types = getIntent().getStringExtra("type");
-        if (types.equals("album")){
+        types = getIntent().getStringExtra(Constanta.INTENT_EXTRA_TYPE);
+        if (types.equals(Constanta.INTENT_EXTRA_VALUE_ALBUM)){
             if (premiumUser==0){
                 btnPremium.setVisibility(View.GONE);
             }else {

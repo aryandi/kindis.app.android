@@ -8,6 +8,7 @@
     tools:context="co.digdaya.kindis.view.activity.Player.SongMenu">
 
     <ImageButton
+        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_keyboard_arrow_left"
@@ -42,12 +43,117 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/white"
-            android:layout_marginTop="8dp"/>
-
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="14dp"/>
+        <LinearLayout
+            android:id="@+id/btn_add_to_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_panorama_fish_eye"
+                android:layout_marginRight="8dp"/>
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="ADD TO PLAYLIST"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_save_offline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_panorama_fish_eye"
+                android:layout_marginRight="8dp"/>
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="SAVE OFFLINE"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_panorama_fish_eye"
+                android:layout_marginRight="8dp"/>
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="SHARE"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_go_to_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_panorama_fish_eye"
+                android:layout_marginRight="8dp"/>
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="GO TO ARTIST"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_go_to_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_panorama_fish_eye"
+                android:layout_marginRight="8dp"/>
+            <co.digdaya.kindis.custom.TextViewRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="GO TO ALBUM"/>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/white"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="14dp"/>
     </LinearLayout>
 </RelativeLayout>

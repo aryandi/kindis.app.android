@@ -35,6 +35,7 @@ import co.digdaya.kindis.databse.KindisDBHelper;
 import co.digdaya.kindis.databse.KindisDBname;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.CheckAppRunning;
+import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.helper.PlayerActionHelper;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.helper.SessionHelper;
@@ -400,6 +401,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "artist_id", result.getString("artist_id"));
                                 playerSessionHelper.setPreferences(getApplicationContext(), "share_link", result.getString("share_link"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), Constanta.PLAYERSESSION_ALBUM_ID, result.getString("album_id"));
                                 if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals(result.getString("is_premium")) || sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
                                     playMediaPlayer();
                                     title = result.getString("title");

@@ -18,4 +18,10 @@ public class Constanta {
     public static final String INTENT_EXTRA_IMAGE = "INTENT_EXTRA_IMAGE";
     public static final String INTENT_EXTRA_TITLE = "INTENT_EXTRA_TITLE";
     public static final String INTENT_EXTRA_SUBTITLE = "INTENT_EXTRA_SUBTITLE";
+    public static final String INTENT_EXTRA_TYPE = "type";
+
+
+    public static final String INTENT_EXTRA_VALUE_ALBUM = "album";
+
+    public static final String PLAYERSESSION_ALBUM_ID = "PLAYERSESSION_ALBUM_ID";
 }

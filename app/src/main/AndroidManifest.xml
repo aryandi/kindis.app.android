@@ -144,7 +144,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".view.activity.Player.SongMenu"></activity>
+        <activity android:name=".view.activity.Player.SongMenu"
+            android:noHistory="true"/>
     </application>
 
 </manifest>
