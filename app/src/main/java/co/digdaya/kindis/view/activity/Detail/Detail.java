@@ -490,7 +490,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
                 public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
-                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, shareLink, false).showDialog();
+                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
                 }
             });
         }

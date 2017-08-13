@@ -126,7 +126,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                     @Override
                     public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
-                        new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false).showDialog();
+                        new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
                     }
                 });
             }
@@ -143,7 +143,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_menu_play:
-                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false).showDialog();
+                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false, false).showDialog();
                 break;
         }
     }

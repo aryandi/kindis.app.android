@@ -55,7 +55,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     Dialog dialogPlaylis, dialogPremium;
     DialogGetPremium dialogGetPremium;
-    DialogSingleMenu dialogSingleMenu;
     ParseJsonPlaylist parseJsonPlaylist;
 
     int index, playlistPosition;
@@ -80,7 +79,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         songPlaylist = new ArrayList<>();
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
-        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -277,6 +275,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
             intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
             intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+            intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
             startActivity(intent);
         }else if (view.getId() == R.id.btn_list){
             Intent intent = new Intent(this, ListSongPlayer.class);

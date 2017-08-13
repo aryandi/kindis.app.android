@@ -1,5 +1,6 @@
 package co.digdaya.kindis.view.activity.Player;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import co.digdaya.kindis.helper.Constanta;
 import co.digdaya.kindis.helper.PlayerSessionHelper;
 import co.digdaya.kindis.view.activity.Detail.Detail;
 import co.digdaya.kindis.view.activity.Detail.DetailArtist;
+import co.digdaya.kindis.view.dialog.DialogSingleMenu;
 
 public class SongMenu extends AppCompatActivity implements View.OnClickListener {
     ImageView image;
@@ -27,6 +29,8 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
     LinearLayout btnAddToPlaylist, btnSaveOffline, btnShare, btnGoToArtist, btnGoToAlbum;
 
     PlayerSessionHelper playerSessionHelper;
+    DialogSingleMenu dialogSingleMenu;
+    Dialog dialogPlaylis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,8 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
                 .into(image);
         title.setText(getIntent().getStringExtra(Constanta.INTENT_EXTRA_TITLE));
         subtitle.setText(getIntent().getStringExtra(Constanta.INTENT_EXTRA_SUBTITLE));
+
+        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID), null, null, true, true);
     }
 
 
@@ -76,6 +82,7 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
                 finish();
                 break;
             case R.id.btn_add_to_playlist:
+                dialogSingleMenu.showDialog();
                 break;
             case R.id.btn_save_offline:
                 break;
