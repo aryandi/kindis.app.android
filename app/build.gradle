@@ -18,7 +18,7 @@ android {
         applicationId "co.digdaya.kindis"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 9
+        versionCode 10
         versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

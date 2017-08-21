@@ -6,7 +6,6 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -27,9 +26,7 @@ import co.digdaya.kindis.R;
 import co.digdaya.kindis.helper.ApiHelper;
 import co.digdaya.kindis.helper.SessionHelper;
 import co.digdaya.kindis.helper.VolleyHelper;
-import co.digdaya.kindis.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.util.BackgroundProses.ResultPayment;
-import co.digdaya.kindis.view.activity.Premium;
 
 /**
  * Created by DELL on 4/9/2017.
