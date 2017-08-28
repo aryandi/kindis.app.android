@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="co.digdaya.kindis.view.fragment.navigationview.SaveOffline">
+    tools:context=".view.fragment.navigationview.SaveOffline">
 
     <LinearLayout
         android:id="@+id/cont_toolbar"
@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_drawer"
             android:background="@android:color/transparent"/>
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/title"
             android:layout_toRightOf="@+id/btn_drawer"
             android:layout_width="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_width="96dp"
     android:layout_height="96dp"
     android:background="@drawable/background_genre"
-    tools:context="co.digdaya.kindis.view.adapter.item.AdapterGenre">
+    tools:context=".view.adapter.item.AdapterGenre">
 
     <ImageView
         android:id="@+id/ic_genre"
@@ -21,7 +21,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/medium_sea_green"
         android:layout_marginBottom="6dp"/>
-    <co.digdaya.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/title_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

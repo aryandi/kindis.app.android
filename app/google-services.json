@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:153105834235:android:ae36f6b99ec1ec6b",
         "android_client_info": {
-          "package_name": "co.digdaya.kindis"
+          "package_name": "co.digdaya.kindis.live"
         }
       },
       "oauth_client": [
@@ -22,7 +22,7 @@
           "client_id": "153105834235-a2epdt5gbr8c1omvnfjgpnjsf7uk9cgv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "co.digdaya.kindis",
+            "package_name": "co.digdaya.kindis.live",
             "certificate_hash": "78b9b97771ce64ac84d27f31aa0ad412a89a0898"
           }
         },

@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="12dp">
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:id="@+id/title_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/artist_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

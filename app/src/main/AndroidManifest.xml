@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.digdaya.kindis">
+    package="co.digdaya.kindis.live">
 
     <supports-screens
         android:anyDensity="true"
@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
-        android:name="co.digdaya.kindis.ApplicationMain"
+        android:name=".ApplicationMain"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -36,7 +36,7 @@
             android:value="c6229c8d29c990a9c1f7b6255576191c79c5d767" />
 
         <service
-            android:name="co.digdaya.kindis.service.PlayerService"
+            android:name=".service.PlayerService"
             android:enabled="true"
             android:exported="true" />
 
@@ -45,7 +45,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Splash.SplashScreen"
+            android:name=".view.activity.Splash.SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,12 +54,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="co.digdaya.kindis.view.activity.Splash.Walkthrough"
+            android:name=".view.activity.Splash.Walkthrough"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.SignInActivity"
+            android:name=".view.activity.Account.SignInActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
@@ -74,77 +74,77 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.ForgotPassword"
+            android:name=".view.activity.Account.ForgotPassword"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Splash.Bismillah"
+            android:name=".view.activity.Splash.Bismillah"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Main"
+            android:name=".view.activity.Main"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Player.Player"
+            android:name=".view.activity.Player.Player"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Search"
+            android:name=".view.activity.Search"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Detail.Detail"
+            android:name=".view.activity.Detail.Detail"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Detail.DetailArtist"
+            android:name=".view.activity.Detail.DetailArtist"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Detail.DetailGenre"
+            android:name=".view.activity.Detail.DetailGenre"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Player.ListSongPlayer"
+            android:name=".view.activity.Player.ListSongPlayer"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.ChangeEmail"
+            android:name=".view.activity.Account.ChangeEmail"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.ChangePassword"
+            android:name=".view.activity.Account.ChangePassword"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Detail.DetailInfaq"
+            android:name=".view.activity.Detail.DetailInfaq"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.Register"
+            android:name=".view.activity.Account.Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Account.TransactionHistory"
+            android:name=".view.activity.Account.TransactionHistory"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Detail.More"
+            android:name=".view.activity.Detail.More"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="co.digdaya.kindis.view.activity.Premium"
+            android:name=".view.activity.Premium"
             android:screenOrientation="portrait" />
-        <activity android:name="co.digdaya.kindis.view.activity.Detail.DetailOffline" />
+        <activity android:name=".view.activity.Detail.DetailOffline" />
 
         <service
-            android:name="co.digdaya.kindis.service.DownloadService"
+            android:name=".service.DownloadService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name="co.digdaya.kindis.view.activity.Player.SongMenu"
+        <activity android:name=".view.activity.Player.SongMenu"
             android:noHistory="true"/>
     </application>
 

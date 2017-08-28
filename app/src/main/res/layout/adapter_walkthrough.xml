@@ -6,7 +6,7 @@
     android:id="@+id/walkthrough"
     android:background="@drawable/bg_walkthrough1">
 
-    <co.digdaya.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/title_walkthrough"
         android:layout_above="@+id/subtitle_walkthrough"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/walkthrough_title"/>
 
-    <co.digdaya.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:id="@+id/subtitle_walkthrough"
         android:layout_above="@+id/btn_skip"
         android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
         android:textColor="@color/white"
         android:textSize="14sp"/>
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/btn_skip"
         android:layout_marginBottom="34dp"
         android:layout_width="wrap_content"

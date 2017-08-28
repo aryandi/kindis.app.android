@@ -5,7 +5,7 @@
     android:padding="16dp"
     android:background="@drawable/background">
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/btn_goto_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:text="Goto Artist"
         android:textColor="@color/white"/>
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/btn_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:text="Share"
         android:textColor="@color/white"/>
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/btn_add_to_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

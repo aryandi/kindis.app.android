@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="co.digdaya.kindis.view.activity.Account.Register">
+    tools:context=".view.activity.Account.Register">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +25,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:paddingBottom="16dp">
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_nama"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -46,7 +46,7 @@
                 android:inputType="textPersonName"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -68,7 +68,7 @@
                 android:inputType="textEmailAddress"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -90,7 +90,7 @@
                 android:inputType="number"
                 android:background="@drawable/edittext_normal"/>
 
-            <!--<co.digdaya.kindis.custom.TextViewRegular
+            <!--<co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.ShowHidePasswordEditTextRegular
+            <co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -114,7 +114,7 @@
                 app:tint_color="@color/white"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_retype"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.ShowHidePasswordEditTextRegular
+            <co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular
                 android:id="@+id/input_retype"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -138,7 +138,7 @@
                 app:tint_color="@color/white"
                 android:background="@drawable/edittext_normal"/>-->
 
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -160,7 +160,7 @@
                 android:textIsSelectable="true"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -175,7 +175,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edittext_normal"
                 android:orientation="horizontal">
-                <co.digdaya.kindis.custom.RadioButtonRegular
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
                     android:id="@+id/male"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -187,7 +187,7 @@
                     android:textSize="14sp"
                     android:checked="true"
                     android:background="@drawable/radiobutton_listener" />
-                <co.digdaya.kindis.custom.RadioButtonRegular
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
                     android:id="@+id/female"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -199,7 +199,7 @@
                     android:background="@drawable/radiobutton_listener"/>
             </RadioGroup>
 
-            <co.digdaya.kindis.custom.ButtonSemiBold
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
                 android:id="@+id/btn_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

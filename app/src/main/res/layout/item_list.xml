@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/text_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
         android:textSize="14sp"
         android:textColor="@color/new_white"/>
 
-    <co.digdaya.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:id="@+id/btn_more_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

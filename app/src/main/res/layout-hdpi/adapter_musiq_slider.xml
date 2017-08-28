@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textColor="@color/white"
         android:visibility="gone"/>
 
-    <co.digdaya.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/subtitle"
         android:layout_below="@+id/title"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:textColor="@color/white"
         android:visibility="gone"/>
 
-    <co.digdaya.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.live.custom.ButtonSemiBold
         android:id="@+id/btn_donate"
         android:layout_below="@+id/subtitle"
         android:layout_width="wrap_content"

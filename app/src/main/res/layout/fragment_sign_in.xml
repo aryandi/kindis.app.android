@@ -7,7 +7,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:background="@drawable/background"
-    tools:context="co.digdaya.kindis.view.fragment.signin.SignInFragment">
+    tools:context=".view.fragment.signin.SignInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
-        <co.digdaya.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/label_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <co.digdaya.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/label_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <co.digdaya.kindis.custom.EditTextRegular
+        <co.digdaya.kindis.live.custom.EditTextRegular
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_error"
                 android:layout_marginRight="8dp"/>
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/error_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                 android:textColor="@color/safety_orange"/>
         </LinearLayout>
 
-        <co.digdaya.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/label_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
             android:textSize="11sp"
             android:textColor="@color/white"/>
 
-        <co.digdaya.kindis.custom.ShowHidePasswordEditTextRegular
+        <co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -119,7 +119,7 @@
             app:tint_color="@color/white"
             android:background="@drawable/edittext_normal"/>
 
-        <co.digdaya.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             android:textColor="@color/white"
             android:clickable="true"/>
 
-        <co.digdaya.kindis.custom.ButtonSemiBold
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

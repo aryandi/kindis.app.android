@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.digdaya.kindis.view.fragment.navigationview.Notification">
+    tools:context=".view.fragment.navigationview.Notification">
 
     <LinearLayout
         android:id="@+id/cont_toolbar"
@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_drawer"
             android:background="@android:color/transparent"/>
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/title_bar"
             android:layout_toRightOf="@+id/btn_drawer"
             android:layout_width="wrap_content"

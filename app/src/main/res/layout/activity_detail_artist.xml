@@ -30,7 +30,7 @@
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 android:layout_gravity="top">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/title_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:paddingTop="45dp"
             android:paddingBottom="16dp">
 
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_marginTop="16dp"
                 android:paddingLeft="16dp"
                 android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
         android:orientation="horizontal"
         app:layout_anchor="@+id/htab_appbar"
         app:layout_anchorGravity="bottom|center">
-        <co.digdaya.kindis.custom.ButtonSemiBold
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
             android:id="@+id/btn_play_all"
             android:layout_width="108dp"
             android:layout_height="40dp"

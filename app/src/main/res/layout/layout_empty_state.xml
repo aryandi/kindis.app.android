@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_emptystate" />
 
-    <co.digdaya.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/title"
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         android:textColor="@color/dark_gray"
         android:text="Something’s Wrong" />
 
-    <co.digdaya.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:id="@+id/subtitle"
         android:layout_marginTop="4dp"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:gravity="center"
         android:text="Your connection might be interrupted. Please try refreshing."/>
 
-    <co.digdaya.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.live.custom.ButtonSemiBold
         android:id="@+id/btn_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

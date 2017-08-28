@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background"
-    tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.musiq.Discover">
+    tools:context=".view.fragment.bottomnavigation.musiq.Discover">
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"

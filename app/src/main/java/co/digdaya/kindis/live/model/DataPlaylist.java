@@ -1,0 +1,28 @@
+package co.digdaya.kindis.live.model;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+/**
+ * Created by DELL on 3/31/2017.
+ */
+
+public class DataPlaylist {
+
+    @SerializedName("data")
+    public List<Data> data;
+
+    public static class Data {
+        @SerializedName("uid")
+        public String uid;
+        @SerializedName("name")
+        public String name;
+        @SerializedName("image")
+        public String image;
+        @SerializedName("is_premium")
+        public String is_premium;
+    }
+
+
+}

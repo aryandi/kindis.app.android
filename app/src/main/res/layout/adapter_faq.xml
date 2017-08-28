@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_marginBottom="16dp">
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/title_faq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

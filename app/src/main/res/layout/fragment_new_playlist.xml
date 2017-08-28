@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.playlist.NewPlaylist">
+    tools:context=".view.fragment.bottomnavigation.playlist.NewPlaylist">
     <android.support.design.widget.TabLayout
         android:id="@+id/htab_tabs"
         android:layout_width="match_parent"

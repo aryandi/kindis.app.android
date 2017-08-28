@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="co.digdaya.kindis.view.fragment.navigationview.Profile">
+    tools:context=".view.fragment.navigationview.Profile">
 
     <RelativeLayout
         android:id="@+id/profile_header"
@@ -20,7 +20,7 @@
             android:src="@drawable/ic_drawer"
             android:background="@android:color/transparent"/>
 
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/title"
             android:layout_toRightOf="@+id/btn_drawer"
             android:layout_width="wrap_content"
@@ -74,14 +74,14 @@
             android:paddingRight="24dp"
             android:orientation="vertical">
 
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="11sp"
                 android:text="FULL NAME"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_nama"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -96,7 +96,7 @@
                 android:enabled="false"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:text="BIRTHDAY"
                 android:textColor="@color/white"/>
 
-            <co.digdaya.kindis.custom.EditTextRegular
+            <co.digdaya.kindis.live.custom.EditTextRegular
                 android:id="@+id/input_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -120,7 +120,7 @@
                 android:background="@drawable/edittext_normal"/>
 
 
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edittext_normal"
                 android:orientation="horizontal">
-                <co.digdaya.kindis.custom.RadioButtonRegular
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
                     android:id="@+id/male"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -147,7 +147,7 @@
                     android:textSize="14sp"
                     android:enabled="false"
                     android:background="@drawable/radiobutton_listener" />
-                <co.digdaya.kindis.custom.RadioButtonRegular
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
                     android:id="@+id/female"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -160,7 +160,7 @@
                     android:background="@drawable/radiobutton_listener"/>
             </RadioGroup>
 
-            <co.digdaya.kindis.custom.ButtonSemiBold
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
                 android:id="@+id/btn_save"
                 android:layout_marginTop="32dp"
                 android:layout_width="160dp"
@@ -173,7 +173,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <co.digdaya.kindis.custom.ButtonSemiBold
+    <co.digdaya.kindis.live.custom.ButtonSemiBold
         android:id="@+id/profile_status"
         android:layout_below="@+id/profile_header"
         android:layout_width="132dp"

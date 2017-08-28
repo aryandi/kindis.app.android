@@ -40,7 +40,7 @@
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 android:layout_gravity="top">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/title_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="exitUntilCollapsed">
-                <co.digdaya.kindis.custom.TextViewBold
+                <co.digdaya.kindis.live.custom.TextViewBold
                     android:id="@+id/title_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:layout_marginRight="32dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="?attr/actionBarSize"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/description"
                     android:layout_below="@+id/title_detail"
                     android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:layout_marginTop="32dp"
                 android:visibility="gone"
                 android:orientation="vertical">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/label_artist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                     android:textSize="14sp"
                     android:text="ARTIST"
                     android:textColor="@color/white"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/btn_more_artist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                 android:layout_marginTop="32dp"
                 android:visibility="gone"
                 android:orientation="vertical">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/label_playlis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                     android:textSize="14sp"
                     android:text="PLAYLIST"
                     android:textColor="@color/white"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/btn_more_playlist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 android:layout_marginTop="32dp"
                 android:visibility="gone"
                 android:orientation="vertical">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/label_album"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                     android:textSize="14sp"
                     android:text="ALBUM"
                     android:textColor="@color/white"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/btn_more_album"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
                 android:layout_marginTop="32dp"
                 android:visibility="gone"
                 android:orientation="vertical">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/label_single"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                     android:textSize="14sp"
                     android:text="SINGLE"
                     android:textColor="@color/white"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/btn_more_single"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -243,7 +243,7 @@
         android:orientation="horizontal"
         app:layout_anchor="@+id/htab_appbar"
         app:layout_anchorGravity="bottom|center">
-        <co.digdaya.kindis.custom.ButtonSemiBold
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
             android:id="@+id/btn_play_all"
             android:layout_width="108dp"
             android:layout_height="40dp"

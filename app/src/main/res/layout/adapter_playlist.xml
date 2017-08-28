@@ -7,9 +7,9 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:background="@android:color/transparent"
-    tools:context="co.digdaya.kindis.view.adapter.item.AdapterPlaylist">
+    tools:context=".view.adapter.item.AdapterPlaylist">
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

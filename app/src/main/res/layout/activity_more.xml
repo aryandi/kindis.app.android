@@ -4,7 +4,7 @@
     android:id="@+id/activity_more"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.digdaya.kindis.view.activity.Detail.More">
+    tools:context=".view.activity.Detail.More">
 
     <LinearLayout
         android:id="@+id/cont_toolbar"
@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_arrow_back"
             android:background="@android:color/transparent"/>
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

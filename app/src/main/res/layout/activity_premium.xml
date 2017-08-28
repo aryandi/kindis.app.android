@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="co.digdaya.kindis.view.activity.Premium">
+    tools:context=".view.activity.Premium">
 
     <ImageView
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:layout_above="@id/description"
         android:src="@drawable/img_premium"/>
 
-    <co.digdaya.kindis.custom.TextViewSemiBold
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/ic_ceklist"/>
 
-            <co.digdaya.kindis.custom.TextViewSemiBold
+            <co.digdaya.kindis.live.custom.TextViewSemiBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -71,7 +71,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/ic_ceklist"/>
 
-            <co.digdaya.kindis.custom.TextViewSemiBold
+            <co.digdaya.kindis.live.custom.TextViewSemiBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -90,7 +90,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/ic_ceklist"/>
 
-            <co.digdaya.kindis.custom.TextViewSemiBold
+            <co.digdaya.kindis.live.custom.TextViewSemiBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -109,7 +109,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/ic_ceklist"/>
 
-            <co.digdaya.kindis.custom.TextViewSemiBold
+            <co.digdaya.kindis.live.custom.TextViewSemiBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -135,7 +135,7 @@
             android:text="Upgrade Later"
             android:textSize="16sp"
             android:textColor="@color/white"/>
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
             android:layout_weight="1"

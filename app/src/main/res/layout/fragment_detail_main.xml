@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="co.digdaya.kindis.view.fragment.detail.DetailMain">
+    tools:context=".view.fragment.detail.DetailMain">
 
     <RelativeLayout
         android:layout_width="136dp"
@@ -23,7 +23,7 @@
             android:src="@drawable/ic_verified"/>
     </RelativeLayout>
 
-    <co.digdaya.kindis.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:text="Maher Zain"
         android:layout_gravity="center_horizontal"/>
 
-    <co.digdaya.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

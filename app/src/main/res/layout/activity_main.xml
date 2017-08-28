@@ -47,7 +47,7 @@
                     android:layout_height="64dp"
                     android:layout_marginTop="24dp"
                     android:src="@drawable/bg_sign_in"/>
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/fullname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                             android:src="@drawable/ic_home"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:id="@+id/label_menu_home"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                             android:src="@drawable/ic_notif"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:id="@+id/label_menu_notif"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                             android:src="@drawable/ic_account"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:id="@+id/label_menu_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
                             android:src="@drawable/ic_offline"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:id="@+id/label_menu_offline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                             android:src="@drawable/ic_money"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -203,7 +203,7 @@
                             android:src="@drawable/ic_gift"
                             android:background="@android:color/transparent"
                             android:layout_marginRight="32dp"/>
-                        <co.digdaya.kindis.custom.TextViewSemiBold
+                        <co.digdaya.kindis.live.custom.TextViewSemiBold
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -221,7 +221,7 @@
                         android:layout_marginBottom="8dp"
                         android:background="@color/white"/>
 
-                    <co.digdaya.kindis.custom.TextViewSemiBold
+                    <co.digdaya.kindis.live.custom.TextViewSemiBold
                         android:id="@+id/menu_faq"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
                         android:textSize="14sp"
                         android:clickable="true"/>
 
-                    <co.digdaya.kindis.custom.TextViewSemiBold
+                    <co.digdaya.kindis.live.custom.TextViewSemiBold
                         android:id="@+id/menu_privacy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -245,7 +245,7 @@
                         android:textSize="14sp"
                         android:clickable="true"/>
 
-                    <co.digdaya.kindis.custom.TextViewSemiBold
+                    <co.digdaya.kindis.live.custom.TextViewSemiBold
                         android:id="@+id/menu_terms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
                         android:textSize="14sp"
                         android:clickable="true"/>
 
-                    <co.digdaya.kindis.custom.TextViewSemiBold
+                    <co.digdaya.kindis.live.custom.TextViewSemiBold
                         android:id="@+id/menu_cookies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -269,7 +269,7 @@
                         android:textSize="14sp"
                         android:clickable="true"/>
 
-                    <co.digdaya.kindis.custom.TextViewSemiBold
+                    <co.digdaya.kindis.live.custom.TextViewSemiBold
                         android:id="@+id/menu_ir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -283,7 +283,7 @@
                 </LinearLayout>
             </ScrollView>
 
-            <co.digdaya.kindis.custom.ButtonSemiBold
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
                 android:id="@+id/profile_status"
                 android:layout_below="@+id/header_drawer"
                 android:layout_width="107dp"

@@ -11,7 +11,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginLeft="24dp"/>
 
-    <co.digdaya.kindis.custom.TextViewRegular
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -41,7 +41,7 @@
                 android:text="Rp 10.000"
                 android:textSize="16sp"
                 android:textColor="@color/white" />
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -51,7 +51,7 @@
                 android:text="Rp 20.000"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -61,7 +61,7 @@
                 android:text="Rp 50.000"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -71,7 +71,7 @@
                 android:text="Rp 100.000"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -81,7 +81,7 @@
                 android:text="Rp 500.000"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>
-            <co.digdaya.kindis.custom.RadioButtonRegular
+            <co.digdaya.kindis.live.custom.RadioButtonRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12sp"
@@ -91,7 +91,7 @@
                 android:text="Rp 1.000.000"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>
-            <co.digdaya.kindis.custom.TextViewRegular
+            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="12dp"
@@ -111,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_premium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
             android:textSize="14sp"
             android:clickable="true"/>
 
-        <co.digdaya.kindis.custom.TextViewSemiBold
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_cancel"
             android:layout_toLeftOf="@+id/btn_premium"
             android:layout_width="wrap_content"

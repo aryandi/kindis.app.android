@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.digdaya.kindis.view.fragment.bottomnavigation.playlist.Playlist"
+    tools:context=".view.fragment.bottomnavigation.playlist.Playlist"
     android:background="@drawable/background">
 
     <ScrollView
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-            <co.digdaya.kindis.custom.TextViewBold
+            <co.digdaya.kindis.live.custom.TextViewBold
                 android:id="@+id/create_new_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

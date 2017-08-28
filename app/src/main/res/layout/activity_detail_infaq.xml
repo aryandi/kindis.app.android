@@ -40,7 +40,7 @@
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 android:layout_gravity="top">
-                <co.digdaya.kindis.custom.TextViewSemiBold
+                <co.digdaya.kindis.live.custom.TextViewSemiBold
                     android:id="@+id/title_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="exitUntilCollapsed">
-                <co.digdaya.kindis.custom.TextViewBold
+                <co.digdaya.kindis.live.custom.TextViewBold
                     android:id="@+id/title_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:layout_marginRight="32dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="?attr/actionBarSize"/>
-                <co.digdaya.kindis.custom.TextViewRegular
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/description"
                     android:layout_below="@+id/title_detail"
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <!--<co.digdaya.kindis.custom.TextViewRegular
+            <!--<co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/detail_infaq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
         android:orientation="horizontal"
         app:layout_anchor="@+id/htab_appbar"
         app:layout_anchorGravity="bottom|center">
-        <co.digdaya.kindis.custom.ButtonSemiBold
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
             android:id="@+id/btn_donate"
             android:layout_width="108dp"
             android:layout_height="40dp"

@@ -8,14 +8,14 @@
     android:paddingRight="10dp"
     android:paddingTop="12dp"
     android:background="@android:color/transparent"
-    tools:context="co.digdaya.kindis.view.adapter.item.AdapterSong">
+    tools:context=".view.adapter.item.AdapterSong">
 
     <RelativeLayout
         android:id="@+id/adapter_song"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/btn_menu">
-        <co.digdaya.kindis.custom.TextViewBold
+        <co.digdaya.kindis.live.custom.TextViewBold
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:textColor="@color/white"
             android:text="Mengejar Sorga"/>
 
-        <co.digdaya.kindis.custom.TextViewRegular
+        <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
