@@ -3,6 +3,7 @@ package co.digdaya.kindis.live.view.fragment.bottomnavigation.taklim;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.live.R;
@@ -53,6 +56,17 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     String[] title = {"Syiar","Kisah","Murottal"};
 
     CircleIndicator indicator;
+
+    Timer timer;
+    Runnable Update;
+    Handler handler;
+
+    int currentPage = 0;
+    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3000;
+    int NUM_PAGES;
+    boolean isSlide = false;
+
     public Taklim() {
         // Required empty public constructor
     }
@@ -101,6 +115,16 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     @Override
     public void onResume() {
         super.onResume();
+        if (isSlide){
+            timer = new Timer();
+            timer .schedule(new TimerTask() { // task to be scheduled
+
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
     }
 
     private void setLayout(){
@@ -148,6 +172,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
     private void getBanner(){
         listBanner.clear();
+        System.out.println("getBannertaklim: "+ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=9");
         new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=9", new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
@@ -161,8 +186,8 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 JSONObject data = result.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("title", data.getString("title"));
-                                map.put("image", data.getString("image_path"));
-                                map.put("link", data.getString("url_link"));
+                                map.put("image", data.getString("image"));
+                                map.put("link", data.getString("click_url"));
                                 listBanner.add(map);
                             }
                             adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
@@ -170,6 +195,8 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                             if (result.length()>1){
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                NUM_PAGES = result.length();
+                                autoSlide();
                             }
                         }else {
                             adapterBannerEmpty = new AdapterBannerEmpty(getContext());
@@ -191,5 +218,34 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     public void onRefresh() {
         getJSON();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
+    private void autoSlide(){
+        isSlide = true;
+        handler = new Handler();
+        Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                imageSlider.setCurrentItem(currentPage, true);
+                currentPage++;
+            }
+        };
+
+        timer = new Timer(); // This will create a new Thread
+        timer .schedule(new TimerTask() { // task to be scheduled
+
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
     }
 }

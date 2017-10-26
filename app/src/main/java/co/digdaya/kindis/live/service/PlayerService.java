@@ -102,155 +102,154 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
-        System.out.println("getSongResources: "+intent.getAction());
-        System.out.println("getSongResources: "+intent.getStringExtra("from"));
 
-
-        switch (intent.getAction()){
-            case PlayerActionHelper.UPDATE_RESOURCE:
-                playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "false");
-                songPlaylist = new ArrayList<>();
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                System.out.println("getSongResources update");
-                getSongResources(intent.getStringExtra("single_id"));
-                break;
-            case PlayerActionHelper.ACTION_PLAY:
-                Boolean isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
-                if (isDataSources){
-                    onPrepared(mediaPlayer);
-                }else {
-                    if (isOfflineMode){
-                        playOffline();
-                    }else {
-                        playMediaPlayer();
+        if (intent!=null){
+            switch (intent.getAction()){
+                case PlayerActionHelper.UPDATE_RESOURCE:
+                    playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "false");
+                    songPlaylist = new ArrayList<>();
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                     }
-                }
-
-                views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
-                notificationManager.notify(1, noti.build());
-                break;
-            case PlayerActionHelper.ACTION_PAUSE:
-                mediaPlayer.pause();
-                sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
-                playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                playerSessionHelper.setPreferences(getApplicationContext(), "pause", "true");
-                playerSessionHelper.setPreferences(getApplicationContext(), "current_pos", ""+mediaPlayer.getCurrentPosition());
-                updateProgressBar();
-
-                views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
-                notificationManager.notify(1, noti.build());
-                break;
-            case PlayerActionHelper.ACTION_SEEK:
-                mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
-                break;
-            case PlayerActionHelper.PLAY_MULTYSOURCE:
-                System.out.println("playall intent: "+intent.getStringExtra("single_id"));
-                playlistPosition = 0;
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                songPlaylist = intent.getStringArrayListExtra("list_uid");
-                System.out.println("getSongResources multi");
-                getSongResources(intent.getStringExtra("single_id"));
-                break;
-            case PlayerActionHelper.ACTION_PLAYBACK:
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
-                    views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
-                }else {
-                    views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
+                    System.out.println("getSongResources update");
+                    getSongResources(intent.getStringExtra("single_id"));
+                    break;
+                case PlayerActionHelper.ACTION_PLAY:
+                    Boolean isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
                     if (isDataSources){
                         onPrepared(mediaPlayer);
                     }else {
-                        playMediaPlayer();
+                        if (isOfflineMode){
+                            playOffline();
+                        }else {
+                            playMediaPlayer();
+                        }
                     }
-                }
-                notificationManager.notify(1, noti.build());
-                break;
-            case PlayerActionHelper.PLAY_PLAYLIST:
-                System.out.println("nextplay action: "+intent.getStringArrayListExtra("list_uid"));
-                playlistPosition = intent.getIntExtra("position", 0);
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                songPlaylist = intent.getStringArrayListExtra("list_uid");
-                System.out.println("getSongResources playlist");
-                getSongResources(intent.getStringExtra("single_id"));
-                break;
-            case PlayerActionHelper.ACTION_NEXT:
-                if (cekSizePlaylist()){
-                    playNext();
-                }
-                break;
-            case PlayerActionHelper.ACTION_CLOSE:
-                notificationManager.cancel(1);
-                if (!CheckAppRunning.isAppRunning(getApplicationContext())){
-                    System.out.println("isAppRunning false");
-                    int pid = android.os.Process.myPid();
-                    android.os.Process.killProcess(pid);
-                }else {
-                    System.out.println("isAppRunning true");
-                }
-                break;
-            case PlayerActionHelper.ACTION_LOG_OUT:
-                notificationManager.cancel(1);
-                mediaPlayer.pause();
-                System.out.println("ACTION_LOG_OUT ok");
-                break;
-            case PlayerActionHelper.ACTION_OPEN:
-                Intent player = new Intent(this, Player.class);
-                player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(player);
-                break;
-            case PlayerActionHelper.ACTION_LOOPING:
-                if (mediaPlayer.isPlaying()){
+
+                    views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
+                    notificationManager.notify(1, noti.build());
+                    break;
+                case PlayerActionHelper.ACTION_PAUSE:
                     mediaPlayer.pause();
-                    onPrepared(mediaPlayer);
-                }
-                break;
-            case PlayerActionHelper.ACTION_PLAY_OFFLINE:
-                playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
-                songPlaylist = new ArrayList<>();
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
+                    sendBroadcest(mediaPlayer.getDuration(), mediaPlayer.getCurrentPosition());
                     playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
-                playOffline();
-                break;
-            case PlayerActionHelper.ACTION_PLAY_OFFLINE_ALL:
-                playlistPosition = 0;
-                playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
-                songPlaylist = new ArrayList<>();
-                songPlaylist = intent.getStringArrayListExtra("list_uid");
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
-                playOffline();
-                break;
-            case PlayerActionHelper.ACTION_PLAY_OFFLINE_NEXT:
-                playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
-                songPlaylist = intent.getStringArrayListExtra("songPlaylist");
-                playlistPosition = intent.getIntExtra("position", playlistPosition);
-                if (mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
-                    playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
-                }
-                getSongOffline();
-                break;
-            case PlayerActionHelper.ACTION_SHUFFLE:
-                playlistPosition = 0;
-                songPlaylist = new ArrayList<>();
-                songPlaylist = intent.getStringArrayListExtra("list_uid");
-                System.out.println("ACTION_SHUFFLE: "+songPlaylist);
-                break;
+                    playerSessionHelper.setPreferences(getApplicationContext(), "pause", "true");
+                    playerSessionHelper.setPreferences(getApplicationContext(), "current_pos", ""+mediaPlayer.getCurrentPosition());
+                    updateProgressBar();
+
+                    views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
+                    notificationManager.notify(1, noti.build());
+                    break;
+                case PlayerActionHelper.ACTION_SEEK:
+                    mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
+                    break;
+                case PlayerActionHelper.PLAY_MULTYSOURCE:
+                    System.out.println("playall intent: "+intent.getStringExtra("single_id"));
+                    playlistPosition = 0;
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                    }
+                    songPlaylist = intent.getStringArrayListExtra("list_uid");
+                    System.out.println("getSongResources multi");
+                    getSongResources(intent.getStringExtra("single_id"));
+                    break;
+                case PlayerActionHelper.ACTION_PLAYBACK:
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.pause();
+                        views.setImageViewResource(R.id.btn_play, R.drawable.ic_play);
+                    }else {
+                        views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
+                        if (isDataSources){
+                            onPrepared(mediaPlayer);
+                        }else {
+                            playMediaPlayer();
+                        }
+                    }
+                    notificationManager.notify(1, noti.build());
+                    break;
+                case PlayerActionHelper.PLAY_PLAYLIST:
+                    System.out.println("nextplay action: "+intent.getStringArrayListExtra("list_uid"));
+                    playlistPosition = intent.getIntExtra("position", 0);
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                    }
+                    songPlaylist = intent.getStringArrayListExtra("list_uid");
+                    System.out.println("getSongResources playlist");
+                    getSongResources(intent.getStringExtra("single_id"));
+                    break;
+                case PlayerActionHelper.ACTION_NEXT:
+                    if (cekSizePlaylist()){
+                        playNext();
+                    }
+                    break;
+                case PlayerActionHelper.ACTION_CLOSE:
+                    notificationManager.cancel(1);
+                    if (!CheckAppRunning.isAppRunning(getApplicationContext())){
+                        System.out.println("isAppRunning false");
+                        int pid = android.os.Process.myPid();
+                        android.os.Process.killProcess(pid);
+                    }else {
+                        System.out.println("isAppRunning true");
+                    }
+                    break;
+                case PlayerActionHelper.ACTION_LOG_OUT:
+                    notificationManager.cancel(1);
+                    mediaPlayer.pause();
+                    System.out.println("ACTION_LOG_OUT ok");
+                    break;
+                case PlayerActionHelper.ACTION_OPEN:
+                    Intent player = new Intent(this, Player.class);
+                    player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(player);
+                    break;
+                case PlayerActionHelper.ACTION_LOOPING:
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.pause();
+                        onPrepared(mediaPlayer);
+                    }
+                    break;
+                case PlayerActionHelper.ACTION_PLAY_OFFLINE:
+                    playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
+                    songPlaylist = new ArrayList<>();
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                    }
+                    playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
+                    playOffline();
+                    break;
+                case PlayerActionHelper.ACTION_PLAY_OFFLINE_ALL:
+                    playlistPosition = 0;
+                    playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
+                    songPlaylist = new ArrayList<>();
+                    songPlaylist = intent.getStringArrayListExtra("list_uid");
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                    }
+                    playerSessionHelper.setPreferences(getApplicationContext(), "file", intent.getStringExtra("songresource"));
+                    playOffline();
+                    break;
+                case PlayerActionHelper.ACTION_PLAY_OFFLINE_NEXT:
+                    playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "true");
+                    songPlaylist = intent.getStringArrayListExtra("songPlaylist");
+                    playlistPosition = intent.getIntExtra("position", playlistPosition);
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                        playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
+                    }
+                    getSongOffline();
+                    break;
+                case PlayerActionHelper.ACTION_SHUFFLE:
+                    playlistPosition = 0;
+                    songPlaylist = new ArrayList<>();
+                    songPlaylist = intent.getStringArrayListExtra("list_uid");
+                    System.out.println("ACTION_SHUFFLE: "+songPlaylist);
+                    break;
+            }
         }
         return START_STICKY;
     }

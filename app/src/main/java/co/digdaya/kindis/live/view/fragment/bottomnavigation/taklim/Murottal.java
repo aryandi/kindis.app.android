@@ -28,6 +28,8 @@ public class Murottal extends Fragment {
     String json;
     Gson gson;
 
+    public Murottal() {
+    }
 
     public Murottal(String json) {
         this.json = json;

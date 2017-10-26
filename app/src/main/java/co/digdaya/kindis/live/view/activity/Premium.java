@@ -21,6 +21,7 @@ import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.live.view.dialog.DialogPayment;
+import co.digdaya.kindis.live.view.dialog.DialogPriceList;
 
 public class Premium extends AppCompatActivity {
     TextView btnCancel, btnOk;
@@ -53,7 +54,7 @@ public class Premium extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isGetPrice){
+                /*if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
 
                     sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
@@ -62,7 +63,8 @@ public class Premium extends AppCompatActivity {
 
                     dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1", "");
                     dialogPayment.showDialog();
-                }
+                }*/
+                new DialogPriceList(Premium.this).show();
             }
         });
     }

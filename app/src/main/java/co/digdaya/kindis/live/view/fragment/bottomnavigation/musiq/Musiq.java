@@ -3,6 +3,7 @@ package co.digdaya.kindis.live.view.fragment.bottomnavigation.musiq;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
@@ -57,6 +60,17 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
 
     CircleIndicator indicator;
     Gson gson;
+
+    Timer timer;
+    Runnable Update;
+    Handler handler;
+
+    int currentPage = 0;
+    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3000;
+    int NUM_PAGES;
+    boolean isSlide = false;
+
     public Musiq() {
         // Required empty public constructor
     }
@@ -110,6 +124,17 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     @Override
     public void onResume() {
         super.onResume();
+        System.out.println("autoSlide: resume");
+        if (isSlide){
+            timer = new Timer();
+            timer .schedule(new TimerTask() { // task to be scheduled
+
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
     }
 
     private void setLayout(){
@@ -175,11 +200,13 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                                 map.put("link", data.getString("click_url"));
                                 listBanner.add(map);
                             }
+                            NUM_PAGES = result.length();
                             adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
                             imageSlider.setAdapter(adapterBanner);
                             if (result.length()>1){
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                autoSlide();
                             }
                         }else {
                             if (getActivity()!=null){
@@ -206,5 +233,34 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     public void onRefresh() {
         getJSON();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
+    private void autoSlide(){
+        isSlide = true;
+        handler = new Handler();
+        Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                imageSlider.setCurrentItem(currentPage, true);
+                currentPage++;
+            }
+        };
+
+        timer = new Timer(); // This will create a new Thread
+        timer .schedule(new TimerTask() { // task to be scheduled
+
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
     }
 }

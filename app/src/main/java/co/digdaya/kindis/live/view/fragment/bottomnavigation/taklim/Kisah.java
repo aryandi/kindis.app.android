@@ -28,6 +28,9 @@ public class Kisah extends Fragment {
     String json;
     Gson gson;
 
+    public Kisah() {
+    }
+
     public Kisah(String json) {
         this.json = json;
     }

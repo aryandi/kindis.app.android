@@ -2,6 +2,7 @@ package co.digdaya.kindis.live.view.fragment.bottomnavigation;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
@@ -53,6 +56,17 @@ public class Infaq extends Fragment {
     String responses = null;
     String urlMore;
     Boolean isLastItem = false;
+
+    Timer timer;
+    Runnable Update;
+    Handler handler;
+
+    int currentPage = 0;
+    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3000;
+    int NUM_PAGES;
+    boolean isSlide = false;
+
     public Infaq() {
         // Required empty public constructor
     }
@@ -100,6 +114,27 @@ public class Infaq extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isSlide){
+            timer = new Timer();
+            timer .schedule(new TimerTask() { // task to be scheduled
+
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
     private void getInfaq(){
         loading.showLoading();
         new VolleyHelper().get(ApiHelper.LIST_INFAQ, new VolleyHelper.HttpListener<String>() {
@@ -141,6 +176,8 @@ public class Infaq extends Fragment {
                             if (result.length()>1){
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                NUM_PAGES = result.length();
+                                autoSlide();
                             }
                         }else {
                             if (getActivity()!=null){
@@ -182,5 +219,28 @@ public class Infaq extends Fragment {
                 }
             }
         });
+    }
+
+    private void autoSlide(){
+        isSlide = true;
+        handler = new Handler();
+        Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                imageSlider.setCurrentItem(currentPage, true);
+                currentPage++;
+            }
+        };
+
+        timer = new Timer(); // This will create a new Thread
+        timer .schedule(new TimerTask() { // task to be scheduled
+
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
     }
 }

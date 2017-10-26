@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#80000000"
+    android:padding="24dp">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"/>
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kindis Premium"
+        android:textSize="16sp"
+        android:textColor="@color/safety_orange"/>
+
+    <co.digdaya.kindis.live.custom.TextViewRegular
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih metode pembayaran"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Google Play"
+            android:textColor="@color/black"/>
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Midtrans"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+</LinearLayout>

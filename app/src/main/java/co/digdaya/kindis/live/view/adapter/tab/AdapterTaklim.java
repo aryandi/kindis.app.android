@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import co.digdaya.kindis.live.view.fragment.bottomnavigation.taklim.Syiar;
  * Created by vincenttp on 3/10/2017.
  */
 
-public class AdapterTaklim extends FragmentPagerAdapter {
+public class AdapterTaklim extends FragmentStatePagerAdapter {
     Context context;
     int mNumOfTabs;
     String json;

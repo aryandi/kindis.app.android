@@ -37,7 +37,7 @@ public class AdapterBanner extends PagerAdapter {
         this.mContext = context;
         this.listBanner = listBanner;
         this.type = type;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -66,6 +66,7 @@ public class AdapterBanner extends PagerAdapter {
         }else {
             image_url = ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image");
         }
+
         Glide.with(mContext)
                 .load(image_url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
