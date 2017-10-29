@@ -12,16 +12,24 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
+import co.digdaya.kindis.live.model.PriceListModel;
+import co.digdaya.kindis.live.network.ApiCall;
+import co.digdaya.kindis.live.network.ApiUtil;
 import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.live.view.dialog.DialogPayment;
 import co.digdaya.kindis.live.view.dialog.DialogPriceList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Premium extends AppCompatActivity {
     TextView btnCancel, btnOk;
@@ -29,20 +37,27 @@ public class Premium extends AppCompatActivity {
     Random random;
     DialogPayment dialogPayment;
     Dialog dialogPay;
+
     boolean isGetPrice = false;
     int price;
     String googleCode, transID, order;
+    List<PriceListModel.Data> priceList = new ArrayList<>();
+
+    ApiCall apiCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_premium);
-        new GetPrice().execute();
+        //new GetPrice().execute();
 
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
         btnOk = (TextView) findViewById(R.id.btn_ok);
         sessionHelper = new SessionHelper();
         random = new Random();
+        apiCall = ApiUtil.callService();
+
+        getPriceList();
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +79,7 @@ public class Premium extends AppCompatActivity {
                     dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1", "");
                     dialogPayment.showDialog();
                 }*/
-                new DialogPriceList(Premium.this).show();
+                new DialogPriceList(Premium.this, priceList, order).show();
             }
         });
     }
@@ -152,5 +167,23 @@ public class Premium extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void getPriceList(){
+        String url = ApiHelper.PRICE_LIST+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&dev_id=2&client_id=xBc3w11&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access");
+        apiCall.priceList(url).enqueue(new Callback<PriceListModel>() {
+            @Override
+            public void onResponse(Call<PriceListModel> call, Response<PriceListModel> response) {
+                if (response.body().status){
+                    priceList = response.body().result.data;
+                    order = response.body().result.order_id;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PriceListModel> call, Throwable t) {
+
+            }
+        });
     }
 }

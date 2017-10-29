@@ -223,7 +223,9 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     @Override
     public void onPause() {
         super.onPause();
-        timer.cancel();
+        if (timer!=null){
+            timer.cancel();
+        }
     }
 
     private void autoSlide(){

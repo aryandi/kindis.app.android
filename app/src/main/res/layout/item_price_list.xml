@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/bg_dot_list"
+        android:layout_marginRight="8dp"/>
+
+    <co.digdaya.kindis.live.custom.TextViewRegular
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:text="Berlangganan"
+        android:textColor="@color/white"/>
+
+    <co.digdaya.kindis.live.custom.TextViewRegular
+        android:id="@+id/price"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Harga"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

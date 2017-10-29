@@ -238,7 +238,9 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     @Override
     public void onPause() {
         super.onPause();
-        timer.cancel();
+        if (timer!=null){
+            timer.cancel();
+        }
     }
 
     private void autoSlide(){
