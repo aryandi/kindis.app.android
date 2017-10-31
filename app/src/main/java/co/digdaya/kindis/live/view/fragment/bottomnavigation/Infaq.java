@@ -33,12 +33,13 @@ import co.digdaya.kindis.live.view.adapter.AdapterBanner;
 import co.digdaya.kindis.live.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.live.view.adapter.item.AdapterInfaq;
 import co.digdaya.kindis.live.view.dialog.DialogLoading;
+import co.digdaya.kindis.live.view.fragment.bottomnavigation.taklim.Taklim;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Infaq extends Fragment {
+public class Infaq extends Fragment implements View.OnScrollChangeListener {
     ViewPager imageSlider;
     CircleIndicator indicator;
     DialogLoading loading;
@@ -132,7 +133,9 @@ public class Infaq extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        timer.cancel();
+        if (timer!=null){
+            timer.cancel();
+        }
     }
 
     private void getInfaq(){
@@ -177,6 +180,7 @@ public class Infaq extends Fragment {
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
                                 NUM_PAGES = result.length();
+                                imageSlider.setOnScrollChangeListener(Infaq.this);
                                 autoSlide();
                             }
                         }else {
@@ -242,5 +246,10 @@ public class Infaq extends Fragment {
                 handler.post(Update);
             }
         }, DELAY_MS, PERIOD_MS);
+    }
+
+    @Override
+    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+        currentPage = imageSlider.getCurrentItem();
     }
 }

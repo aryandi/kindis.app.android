@@ -97,7 +97,6 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
 
     @Override
     public void onSelected(int i) {
-        //adapterPriceList.notifyDataSetChanged();
         String transID = "PRE"+sessionHelper.getPreferences(getContext(), "user_id")+new Random().nextInt(89)+10;
         googlePayment = new GooglePayment(getOwnerActivity(), datas.get(i).package_id, orderID);
         midtransPayment = new MidtransPayment(getOwnerActivity(), transID, Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID, "", "1");

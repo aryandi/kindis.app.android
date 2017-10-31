@@ -79,7 +79,8 @@ public class Premium extends AppCompatActivity {
                     dialogPayment = new DialogPayment(dialogPay, Premium.this, transID, price, "Akun Premium", googleCode, order, "", "1", "");
                     dialogPayment.showDialog();
                 }*/
-                new DialogPriceList(Premium.this, priceList, order).show();
+                //new DialogPriceList(Premium.this, priceList, order).show();
+                startActivity(new Intent(Premium.this, PriceList.class));
             }
         });
     }

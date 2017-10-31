@@ -41,7 +41,7 @@ import me.relex.circleindicator.CircleIndicator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
@@ -206,6 +206,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                             if (result.length()>1){
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                imageSlider.setOnScrollChangeListener(Musiq.this);
                                 autoSlide();
                             }
                         }else {
@@ -264,5 +265,10 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                 handler.post(Update);
             }
         }, DELAY_MS, PERIOD_MS);
+    }
+
+    @Override
+    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+        currentPage = imageSlider.getCurrentItem();
     }
 }

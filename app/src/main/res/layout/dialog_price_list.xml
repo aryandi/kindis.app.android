@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/dark_jungle_green"
     android:padding="24dp">
     <ImageButton
@@ -16,6 +16,7 @@
     <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="Kindis Premium"
         android:textSize="16sp"
         android:textColor="@color/safety_orange"/>
@@ -24,7 +25,8 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"/>
 
     <co.digdaya.kindis.live.custom.TextViewRegular
         android:layout_width="match_parent"
@@ -51,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Midtrans"
+            android:text="Other Method"
             android:textColor="@color/white"
             android:background="@drawable/button_rounded_blue"/>
     </LinearLayout>

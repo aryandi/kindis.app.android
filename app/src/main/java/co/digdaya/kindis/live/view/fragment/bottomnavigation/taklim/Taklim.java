@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import co.digdaya.kindis.live.view.fragment.bottomnavigation.musiq.Musiq;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
@@ -38,7 +39,7 @@ import co.digdaya.kindis.live.view.adapter.tab.AdapterTaklim;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
@@ -196,6 +197,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 indicator.setViewPager(imageSlider);
                                 adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
                                 NUM_PAGES = result.length();
+                                imageSlider.setOnScrollChangeListener(Taklim.this);
                                 autoSlide();
                             }
                         }else {
@@ -250,4 +252,11 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
             }
         }, DELAY_MS, PERIOD_MS);
     }
+
+    @Override
+    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+        currentPage = imageSlider.getCurrentItem();
+    }
+
+
 }

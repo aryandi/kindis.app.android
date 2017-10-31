@@ -146,6 +146,9 @@
 
         <activity android:name=".view.activity.Player.SongMenu"
             android:noHistory="true"/>
+
+        <activity android:name=".view.activity.PriceList"
+            android:noHistory="true"/>
     </application>
 
 </manifest>

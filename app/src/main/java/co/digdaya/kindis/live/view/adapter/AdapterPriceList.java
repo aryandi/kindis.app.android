@@ -25,6 +25,7 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
     OnSelectedItem onSelectedItem;
 
     int tempPositionClick = 99;
+    boolean isFirstLoad = true;
 
     public AdapterPriceList(Context context, List<PriceListModel.Data> datas) {
         this.context = context;
@@ -46,6 +47,10 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
 
     @Override
     public void onBindViewHolder(ItemPriceList holder, int position) {
+        if (position==0 && isFirstLoad){
+            holder.title.setTextColor(ContextCompat.getColor(context, R.color.safety_orange));
+            holder.price.setTextColor(ContextCompat.getColor(context, R.color.safety_orange));
+        }
         holder.title.setText(datas.get(position).name);
         holder.price.setText(Utils.currencyFormat(Integer.parseInt(datas.get(position).price)));
     }
@@ -61,6 +66,10 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
     }
 
     private void onClicked(int i, ItemPriceList itemPriceList){
+        if (isFirstLoad){
+            notifyItemChanged(0);
+            isFirstLoad = false;
+        }
         if (tempPositionClick!=99){
             notifyItemChanged(tempPositionClick);
             tempPositionClick = i;

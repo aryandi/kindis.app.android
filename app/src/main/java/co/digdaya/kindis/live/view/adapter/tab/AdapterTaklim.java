@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live.view.adapter.tab;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -52,6 +53,11 @@ public class AdapterTaklim extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mNumOfTabs;
+    }
+
+    @Override
+    public void restoreState(Parcelable state, ClassLoader loader) {
+
     }
 
     public View getTabView(int position) {
