@@ -222,7 +222,7 @@ public class DetailGenre extends BottomPlayerActivity {
                                         public void onClick(View v) {
                                             Intent intent = new Intent(DetailGenre.this, More.class);
                                             intent.putExtra("title", dataArtist.name);
-                                            intent.putExtra("type", "1");
+                                            intent.putExtra("type", 1);
                                             intent.putExtra("urlMore", dataArtist.is_more_endpoint);
                                             startActivity(intent);
                                         }
@@ -247,7 +247,7 @@ public class DetailGenre extends BottomPlayerActivity {
                                         public void onClick(View v) {
                                             Intent intent = new Intent(DetailGenre.this, More.class);
                                             intent.putExtra("title", albumModel.name);
-                                            intent.putExtra("type", "1");
+                                            intent.putExtra("type", 2);
                                             intent.putExtra("urlMore", albumModel.is_more_endpoint);
                                             startActivity(intent);
                                         }
@@ -273,7 +273,7 @@ public class DetailGenre extends BottomPlayerActivity {
                                         public void onClick(View v) {
                                             Intent intent = new Intent(DetailGenre.this, More.class);
                                             intent.putExtra("title", singleModel.name);
-                                            intent.putExtra("type", "1");
+                                            intent.putExtra("type", 3);
                                             intent.putExtra("urlMore", singleModel.is_more_endpoint);
                                             startActivity(intent);
                                         }

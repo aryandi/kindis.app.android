@@ -55,19 +55,21 @@ public class Kisah extends Fragment {
     }
 
     private void getJSON(){
-        try {
-            JSONObject object = new JSONObject(json);
-            if (object.getBoolean("status")){
-                JSONObject result = object.getJSONObject("result");
+        if (json!=null){
+            try {
+                JSONObject object = new JSONObject(json);
+                if (object.getBoolean("status")){
+                    JSONObject result = object.getJSONObject("result");
 
-                TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
+                    TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
 
-                adapterListTab = new AdapterListTab(getActivity(), tabModel, 2, 9);
-                recyclerView.setAdapter(adapterListTab);
-                recyclerView.setNestedScrollingEnabled(false);
+                    adapterListTab = new AdapterListTab(getActivity(), tabModel, 2, 9);
+                    recyclerView.setAdapter(adapterListTab);
+                    recyclerView.setNestedScrollingEnabled(false);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -85,6 +85,8 @@ import co.digdaya.kindis.live.view.activity.Account.SignInActivity;
 import co.digdaya.kindis.live.view.activity.Account.TransactionHistory;
 import io.fabric.sdk.android.Fabric;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -413,18 +415,22 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("onActivityResult: "+requestCode+" "+resultCode);
         if (requestCode==0){
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            photoProfile.setImageBitmap(photo);
-            Uri tempUri = getImageUri(getContext(), photo);
-            uploadImage(getRealPathFromURI(tempUri));
+            if (resultCode == RESULT_OK){
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                photoProfile.setImageBitmap(photo);
+                Uri tempUri = getImageUri(getContext(), photo);
+                uploadImage(getRealPathFromURI(tempUri));
+            }
         }else if (requestCode==1){
-            Uri uri = data.getData();
-            try {
-                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                photoProfile.setImageBitmap(imageBitmap);
-                uploadImage(ImageFilePath.getPath(getContext(), uri));
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (resultCode == RESULT_OK){
+                Uri uri = data.getData();
+                try {
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    photoProfile.setImageBitmap(imageBitmap);
+                    uploadImage(ImageFilePath.getPath(getContext(), uri));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
