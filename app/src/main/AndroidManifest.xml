@@ -33,7 +33,7 @@
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c6229c8d29c990a9c1f7b6255576191c79c5d767" />
+            android:value="288ebc9c641a62905527c18d81aefa3879988b83" />
 
         <service
             android:name=".service.PlayerService"
