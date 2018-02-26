@@ -41,89 +41,94 @@ public class ParseJsonPlaylist {
         type = playerSessionHelper.getPreferences(context, "type");
         json = playerSessionHelper.getPreferences(context, "json");
         Log.d("ParseJsonPlaylist", type+" : "+json);
-        if (type.equals("album")){
-            try {
-                JSONArray single = new JSONArray(json);
-                json = single.toString();
-                for (int i=0; i < single.length(); i++){
-                    JSONObject data = single.getJSONObject(i);
-                    JSONObject summary = data.getJSONObject("summary");
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("uid", summary.optString("uid"));
-                    map.put("title", summary.optString("title"));
-                    map.put("subtitle", "");
-                    map.put("image", summary.optString("image"));
-                    listSong.add(map);
-                    songPlaylist.add(summary.optString("uid"));
-                    imgList.add(summary.optString("image"));
+        switch (type) {
+            case "album":
+                try {
+                    JSONArray single = new JSONArray(json);
+                    json = single.toString();
+                    for (int i = 0; i < single.length(); i++) {
+                        JSONObject data = single.getJSONObject(i);
+                        JSONObject summary = data.getJSONObject("summary");
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("uid", summary.optString("uid"));
+                        map.put("title", summary.optString("title"));
+                        map.put("subtitle", "");
+                        map.put("image", summary.optString("image"));
+                        listSong.add(map);
+                        songPlaylist.add(summary.optString("uid"));
+                        imgList.add(summary.optString("image"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            setShuffle();
-        }else if (type.equals("artist")){
-            try {
-                JSONArray album = new JSONArray(json);
-                if (album.length()>=1){
-                    for (int i=0; i<album.length(); i++){
-                        JSONObject data = album.getJSONObject(i);
-                        JSONArray single = data.getJSONArray("single");
-                        if (single.length()>0){
-                            for (int j=0; j<single.length(); j++){
-                                JSONObject song = single.getJSONObject(j);
-                                HashMap<String, String> maps = new HashMap<String, String>();
-                                maps.put("uid", song.optString("uid"));
-                                maps.put("title", song.optString("title"));
-                                maps.put("subtitle", "");
-                                maps.put("image", song.optString("image"));
-                                listSong.add(maps);
-                                songPlaylist.add(song.optString("uid"));
-                                imgList.add(song.optString("image"));
+                setShuffle();
+                break;
+            case "artist":
+                try {
+                    JSONArray album = new JSONArray(json);
+                    if (album.length() >= 1) {
+                        for (int i = 0; i < album.length(); i++) {
+                            JSONObject data = album.getJSONObject(i);
+                            JSONArray single = data.getJSONArray("single");
+                            if (single.length() > 0) {
+                                for (int j = 0; j < single.length(); j++) {
+                                    JSONObject song = single.getJSONObject(j);
+                                    HashMap<String, String> maps = new HashMap<String, String>();
+                                    maps.put("uid", song.optString("uid"));
+                                    maps.put("title", song.optString("title"));
+                                    maps.put("subtitle", "");
+                                    maps.put("image", song.optString("image"));
+                                    listSong.add(maps);
+                                    songPlaylist.add(song.optString("uid"));
+                                    imgList.add(song.optString("image"));
+                                }
                             }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            setShuffle();
-        }else if (type.equals("premium")){
-            try {
-                JSONArray result = new JSONArray(json);
-                for (int i=0; i<result.length(); i++){
-                    JSONObject data = result.getJSONObject(i);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("uid", data.optString("single_id"));
-                    map.put("title", data.optString("title"));
-                    map.put("subtitle", data.optString("artist"));
-                    map.put("image", data.optString("image"));
-                    listSong.add(map);
-                    songPlaylist.add(data.optString("single_id"));
-                    imgList.add(data.optString("image"));
+                setShuffle();
+                break;
+            case "premium":
+                try {
+                    JSONArray result = new JSONArray(json);
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject data = result.getJSONObject(i);
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("uid", data.optString("single_id"));
+                        map.put("title", data.optString("title"));
+                        map.put("subtitle", data.optString("artist"));
+                        map.put("image", data.optString("image"));
+                        listSong.add(map);
+                        songPlaylist.add(data.optString("single_id"));
+                        imgList.add(data.optString("image"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    System.out.println("parssssseee: " + e.getMessage());
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                System.out.println("parssssseee: "+e.getMessage());
-            }
-            setShuffle();
-        }else {
-            try {
-                JSONArray result = new JSONArray(json);
-                for (int i=0; i<result.length(); i++){
-                    JSONObject data = result.getJSONObject(i);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("uid", data.optString("uid"));
-                    map.put("title", data.optString("title"));
-                    map.put("subtitle", data.optString("description"));
-                    map.put("image", data.optString("image"));
-                    listSong.add(map);
-                    songPlaylist.add(data.optString("uid"));
-                    imgList.add(data.optString("image"));
+                setShuffle();
+                break;
+            default:
+                try {
+                    JSONArray result = new JSONArray(json);
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject data = result.getJSONObject(i);
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("uid", data.optString("uid"));
+                        map.put("title", data.optString("title"));
+                        map.put("subtitle", data.optString("description"));
+                        map.put("image", data.optString("image"));
+                        listSong.add(map);
+                        songPlaylist.add(data.optString("uid"));
+                        imgList.add(data.optString("image"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            setShuffle();
+                setShuffle();
+                break;
         }
 
         /*shuffleListSong = listSong;

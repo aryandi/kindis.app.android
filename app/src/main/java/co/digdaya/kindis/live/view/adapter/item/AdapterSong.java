@@ -46,8 +46,7 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
     @Override
     public ItemSong onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_song, parent, false);
-        ItemSong item= new ItemSong(view);
-        return item;
+        return new ItemSong(view);
     }
 
     @Override
@@ -72,30 +71,36 @@ public class AdapterSong extends RecyclerView.Adapter<ItemSong> {
             @Override
             public void onClick(View view) {
                 new PlayerSessionHelper().setPreferences(context, "uid", uid);
-                if (type.equals("list")){
-                    Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(context, PlayerService.class);
-                    intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
-                    intent.putExtra("from", "AdapterSong");
-                    intent.putExtra("single_id", uid);
-                    intent.putExtra("position", position);
-                    intent.putExtra("list_uid", songPlaylist);
-                    context.startService(intent);
-                }else if (type.equals("premium")){
-                    Intent intent = new Intent(context, Premium.class);
-                    context.startActivity(intent);
-                }else {
-                    if (new SessionHelper().getPreferences(context, "is_premium").equals(dataSong.get("is_premium")) || new SessionHelper().getPreferences(context, "is_premium").equals("1")) {
+                switch (type) {
+                    case "list": {
                         Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
-                        new PlayerSessionHelper().setPreferences(context, "index", "1");
                         Intent intent = new Intent(context, PlayerService.class);
-                        intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                        intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
+                        intent.putExtra("from", "AdapterSong");
                         intent.putExtra("single_id", uid);
+                        intent.putExtra("position", position);
+                        intent.putExtra("list_uid", songPlaylist);
                         context.startService(intent);
-                    }else {
+                        break;
+                    }
+                    case "premium": {
                         Intent intent = new Intent(context, Premium.class);
                         context.startActivity(intent);
+                        break;
                     }
+                    default:
+                        if (dataSong.get("is_premium").equals("0") || new SessionHelper().getPreferences(context, "is_premium").equals("1")) {
+                            Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
+                            new PlayerSessionHelper().setPreferences(context, "index", "1");
+                            Intent intent = new Intent(context, PlayerService.class);
+                            intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+                            intent.putExtra("single_id", uid);
+                            context.startService(intent);
+                        } else {
+                            Intent intent = new Intent(context, Premium.class);
+                            context.startActivity(intent);
+                        }
+                        break;
                 }
             }
         });

@@ -87,7 +87,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fabric.with(this, new Crashlytics());
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         checkPermission = new CheckPermission(this);
