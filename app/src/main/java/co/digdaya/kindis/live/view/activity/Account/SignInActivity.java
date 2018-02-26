@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -83,8 +84,8 @@ public class SignInActivity extends AppCompatActivity {
         dialogLoading = new DialogLoading(this);
         sessionHelper = new SessionHelper();
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
-        Fabric.with(this, new Twitter(authConfig));
+//        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
+//        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
 
         client = new TwitterAuthClient();
         authClient = new TwitterAuthClient();
