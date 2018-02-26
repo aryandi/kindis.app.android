@@ -20,6 +20,7 @@ public class ApplicationMain extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         instance = this;
     }
 }
