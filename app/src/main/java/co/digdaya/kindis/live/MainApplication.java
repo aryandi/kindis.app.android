@@ -1,6 +1,6 @@
 package co.digdaya.kindis.live;
 
-import android.content.Context;
+import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;

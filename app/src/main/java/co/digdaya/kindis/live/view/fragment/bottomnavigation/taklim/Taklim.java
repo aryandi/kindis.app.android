@@ -191,18 +191,22 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 map.put("link", data.getString("click_url"));
                                 listBanner.add(map);
                             }
-                            adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
-                            imageSlider.setAdapter(adapterBanner);
-                            if (result.length()>1){
-                                indicator.setViewPager(imageSlider);
-                                adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
-                                NUM_PAGES = result.length();
-                                imageSlider.setOnScrollChangeListener(Taklim.this);
-                                autoSlide();
+                            if (getActivity()!=null) {
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                                imageSlider.setAdapter(adapterBanner);
+                                if (result.length() > 1) {
+                                    indicator.setViewPager(imageSlider);
+                                    adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                    NUM_PAGES = result.length();
+                                    imageSlider.setOnScrollChangeListener(Taklim.this);
+                                    autoSlide();
+                                }
                             }
                         }else {
-                            adapterBannerEmpty = new AdapterBannerEmpty(getContext());
-                            imageSlider.setAdapter(adapterBannerEmpty);
+                            if (getActivity()!=null) {
+                                adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                                imageSlider.setAdapter(adapterBannerEmpty);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

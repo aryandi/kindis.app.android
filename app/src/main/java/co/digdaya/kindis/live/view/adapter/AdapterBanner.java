@@ -37,7 +37,7 @@ public class AdapterBanner extends PagerAdapter {
         this.mContext = context;
         this.listBanner = listBanner;
         this.type = type;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AdapterBanner extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = this.layoutInflater.inflate(R.layout.adapter_musiq_slider, container, false);
+        View view = layoutInflater.inflate(R.layout.adapter_musiq_slider, container, false);
         dataSinggle = listBanner.get(position);
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView subtitle = (TextView) view.findViewById(R.id.subtitle);

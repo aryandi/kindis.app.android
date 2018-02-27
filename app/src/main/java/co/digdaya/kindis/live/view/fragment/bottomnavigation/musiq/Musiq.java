@@ -201,13 +201,15 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                                 listBanner.add(map);
                             }
                             NUM_PAGES = result.length();
-                            adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
-                            imageSlider.setAdapter(adapterBanner);
-                            if (result.length()>1){
-                                indicator.setViewPager(imageSlider);
-                                adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
-                                imageSlider.setOnScrollChangeListener(Musiq.this);
-                                autoSlide();
+                            if (getActivity()!=null) {
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                                imageSlider.setAdapter(adapterBanner);
+                                if (result.length() > 1) {
+                                    indicator.setViewPager(imageSlider);
+                                    adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                    imageSlider.setOnScrollChangeListener(Musiq.this);
+                                    autoSlide();
+                                }
                             }
                         }else {
                             if (getActivity()!=null){

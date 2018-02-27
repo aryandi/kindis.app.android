@@ -174,14 +174,16 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
                                 map.put("redirect_url", data.getString("redirect_url"));
                                 listBanner.add(map);
                             }
-                            adapterBanner = new AdapterBanner(getActivity(), listBanner, "infaq");
-                            imageSlider.setAdapter(adapterBanner);
-                            if (result.length()>1){
-                                indicator.setViewPager(imageSlider);
-                                adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
-                                NUM_PAGES = result.length();
-                                imageSlider.setOnScrollChangeListener(Infaq.this);
-                                autoSlide();
+                            if (getActivity()!=null) {
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "infaq");
+                                imageSlider.setAdapter(adapterBanner);
+                                if (result.length() > 1) {
+                                    indicator.setViewPager(imageSlider);
+                                    adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
+                                    NUM_PAGES = result.length();
+                                    imageSlider.setOnScrollChangeListener(Infaq.this);
+                                    autoSlide();
+                                }
                             }
                         }else {
                             if (getActivity()!=null){
