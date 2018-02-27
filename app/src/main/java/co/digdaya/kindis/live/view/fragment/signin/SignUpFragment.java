@@ -38,11 +38,11 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     EditText fullname;
     EditText email;
     EditText password;
-    EditText retypePassword;
+    /*EditText retypePassword;
     EditText birtday;
     RadioGroup radioGroup;
     RadioButton male;
-    RadioButton female;
+    RadioButton female;*/
     Button signUp;
     VolleyHelper volleyHelper;
     ProgressDialog loading;
@@ -77,19 +77,19 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         fullname = (EditText) view.findViewById(R.id.input_nama);
         email = (EditText) view.findViewById(R.id.input_email);
         password = (EditText) view.findViewById(R.id.input_password);
-        retypePassword = (EditText) view.findViewById(R.id.input_retype);
+/*        retypePassword = (EditText) view.findViewById(R.id.input_retype);
         birtday = (EditText) view.findViewById(R.id.input_birthday);
         radioGroup = (RadioGroup) view.findViewById(R.id.gender);
         male = (RadioButton) view.findViewById(R.id.male);
-        female = (RadioButton) view.findViewById(R.id.female);
+        female = (RadioButton) view.findViewById(R.id.female);*/
         signUp = (Button) view.findViewById(R.id.btn_sign_up);
 
         fullname.setOnFocusChangeListener(this);
         email.setOnFocusChangeListener(this);
         password.setOnFocusChangeListener(this);
-        retypePassword.setOnFocusChangeListener(this);
+//        retypePassword.setOnFocusChangeListener(this);
 
-        birtday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*birtday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b){
@@ -109,7 +109,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                     female.setTextColor(Color.parseColor("#000000"));
                 }
             }
-        });
+        });*/
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +132,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         appBarLayout.setExpanded(false, true);
     }
 
-    private void calenderDialog(){
+    /*private void calenderDialog(){
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -145,10 +145,12 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                     }
                 }, 1990, 0, 1);
         datePickerDialog.show();
-    }
+    }*/
 
     private boolean formValidation(){
-        if (fullname.getText().length()<1 || email.getText().length()<1 || password.getText().length()<1 || retypePassword.getText().length()<1 || birtday.getText().length()<1){
+        if (fullname.getText().length()<1 || email.getText().length()<1 || password.getText().length()<1
+//                || retypePassword.getText().length()<1 || birtday.getText().length()<1
+                ){
             return false;
         } else {
             return true;
@@ -157,21 +159,21 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     private void register(){
-        String gender;
+        /*String gender;
         if (male.isChecked()){
             gender = "male";
         }else {
             gender = "female";
-        }
+        }*/
 
-        if (password.getText().toString().equals(retypePassword.getText().toString())){
+//        if (password.getText().toString().equals(retypePassword.getText().toString())){
             loading.show();
             Map<String, String> params = new HashMap<String, String>();
             params.put("fullname", fullname.getText().toString());
             params.put("email", email.getText().toString());
             params.put("password", password.getText().toString());
-            params.put("gender", gender);
-            params.put("birth_date", birtday.getText().toString());
+//            params.put("gender", gender);
+//            params.put("birth_date", birtday.getText().toString());
 
             volleyHelper.post(ApiHelper.REGISTER, params, new VolleyHelper.HttpListener<String>() {
                 @Override
@@ -195,8 +197,9 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                     }
                 }
             });
-        }else {
+        /*}
+        else {
             Toast.makeText(getContext(), "Password not match", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 }
