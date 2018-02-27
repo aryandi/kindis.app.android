@@ -175,7 +175,7 @@ public class Premium extends AppCompatActivity {
         apiCall.priceList(url).enqueue(new Callback<PriceListModel>() {
             @Override
             public void onResponse(Call<PriceListModel> call, Response<PriceListModel> response) {
-                if (response.body().status){
+                if (response != null && response.body() != null && response.body().status){
                     priceList = response.body().result.data;
                     order = response.body().result.order_id;
                 }
