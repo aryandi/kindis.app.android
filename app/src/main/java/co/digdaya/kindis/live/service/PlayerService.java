@@ -361,11 +361,15 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         mediaPlayer.reset();
         try {
             mediaPlayer.setDataSource(song);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.prepareAsync();
+        try {
+            mediaPlayer.prepareAsync();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         mediaPlayer.setOnErrorListener(this);
     }
 
