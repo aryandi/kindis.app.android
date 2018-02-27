@@ -23,7 +23,7 @@ public class AdapterWalkthrough extends PagerAdapter {
 
     public AdapterWalkthrough(Context context) {
         this.mContext = context;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     private int[] img = new int[]{
@@ -51,7 +51,7 @@ public class AdapterWalkthrough extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((View) object);
+        return view == object;
     }
 
     @Override

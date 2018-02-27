@@ -14,7 +14,7 @@ public class AdapterBannerEmpty extends PagerAdapter {
 
     public AdapterBannerEmpty(Context context) {
         this.mContext = context;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
@@ -23,7 +23,7 @@ public class AdapterBannerEmpty extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((View) object);
+        return view == object;
     }
 
     @Override

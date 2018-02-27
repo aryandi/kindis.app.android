@@ -125,11 +125,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     private boolean formValidation(){
-        if (email.getText().length()<1 || password.getText().length()<1){
-            return false;
-        }else {
-            return true;
-        }
+        return !(email.getText().length() < 1 || password.getText().length() < 1);
     }
 
     private void login(){

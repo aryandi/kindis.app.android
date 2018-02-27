@@ -75,7 +75,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
         if (playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
-            songPlaylist = new ArrayList<>();;
+            songPlaylist = new ArrayList<>();
         }else {
             songPlaylist = parseJsonPlaylist.getSongPlaylist();
 
@@ -433,11 +433,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private boolean cekSizePlaylist(){
-        if (playlistPosition < songPlaylist.size()-1){
-            return true;
-        }else {
-            return false;
-        }
+        return playlistPosition < songPlaylist.size() - 1;
     }
 
     private void playNext(){

@@ -148,13 +148,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     }*/
 
     private boolean formValidation(){
-        if (fullname.getText().length()<1 || email.getText().length()<1 || password.getText().length()<1
-//                || retypePassword.getText().length()<1 || birtday.getText().length()<1
-                ){
-            return false;
-        } else {
-            return true;
-        }
+        return !(fullname.getText().length() < 1 || email.getText().length() < 1 || password.getText().length() < 1);
 
     }
 

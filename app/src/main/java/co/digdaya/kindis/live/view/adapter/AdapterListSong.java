@@ -29,7 +29,7 @@ public class AdapterListSong extends PagerAdapter {
     public AdapterListSong(Context context, ArrayList<String> imgList) {
         this.mContext = context;
         this.imgList = imgList;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         playerSessionHelper = new PlayerSessionHelper();
     }
 
@@ -42,7 +42,7 @@ public class AdapterListSong extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((View) object);
+        return view == object;
     }
 
     @Override

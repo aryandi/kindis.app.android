@@ -33,7 +33,7 @@ public class DialogGift implements View.OnClickListener {
     View dialogView;
     TextView btnCancel, btnSend;
     EditText inputCode;
-    SessionHelper sessionHelper;;
+    SessionHelper sessionHelper;
 
     public DialogGift(Dialog dialogGift, Activity activity) {
         this.dialogGift = dialogGift;
