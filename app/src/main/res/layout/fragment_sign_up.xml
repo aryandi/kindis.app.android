@@ -117,7 +117,7 @@
             app:tint_color="@color/white"
             android:background="@drawable/edittext_normal"/>
 
-        <co.digdaya.kindis.live.custom.TextViewRegular
+      <!--  <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/label_retype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                 android:gravity="center"
                 android:textSize="14sp"
                 android:background="@drawable/radiobutton_listener"/>
-        </RadioGroup>
+        </RadioGroup>-->
 
         <co.digdaya.kindis.live.custom.ButtonSemiBold
             android:id="@+id/btn_sign_up"
