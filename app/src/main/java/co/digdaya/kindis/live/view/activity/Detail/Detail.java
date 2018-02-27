@@ -187,12 +187,14 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
                     new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", types);
                     new ParseJsonPlaylist(getApplicationContext(), true);
-                    System.out.println("playall activity: "+songPlaylist.get(0));
-                    Intent intent = new Intent(Detail.this, PlayerService.class);
-                    intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
-                    intent.putExtra("single_id", songPlaylist.get(0));
-                    intent.putExtra("list_uid", songPlaylist);
-                    startService(intent);
+                    if (songPlaylist.size() > 0) {
+                        System.out.println("playall activity: " + songPlaylist.get(0));
+                        Intent intent = new Intent(Detail.this, PlayerService.class);
+                        intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+                        intent.putExtra("single_id", songPlaylist.get(0));
+                        intent.putExtra("list_uid", songPlaylist);
+                        startService(intent);
+                    }
                 }
             }
         });
