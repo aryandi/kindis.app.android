@@ -157,8 +157,11 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         }else {
                             contErrorMessage.setVisibility(View.VISIBLE);
                             errorMessage.setText(object.getString("message"));
-                            email.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));
-                        }
+                            if(android.os.Build.VERSION.SDK_INT >= 21){
+                                email.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));
+                            } else {
+                                email.setBackground(getResources().getDrawable(R.drawable.edittext_error));
+                            }                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
