@@ -125,7 +125,7 @@ public class BottomPlayerFragment extends Fragment {
 
             if (progress==duration){
                 icPlay.setImageResource(R.drawable.ic_play);
-            }else if (playerSessionHelper.getPreferences(getContext(), "isplaying").equals("true")){
+            }else if (playerSessionHelper.getPreferences(context, "isplaying").equals("true")){
                 icPlay.setImageResource(R.drawable.ic_pause);
             }
         }
