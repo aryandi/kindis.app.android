@@ -11,17 +11,16 @@ public class PlayerSessionHelper {
     public void setPreferences(Context context, String key, String value) {
         SharedPreferences.Editor editor = context.getSharedPreferences("player", Context.MODE_PRIVATE).edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
     public String getPreferences(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences("player", Context.MODE_PRIVATE);
-        String position = prefs.getString(key, "");
-        return position;
+        return prefs.getString(key, "");
     }
 
     public void clearSession(Context context){
         SharedPreferences.Editor editor = context.getSharedPreferences("player", Context.MODE_PRIVATE).edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }

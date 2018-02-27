@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live;
 
-import android.app.Application;
+import android.content.Context;
+
 import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -11,12 +12,12 @@ import io.fabric.sdk.android.Fabric;
  * Created by vincenttp on 1/28/2017.
  */
 
-public class ApplicationMain extends Application {
+public class MainApplication extends Application {
 
 
-    private static ApplicationMain instance;
+    private static MainApplication instance;
 
-    public static synchronized ApplicationMain getInstance() {
+    public static synchronized MainApplication getInstance() {
         return instance;
     }
 

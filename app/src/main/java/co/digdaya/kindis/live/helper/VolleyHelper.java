@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import co.digdaya.kindis.live.ApplicationMain;
+import co.digdaya.kindis.live.MainApplication;
 
 /**
  * Created by vincenttp on 1/28/2017.
@@ -124,7 +124,7 @@ public class VolleyHelper {
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(ApplicationMain.getInstance());
+            requestQueue = Volley.newRequestQueue(MainApplication.getInstance());
         }
         return requestQueue;
     }
