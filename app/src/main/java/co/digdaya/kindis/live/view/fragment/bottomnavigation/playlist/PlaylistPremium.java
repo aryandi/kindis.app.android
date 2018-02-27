@@ -50,17 +50,17 @@ public class PlaylistPremium extends Fragment{
         sessionHelper = new SessionHelper();
         gson = new Gson();
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        recyclerView.addItemDecoration(new SpacingItemGenre(getContext(), ""));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        recyclerView.addItemDecoration(new SpacingItemGenre(getActivity(), ""));
         getList();
     }
 
     private void getList(){
-        volleyHelper.get(ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getContext(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getContext(), "token_access"), new VolleyHelper.HttpListener<String>() {
+        volleyHelper.get(ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getActivity(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getActivity(), "token_access"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
-                    System.out.println("listpremium : "+ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getContext(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getContext(), "token_access"));
+                    System.out.println("listpremium : "+ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getActivity(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getActivity(), "token_access"));
                     System.out.println("listpremium : "+response);
 
                     try {

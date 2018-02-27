@@ -152,17 +152,17 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
 
-        loginType = sessionHelper.getPreferences(getContext(), "login_type");
+        loginType = sessionHelper.getPreferences(getActivity(), "login_type");
 
-        if (sessionHelper.getPreferences(getContext(), "profile_picture").length()>10){
+        if (sessionHelper.getPreferences(getActivity(), "profile_picture").length()>10){
             Glide.with(getContext())
-                    .load(sessionHelper.getPreferences(getContext(), "profile_picture"))
+                    .load(sessionHelper.getPreferences(getActivity(), "profile_picture"))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(photoProfile);
         }
 
-        if (sessionHelper.getPreferences(getContext(), "is_premium").equals("1")){
+        if (sessionHelper.getPreferences(getActivity(), "is_premium").equals("1")){
             profileStatus.setText("PREMIUM");
             profileStatus.setBackground(getActivity().getDrawable(R.drawable.button_rounded_orange));
         }
@@ -183,12 +183,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     .build();
         }else if (loginType.equals("2")){
             TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
-            Fabric.with(getContext(), new Twitter(authConfig));
+            Fabric.with(getActivity(), new Twitter(authConfig));
         }
 
-        inputNama.setText(sessionHelper.getPreferences(getContext(), "fullname"));
-        inputBirtday.setText(sessionHelper.getPreferences(getContext(), "birth_date"));
-        if (sessionHelper.getPreferences(getContext(), "gender").equals("male")){
+        inputNama.setText(sessionHelper.getPreferences(getActivity(), "fullname"));
+        inputBirtday.setText(sessionHelper.getPreferences(getActivity(), "birth_date"));
+        if (sessionHelper.getPreferences(getActivity(), "gender").equals("male")){
             male.setChecked(true);
             male.setTextColor(Color.parseColor("#000000"));
             female.setTextColor(Color.parseColor("#ffffff"));
@@ -277,7 +277,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
 
     private void calenderDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -303,11 +303,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         Log.d("profileinfo", "Nama : "+inputNama.getText()+"\nTTL : "+inputBirtday.getText()+"\nGender : "+gender);
 
         HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", sessionHelper.getPreferences(getContext(), "user_id"));
+        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
         param.put("fullname", inputNama.getText().toString());
         param.put("birth_date", inputBirtday.getText().toString());
         param.put("gender", gender);
-        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.UPDATE_PROFILE, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -317,11 +317,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
-                        Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         if (object.getBoolean("status")){
-                            sessionHelper.setPreferences(getContext(), "fullname", inputNama.getText().toString());
-                            sessionHelper.setPreferences(getContext(), "birth_date", inputBirtday.getText().toString());
-                            sessionHelper.setPreferences(getContext(), "gender", gender.toString());
+                            sessionHelper.setPreferences(getActivity(), "fullname", inputNama.getText().toString());
+                            sessionHelper.setPreferences(getActivity(), "birth_date", inputBirtday.getText().toString());
+                            sessionHelper.setPreferences(getActivity(), "gender", gender.toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -418,7 +418,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             if (resultCode == RESULT_OK){
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 photoProfile.setImageBitmap(photo);
-                Uri tempUri = getImageUri(getContext(), photo);
+                Uri tempUri = getImageUri(getActivity(), photo);
                 uploadImage(getRealPathFromURI(tempUri));
             }
         }else if (requestCode==1){
@@ -427,7 +427,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     photoProfile.setImageBitmap(imageBitmap);
-                    uploadImage(ImageFilePath.getPath(getContext(), uri));
+                    uploadImage(ImageFilePath.getPath(getActivity(), uri));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -437,8 +437,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
     private void uploadImage(final String path){
 
-        final String id = sessionHelper.getPreferences(getContext(), "user_id");
-        final String token = sessionHelper.getPreferences(getContext(), "token_access");
+        final String id = sessionHelper.getPreferences(getActivity(), "user_id");
+        final String token = sessionHelper.getPreferences(getActivity(), "token_access");
 
 
         new AsyncTask<String, Integer, String>() {
@@ -497,10 +497,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     if (result.getBoolean("status")){
                         JSONObject urlPhoto = result.getJSONObject("result");
                         String newPath = urlPhoto.getString("avatar").replaceAll("(?<!https:)//", "/");
-                        sessionHelper.setPreferences(getContext(), "profile_picture", newPath);
-                        Toast.makeText(getContext(), "Upload Success", Toast.LENGTH_SHORT).show();
+                        sessionHelper.setPreferences(getActivity(), "profile_picture", newPath);
+                        Toast.makeText(getActivity(), "Upload Success", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Upload Failed", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -515,9 +515,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         @Override
         protected String doInBackground(String... strings) {
             HashMap<String, String> param = new HashMap<>();
-            param.put("uid", sessionHelper.getPreferences(getContext(), "user_id"));
-            param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
-            param.put("token_refresh", sessionHelper.getPreferences(getContext(), "token_refresh"));
+            param.put("uid", sessionHelper.getPreferences(getActivity(), "user_id"));
+            param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+            param.put("token_refresh", sessionHelper.getPreferences(getActivity(), "token_refresh"));
 
             new VolleyHelper().post(ApiHelper.LOGOUT, param, new VolleyHelper.HttpListener<String>() {
                 @Override
@@ -532,12 +532,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, sessionHelper.getPreferences(getContext(), "user_id"), null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, sessionHelper.getPreferences(getActivity(), "user_id"), null);
         return Uri.parse(path);
     }
 
     public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);

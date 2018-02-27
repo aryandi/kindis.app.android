@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -13,7 +14,7 @@ import android.widget.ImageView;
  * Created by DELL on 4/13/2017.
  */
 
-public class ImageViewRounded extends ImageView {
+public class ImageViewRounded extends AppCompatImageView {
     public ImageViewRounded(Context context) {
         super(context);
     }
@@ -26,10 +27,10 @@ public class ImageViewRounded extends ImageView {
         super(context, attrs, defStyleAttr);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ImageViewRounded(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    public ImageViewRounded(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//    }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {

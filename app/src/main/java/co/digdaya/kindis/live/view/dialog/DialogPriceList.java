@@ -28,6 +28,7 @@ import co.digdaya.kindis.live.view.adapter.AdapterPriceList;
  */
 
 public class DialogPriceList extends Dialog implements View.OnClickListener, AdapterPriceList.OnSelectedItem {
+    private Context mContext;
     List<PriceListModel.Data> datas;
     String orderID;
 
@@ -42,6 +43,7 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
 
     public DialogPriceList(@NonNull Context context, List<PriceListModel.Data> datas, String orderID) {
         super(context);
+        mContext = context;
         this.datas = datas;
         this.orderID = orderID;
         setOwnerActivity((Activity) context);
@@ -59,10 +61,10 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
         btnGoogle = (Button) findViewById(R.id.btn_google);
         btnMidtrans = (Button) findViewById(R.id.btn_midtrans);
 
-        adapterPriceList = new AdapterPriceList(getContext(), datas);
+        adapterPriceList = new AdapterPriceList(mContext, datas);
         sessionHelper = new SessionHelper();
 
-        list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         list.setAdapter(adapterPriceList);
         adapterPriceList.setOnSelectedItem(DialogPriceList.this);
 
@@ -97,7 +99,7 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
 
     @Override
     public void onSelected(int i) {
-        String transID = "PRE"+sessionHelper.getPreferences(getContext(), "user_id")+new Random().nextInt(89)+10;
+        String transID = "PRE"+sessionHelper.getPreferences(mContext, "user_id")+new Random().nextInt(89)+10;
         googlePayment = new GooglePayment(getOwnerActivity(), datas.get(i).package_id, orderID);
         midtransPayment = new MidtransPayment(getOwnerActivity(), transID, Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID, "", "1");
     }

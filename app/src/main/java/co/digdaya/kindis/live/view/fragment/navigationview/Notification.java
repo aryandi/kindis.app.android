@@ -73,7 +73,7 @@ public class Notification extends BottomPlayerFragment implements View.OnClickLi
         if (listNotif.isEmpty()){
             setLayout();
         }else {
-            adapterNotification = new AdapterNotification(getContext(), listNotif);
+            adapterNotification = new AdapterNotification(getActivity(), listNotif);
             listView.setAdapter(adapterNotification);
         }
 
@@ -112,20 +112,20 @@ public class Notification extends BottomPlayerFragment implements View.OnClickLi
                             map.put("content", data.optString("content"));
                             listNotif.add(map);
                         }
-                        adapterNotification = new AdapterNotification(getContext(), listNotif);
+                        adapterNotification = new AdapterNotification(getActivity(), listNotif);
                         listView.setAdapter(adapterNotification);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void setLayout(){
-        if (new CheckConnection().isInternetAvailable(getContext())){
+        if (new CheckConnection().isInternetAvailable(getActivity())){
             getListNotification();
             listView.setVisibility(View.VISIBLE);
             contEmptyState.setVisibility(View.GONE);

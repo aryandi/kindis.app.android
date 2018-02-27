@@ -129,7 +129,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     }
 
     private void setLayout(){
-        if (new CheckConnection().isInternetAvailable(getContext())){
+        if (new CheckConnection().isInternetAvailable(getActivity())){
             getJSON();
             viewPager.setVisibility(View.VISIBLE);
             emptyState.setVisibility(View.GONE);
@@ -141,7 +141,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
     private void getJSON(){
         loading.show();
-        new VolleyHelper().get(ApiHelper.TAKLIM+new SessionHelper().getPreferences(getContext(), "user_id"), new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().get(ApiHelper.TAKLIM+new SessionHelper().getPreferences(getActivity(), "user_id"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
@@ -149,7 +149,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            adapter = new AdapterTaklim(getChildFragmentManager(), getContext(), 3, response, title);
+                            adapter = new AdapterTaklim(getChildFragmentManager(), getActivity(), 3, response, title);
                             viewPager.setAdapter(adapter);
                             viewPager.setOffscreenPageLimit(3);
                             tabLayout.setupWithViewPager(viewPager);
@@ -165,7 +165,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -173,8 +173,8 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
     private void getBanner(){
         listBanner.clear();
-        System.out.println("getBannertaklim: "+ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=9");
-        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getContext(), "user_id")+"&dev_id=2&channel_id=9", new VolleyHelper.HttpListener<String>() {
+        System.out.println("getBannertaklim: "+ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getActivity(), "user_id")+"&dev_id=2&channel_id=9");
+        new VolleyHelper().get(ApiHelper.ADS_BANNER+new SessionHelper().getPreferences(getActivity(), "user_id")+"&dev_id=2&channel_id=9", new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
@@ -191,7 +191,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 map.put("link", data.getString("click_url"));
                                 listBanner.add(map);
                             }
-                            if (getActivity()!=null) {
+                            if (getActivity() != null) {
                                 adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
                                 imageSlider.setAdapter(adapterBanner);
                                 if (result.length() > 1) {
@@ -203,8 +203,8 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 }
                             }
                         }else {
-                            if (getActivity()!=null) {
-                                adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                            if (getActivity() != null) {
+                                adapterBannerEmpty = new AdapterBannerEmpty(getActivity());
                                 imageSlider.setAdapter(adapterBannerEmpty);
                             }
                         }
@@ -212,8 +212,10 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                         e.printStackTrace();
                     }
                 }else {
-                    adapterBannerEmpty = new AdapterBannerEmpty(getContext());
-                    imageSlider.setAdapter(adapterBannerEmpty);
+                    if (getActivity() != null) {
+                        adapterBannerEmpty = new AdapterBannerEmpty(getActivity());
+                        imageSlider.setAdapter(adapterBannerEmpty);
+                    }
                 }
                 setLayout();
             }

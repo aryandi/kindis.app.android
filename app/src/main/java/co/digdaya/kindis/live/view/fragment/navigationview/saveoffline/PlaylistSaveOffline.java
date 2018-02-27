@@ -40,7 +40,7 @@ public class PlaylistSaveOffline extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getContext(), "is_premium"))==1){
+        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getActivity(), "is_premium"))==1){
             return inflater.inflate(R.layout.fragment_save_offline_list, container, false);
         }else {
             return inflater.inflate(R.layout.layout_empty_state, container, false);
@@ -50,7 +50,7 @@ public class PlaylistSaveOffline extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getContext(), "is_premium"))==1){
+        if (getData() && Integer.parseInt(new SessionHelper().getPreferences(getActivity(), "is_premium"))==1){
             initView(view);
         }else {
             initEmptyState(view);
@@ -69,8 +69,8 @@ public class PlaylistSaveOffline extends Fragment {
 
     private void initView(View view){
         recyclerView = (RecyclerView) view.findViewById(R.id.list_save_offline);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        recyclerView.addItemDecoration(new SpacingItemGenre(getContext(), "more"));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        recyclerView.addItemDecoration(new SpacingItemGenre(getActivity(), "more"));
 
         adapterPlaylistOffline = new AdapterPlaylistOffline(getActivity(), dataPlaylistOfflines);
         recyclerView.setAdapter(adapterPlaylistOffline);
@@ -78,7 +78,7 @@ public class PlaylistSaveOffline extends Fragment {
 
     private boolean getData(){
         dataPlaylistOfflines.clear();
-        KindisDBHelper kindisDBHelper = new KindisDBHelper(getContext());
+        KindisDBHelper kindisDBHelper = new KindisDBHelper(getActivity());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_PLAYLIST +" ORDER BY "+KindisDBname.COLUMN_PLAYLIST_ID+" DESC",null);
         if (cursor.moveToFirst()){

@@ -109,7 +109,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                 if (formValidation()){
                     login();
                 }else {
-                    Toast.makeText(getContext(), "Username or password can't be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Username or password can't be empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,10 +147,10 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
-                            sessionHelper.setPreferences(getContext(), "token", result.getString("token"));
-                            sessionHelper.setPreferences(getContext(), "token_access", result.getString("token_access"));
-                            sessionHelper.setPreferences(getContext(), "token_refresh", result.getString("token_refresh"));
-                            sessionHelper.setPreferences(getContext(), "login_type", "0");
+                            sessionHelper.setPreferences(getActivity(), "token", result.getString("token"));
+                            sessionHelper.setPreferences(getActivity(), "token_access", result.getString("token_access"));
+                            sessionHelper.setPreferences(getActivity(), "token_refresh", result.getString("token_refresh"));
+                            sessionHelper.setPreferences(getActivity(), "login_type", "0");
                             new ProfileInfo(getContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(getActivity(), Bismillah.class);
                             startActivity(intent);

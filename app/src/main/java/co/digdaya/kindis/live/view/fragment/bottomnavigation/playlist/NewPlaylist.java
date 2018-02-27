@@ -47,7 +47,7 @@ public class NewPlaylist extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("PRIVATE"));
         tabLayout.addTab(tabLayout.newTab().setText("PAID"));
 
-        adapterTabPlaylist = new AdapterTabPlaylist(getChildFragmentManager(), getContext(), title);
+        adapterTabPlaylist = new AdapterTabPlaylist(getChildFragmentManager(), getActivity(), title);
         viewPager.setAdapter(adapterTabPlaylist);
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);

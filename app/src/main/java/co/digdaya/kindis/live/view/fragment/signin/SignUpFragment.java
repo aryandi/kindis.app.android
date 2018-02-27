@@ -116,12 +116,12 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
             public void onClick(View view) {
                 if (formValidation()){
                     if (password.getText().length()<8){
-                        Toast.makeText(getContext(), "Password must be 8 characters", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Password must be 8 characters", Toast.LENGTH_SHORT).show();
                     }else {
                         register();
                     }
                 }else {
-                    Toast.makeText(getContext(), "Please fill the form", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please fill the form", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -133,7 +133,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     /*private void calenderDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -183,23 +183,23 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
-                                Toast.makeText(getContext(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
                                 tabLayout.getTabAt(0).select();
                             }else {
-                                Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     }else {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         /*}
         else {
-            Toast.makeText(getContext(), "Password not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Password not match", Toast.LENGTH_SHORT).show();
         }*/
     }
 }

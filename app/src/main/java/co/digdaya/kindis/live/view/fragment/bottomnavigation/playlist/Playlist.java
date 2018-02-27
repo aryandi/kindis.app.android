@@ -79,7 +79,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
         btnCreate = (Button) view.findViewById(R.id.btn_create);
 
         listViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
-        listViewPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        listViewPlaylist.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         contEmptyState = (LinearLayout) view.findViewById(R.id.empty_state);
         contPlaylist = (LinearLayout) view.findViewById(R.id.cont_list);
@@ -93,7 +93,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (inputPlaylist.getText().length()<1){
-                    Toast.makeText(getContext(), "Playlist name can't be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Playlist name can't be empty", Toast.LENGTH_SHORT).show();
                 }else {
                     createPlaylist();
                 }
@@ -125,7 +125,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
         if (listPlaylist.isEmpty()){
             setLayout();
         }else {
-            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
+            adapterPlaylist = new AdapterPlaylist(getActivity(), listPlaylist, "true");
             listViewPlaylist.setAdapter(adapterPlaylist);
             listViewPlaylist.setNestedScrollingEnabled(true);
             menuPlaylist();
@@ -135,7 +135,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
     private void getPlaylist(){
         loading.show();
         Map<String, String> param = new HashMap<String, String>();
-        param.put("uid", new SessionHelper().getPreferences(getContext(), "user_id"));
+        param.put("uid", new SessionHelper().getPreferences(getActivity(), "user_id"));
 
         new VolleyHelper().post(ApiHelper.PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -156,7 +156,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             }
 
                             contPlaylist.setVisibility(View.VISIBLE);
-                            adapterPlaylist = new AdapterPlaylist(getContext(), listPlaylist, "true");
+                            adapterPlaylist = new AdapterPlaylist(getActivity(), listPlaylist, "true");
                             listViewPlaylist.setAdapter(adapterPlaylist);
                             listViewPlaylist.setNestedScrollingEnabled(true);
                             menuPlaylist();
@@ -176,9 +176,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
 
     private void createPlaylist(){
         Map<String, String> param = new HashMap<String, String>();
-        param.put("user_id", new SessionHelper().getPreferences(getContext(), "user_id"));
+        param.put("user_id", new SessionHelper().getPreferences(getActivity(), "user_id"));
         param.put("playlist_name", inputPlaylist.getText().toString());
-        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.CREATE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -193,7 +193,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             inputPlaylist.setText("");
                             getPlaylist();
                         }else {
-                            Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
@@ -207,7 +207,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
     }
 
     private void setLayout(){
-        if (new CheckConnection().isInternetAvailable(getContext())){
+        if (new CheckConnection().isInternetAvailable(getActivity())){
             getPlaylist();
             contPlaylist.setVisibility(View.VISIBLE);
             contEmptyState.setVisibility(View.GONE);
@@ -238,9 +238,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
 
     private void deletePlaylist(String uid){
         HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", sessionHelper.getPreferences(getContext(), "user_id"));
+        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
         param.put("playlist_id", uid);
-        param.put("token_access", sessionHelper.getPreferences(getContext(), "token_access"));
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.DELETE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -252,7 +252,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                         if (object.getBoolean("status")){
                             listPlaylist.clear();
                             getPlaylist();
-                            Toast.makeText(getContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }else {
 
                         }

@@ -91,15 +91,15 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedscrollview);
 
         listViewInfaq = (RecyclerView) view.findViewById(R.id.list_infaq);
-        listViewInfaq.setLayoutManager(new GridLayoutManager(getContext(),2));
-        listViewInfaq.addItemDecoration(new SpacingItemInfaq(getContext()));
+        listViewInfaq.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        listViewInfaq.addItemDecoration(new SpacingItemInfaq(getActivity()));
         listViewInfaq.setNestedScrollingEnabled(false);
 
         getBanner();
 
         if (responses != null){
             InfaqModel infaqModel = gson.fromJson(responses, InfaqModel.class);
-            adapterInfaq = new AdapterInfaq(infaqModel, getContext());
+            adapterInfaq = new AdapterInfaq(infaqModel, getActivity());
             listViewInfaq.setAdapter(adapterInfaq);
         }else {
             getInfaq();
@@ -146,7 +146,7 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
                 loading.dismisLoading();
                 if (status){
                     infaqModel = gson.fromJson(response, InfaqModel.class);
-                    adapterInfaq = new AdapterInfaq(infaqModel, getContext());
+                    adapterInfaq = new AdapterInfaq(infaqModel, getActivity());
                     listViewInfaq.setAdapter(adapterInfaq);
                     urlMore = infaqModel.next_page;
                 }
@@ -186,8 +186,8 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
                                 }
                             }
                         }else {
-                            if (getActivity()!=null){
-                                adapterBannerEmpty = new AdapterBannerEmpty(getContext());
+                            if (getActivity() != null){
+                                adapterBannerEmpty = new AdapterBannerEmpty(getActivity());
                                 imageSlider.setAdapter(adapterBannerEmpty);
                             }
                         }
@@ -195,8 +195,10 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
                         e.printStackTrace();
                     }
                 }else {
-                    adapterBannerEmpty = new AdapterBannerEmpty(getContext());
-                    imageSlider.setAdapter(adapterBannerEmpty);
+                    if (getActivity() != null) {
+                        adapterBannerEmpty = new AdapterBannerEmpty(getActivity());
+                        imageSlider.setAdapter(adapterBannerEmpty);
+                    }
                 }
             }
         });

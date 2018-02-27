@@ -83,14 +83,14 @@ public class FAQ extends BottomPlayerStaticFragment {
                             listFAQ.add(map);
                         }
 
-                        adapter = new AdapterFAQ(getContext(), listFAQ);
+                        adapter = new AdapterFAQ(getActivity(), listFAQ);
                         viewFAQ.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                         viewFAQ.setAdapter(adapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         });

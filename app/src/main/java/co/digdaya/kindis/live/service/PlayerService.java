@@ -359,18 +359,14 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
 
         mediaPlayer.reset();
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnErrorListener(this);
         try {
             mediaPlayer.setDataSource(song);
+            mediaPlayer.prepareAsync();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mediaPlayer.setOnPreparedListener(this);
-        try {
-            mediaPlayer.prepareAsync();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setOnErrorListener(this);
     }
 
     private void getSongResources (String uid){

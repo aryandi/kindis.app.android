@@ -123,7 +123,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        if (new PlayerSessionHelper().getPreferences(getContext(), "file").isEmpty()) {
+        if (new PlayerSessionHelper().getPreferences(getActivity(), "file").isEmpty()) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             switch (metrics.densityDpi) {
                 case DisplayMetrics.DENSITY_MEDIUM:

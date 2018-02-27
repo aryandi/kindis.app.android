@@ -87,7 +87,7 @@ public class Intelectual extends BottomPlayerStaticFragment{
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 }
             }
         });

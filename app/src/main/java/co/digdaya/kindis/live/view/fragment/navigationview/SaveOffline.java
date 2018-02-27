@@ -72,7 +72,7 @@ public class SaveOffline extends Fragment implements View.OnClickListener {
         tabLayout.addTab(tabLayout.newTab().setText("ALBUM"));
         tabLayout.addTab(tabLayout.newTab().setText("PLAYLIST"));
 
-        adapterTabSaveOffline = new AdapterTabSaveOffline(getChildFragmentManager(), getContext(), title);
+        adapterTabSaveOffline = new AdapterTabSaveOffline(getChildFragmentManager(), getActivity(), title);
         viewPager.setAdapter(adapterTabSaveOffline);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
