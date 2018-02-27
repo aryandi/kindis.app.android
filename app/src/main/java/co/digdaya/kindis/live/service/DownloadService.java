@@ -66,6 +66,7 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String data;
+        if (intent != null && intent.getAction() != null)
         switch (intent.getAction()){
             case Constanta.INTENT_ACTION_DOWNLOAD_SINGLE:
                 //singlePath = path+"data/";
