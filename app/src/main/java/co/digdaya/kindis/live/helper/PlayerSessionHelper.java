@@ -14,6 +14,7 @@ public class PlayerSessionHelper {
         editor.apply();
     }
     public String getPreferences(Context context, String key) {
+        if (context == null) return "";
         SharedPreferences prefs = context.getSharedPreferences("player", Context.MODE_PRIVATE);
         return prefs.getString(key, "");
     }
