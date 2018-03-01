@@ -38,7 +38,6 @@ public class SpacingItemGenre extends RecyclerView.ItemDecoration {
 
     private int getDP(int dp){
         final float scale = context.getResources().getDisplayMetrics().density;
-        int pixels = (int) (dp * scale + 0.5f);
-        return pixels;
+        return (int) (dp * scale + 0.5f);
     }
 }

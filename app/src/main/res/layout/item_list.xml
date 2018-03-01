@@ -28,4 +28,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ImageView
+        android:id="@+id/image_ads"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/list"
+        android:src="@drawable/background_emptystate"
+        android:contentDescription="ImageAds" />
+
 </RelativeLayout>

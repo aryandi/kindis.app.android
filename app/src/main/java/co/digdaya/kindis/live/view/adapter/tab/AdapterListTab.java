@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.ViewHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.model.DataArtist;
 import co.digdaya.kindis.live.model.DataGenre;
@@ -36,20 +38,20 @@ import co.digdaya.kindis.live.view.holder.ItemListTab;
  */
 
 public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
-    Activity context;
-    TabModel tabModel;
-    List<TabModel.Tab> tabs;
+    private Activity context;
+    private TabModel tabModel;
+    private List<TabModel.Tab> tabs;
 
-    AdapterPlaylistHorizontal adapterPlaylistHorizontal;
-    AdapterAlbumNew adapterAlbum;
-    AdapterSongHorizontal adapterSong;
-    AdapterArtistNew adapterArtistNew;
-    AdapterGenreNew adapterGenre;
+    private AdapterPlaylistHorizontal adapterPlaylistHorizontal;
+    private AdapterAlbumNew adapterAlbum;
+    private AdapterSongHorizontal adapterSong;
+    private AdapterArtistNew adapterArtistNew;
+    private AdapterGenreNew adapterGenre;
 
-    Gson gson;
-    int menuType, tabType;
+    private Gson gson;
+    private int menuType, tabType;
 
-    String paramMore = "";
+    private String paramMore = "";
 
     public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType) {
         this.context = context;
@@ -73,8 +75,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
     @Override
     public ItemListTab onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        ItemListTab item= new ItemListTab(view);
-        return item;
+        return new ItemListTab(view);
     }
 
     @Override
@@ -82,14 +83,20 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         TextView title = holder.title;
         TextView btnMore = holder.btnMore;
         final RecyclerView recyclerView = holder.list;
+        ImageView imageAds = holder.imageAds;
 
         if (tabs.get(position).data.length() < 10){
             title.setVisibility(View.GONE);
             btnMore.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
+            imageAds.setVisibility(View.GONE);
         }
 
         title.setText(tabs.get(position).name);
+
+        if (tabs.size() == position+1){
+            ViewHelper.setMargins(imageAds, 0, 0, 0, getDP(16));
+        }
 
         if (tabs.get(position).is_more.equals("1")){
             btnMore.setOnClickListener(new View.OnClickListener() {
@@ -202,5 +209,11 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         adapterGenre = new AdapterGenreNew(context, dataGenre);
         recyclerView.setAdapter(adapterGenre);
         recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private int getDP(int dp){
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int pixels = (int) (dp * scale + 0.5f);
+        return pixels;
     }
 }
