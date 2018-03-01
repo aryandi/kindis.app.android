@@ -27,6 +27,7 @@ import java.util.Map;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 
 
@@ -45,6 +46,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     RadioButton female;*/
     Button signUp;
     VolleyHelper volleyHelper;
+    SessionHelper sessionHelper;
     ProgressDialog loading;
     TabLayout tabLayout;
 
@@ -67,6 +69,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         super.onViewCreated(view, savedInstanceState);
 
         volleyHelper = new VolleyHelper();
+        sessionHelper = new SessionHelper();
 
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -177,6 +180,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
+                                sessionHelper.setPreferences(getActivity(), "email", object.getJSONObject("result").getString("email"));
                                 Toast.makeText(getActivity(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
                                 tabLayout.getTabAt(0).select();
                             }else {

@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
@@ -27,5 +28,6 @@ public class MainApplication extends Application {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
         Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         instance = this;
+        MultiDex.install(this);
     }
 }

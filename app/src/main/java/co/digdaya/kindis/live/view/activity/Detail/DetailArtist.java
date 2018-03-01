@@ -233,15 +233,19 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        new ParseJsonPlaylist(getApplicationContext(), true);
-        Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
-        new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", "artist");
-        Intent intent = new Intent(DetailArtist.this, PlayerService.class);
-        intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
-        intent.putExtra("single_id", songPlaylist.get(0));
-        intent.putExtra("list_uid", songPlaylist);
-        startService(intent);
+        if (songPlaylist.size() > 0){
+            new ParseJsonPlaylist(getApplicationContext(), true);
+            Toast.makeText(getApplicationContext(), "Loading . . . ", Toast.LENGTH_LONG).show();
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(songPlaylist.size()));
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "json", json);
+            new PlayerSessionHelper().setPreferences(getApplicationContext(), "type", "artist");
+            Intent intent = new Intent(DetailArtist.this, PlayerService.class);
+            intent.setAction(PlayerActionHelper.PLAY_MULTYSOURCE);
+            intent.putExtra("single_id", songPlaylist.get(0));
+            intent.putExtra("list_uid", songPlaylist);
+            startService(intent);
+        } else {
+            Toast.makeText(this, "No Playlist Available", Toast.LENGTH_SHORT).show();
+        }
     }
 }

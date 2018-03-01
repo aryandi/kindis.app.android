@@ -94,6 +94,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         loading.setCancelable(false);
 
         email.setOnFocusChangeListener(this);
+        email.setText(sessionHelper.getPreferences(getActivity(), "email"));
         password.setOnFocusChangeListener(this);
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
