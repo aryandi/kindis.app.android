@@ -37,6 +37,9 @@ public class FAQ extends BottomPlayerStaticFragment {
     RecyclerView viewFAQ;
     AdapterFAQ adapter;
 
+    public FAQ() {
+    }
+
     public FAQ(DrawerLayout drawer) {
         this.drawer = drawer;
     }

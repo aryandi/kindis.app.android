@@ -22,14 +22,16 @@ import co.digdaya.kindis.live.helper.ApiHelper;
 public class DetailMain extends Fragment {
     ImageView image;
     TextView title, subTitle;
-
     String img, ttl, sttl;
+
+    public DetailMain() {
+    }
+
     public DetailMain(String img, String ttl, String sttl) {
         this.img = img;
         this.ttl = ttl;
         this.sttl = sttl;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

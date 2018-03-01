@@ -18,11 +18,12 @@ public class DetailAbout extends Fragment {
     String about;
     TextView txtAbout;
 
-    public DetailAbout(String about) {
-        this.about = about;
-        // Required empty public constructor
+    public DetailAbout() {
     }
 
+    public DetailAbout(String about) {
+        this.about = about;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

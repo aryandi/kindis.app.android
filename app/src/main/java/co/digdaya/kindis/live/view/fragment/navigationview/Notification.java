@@ -44,6 +44,9 @@ public class Notification extends BottomPlayerFragment implements View.OnClickLi
     Button refresh;
     ProgressDialog loading;
 
+    public Notification() {
+    }
+
     public Notification(DrawerLayout drawer) {
         this.drawer = drawer;
     }

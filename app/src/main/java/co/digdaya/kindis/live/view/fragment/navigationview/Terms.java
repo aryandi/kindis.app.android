@@ -31,6 +31,9 @@ public class Terms extends BottomPlayerStaticFragment{
     ImageButton btnDrawer;
     WebView viewTerms;
 
+    public Terms() {
+    }
+
     public Terms(DrawerLayout drawer) {
         this.drawer = drawer;
     }

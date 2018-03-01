@@ -335,25 +335,31 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
-                sessionHelper.clearSession(getContext());
-                new PlayerSessionHelper().clearSession(getContext());
+                String email = sessionHelper.getPreferences(getActivity(), "email");
+                sessionHelper.clearSession(getActivity());
+                sessionHelper.setPreferences(getActivity(), "email", email);
+                new PlayerSessionHelper().clearSession(getActivity());
                 Intent in = new Intent(getActivity(), PlayerService.class);
                 in.setAction(PlayerActionHelper.ACTION_LOG_OUT);
                 getActivity().startService(in);
-                if (loginType.equals("1")){
-                    LoginManager.getInstance().logOut();
-                }else if (loginType.equals("2")){
-                    Twitter.getSessionManager().clearActiveSession();
-                    Twitter.logOut();
-                }else if (loginType.equals("3")){
-                    if(mGoogleApiClient.isConnected()){
-                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                                new ResultCallback<Status>() {
-                                    @Override
-                                    public void onResult(Status status) {
-                                    }
-                                });
-                    }
+                switch (loginType) {
+                    case "1":
+                        LoginManager.getInstance().logOut();
+                        break;
+                    case "2":
+                        Twitter.getSessionManager().clearActiveSession();
+                        Twitter.logOut();
+                        break;
+                    case "3":
+                        if (mGoogleApiClient.isConnected()) {
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                    new ResultCallback<Status>() {
+                                        @Override
+                                        public void onResult(Status status) {
+                                        }
+                                    });
+                        }
+                        break;
                 }
                 Intent intent = new Intent(getActivity(), SignInActivity.class);
                 startActivity(intent);

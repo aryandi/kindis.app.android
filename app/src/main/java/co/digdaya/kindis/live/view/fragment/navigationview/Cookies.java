@@ -31,6 +31,9 @@ public class Cookies extends BottomPlayerStaticFragment {
     ImageButton btnDrawer;
     WebView viewTerms;
 
+    public Cookies() {
+    }
+
     public Cookies(DrawerLayout drawer) {
         this.drawer = drawer;
     }

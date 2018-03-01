@@ -32,6 +32,9 @@ public class Intelectual extends BottomPlayerStaticFragment{
     WebView viewTerms;
     TextView title;
 
+    public Intelectual() {
+    }
+
     public Intelectual(DrawerLayout drawer) {
         this.drawer = drawer;
     }

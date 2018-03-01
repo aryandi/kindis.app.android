@@ -31,6 +31,9 @@ public class Privacy extends BottomPlayerStaticFragment{
     ImageButton btnDrawer;
     WebView viewPrivacy;
 
+    public Privacy() {
+    }
+
     public Privacy(DrawerLayout drawer) {
         this.drawer = drawer;
     }
