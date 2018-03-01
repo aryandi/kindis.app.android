@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -174,7 +175,7 @@ public class Premium extends AppCompatActivity {
         String url = ApiHelper.PRICE_LIST+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&dev_id=2&client_id=xBc3w11&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access");
         apiCall.priceList(url).enqueue(new Callback<PriceListModel>() {
             @Override
-            public void onResponse(Call<PriceListModel> call, Response<PriceListModel> response) {
+            public void onResponse(@NonNull Call<PriceListModel> call, @NonNull Response<PriceListModel> response) {
                 if (response != null && response.body() != null && response.body().status){
                     priceList = response.body().result.data;
                     order = response.body().result.order_id;
@@ -182,7 +183,7 @@ public class Premium extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PriceListModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<PriceListModel> call, @NonNull Throwable t) {
 
             }
         });

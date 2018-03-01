@@ -37,13 +37,10 @@ public class AdapterTaklim extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                //Fragement for Android Tab
                 return new Syiar(json);
             case 1:
-                //Fragment for Ios Tab
                 return new Kisah(json);
             case 2:
-                //Fragment for Windows Tab
                 return new Murottal(json);
             default:
                 return null;
