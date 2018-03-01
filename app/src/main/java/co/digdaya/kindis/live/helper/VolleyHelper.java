@@ -25,7 +25,7 @@ import co.digdaya.kindis.live.MainApplication;
 
 public class VolleyHelper {
     private String SUCCESS = "Success";
-    private String NO_CONNECTION = "No Connection";
+    public static String NO_CONNECTION = "No Connection";
     private String FAILED = "FAILED";
     private RequestQueue requestQueue;
 
@@ -122,7 +122,7 @@ public class VolleyHelper {
         getRequestQueue().add(request);
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(MainApplication.getInstance());
         }

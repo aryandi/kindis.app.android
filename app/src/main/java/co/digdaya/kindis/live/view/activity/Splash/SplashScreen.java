@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,8 @@ import co.digdaya.kindis.live.helper.CheckConnection;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.RefreshToken;
+
+import static co.digdaya.kindis.live.helper.VolleyHelper.NO_CONNECTION;
 
 public class SplashScreen extends AppCompatActivity {
     SessionHelper sessionHelper;
@@ -126,8 +129,13 @@ public class SplashScreen extends AppCompatActivity {
                         startActivity(i);
                     }
                 }else {
-                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                    startActivity(i);
+                    if (message.equals(NO_CONNECTION)){
+                        //ToDO create retry dialog
+                        Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        startActivity(i);
+                    }
                 }
             }
         });
