@@ -148,15 +148,16 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            adapter = new AdapterTaklim(getChildFragmentManager(), getActivity(), 3, response, title);
-                            viewPager.setAdapter(adapter);
-                            viewPager.setOffscreenPageLimit(3);
-                            tabLayout.setupWithViewPager(viewPager);
-
-                            for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                                tab.setCustomView(adapter.getTabView(i));
+                        if (object.getBoolean("status")) {
+                            if (getActivity() != null) {
+                                adapter = new AdapterTaklim(getChildFragmentManager(), getActivity(), 3, response, title);
+                                viewPager.setAdapter(adapter);
+                                viewPager.setOffscreenPageLimit(3);
+                                tabLayout.setupWithViewPager(viewPager);
+                                for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+                                    tab.setCustomView(adapter.getTabView(i));
+                                }
                             }
                         }else {
                             setLayout();
