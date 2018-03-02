@@ -54,7 +54,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     DialogGetPremium dialogGetPremium;
     ParseJsonPlaylist parseJsonPlaylist;
 
-    int index, playlistPosition;
+    int index, playlistPosition, lastPosition;
     int duration, progress;
     int isAccountPremium;
 
@@ -338,6 +338,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     @Override
     public void onPageSelected(int position) {
+
         if (isChangeViewPager){
             if (isAccountPremium == 1){
                 if (isOfflineMode){
@@ -350,13 +351,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     nextPlay(position);
                 }
             }else {
-                if (position > playlistPosition){
+                if (position > lastPosition){
                     nextPlay(position);
-                }else {
-                    viewPager.setCurrentItem(playlistPosition, true);
+                }else if (position < lastPosition){
+//                    viewPager.setCurrentItem(playlistPosition, true);
                     Intent intent = new Intent(this, Premium.class);
                     startActivity(intent);
                 }
+                lastPosition = position;
             }
         }
     }
