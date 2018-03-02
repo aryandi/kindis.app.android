@@ -369,18 +369,18 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
     }
 
-    private void getSongResources (String uid){
+    private void getSongResources(final String single_id) {
         System.out.println("getSongResources real");
-        System.out.println("nextplay getSongResources: "+uid);
-        System.out.println("playall getSongResources: "+uid);
+        System.out.println("nextplay getSongResources: "+single_id);
+        System.out.println("playall getSongResources: "+single_id);
         Map<String, String> param = new HashMap<String, String>();
-        param.put("single_id", uid);
+        param.put("single_id", single_id);
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
 
-        System.out.println("Paramssongresource : "+uid+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        System.out.println("Paramssongresource : "+single_id+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
 
-        playerSessionHelper.setPreferences(getApplicationContext(), "uid", uid);
+        playerSessionHelper.setPreferences(getApplicationContext(), "uid", single_id);
         volleyHelper.post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
@@ -420,12 +420,42 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                 }
                             }
                         }else {
-                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            refreshToken(single_id);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                         Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    //ToDo create reload
+                }
+            }
+        });
+    }
+
+    private void refreshToken(final String single_id) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                Log.d("refreshtoken", response);
+                if (status) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")) {
+                            JSONObject result = object.getJSONObject("result");
+                            sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                            getSongResources(single_id);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }
