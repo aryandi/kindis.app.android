@@ -498,19 +498,20 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
             @Override
             protected void onPostExecute(String s) {
-                try {
-                    JSONObject result = new JSONObject(s);
-                    if (result.getBoolean("status")){
-                        JSONObject urlPhoto = result.getJSONObject("result");
-                        String newPath = urlPhoto.getString("avatar").replaceAll("(?<!https:)//", "/");
-                        sessionHelper.setPreferences(getActivity(), "profile_picture", newPath);
-                        Toast.makeText(getActivity(), "Upload Success", Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(getActivity(), "Upload Failed", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null)
+                    try {
+                        JSONObject result = new JSONObject(s);
+                        if (result.getBoolean("status")){
+                            JSONObject urlPhoto = result.getJSONObject("result");
+                            String newPath = urlPhoto.getString("avatar").replaceAll("(?<!https:)//", "/");
+                            sessionHelper.setPreferences(getActivity(), "profile_picture", newPath);
+                            Toast.makeText(getActivity(), "Upload Success", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getActivity(), "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 super.onPostExecute(s);
             }
 
