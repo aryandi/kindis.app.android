@@ -78,7 +78,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             songPlaylist = new ArrayList<>();
         }else {
             songPlaylist = parseJsonPlaylist.getSongPlaylist();
-
             if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
                 playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
             }
@@ -354,7 +353,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     private void playMediaPlayer(){
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         isDataSources = true;
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
 

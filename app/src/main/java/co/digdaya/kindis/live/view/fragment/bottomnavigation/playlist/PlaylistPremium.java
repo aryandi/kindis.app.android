@@ -59,7 +59,7 @@ public class PlaylistPremium extends Fragment{
         volleyHelper.get(ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getActivity(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getActivity(), "token_access"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                if (status){
+                if (getActivity() != null && status){
                     System.out.println("listpremium : "+ApiHelper.LIST_PLAYLIST_PREMIUM + sessionHelper.getPreferences(getActivity(), "user_id")+"&token_access=" + sessionHelper.getPreferences(getActivity(), "token_access"));
                     System.out.println("listpremium : "+response);
 
