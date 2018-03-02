@@ -351,9 +351,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     nextPlay(position);
                 }
             }else {
-                if (position > lastPosition){
+                if (position > playlistPosition) {
                     nextPlay(position);
-                }else if (position < lastPosition){
+                }
+                if (position < lastPosition) {
 //                    viewPager.setCurrentItem(playlistPosition, true);
                     Intent intent = new Intent(this, Premium.class);
                     startActivity(intent);
