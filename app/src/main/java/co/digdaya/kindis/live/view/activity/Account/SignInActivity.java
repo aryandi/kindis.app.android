@@ -230,7 +230,7 @@ public class SignInActivity extends AppCompatActivity {
     private void loginTwitter(){
         signInFragment.setOnClickLoginTwitterListener(new SignInFragment.OnClickLoginTwitterListener() {
             @Override
-            public void onClick(TwitterAuthClient twitterAuthClient) {
+            public void onLoginTwitterClick(TwitterAuthClient twitterAuthClient) {
                 client.authorize(SignInActivity.this, new Callback<TwitterSession>() {
                     @Override
                     public void success(final Result<TwitterSession> twitterSessionResult) {
@@ -275,7 +275,7 @@ public class SignInActivity extends AppCompatActivity {
     private void loginGoogle(){
         signInFragment.setOnClickLoginGoogleListener(new SignInFragment.OnClickLoginGoogleListener() {
             @Override
-            public void onClick() {
+            public void onLoginGoogleClick() {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, 3);
             }

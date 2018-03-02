@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -104,7 +105,7 @@ public class SplashScreen extends AppCompatActivity {
         new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                System.out.println(response);
+                Log.d("refreshtoken", "onReceive: " + response);
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);

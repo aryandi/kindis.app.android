@@ -189,7 +189,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
             @Override
             public void onClick(View v) {
                 client = new TwitterAuthClient();
-                onClickLoginTwitterListener.onClick(client);
+                if (onClickLoginTwitterListener != null) onClickLoginTwitterListener.onLoginTwitterClick(client);
             }
         });
     }
@@ -198,7 +198,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
         loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickLoginGoogleListener.onClick();
+                if (onClickLoginGoogleListener != null) onClickLoginGoogleListener.onLoginGoogleClick();
             }
         });
     }
@@ -208,7 +208,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     public interface OnClickLoginTwitterListener{
-        void onClick(TwitterAuthClient twitterAuthClient);
+        void onLoginTwitterClick(TwitterAuthClient twitterAuthClient);
     }
 
     public void setOnClickLoginGoogleListener(OnClickLoginGoogleListener onClickLoginGoogleListener){
@@ -216,6 +216,6 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
     }
 
     public interface OnClickLoginGoogleListener{
-        void onClick();
+        void onLoginGoogleClick();
     }
 }
