@@ -132,7 +132,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
 
     @Override
     public void onFocusChange(View view, boolean b) {
-        appBarLayout.setExpanded(false, true);
+        if (appBarLayout != null) appBarLayout.setExpanded(false, true);
     }
 
     /*private void calenderDialog(){

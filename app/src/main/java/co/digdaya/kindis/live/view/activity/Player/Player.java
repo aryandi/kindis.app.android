@@ -367,7 +367,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     }
 
     private void nextPlay(int position){
-        if (isInFront){
+        if (isInFront && songPlaylist.size() > 0){
             System.out.println("nextplay player: "+songPlaylist.get(position));
             Intent intent = new Intent(getApplicationContext(), PlayerService.class);
             intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
