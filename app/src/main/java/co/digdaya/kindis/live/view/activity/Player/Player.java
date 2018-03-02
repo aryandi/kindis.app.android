@@ -214,7 +214,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             txtProgress.setText(getTimeString(0));
             txtDuration.setText(getTimeString(0));
         }else {
-            int dur = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "duration"));
+            int dur = 0;
+            try {
+                dur = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "duration"));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
             seekBar.setMax(dur);
             txtDuration.setText(getTimeString(dur));
         }
