@@ -346,6 +346,7 @@ public class SignInActivity extends AppCompatActivity {
                             sessionHelper.setPreferences(getApplicationContext(), "token", result.getString("token"));
                             sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("token_access"));
                             sessionHelper.setPreferences(getApplicationContext(), "token_refresh", result.getString("token_refresh"));
+                            sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(SignInActivity.this, Bismillah.class);
                             startActivity(intent);

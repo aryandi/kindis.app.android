@@ -206,7 +206,6 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
                                 JSONObject result = object.getJSONObject("result");
-                                sessionHelper.setPreferences(getActivity(), "email", result.getString("email"));
                                 sessionHelper.setPreferences(getActivity(), "expires_in", String.valueOf(result.optInt("expires_in")));
                                 sessionHelper.setPreferences(getActivity(), "token", result.getString("token"));
                                 sessionHelper.setPreferences(getActivity(), "token_access", result.getString("token_access"));

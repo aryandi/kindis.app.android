@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.view.dialog.DialogLoading;
 import co.digdaya.kindis.live.util.BackgroundProses.ProfileInfo;
@@ -30,11 +31,11 @@ import co.digdaya.kindis.live.view.activity.Splash.Bismillah;
 public class Register extends AppCompatActivity implements View.OnClickListener {
     EditText inputFullname;
     EditText inputEmail;
-    EditText inputPhone;
+   /* EditText inputPhone;
     EditText inputBirtday;
     RadioGroup radioGroup;
     RadioButton male;
-    RadioButton female;
+    RadioButton female;*/
     Button signUp;
     ImageButton btnBack;
 
@@ -48,19 +49,22 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     VolleyHelper volleyHelper;
     DialogLoading dialogLoading;
+    private SessionHelper sessionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        sessionHelper = new SessionHelper();
+
         inputFullname = (EditText) findViewById(R.id.input_nama);
         inputEmail = (EditText) findViewById(R.id.input_email);
-        inputPhone = (EditText) findViewById(R.id.input_phone);
+      /*  inputPhone = (EditText) findViewById(R.id.input_phone);
         inputBirtday = (EditText) findViewById(R.id.input_birthday);
         radioGroup = (RadioGroup) findViewById(R.id.gender);
         male = (RadioButton) findViewById(R.id.male);
-        female = (RadioButton) findViewById(R.id.female);
+        female = (RadioButton) findViewById(R.id.female);*/
         signUp = (Button) findViewById(R.id.btn_sign_up);
         btnBack = (ImageButton) findViewById(R.id.btn_back);
 
@@ -82,7 +86,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         inputFullname.setText(fullname);
         inputEmail.setText(email);
-        inputBirtday.setText(birth_date);
+        /*inputBirtday.setText(birth_date);
 
         inputBirtday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -115,7 +119,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 }
             }
         });
-
+*/
         signUp.setOnClickListener(this);
         btnBack.setOnClickListener(this);
     }
@@ -130,7 +134,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void calenderDialog(){
+    /*private void calenderDialog(){
         DatePickerDialog datePickerDialog = new DatePickerDialog(Register.this,
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -143,23 +147,23 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     }
                 }, 1990, 0, 1);
         datePickerDialog.show();
-    }
+    }*/
 
     private void registerSocial(){
-        if (male.isChecked()){
+       /* if (male.isChecked()){
             gender = "male";
         }else {
             gender = "female";
-        }
+        }*/
 
         HashMap<String, String> param = new HashMap<>();
         param.put("fullname", inputFullname.getText().toString());
-        param.put("gender", gender);
-        param.put("birth_date", inputBirtday.getText().toString());
+//        param.put("gender", gender);
+//        param.put("birth_date", inputBirtday.getText().toString());
         param.put("type_social", type_social);
         param.put("app_id", app_id);
         param.put("email", inputEmail.getText().toString());
-        param.put("phone", inputPhone.getText().toString());
+//        param.put("phone", inputPhone.getText().toString());
 
         volleyHelper.post(ApiHelper.REGISTER_SOCIAL, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -171,6 +175,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
+                            sessionHelper.setPreferences(getApplicationContext(), "token", result.getString("token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("token_access"));
+                            sessionHelper.setPreferences(getApplicationContext(), "token_refresh", result.getString("token_refresh"));
+                            sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(Register.this, Bismillah.class);
                             startActivity(intent);
