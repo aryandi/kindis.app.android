@@ -97,7 +97,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void wasLogin(){
-        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expired_in");
+        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
         long currentTimeMillis = System.currentTimeMillis();
         if (expired_in == null || currentTimeMillis > Long.parseLong(expired_in)) {
             System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_refresh") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "user_id"));
