@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.custom.ImageViewRounded;
 
 /**
  * Created by DELL on 3/31/2017.
@@ -15,7 +16,7 @@ public class ItemListTab extends RecyclerView.ViewHolder {
     public TextView title;
     public TextView btnMore;
     public RecyclerView list;
-    public ImageView imageAds;
+    public ImageViewRounded imageAds;
     public TextView textAds;
 
     public ItemListTab(View itemView) {
@@ -23,7 +24,7 @@ public class ItemListTab extends RecyclerView.ViewHolder {
         title = (TextView) itemView.findViewById(R.id.text_list);
         btnMore = (TextView) itemView.findViewById(R.id.btn_more_list);
         list = (RecyclerView) itemView.findViewById(R.id.list);
-        imageAds = (ImageView) itemView.findViewById(R.id.image_ads);
+        imageAds = (ImageViewRounded) itemView.findViewById(R.id.image_ads);
         textAds = (TextView) itemView.findViewById(R.id.text_ads);
     }
 }

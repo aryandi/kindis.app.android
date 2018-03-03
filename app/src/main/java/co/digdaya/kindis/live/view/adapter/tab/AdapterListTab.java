@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.custom.ImageViewRounded;
 import co.digdaya.kindis.live.helper.ViewHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.model.DataArtist;
@@ -83,7 +84,8 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         TextView title = holder.title;
         TextView btnMore = holder.btnMore;
         final RecyclerView recyclerView = holder.list;
-        ImageView imageAds = holder.imageAds;
+        ImageViewRounded imageAds = holder.imageAds;
+        TextView textAds = holder.textAds;
 
         if (tabs.get(position).data.length() < 10){
             title.setVisibility(View.GONE);
@@ -94,8 +96,15 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
         title.setText(tabs.get(position).name);
 
-        if (tabs.size() == position+1){
-            ViewHelper.setMargins(imageAds, 0, 0, 0, getDP(16));
+        if (tabs.get(position).name.equals("Single")){
+            imageAds.setVisibility(View.VISIBLE);
+            textAds.setVisibility(View.VISIBLE);
+            if (tabs.size() == position+1){
+                ViewHelper.setMargins(imageAds, 0, 0, 0, getDP(16));
+            }
+        } else {
+            imageAds.setVisibility(View.GONE);
+            textAds.setVisibility(View.GONE);
         }
 
         if (tabs.get(position).is_more.equals("1")){
@@ -213,7 +222,6 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
 
     private int getDP(int dp){
         final float scale = context.getResources().getDisplayMetrics().density;
-        int pixels = (int) (dp * scale + 0.5f);
-        return pixels;
+        return (int) (dp * scale + 0.5f);
     }
 }

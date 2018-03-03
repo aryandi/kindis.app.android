@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <ImageView
+    <co.digdaya.kindis.live.custom.ImageViewRounded
         android:id="@+id/image_ads"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -37,5 +37,19 @@
         android:layout_below="@id/list"
         android:src="@drawable/background_emptystate"
         android:contentDescription="ImageAds" />
+
+    <TextView
+        android:id="@+id/text_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_ads"
+        android:layout_alignLeft="@+id/image_ads"
+        android:layout_alignRight="@+id/image_ads"
+        android:layout_alignTop="@+id/image_ads"
+        android:layout_below="@+id/list"
+        android:text="Ini Iklan"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="28dp" />
 
 </RelativeLayout>

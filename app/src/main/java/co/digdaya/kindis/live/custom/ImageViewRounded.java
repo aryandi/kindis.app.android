@@ -54,7 +54,6 @@ public class ImageViewRounded extends AppCompatImageView {
 
     private float getDP(float dp){
         final float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) (dp * scale + 0.5f);
-        return pixels;
+        return (int) (dp * scale + 0.5f);
     }
 }
