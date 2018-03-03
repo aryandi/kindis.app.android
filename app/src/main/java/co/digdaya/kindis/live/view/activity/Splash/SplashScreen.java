@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -99,53 +100,62 @@ public class SplashScreen extends AppCompatActivity {
     private void wasLogin(){
         String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
         long currentTimeMillis = System.currentTimeMillis()/1000;
-        if (expired_in == null || currentTimeMillis > Long.parseLong(expired_in)) {
-            System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_refresh") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "user_id"));
-            HashMap<String, String> param = new HashMap<>();
-            param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
-            param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
-            param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
-            new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    if (status) {
-                        Log.d("refreshtoken", "onReceive: " + response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.getBoolean("status")) {
-                                JSONObject result = object.getJSONObject("result");
-                                sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
-                                sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+        if (TextUtils.isEmpty(expired_in)) {
+            refreshToken();
+        } else {
+            if (currentTimeMillis > Long.parseLong(expired_in)){
+                refreshToken();
+            } else {
+                Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                startActivity(i);
+            }
+        }
+    }
+
+    private void refreshToken() {
+        System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_refresh") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        HashMap<String, String> param = new HashMap<>();
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status) {
+                    Log.d("refreshtoken", "onReceive: " + response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")) {
+                            JSONObject result = object.getJSONObject("result");
+                            sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
+                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                            startActivity(i);
+                        } else {
+                            if (refreshToken.refreshToken()) {
                                 Intent i = new Intent(SplashScreen.this, Bismillah.class);
                                 startActivity(i);
                             } else {
-                                if (refreshToken.refreshToken()) {
-                                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                                    startActivity(i);
-                                } else {
-                                    Intent i = new Intent(SplashScreen.this, Walkthrough.class);
-                                    startActivity(i);
-                                }
+                                Intent i = new Intent(SplashScreen.this, Walkthrough.class);
+                                startActivity(i);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                            startActivity(i);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        startActivity(i);
+                    }
+                } else {
+                    if (message.equals(NO_CONNECTION)) {
+                        //ToDO create retry dialog
+                        Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (message.equals(NO_CONNECTION)) {
-                            //ToDO create retry dialog
-                            Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                            startActivity(i);
-                        }
+                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        startActivity(i);
                     }
                 }
-            });
-        } else {
-            Intent i = new Intent(SplashScreen.this, Bismillah.class);
-            startActivity(i);
-        }
+            }
+        });
     }
 }

@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -374,10 +375,10 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     private void getSongResources(final String single_id) {
 
-        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
+        String expiredIn = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
         long currentTimeMillis = System.currentTimeMillis()/1000;
-        if (expired_in != null) {
-            if (currentTimeMillis > Long.parseLong(expired_in)) {
+        if (!TextUtils.isEmpty(expiredIn)) {
+            if (currentTimeMillis > Long.parseLong(expiredIn)) {
                 refreshToken(single_id);
                 return;
             }
@@ -464,6 +465,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                             JSONObject result = object.getJSONObject("result");
                             sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
                             sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
+                            sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             getSongResources(single_id);
                         }
                     } catch (JSONException e) {
