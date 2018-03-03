@@ -3,6 +3,7 @@ package co.digdaya.kindis.live.view.fragment.signin;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +30,8 @@ import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
+import co.digdaya.kindis.live.util.BackgroundProses.ProfileInfo;
+import co.digdaya.kindis.live.view.activity.Splash.Bismillah;
 
 
 /**
@@ -165,7 +168,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
 
 //        if (password.getText().toString().equals(retypePassword.getText().toString())){
             loading.show();
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("fullname", fullname.getText().toString());
             params.put("email", email.getText().toString());
             params.put("password", password.getText().toString());
@@ -180,9 +183,17 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("status")){
-                                sessionHelper.setPreferences(getActivity(), "email", object.getJSONObject("result").getString("email"));
-                                Toast.makeText(getActivity(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
-                                tabLayout.getTabAt(0).select();
+                                JSONObject result = object.getJSONObject("result");
+                                sessionHelper.setPreferences(getActivity(), "email", result.getString("email"));
+                                sessionHelper.setPreferences(getActivity(), "expires_in", String.valueOf(result.optInt("expires_in")));
+                                sessionHelper.setPreferences(getActivity(), "token", result.getString("token"));
+                                sessionHelper.setPreferences(getActivity(), "token_access", result.getString("token_access"));
+                                sessionHelper.setPreferences(getActivity(), "token_refresh", result.getString("token_refresh"));
+                                new ProfileInfo(getContext()).execute(result.getString("user_id"));
+//                                Toast.makeText(getActivity(), "Please check your email for verification", Toast.LENGTH_SHORT).show();
+//                                tabLayout.getTabAt(0).select();
+                                Intent intent = new Intent(getActivity(), Bismillah.class);
+                                startActivity(intent);
                             }else {
                                 Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                             }

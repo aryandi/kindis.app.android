@@ -148,6 +148,7 @@ public class SignInFragment extends Fragment implements View.OnFocusChangeListen
                             sessionHelper.setPreferences(getActivity(), "token_access", result.getString("token_access"));
                             sessionHelper.setPreferences(getActivity(), "token_refresh", result.getString("token_refresh"));
                             sessionHelper.setPreferences(getActivity(), "login_type", "0");
+                            sessionHelper.setPreferences(getActivity(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             new ProfileInfo(getContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(getActivity(), Bismillah.class);
                             startActivity(intent);
