@@ -16,13 +16,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,11 +53,19 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     RadioGroup radioGroup;
     RadioButton male;
     RadioButton female;*/
+
+    ImageButton loginFacebook;
+    ImageButton loginTwitter;
+    ImageButton loginGoogle;
     Button signUp;
     VolleyHelper volleyHelper;
     SessionHelper sessionHelper;
     ProgressDialog loading;
     TabLayout tabLayout;
+    private OnClickLoginTwitterListener onClickLoginTwitterListener;
+    private OnClickLoginGoogleListener onClickLoginGoogleListener;
+    LoginManager loginManager;
+    TwitterAuthClient client;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -64,6 +78,7 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loginManager = LoginManager.getInstance();
         return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
@@ -89,6 +104,9 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         male = (RadioButton) view.findViewById(R.id.male);
         female = (RadioButton) view.findViewById(R.id.female);*/
         signUp = (Button) view.findViewById(R.id.btn_sign_up);
+        loginFacebook = (ImageButton) view.findViewById(R.id.login_facebook);
+        loginTwitter = (ImageButton) view.findViewById(R.id.login_twitter);
+        loginGoogle = (ImageButton) view.findViewById(R.id.login_google);
 
         fullname.setOnFocusChangeListener(this);
         email.setOnFocusChangeListener(this);
@@ -131,6 +149,10 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
                 }
             }
         });
+
+        loginFacebook();
+        loginTwitter();
+        loginGoogle();
     }
 
     @Override
@@ -210,5 +232,53 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         else {
             Toast.makeText(getActivity(), "Password not match", Toast.LENGTH_SHORT).show();
         }*/
+
+        loginFacebook();
+        loginTwitter();
+        loginGoogle();
+    }
+
+    private void loginFacebook(){
+        loginFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+            }
+        });
+    }
+
+    private void loginTwitter(){
+        loginTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client = new TwitterAuthClient();
+                if (onClickLoginTwitterListener != null) onClickLoginTwitterListener.onLoginTwitterClick(client);
+            }
+        });
+    }
+
+    private void loginGoogle(){
+        loginGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickLoginGoogleListener != null) onClickLoginGoogleListener.onLoginGoogleClick();
+            }
+        });
+    }
+
+    public void setOnClickLoginTwitterListener(SignUpFragment.OnClickLoginTwitterListener onClickLoginTwitterListener){
+        this.onClickLoginTwitterListener = onClickLoginTwitterListener;
+    }
+
+    public interface OnClickLoginTwitterListener{
+        void onLoginTwitterClick(TwitterAuthClient twitterAuthClient);
+    }
+
+    public void setOnClickLoginGoogleListener(SignUpFragment.OnClickLoginGoogleListener onClickLoginGoogleListener){
+        this.onClickLoginGoogleListener = onClickLoginGoogleListener;
+    }
+
+    public interface OnClickLoginGoogleListener{
+        void onLoginGoogleClick();
     }
 }

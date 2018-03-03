@@ -71,7 +71,10 @@ public class SignInActivity extends AppCompatActivity {
     TwitterAuthClient authClient;
 
     SignInFragment signInFragment;
+    SignUpFragment signUpFragment;
     GoogleApiClient mGoogleApiClient;
+    private Callback<TwitterSession> twitterCallback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +113,44 @@ public class SignInActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.htab_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        twitterCallback = new Callback<TwitterSession>() {
+            @Override
+            public void success(final Result<TwitterSession> twitterSessionResult) {
+                TwitterSession twitterSession = twitterSessionResult.data;
+
+                Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                call.enqueue(new Callback<User>() {
+                    @Override
+                    public void success(Result<User> result) {
+                        System.out.println("logintwitter"+result.data.email);
+
+                        sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
+                        sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
+
+                        String fullname = result.data.name;
+                        String gender = "";
+                        String birth_date = "";
+                        String type_social = "2";
+                        String app_id = String.valueOf(twitterSessionResult.data.getUserId());
+                        String email = result.data.email;
+                        String phone = "";
+                        loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(TwitterException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
+            }
+        };
+
         loginFacebook();
         loginTwitter();
         loginGoogle();
@@ -144,9 +185,10 @@ public class SignInActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         signInFragment = new SignInFragment(appBarLayout);
+        signUpFragment = new SignUpFragment(appBarLayout);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(signInFragment, "Sign In");
-        adapter.addFragment(new SignUpFragment(appBarLayout), "Sign Up");
+        adapter.addFragment(signUpFragment, "Sign Up");
         viewPager.setAdapter(adapter);
     }
 
@@ -231,49 +273,28 @@ public class SignInActivity extends AppCompatActivity {
         signInFragment.setOnClickLoginTwitterListener(new SignInFragment.OnClickLoginTwitterListener() {
             @Override
             public void onLoginTwitterClick(TwitterAuthClient twitterAuthClient) {
-                client.authorize(SignInActivity.this, new Callback<TwitterSession>() {
-                    @Override
-                    public void success(final Result<TwitterSession> twitterSessionResult) {
-                        TwitterSession twitterSession = twitterSessionResult.data;
-
-                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
-                        call.enqueue(new Callback<User>() {
-                            @Override
-                            public void success(Result<User> result) {
-                                System.out.println("logintwitter"+result.data.email);
-
-                                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
-                                sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
-
-                                String fullname = result.data.name;
-                                String gender = "";
-                                String birth_date = "";
-                                String type_social = "2";
-                                String app_id = String.valueOf(twitterSessionResult.data.getUserId());
-                                String email = result.data.email;
-                                String phone = "";
-                                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
-                            }
-
-                            @Override
-                            public void failure(TwitterException e) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                client.authorize(SignInActivity.this, twitterCallback);
             }
         });
+        signUpFragment.setOnClickLoginTwitterListener(new SignUpFragment.OnClickLoginTwitterListener() {
+            @Override
+            public void onLoginTwitterClick(TwitterAuthClient twitterAuthClient) {
+                client.authorize(SignInActivity.this, twitterCallback);
+            }
+        });
+
     }
 
     private void loginGoogle(){
         signInFragment.setOnClickLoginGoogleListener(new SignInFragment.OnClickLoginGoogleListener() {
+            @Override
+            public void onLoginGoogleClick() {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, 3);
+            }
+        });
+
+        signUpFragment.setOnClickLoginGoogleListener(new SignUpFragment.OnClickLoginGoogleListener() {
             @Override
             public void onLoginGoogleClick() {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);

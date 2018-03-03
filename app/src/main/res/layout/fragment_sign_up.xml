@@ -18,26 +18,32 @@
         android:paddingBottom="16dp"
         android:focusableInTouchMode="true">
 
-        <!--<LinearLayout
+        <LinearLayout
             android:id="@+id/cont_sosmed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
-            <ImageView
+            <ImageButton
+                android:id="@+id/login_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_fb"
+                android:background="@android:color/transparent"
                 android:layout_marginRight="24dp"/>
-            <ImageView
+            <ImageButton
+                android:id="@+id/login_twitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_twitter"
+                android:background="@android:color/transparent"
                 android:layout_marginRight="24dp"/>
-            <ImageView
+            <ImageButton
+                android:id="@+id/login_google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_gplus"/>
+                android:src="@drawable/ic_gplus"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
 
         <co.digdaya.kindis.live.custom.TextViewRegular
@@ -48,12 +54,13 @@
             android:layout_gravity="center_horizontal"
             android:text="Or sign up with your e-mail address"
             android:textSize="11sp"
-            android:textColor="@color/white"/>-->
+            android:textColor="@color/white"/>
 
         <co.digdaya.kindis.live.custom.TextViewRegular
             android:id="@+id/label_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="FULL NAME"
             android:textSize="11sp"
             android:textColor="@color/white"/>

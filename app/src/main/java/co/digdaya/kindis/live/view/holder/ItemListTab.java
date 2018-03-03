@@ -16,6 +16,7 @@ public class ItemListTab extends RecyclerView.ViewHolder {
     public TextView btnMore;
     public RecyclerView list;
     public ImageView imageAds;
+    public TextView textAds;
 
     public ItemListTab(View itemView) {
         super(itemView);
@@ -23,5 +24,6 @@ public class ItemListTab extends RecyclerView.ViewHolder {
         btnMore = (TextView) itemView.findViewById(R.id.btn_more_list);
         list = (RecyclerView) itemView.findViewById(R.id.list);
         imageAds = (ImageView) itemView.findViewById(R.id.image_ads);
+        textAds = (TextView) itemView.findViewById(R.id.text_ads);
     }
 }
