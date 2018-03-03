@@ -97,48 +97,52 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void wasLogin(){
-        System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_refresh")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id"));
-        HashMap<String, String> param = new HashMap<>();
-        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
-        param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
-        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
-        new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
-                if (status){
-                    Log.d("refreshtoken", "onReceive: " + response);
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
-                            JSONObject result = object.getJSONObject("result");
-                            sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
-                            sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
-                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                            startActivity(i);
-                        }else {
-                            if (refreshToken.refreshToken()){
+        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expired_in");
+        long currentTimeMillis = System.currentTimeMillis();
+        if (expired_in == null || currentTimeMillis > Long.parseLong(expired_in)) {
+            System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_refresh") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+            HashMap<String, String> param = new HashMap<>();
+            param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+            param.put("token_refresh", sessionHelper.getPreferences(getApplicationContext(), "token_refresh"));
+            param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+            new VolleyHelper().post(ApiHelper.REFRESH_TOKEN, param, new VolleyHelper.HttpListener<String>() {
+                @Override
+                public void onReceive(boolean status, String message, String response) {
+                    if (status) {
+                        Log.d("refreshtoken", "onReceive: " + response);
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.getBoolean("status")) {
+                                JSONObject result = object.getJSONObject("result");
+                                sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("access_token"));
+                                sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
                                 Intent i = new Intent(SplashScreen.this, Bismillah.class);
                                 startActivity(i);
-                            }else {
-                                Intent i = new Intent(SplashScreen.this, Walkthrough.class);
-                                startActivity(i);
+                            } else {
+                                if (refreshToken.refreshToken()) {
+                                    Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                                    startActivity(i);
+                                } else {
+                                    Intent i = new Intent(SplashScreen.this, Walkthrough.class);
+                                    startActivity(i);
+                                }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                            startActivity(i);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                        startActivity(i);
-                    }
-                }else {
-                    if (message.equals(NO_CONNECTION)){
-                        //ToDO create retry dialog
-                        Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                        startActivity(i);
+                        if (message.equals(NO_CONNECTION)) {
+                            //ToDO create retry dialog
+                            Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                            startActivity(i);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 }
