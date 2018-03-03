@@ -73,6 +73,19 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="kindis" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="kindis.co"
+                    android:pathPrefix="/user/verification/*" />
+                <!--<data android:host="example.com" />-->
+                <!--<data android:scheme="https" />-->
+                <!--<data android:pathPattern="/.*" />-->
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".view.activity.Account.ForgotPassword"
