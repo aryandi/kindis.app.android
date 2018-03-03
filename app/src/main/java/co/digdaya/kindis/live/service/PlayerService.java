@@ -375,7 +375,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     private void getSongResources(final String single_id) {
 
         String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
-        long currentTimeMillis = System.currentTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis()/1000;
         if (expired_in != null && currentTimeMillis > Long.parseLong(expired_in)) {
             refreshToken(single_id);
             return;

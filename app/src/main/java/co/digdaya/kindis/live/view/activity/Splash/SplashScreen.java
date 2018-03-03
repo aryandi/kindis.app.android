@@ -98,7 +98,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private void wasLogin(){
         String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
-        long currentTimeMillis = System.currentTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis()/1000;
         if (expired_in == null || currentTimeMillis > Long.parseLong(expired_in)) {
             System.out.println(sessionHelper.getPreferences(getApplicationContext(), "token_access") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_refresh") + "\n" + sessionHelper.getPreferences(getApplicationContext(), "user_id"));
             HashMap<String, String> param = new HashMap<>();
@@ -143,6 +143,9 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            Intent i = new Intent(SplashScreen.this, Bismillah.class);
+            startActivity(i);
         }
     }
 }
