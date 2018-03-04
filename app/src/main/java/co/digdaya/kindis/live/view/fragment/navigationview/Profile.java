@@ -335,35 +335,45 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
-                String email = sessionHelper.getPreferences(getActivity(), "email");
-                sessionHelper.clearSession(getActivity());
-                sessionHelper.setPreferences(getActivity(), "email", email);
-                new PlayerSessionHelper().clearSession(getActivity());
-                Intent in = new Intent(getActivity(), PlayerService.class);
-                in.setAction(PlayerActionHelper.ACTION_LOG_OUT);
-                getActivity().startService(in);
-                switch (loginType) {
-                    case "1":
-                        LoginManager.getInstance().logOut();
-                        break;
-                    case "2":
-                        Twitter.getSessionManager().clearActiveSession();
-                        Twitter.logOut();
-                        break;
-                    case "3":
-                        if (mGoogleApiClient.isConnected()) {
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                                    new ResultCallback<Status>() {
-                                        @Override
-                                        public void onResult(Status status) {
-                                        }
-                                    });
+                HashMap<String, String> param = new HashMap<>();
+                param.put("uid", sessionHelper.getPreferences(getActivity(), "user_id"));
+                param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+                param.put("token_refresh", sessionHelper.getPreferences(getActivity(), "token_refresh"));
+
+                new VolleyHelper().post(ApiHelper.LOGOUT, param, new VolleyHelper.HttpListener<String>() {
+                    @Override
+                    public void onReceive(boolean status, String message, String response) {
+                        System.out.println("logoutresponse: "+response);
+                        String email = sessionHelper.getPreferences(getActivity(), "email");
+                        sessionHelper.clearSession(getActivity());
+                        sessionHelper.setPreferences(getActivity(), "email", email);
+                        new PlayerSessionHelper().clearSession(getActivity());
+                        Intent in = new Intent(getActivity(), PlayerService.class);
+                        in.setAction(PlayerActionHelper.ACTION_LOG_OUT);
+                        getActivity().startService(in);
+                        switch (loginType) {
+                            case "1":
+                                LoginManager.getInstance().logOut();
+                                break;
+                            case "2":
+                                Twitter.getSessionManager().clearActiveSession();
+                                Twitter.logOut();
+                                break;
+                            case "3":
+                                if (mGoogleApiClient.isConnected()) {
+                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                            new ResultCallback<Status>() {
+                                                @Override
+                                                public void onResult(Status status) {
+                                                }
+                                            });
+                                }
+                                break;
                         }
-                        break;
-                }
-                Intent intent = new Intent(getActivity(), SignInActivity.class);
-                startActivity(intent);
-                new LogOut().execute();
+                        Intent intent = new Intent(getActivity(), SignInActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.email:
                 Intent intent1 = new Intent(getActivity(), ChangeEmail.class);
@@ -446,7 +456,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         final String id = sessionHelper.getPreferences(getActivity(), "user_id");
         final String token = sessionHelper.getPreferences(getActivity(), "token_access");
 
-
         new AsyncTask<String, Integer, String>() {
             @Override
             protected String doInBackground(String... strings) {
@@ -516,24 +525,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             }
 
         }.execute();
-    }
-
-    public class LogOut extends AsyncTask<String, String, String>{
-        @Override
-        protected String doInBackground(String... strings) {
-            HashMap<String, String> param = new HashMap<>();
-            param.put("uid", sessionHelper.getPreferences(getActivity(), "user_id"));
-            param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
-            param.put("token_refresh", sessionHelper.getPreferences(getActivity(), "token_refresh"));
-
-            new VolleyHelper().post(ApiHelper.LOGOUT, param, new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    System.out.println("logoutresponse: "+response);
-                }
-            });
-            return null;
-        }
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
