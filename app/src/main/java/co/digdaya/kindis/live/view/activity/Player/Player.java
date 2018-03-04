@@ -66,6 +66,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     ArrayList<String> songPlaylist = new ArrayList<>();
 
     PlayerSessionHelper playerSessionHelper = new PlayerSessionHelper();
+    private CheckPermission checkPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         songPlaylist = new ArrayList<>();
 
         dialogGetPremium = new DialogGetPremium(this, dialogPremium);
+        checkPermission = new CheckPermission(this);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -329,10 +331,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
             nextPlay(0);
         }else if (view.getId() == R.id.btn_download){
-            if (new CheckPermission(this).checkPermissionStorage()){
+
+            if (checkPermission.checkPermissionStorage()){
                 startDownload();
             }else {
-                new CheckPermission(this).showPermissionStorage(2);
+                checkPermission.showPermissionStorage(2);
             }
         }
     }
@@ -462,7 +465,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==2){
-            if (new CheckPermission(this).checkPermissionStorage()){
+            if (checkPermission.checkPermissionStorage()){
                 startDownload();
             }
         }

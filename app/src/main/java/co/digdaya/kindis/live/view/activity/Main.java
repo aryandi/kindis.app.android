@@ -138,9 +138,9 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         initSidebar();
 
-        if (!checkPermission.checkPermission()){
-            checkPermission.showPermission(1);
-        }
+//        if (!checkPermission.checkPermission()){
+//            checkPermission.showPermission(1);
+//        }
 
         new AnalyticHelper(this);
         System.out.println("token_access: "+sessionHelper.getPreferences(getApplicationContext(), "token_access"));

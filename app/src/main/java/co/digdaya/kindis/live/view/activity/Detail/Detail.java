@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.databse.KindisDBHelper;
 import co.digdaya.kindis.live.databse.KindisDBname;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerActionHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
@@ -90,6 +92,8 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     String googleCode;
     String transID;
     String playlistID;
+    private CheckPermission checkPermission;
+
     public Detail(){
         layout = R.layout.activity_detail;
     }
@@ -124,6 +128,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
 
         sessionHelper = new SessionHelper();
         playerSessionHelper = new PlayerSessionHelper();
+        checkPermission = new CheckPermission(this);
         refreshToken = new RefreshToken(getApplicationContext());
         btnPremium.setOnClickListener(this);
 
@@ -531,34 +536,52 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_premium:
-                if (types.equals("album")){
-                    Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, DownloadService.class);
-                    intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM);
-                    intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, getIntent().getStringExtra("uid"));
-                    startService(intent);
-                }else if (types.equals("premium")){
-                    if (btnPremium.getText().equals("RENT")){
-                        if (isGetPrice){
-                            dialogPayment.showDialog();
-                        }
-                    }else {
-                        Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(this, DownloadService.class);
-                        intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
-                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
-                        startService(intent);
-                    }
-                    /*if (buyStatus){
-                        dialogPayment.showDialog();
-                    }else {
-                        Intent intent = new Intent(this, DownloadService.class);
-                        intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
-                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
-                        startService(intent);
-                    }*/
+                if (checkPermission.checkPermissionStorage()){
+                    startDownload();
+                } else {
+                    checkPermission.showPermissionStorage(2);
                 }
                 break;
+        }
+    }
+
+    private void startDownload() {
+        if (types.equals("album")){
+            Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, DownloadService.class);
+            intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM);
+            intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_ALBUM_ID, getIntent().getStringExtra("uid"));
+            startService(intent);
+        }else if (types.equals("premium")){
+            if (btnPremium.getText().equals("RENT")){
+                if (isGetPrice){
+                    dialogPayment.showDialog();
+                }
+            }else {
+                Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, DownloadService.class);
+                intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
+                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
+                startService(intent);
+            }
+            /*if (buyStatus){
+                dialogPayment.showDialog();
+            }else {
+                Intent intent = new Intent(this, DownloadService.class);
+                intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST);
+                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_PLAYLIST_ID, getIntent().getStringExtra("uid"));
+                startService(intent);
+            }*/
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==2){
+            if (checkPermission.checkPermissionStorage()){
+                startDownload();
+            }
         }
     }
 
