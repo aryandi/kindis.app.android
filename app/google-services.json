@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "153105834235-mjls8j2atgrpq510fr658v20h7mbk7ie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis.live",
+            "certificate_hash": "17cc75b6ac4f1d94ec0eca7f7be87dd27d471255"
+          }
+        },
+        {
           "client_id": "153105834235-a27ehop1k39n8o7vu8aofgudicjdg1ok.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
