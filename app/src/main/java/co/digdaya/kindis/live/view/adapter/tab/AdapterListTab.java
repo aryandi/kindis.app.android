@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -39,6 +38,7 @@ import co.digdaya.kindis.live.view.holder.ItemListTab;
  */
 
 public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
+    private boolean isHavePlaylist;
     private Activity context;
     private TabModel tabModel;
     private List<TabModel.Tab> tabs;
@@ -59,18 +59,28 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         this.tabModel = tabModel;
         this.tabType = tab;
         this.menuType = menuType;
-        switch (tab){
+        switch (tab) {
             case 1:
                 tabs = tabModel.tab1;
+                checkHavePlaylist();
                 break;
             case 2:
                 tabs = tabModel.tab2;
+                checkHavePlaylist();
                 break;
             case 3:
                 tabs = tabModel.tab3;
                 break;
         }
         gson = new Gson();
+    }
+
+    private void checkHavePlaylist() {
+        for (TabModel.Tab tab1 : tabs) {
+            if (tab1.name.equals("Playlist") && tab1.data.length() == 10) {
+                isHavePlaylist = true;
+            }
+        }
     }
 
     @Override
@@ -87,31 +97,27 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         ImageViewRounded imageAds = holder.imageAds;
         TextView textAds = holder.textAds;
 
-        if (tabs.get(position).data.length() < 10){
+        if (menuType == 1) {
+            musiqAdsHandler(position, imageAds, textAds);
+        } else if (menuType == 9) {
+            taklimAdsHandler(position, imageAds, textAds);
+        }
+
+        if (tabs.get(position).data.length() < 10) {
             title.setVisibility(View.GONE);
             btnMore.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             imageAds.setVisibility(View.GONE);
+            textAds.setVisibility(View.GONE);
         }
 
         title.setText(tabs.get(position).name);
 
-        if (tabs.get(position).name.equals("Single")){
-            imageAds.setVisibility(View.VISIBLE);
-            textAds.setVisibility(View.VISIBLE);
-            if (tabs.size() == position+1){
-                ViewHelper.setMargins(imageAds, 0, 0, 0, getDP(16));
-            }
-        } else {
-            imageAds.setVisibility(View.GONE);
-            textAds.setVisibility(View.GONE);
-        }
-
-        if (tabs.get(position).is_more.equals("1")){
+        if (tabs.get(position).is_more.equals("1")) {
             btnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tabType == 2 && menuType == 1){
+                    if (tabType == 2 && menuType == 1) {
                         paramMore = "&ob=3";
                     }
                     Intent intent = new Intent(context, More.class);
@@ -123,15 +129,15 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
                     context.startActivity(intent);
                 }
             });
-        }else {
+        } else {
             btnMore.setVisibility(View.GONE);
         }
 
-        if (tabs.get(position).type_id.equals("1")){
+        if (tabs.get(position).type_id.equals("1")) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             recyclerView.addItemDecoration(new MarginItemHorizontal(context));
-        }else{
-            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
             recyclerView.addItemDecoration(new SpacingItemGenre(context, ""));
         }/*else if (tabs.get(position).type_id.equals("2")){
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
@@ -141,7 +147,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
             recyclerView.addItemDecoration(new SpacingItemGenre(context));
         }*/
 
-        switch (getItemViewType(position)){
+        switch (getItemViewType(position)) {
             case 1:
                 parseArtist(tabs.get(position).data, recyclerView, tabs.get(position).name);
                 break;
@@ -160,6 +166,79 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         }
     }
 
+    private void musiqAdsHandler(int position, ImageViewRounded imageAds, TextView textAds) {
+        switch (tabType) {
+            // discover
+            case 1:
+                if (isHavePlaylist) {
+                    adsHandler(position, imageAds, textAds, "Album");
+                } else {
+                    adsHandler(position, imageAds, textAds, "Artist");
+                }
+                break;
+            // recently
+            case 2:
+                if (isHavePlaylist) {
+                    adsHandler(position, imageAds, textAds, "Single");
+                } else {
+                    adsHandler(position, imageAds, textAds, "Played");
+                }
+                break;
+            // genre
+            case 3:
+                if (position == tabs.size() - 1) {
+                    showAds(position, imageAds, textAds);
+                }
+                break;
+        }
+    }
+
+    private void taklimAdsHandler(int position, ImageViewRounded imageAds, TextView textAds) {
+        switch (tabType) {
+            // syiar
+            case 1:
+                if (isHavePlaylist) {
+                    adsHandler(position, imageAds, textAds, "Dai");
+                } else {
+                    adsHandler(position, imageAds, textAds, "Discover");
+                }
+                break;
+            // kisah
+            case 2:
+                if (isHavePlaylist) {
+                    adsHandler(position, imageAds, textAds, "Storyteller");
+                } else {
+                    adsHandler(position, imageAds, textAds, "Discover");
+                }
+                break;
+            //  murrotal
+            case 3:
+                if (position == tabs.size() - 1) {
+                    showAds(position, imageAds, textAds);
+                }
+                break;
+        }
+    }
+
+    private void adsHandler(int position, ImageViewRounded imageAds, TextView textAds, String album) {
+        if (tabs.get(position).name.equals(album)) {
+            showAds(position, imageAds, textAds);
+        } else if (position == tabs.size() - 1) {
+            showAds(position, imageAds, textAds);
+        } else {
+            imageAds.setVisibility(View.GONE);
+            textAds.setVisibility(View.GONE);
+        }
+    }
+
+    private void showAds(int position, ImageViewRounded imageAds, TextView textAds) {
+        imageAds.setVisibility(View.VISIBLE);
+        textAds.setVisibility(View.VISIBLE);
+        if (tabs.size() == position + 1) {
+            ViewHelper.setMargins(imageAds, 16, 0, 16, getDP(16));
+        }
+    }
+
     @Override
     public int getItemCount() {
         return tabs.size();
@@ -170,8 +249,8 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         return Integer.parseInt(tabs.get(position).type_content_id);
     }
 
-    private void parsePlaylist(String s, RecyclerView recyclerView, int type){
-        String json = "{ \"data\":"+s+"}";
+    private void parsePlaylist(String s, RecyclerView recyclerView, int type) {
+        String json = "{ \"data\":" + s + "}";
 
         DataPlaylist playlistModel = gson.fromJson(json, DataPlaylist.class);
 
@@ -180,18 +259,18 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void parseAlbum (String s, RecyclerView recyclerView){
-        String json = "{ \"data\":"+s+"}";
+    private void parseAlbum(String s, RecyclerView recyclerView) {
+        String json = "{ \"data\":" + s + "}";
 
         DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
-        System.out.println("AdapterAlbumNew : "+dataAlbum.data.get(0).title);
+        System.out.println("AdapterAlbumNew : " + dataAlbum.data.get(0).title);
         adapterAlbum = new AdapterAlbumNew(context, dataAlbum, 0);
         recyclerView.setAdapter(adapterAlbum);
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void parseSingle(String s, RecyclerView recyclerView){
-        String json = "{ \"data\":"+s+"}";
+    private void parseSingle(String s, RecyclerView recyclerView) {
+        String json = "{ \"data\":" + s + "}";
 
         DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
 
@@ -200,8 +279,8 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void parseArtist (String s, RecyclerView recyclerView, String subtitle){
-        String json = "{ \"data\":"+s+"}";
+    private void parseArtist(String s, RecyclerView recyclerView, String subtitle) {
+        String json = "{ \"data\":" + s + "}";
 
         DataArtist dataArtist = gson.fromJson(json, DataArtist.class);
 
@@ -210,8 +289,8 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void parseGenre(String s, RecyclerView recyclerView){
-        String json = "{ \"data\":"+s+"}";
+    private void parseGenre(String s, RecyclerView recyclerView) {
+        String json = "{ \"data\":" + s + "}";
 
         DataGenre dataGenre = gson.fromJson(json, DataGenre.class);
 
@@ -220,7 +299,7 @@ public class AdapterListTab extends RecyclerView.Adapter<ItemListTab> {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private int getDP(int dp){
+    private int getDP(int dp) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
