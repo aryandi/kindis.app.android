@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -26,8 +27,6 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
 
 public class WebViewActivity extends AppCompatActivity {
 
-    @BindView(R.id.btn_drawer)
-    ImageButton btnDrawer;
     @BindView(R.id.title)
     TextViewSemiBold textTitle;
     @BindView(R.id.toolbar)
@@ -36,6 +35,8 @@ public class WebViewActivity extends AppCompatActivity {
     WebView webView;
     @BindView(R.id.container)
     LinearLayout container;
+    @BindView(R.id.back)
+    ImageButton buttonBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,12 +49,18 @@ public class WebViewActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
         textTitle.setText(title);
-        if (title.equals("Terms and Agreements")){
+        if (title.equals("Terms and Agreements")) {
             getDetaiPrivacy(ApiHelper.TERMS);
-        } else if (title.equals("Privacy Policy")){
+        } else if (title.equals("Privacy Policy")) {
             getDetaiPrivacy(ApiHelper.PRIVACY);
         }
 
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void getDetaiPrivacy(String url) {

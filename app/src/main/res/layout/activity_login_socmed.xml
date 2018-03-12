@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:text="Or sign in with"
+                android:text="Or"
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 

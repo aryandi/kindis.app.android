@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -49,6 +50,12 @@ public class LoginActivity extends AppCompatActivity {
     TextViewRegular textRegister;
     @BindView(R.id.text_forgot)
     TextViewRegular textForgot;
+    @BindView(R.id.back)
+    ImageButton back;
+    @BindView(R.id.layout_sign_up)
+    LinearLayout layoutSignUp;
+    @BindView(R.id.activity_forgot_password)
+    LinearLayout activityForgotPassword;
     private LoginActivity mContext;
     private ProgressDialog loading;
     private VolleyHelper volleyHelper;
@@ -95,7 +102,15 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, ForgotPassword.class);
                 startActivity(intent);
             }
-        });}
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
 
     private boolean formValidation() {
         return !(inputEmail.getText().length() < 1 || inputPassword.getText().length() < 1);

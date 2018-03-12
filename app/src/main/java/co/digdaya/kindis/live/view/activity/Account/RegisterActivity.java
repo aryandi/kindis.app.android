@@ -4,11 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -47,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
     ButtonSemiBold btnSignUp;
     @BindView(R.id.text_login)
     TextViewRegular textLogin;
+    @BindView(R.id.back)
+    ImageButton back;
     private RegisterActivity mContext;
     private VolleyHelper volleyHelper;
     private SessionHelper sessionHelper;
@@ -96,7 +98,14 @@ public class RegisterActivity extends AppCompatActivity {
 //                ds.setColor(ContextCompat.getColor(RegisterActivity.this, R.color.blue_button_disabled_state));
             }
         };
-        TextViewHelper.makeLinks(textLogin, new String[] {"Login here"}, new ClickableSpan[] {registerClickSpan});
+        TextViewHelper.makeLinks(textLogin, new String[]{"Login here"}, new ClickableSpan[]{registerClickSpan});
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private boolean formValidation() {
