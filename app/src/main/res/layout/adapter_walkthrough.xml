@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/walkthrough"
-    android:background="@drawable/bg_walkthrough1">
+    android:background="@drawable/a1">
 
     <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/title_walkthrough"

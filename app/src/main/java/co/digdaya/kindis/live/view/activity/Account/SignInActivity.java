@@ -52,7 +52,6 @@ import co.digdaya.kindis.live.view.activity.Splash.Bismillah;
 import co.digdaya.kindis.live.view.dialog.DialogLoading;
 import co.digdaya.kindis.live.view.fragment.signin.SignInFragment;
 import co.digdaya.kindis.live.view.fragment.signin.SignUpFragment;
-import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 
 public class SignInActivity extends AppCompatActivity {

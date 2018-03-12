@@ -231,10 +231,6 @@ public class SignUpFragment extends Fragment implements View.OnFocusChangeListen
         else {
             Toast.makeText(getActivity(), "Password not match", Toast.LENGTH_SHORT).show();
         }*/
-
-        loginFacebook();
-        loginTwitter();
-        loginGoogle();
     }
 
     private void loginFacebook(){

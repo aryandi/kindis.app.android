@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 import co.digdaya.kindis.live.view.activity.Account.SignInActivity;
 
 /**
@@ -27,7 +28,7 @@ public class AdapterWalkthrough extends PagerAdapter {
     }
 
     private int[] img = new int[]{
-            R.drawable.bg_walkthrough1, R.drawable.bg_walkthrough2, R.drawable.bg_walkthrough3
+            R.drawable.a1, R.drawable.a2, R.drawable.a3
     };
 
     private String[] titles = new String[]{
@@ -70,7 +71,7 @@ public class AdapterWalkthrough extends PagerAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, SignInActivity.class);
+                Intent intent = new Intent(mContext, LoginSocmedActivity.class);
                 mContext.startActivity(intent);
             }
         });

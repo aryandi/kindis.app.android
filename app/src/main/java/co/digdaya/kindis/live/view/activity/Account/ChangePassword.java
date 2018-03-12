@@ -118,7 +118,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()){
             case R.id.logout:
                 sessionHelper.setPreferences(getApplicationContext(), "status", "0");
-                Intent intent = new Intent(this, SignInActivity.class);
+                Intent intent = new Intent(this, LoginSocmedActivity.class);
                 startActivity(intent);
                 break;
             case R.id.email:
@@ -192,7 +192,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                         if (object.getBoolean("status")){
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_LONG).show();
                             sessionHelper.setPreferences(getApplicationContext(), "status", "0");
-                            Intent intent = new Intent(ChangePassword.this, SignInActivity.class);
+                            Intent intent = new Intent(ChangePassword.this, LoginSocmedActivity.class);
                             startActivity(intent);
                         }else {
                             inputCurrentPassword.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));

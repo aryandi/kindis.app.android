@@ -112,7 +112,7 @@ public class ChangeEmail extends AppCompatActivity implements View.OnClickListen
         switch (item.getItemId()){
             case R.id.logout:
                 sessionHelper.setPreferences(getApplicationContext(), "status", "0");
-                Intent intent = new Intent(this, SignInActivity.class);
+                Intent intent = new Intent(this, LoginSocmedActivity.class);
                 startActivity(intent);
                 break;
             case R.id.password:

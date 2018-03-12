@@ -81,6 +81,7 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.live.view.activity.Account.ChangePassword;
+import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 import co.digdaya.kindis.live.view.activity.Account.SignInActivity;
 import co.digdaya.kindis.live.view.activity.Account.TransactionHistory;
 import io.fabric.sdk.android.Fabric;
@@ -370,7 +371,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 }
                                 break;
                         }
-                        Intent intent = new Intent(getActivity(), SignInActivity.class);
+                        Intent intent = new Intent(getActivity(), LoginSocmedActivity.class);
                         startActivity(intent);
                     }
                 });

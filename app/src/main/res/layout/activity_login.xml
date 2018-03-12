@@ -67,28 +67,6 @@
             android:focusableInTouchMode="true">
 
             <co.digdaya.kindis.live.custom.TextViewRegular
-                android:id="@+id/label_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="FULL NAME"
-                android:textSize="11sp"
-                android:textColor="@color/white"/>
-
-            <co.digdaya.kindis.live.custom.EditTextRegular
-                android:id="@+id/input_nama"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="13dp"
-                android:paddingBottom="13dp"
-                android:textSize="14sp"
-                android:inputType="textPersonName"
-                android:background="@drawable/edittext_normal"/>
-
-            <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,6 +87,27 @@
                 android:textSize="14sp"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/edittext_normal"/>
+
+            <LinearLayout
+                android:id="@+id/cont_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="9dp"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_error"
+                    android:layout_marginRight="8dp"/>
+                <co.digdaya.kindis.live.custom.TextViewRegular
+                    android:id="@+id/error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:text="That e-mail address isn’t registered yet"
+                    android:textColor="@color/safety_orange"/>
+            </LinearLayout>
 
             <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/label_password"
@@ -134,20 +133,35 @@
                 app:tint_color="@color/white"
                 android:background="@drawable/edittext_normal"/>
 
-            <co.digdaya.kindis.live.custom.TextViewRegular
-                android:id="@+id/text_login"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Already have account? Login here"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/white"/>
+                android:orientation="horizontal">
+                <co.digdaya.kindis.live.custom.TextViewRegular
+                    android:id="@+id/text_register"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Register"
+                    android:gravity="left"
+                    android:textColor="@color/white"/>
+                <co.digdaya.kindis.live.custom.TextViewRegular
+                    android:id="@+id/text_forgot"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Forgot Password"
+                    android:gravity="right"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
 
             <co.digdaya.kindis.live.custom.ButtonSemiBold
-                android:id="@+id/btn_sign_up"
+                android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="REGISTER"
+                android:text="LOGIN"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingRight="47dp"
@@ -158,6 +172,5 @@
                 android:textColor="@color/white"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

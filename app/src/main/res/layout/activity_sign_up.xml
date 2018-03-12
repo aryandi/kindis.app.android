@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".view.activity.Account.Register">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/background">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="16dp">
+            <co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/label_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FULL NAME"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_nama"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:textSize="14sp"
+                android:inputType="textPersonName"
+                android:background="@drawable/edittext_normal"/>
+
+            <co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/label_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="E-MAIL"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:textSize="14sp"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/edittext_normal"/>
+
+            <!--<co.digdaya.kindis.live.custom.TextViewRegular-->
+                <!--android:id="@+id/label_phone"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="PHONE NUMBER"-->
+                <!--android:textSize="11sp"-->
+                <!--android:textColor="@color/white"/>-->
+
+            <!--<co.digdaya.kindis.live.custom.EditTextRegular-->
+                <!--android:id="@+id/input_phone"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="44dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp"-->
+                <!--android:paddingTop="13dp"-->
+                <!--android:paddingBottom="13dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:inputType="number"-->
+                <!--android:background="@drawable/edittext_normal"/>-->
+
+            <!--<co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/label_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="PASSWORD"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:textSize="14sp"
+                android:inputType="textPassword"
+                app:additionalTouchTargetSize="44dp"
+                app:tint_color="@color/white"
+                android:background="@drawable/edittext_normal"/>
+
+            <co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/label_retype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="RE-TYPE PASSWORD"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular
+                android:id="@+id/input_retype"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:textSize="14sp"
+                android:inputType="textPassword"
+                app:additionalTouchTargetSize="44dp"
+                app:tint_color="@color/white"
+                android:background="@drawable/edittext_normal"/>-->
+
+            <!--<co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/label_birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="BIRTHDAY"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:textSize="14sp"
+                android:textIsSelectable="true"
+                android:background="@drawable/edittext_normal"/>
+
+            <co.digdaya.kindis.live.custom.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="GENDER"
+                android:textSize="11sp"
+                android:textColor="@color/white"/>
+
+            <RadioGroup
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_normal"
+                android:orientation="horizontal">
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
+                    android:id="@+id/male"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="MALE"
+                    android:textColor="@color/black"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:checked="true"
+                    android:background="@drawable/radiobutton_listener" />
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
+                    android:id="@+id/female"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="FEMALE"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:background="@drawable/radiobutton_listener"/>
+            </RadioGroup>-->
+
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
+                android:id="@+id/btn_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="SIGN UP"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="47dp"
+                android:paddingLeft="47dp"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_rounded"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
