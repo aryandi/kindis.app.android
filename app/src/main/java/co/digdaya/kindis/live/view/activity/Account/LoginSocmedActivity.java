@@ -116,16 +116,20 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginTwitter();
         loginGoogle();
 
+        checkbox.setChecked(true);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                if (TextUtils.isEmpty(sessionHelper.getPreferences(mContext, "email"))) {
-                    intent = new Intent(mContext, RegisterActivity.class);
-                } else {
-                    intent = new Intent(mContext, LoginActivity.class);
+                if (checkbox.isChecked()){
+                    Intent intent;
+                    if (TextUtils.isEmpty(sessionHelper.getPreferences(mContext, "email"))) {
+                        intent = new Intent(mContext, RegisterActivity.class);
+                    } else {
+                        intent = new Intent(mContext, LoginActivity.class);
+                    }
+                    startActivity(intent);
                 }
-                startActivity(intent);
             }
         });
 
@@ -161,7 +165,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
             }
         };
 
-        TextViewHelper.makeLinks(textTerm, new String[] {"Terms and Agreements", "Privacy Policy"}, new ClickableSpan[] {termClickSpan, privacyClickSpan});
+        TextViewHelper.makeLinks(textTerm, new String[]{"Terms and Agreements", "Privacy Policy"}, new ClickableSpan[]{termClickSpan, privacyClickSpan});
 
     }
 
@@ -183,8 +187,10 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, 3);
+                if (checkbox.isChecked()) {
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                    startActivityForResult(signInIntent, 3);
+                }
             }
         });
     }
@@ -239,7 +245,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginManager.logInWithReadPermissions(mContext, Arrays.asList("email", "public_profile"));
+                if (checkbox.isChecked())
+                    loginManager.logInWithReadPermissions(mContext, Arrays.asList("email", "public_profile"));
             }
         });
     }
@@ -249,43 +256,44 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.authorize(mContext, new Callback<TwitterSession>() {
-                    @Override
-                    public void success(final Result<TwitterSession> twitterSessionResult) {
-                        TwitterSession twitterSession = twitterSessionResult.data;
+                if (checkbox.isChecked())
+                    client.authorize(mContext, new Callback<TwitterSession>() {
+                        @Override
+                        public void success(final Result<TwitterSession> twitterSessionResult) {
+                            TwitterSession twitterSession = twitterSessionResult.data;
 
-                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
-                        call.enqueue(new Callback<User>() {
-                            @Override
-                            public void success(Result<User> result) {
-                                System.out.println("logintwitter" + result.data.email);
+                            Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                            call.enqueue(new Callback<User>() {
+                                @Override
+                                public void success(Result<User> result) {
+                                    System.out.println("logintwitter" + result.data.email);
 
-                                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
-                                sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
+                                    sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
+                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
 
-                                String fullname = result.data.name;
-                                String gender = "";
-                                String birth_date = "";
-                                String type_social = "2";
-                                String app_id = String.valueOf(twitterSessionResult.data.getUserId());
-                                String email = result.data.email;
-                                String phone = "";
-                                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
-                            }
+                                    String fullname = result.data.name;
+                                    String gender = "";
+                                    String birth_date = "";
+                                    String type_social = "2";
+                                    String app_id = String.valueOf(twitterSessionResult.data.getUserId());
+                                    String email = result.data.email;
+                                    String phone = "";
+                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                }
 
-                            @Override
-                            public void failure(TwitterException e) {
+                                @Override
+                                public void failure(TwitterException e) {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void failure(TwitterException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void failure(TwitterException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
             }
         });
     }
