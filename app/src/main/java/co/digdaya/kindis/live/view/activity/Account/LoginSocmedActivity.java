@@ -102,8 +102,6 @@ public class LoginSocmedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mContext = LoginSocmedActivity.this;
-        callbackManager = CallbackManager.Factory.create();
-        loginManager = LoginManager.getInstance();
         volleyHelper = new VolleyHelper();
         dialogLoading = new DialogLoading(this);
         sessionHelper = new SessionHelper();
@@ -196,6 +194,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
     }
 
     private void loginFB() {
+        callbackManager = CallbackManager.Factory.create();
+        loginManager = LoginManager.getInstance();
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

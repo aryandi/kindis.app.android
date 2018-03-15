@@ -38,7 +38,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +52,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.User;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,9 +80,14 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.custom.EditTextRegular;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.ImageFilePath;
@@ -82,11 +99,12 @@ import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.live.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
-import co.digdaya.kindis.live.view.activity.Account.SignInActivity;
 import co.digdaya.kindis.live.view.activity.Account.TransactionHistory;
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
 
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,7 +116,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     Button btnSave, profileStatus;
 
     EditText inputNama;
-    EditText inputBirtday;
+    EditText inputBirthdate;
 
     RadioGroup radioGroup;
     RadioButton male;
@@ -113,6 +131,34 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     CheckPermission checkPermission;
 
     boolean isEditButton = true;
+    @BindView(R.id.btn_edit_name)
+    ImageButton btnEditName;
+    @BindView(R.id.btn_edit_email)
+    ImageButton btnEditEmail;
+    @BindView(R.id.btn_edit_birthdate)
+    ImageButton btnEditBirthday;
+    @BindView(R.id.btn_edit_gender)
+    ImageButton btnEditGender;
+    Unbinder unbinder;
+    @BindView(R.id.input_email)
+    EditTextRegular inputEmail;
+    @BindView(R.id.btn_edit_facebook)
+    ImageButton btnEditFacebook;
+    @BindView(R.id.btn_edit_twitter)
+    ImageButton btnEditTwitter;
+    @BindView(R.id.input_facebook)
+    EditTextRegular inputFacebook;
+    @BindView(R.id.input_twitter)
+    EditTextRegular inputTwitter;
+    private boolean isEditName = true;
+    private boolean isEditEmail = true;
+    private boolean isEditBirthday = true;
+    private boolean isEditGender = true;
+    private boolean isEditFacebook = true;
+    private boolean isEditTwitter = true;
+    private CallbackManager callbackManager;
+    private LoginManager loginManager;
+    private TwitterAuthClient client;
 
     public Profile() {
     }
@@ -122,12 +168,13 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         this.drawer = drawer;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -141,7 +188,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         profileStatus = (Button) view.findViewById(R.id.profile_status);
 
         inputNama = (EditText) view.findViewById(R.id.input_nama);
-        inputBirtday = (EditText) view.findViewById(R.id.input_birthday);
+        inputBirthdate = (EditText) view.findViewById(R.id.input_birthday);
         radioGroup = (RadioGroup) view.findViewById(R.id.gender);
         male = (RadioButton) view.findViewById(R.id.male);
         female = (RadioButton) view.findViewById(R.id.female);
@@ -155,7 +202,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
         loginType = sessionHelper.getPreferences(getActivity(), "login_type");
 
-        if (sessionHelper.getPreferences(getActivity(), "profile_picture").length()>10){
+        if (sessionHelper.getPreferences(getActivity(), "profile_picture").length() > 10) {
             Glide.with(getContext())
                     .load(sessionHelper.getPreferences(getActivity(), "profile_picture"))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -163,12 +210,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     .into(photoProfile);
         }
 
-        if (sessionHelper.getPreferences(getActivity(), "is_premium").equals("1")){
+        if (sessionHelper.getPreferences(getActivity(), "is_premium").equals("1")) {
             profileStatus.setText("PREMIUM");
             profileStatus.setBackground(getActivity().getDrawable(R.drawable.button_rounded_orange));
         }
 
-        if (loginType.equals("3")){
+        if (loginType.equals("3")) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
@@ -177,23 +224,24 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
                         @Override
                         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                            System.out.println("googlelogin "+connectionResult.getErrorMessage());
+                            System.out.println("googlelogin " + connectionResult.getErrorMessage());
                         }
                     } /* OnConnectionFailedListener */)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
-        }else if (loginType.equals("2")){
+        } else if (loginType.equals("2")) {
             TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
             Fabric.with(getActivity(), new Twitter(authConfig));
         }
 
         inputNama.setText(sessionHelper.getPreferences(getActivity(), "fullname"));
-        inputBirtday.setText(sessionHelper.getPreferences(getActivity(), "birth_date"));
-        if (sessionHelper.getPreferences(getActivity(), "gender").equals("male")){
+        inputEmail.setText((sessionHelper.getPreferences(getActivity(), "email")));
+        inputBirthdate.setText(sessionHelper.getPreferences(getActivity(), "birth_date"));
+        if (sessionHelper.getPreferences(getActivity(), "gender").equals("male")) {
             male.setChecked(true);
             male.setTextColor(Color.parseColor("#000000"));
             female.setTextColor(Color.parseColor("#ffffff"));
-        }else {
+        } else {
             female.setChecked(true);
             male.setTextColor(Color.parseColor("#ffffff"));
             female.setTextColor(Color.parseColor("#000000"));
@@ -203,11 +251,20 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         btnMenu.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnEditPhoto.setOnClickListener(this);
+        btnEditName.setOnClickListener(this);
+        btnEditEmail.setOnClickListener(this);
+        btnEditBirthday.setOnClickListener(this);
+        btnEditGender.setOnClickListener(this);
+        btnEditFacebook.setOnClickListener(this);
+        btnEditTwitter.setOnClickListener(this);
+
+        loginFB();
+        loginTwitter();
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_drawer:
                 drawer.openDrawer(GravityCompat.START);
                 break;
@@ -218,9 +275,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 popup.show();
                 break;
             case R.id.btn_save:
-                if (isEditButton){
+                if (isEditButton) {
                     inputNama.setEnabled(true);
-                    inputBirtday.setEnabled(true);
+                    inputBirthdate.setEnabled(true);
                     male.setEnabled(true);
                     female.setEnabled(true);
                     inputNama.setSelection(inputNama.getText().length());
@@ -228,10 +285,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
                     btnSave.setText("SAVE");
                     isEditButton = false;
-                }else {
+                } else {
                     isEditButton = true;
                     inputNama.setEnabled(false);
-                    inputBirtday.setEnabled(false);
+                    inputBirthdate.setEnabled(false);
                     male.setEnabled(false);
                     female.setEnabled(false);
 
@@ -240,12 +297,87 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 }
                 break;
             case R.id.btn_edit_photo:
-                if (checkPermission.checkPermission()){
+                if (checkPermission.checkPermission()) {
                     startDialogPhoto(getActivity());
-                }else {
+                } else {
                     checkPermission.showPermission(2);
                 }
                 break;
+            case R.id.btn_edit_name:
+                if (isEditName) {
+                    inputNama.setEnabled(true);
+                    inputNama.setSelection(inputNama.getText().length());
+                    imm.showSoftInput(inputNama, InputMethodManager.SHOW_IMPLICIT);
+                    inputNama.requestFocus();
+                    isEditName = false;
+                } else {
+                    inputNama.setEnabled(false);
+                    saveProfileInfo();
+                    isEditName = true;
+                }
+                break;
+            case R.id.btn_edit_email:
+                if (isEditEmail) {
+                    inputEmail.setEnabled(true);
+                    inputEmail.setSelection(inputEmail.getText().length());
+                    imm.showSoftInput(inputEmail, InputMethodManager.SHOW_IMPLICIT);
+                    inputEmail.requestFocus();
+                    isEditEmail = false;
+                } else {
+                    inputEmail.setEnabled(false);
+                    saveEmailInfo();
+                    isEditEmail = true;
+                }
+                break;
+            case R.id.btn_edit_birthdate:
+                if (isEditBirthday) {
+                    inputBirthdate.setEnabled(true);
+                    inputBirthdate.setSelection(inputBirthdate.getText().length());
+                    inputBirthdate.requestFocus();
+                    imm.showSoftInput(inputBirthdate, InputMethodManager.SHOW_IMPLICIT);
+                    isEditBirthday = false;
+                } else {
+                    inputBirthdate.setEnabled(false);
+                    saveProfileInfo();
+                    isEditBirthday = true;
+                }
+                break;
+            case R.id.btn_edit_gender:
+                if (isEditGender) {
+                    male.setEnabled(true);
+                    female.setEnabled(true);
+                    isEditGender = false;
+                } else {
+                    male.setEnabled(false);
+                    female.setEnabled(false);
+                    saveProfileInfo();
+                    isEditGender = true;
+                }
+                break;
+            case R.id.btn_edit_facebook:
+                if (isEditFacebook) {
+                    inputFacebook.setEnabled(true);
+                    inputFacebook.setSelection(inputFacebook.getText().length());
+                    inputFacebook.requestFocus();
+                    imm.showSoftInput(inputFacebook, InputMethodManager.SHOW_IMPLICIT);
+                    isEditFacebook = false;
+                } else {
+                    inputFacebook.setEnabled(false);
+                    saveSocmedInfo();
+                    isEditFacebook = true;
+                }
+            case R.id.btn_edit_twitter:
+                if (isEditTwitter) {
+                    inputTwitter.setEnabled(true);
+                    inputTwitter.setSelection(inputTwitter.getText().length());
+                    inputTwitter.requestFocus();
+                    imm.showSoftInput(inputTwitter, InputMethodManager.SHOW_IMPLICIT);
+                    isEditTwitter = false;
+                } else {
+                    inputTwitter.setEnabled(false);
+                    saveSocmedInfo();
+                    isEditTwitter = true;
+                }
         }
     }
 
@@ -255,29 +387,27 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (male.isChecked()){
+                if (male.isChecked()) {
                     male.setTextColor(Color.parseColor("#000000"));
                     female.setTextColor(Color.parseColor("#ffffff"));
-                }else {
+                } else {
                     male.setTextColor(Color.parseColor("#ffffff"));
                     female.setTextColor(Color.parseColor("#000000"));
                 }
             }
         });
 
-        inputBirtday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        inputBirthdate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     calenderDialog();
                 }
             }
         });
     }
 
-
-
-    private void calenderDialog(){
+    private void calenderDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -285,28 +415,89 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 
-                        inputBirtday.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        inputBirthdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, 1990, 0, 1);
         datePickerDialog.show();
     }
 
-    private void saveProfileInfo(){
+    private void saveSocmedInfo() {
+
+        loading.show();
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
+        param.put("social_type", "1");
+        param.put("social_id", sessionHelper.getPreferences(getActivity(), "email"));
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+
+        new VolleyHelper().post(ApiHelper.CHANGE_EMAIL, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
+                Log.d("update_profile", response);
+                if (status) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        if (object.getBoolean("status")) {
+                            sessionHelper.setPreferences(getActivity(), "email", inputEmail.getText().toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void saveEmailInfo() {
+        loading.show();
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
+        param.put("new_email", inputEmail.getText().toString());
+        param.put("old_email", sessionHelper.getPreferences(getActivity(), "email"));
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+
+        new VolleyHelper().post(ApiHelper.CHANGE_EMAIL, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
+                Log.d("update_profile", response);
+                if (status) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        if (object.getBoolean("status")) {
+                            sessionHelper.setPreferences(getActivity(), "email", inputEmail.getText().toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void saveProfileInfo() {
         loading.show();
         final String gender;
-        if (male.isChecked()){
+        if (male.isChecked()) {
             gender = "male";
-        }else {
+        } else {
             gender = "female";
         }
 
-        Log.d("profileinfo", "Nama : "+inputNama.getText()+"\nTTL : "+inputBirtday.getText()+"\nGender : "+gender);
+        Log.d("profileinfo", "Nama : " + inputNama.getText() + "\nTTL : " + inputBirthdate.getText() + "\nGender : " + gender);
 
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
         param.put("fullname", inputNama.getText().toString());
-        param.put("birth_date", inputBirtday.getText().toString());
+        param.put("birth_date", inputBirthdate.getText().toString());
         param.put("gender", gender);
         param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
@@ -315,13 +506,13 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
                 Log.d("update_profile", response);
-                if (status){
+                if (status) {
                     try {
                         JSONObject object = new JSONObject(response);
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                        if (object.getBoolean("status")){
+                        if (object.getBoolean("status")) {
                             sessionHelper.setPreferences(getActivity(), "fullname", inputNama.getText().toString());
-                            sessionHelper.setPreferences(getActivity(), "birth_date", inputBirtday.getText().toString());
+                            sessionHelper.setPreferences(getActivity(), "birth_date", inputBirthdate.getText().toString());
                             sessionHelper.setPreferences(getActivity(), "gender", gender.toString());
                         }
                     } catch (JSONException e) {
@@ -334,7 +525,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 HashMap<String, String> param = new HashMap<>();
                 param.put("uid", sessionHelper.getPreferences(getActivity(), "user_id"));
@@ -344,7 +535,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 new VolleyHelper().post(ApiHelper.LOGOUT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {
-                        System.out.println("logoutresponse: "+response);
+                        System.out.println("logoutresponse: " + response);
                         String email = sessionHelper.getPreferences(getActivity(), "email");
                         sessionHelper.clearSession(getActivity());
                         sessionHelper.setPreferences(getActivity(), "email", email);
@@ -394,7 +585,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     @Override
     public void onPause() {
         super.onPause();
-        if (mGoogleApiClient!=null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.stopAutoManage(getActivity());
             mGoogleApiClient.disconnect();
         }
@@ -418,7 +609,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         myAlertDialog.setNegativeButton("Camera",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        if (isAdded()){
+                        if (isAdded()) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intent, 0);
                         }
@@ -427,19 +618,122 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         myAlertDialog.show();
     }
 
+    private void loginFB() {
+        callbackManager = CallbackManager.Factory.create();
+        loginManager = LoginManager.getInstance();
+        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                System.out.println("loginsosmed : " + object);
+                                System.out.println("loginsosmed : " + response);
+                                try {
+                                    sessionHelper.setPreferences(getActivity(), "login_type", "1");
+                                    String fullname = object.getString("name");
+                                    String gender = object.getString("gender");
+                                    String birth_date = object.optString("birth_date");
+                                    String type_social = "1";
+                                    String app_id = object.getString("id");
+                                    String email = object.getString("email");
+                                    String phone = "";
+//                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,gender,email,birthday,cover");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+                // Handle cancel event
+                Log.d("FacebookLogin", "cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                //Handle Error event
+                Log.d("FacebookLogin", "error");
+                System.out.println("FacebookLogin" + error.getMessage());
+            }
+        });
+
+        btnEditFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+            }
+        });
+    }
+
+    private void loginTwitter() {
+        client = new TwitterAuthClient();
+        btnEditTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    client.authorize(getActivity(), new Callback<TwitterSession>() {
+                        @Override
+                        public void success(final Result<TwitterSession> twitterSessionResult) {
+                            TwitterSession twitterSession = twitterSessionResult.data;
+
+                            Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                            call.enqueue(new Callback<User>() {
+                                @Override
+                                public void success(Result<User> result) {
+                                    System.out.println("logintwitter" + result.data.email);
+
+                                    sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
+                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
+
+                                    String fullname = result.data.name;
+                                    String gender = "";
+                                    String birth_date = "";
+                                    String type_social = "2";
+                                    String app_id = String.valueOf(twitterSessionResult.data.getUserId());
+                                    String email = result.data.email;
+                                    String phone = "";
+//                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                }
+
+                                @Override
+                                public void failure(TwitterException e) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void failure(TwitterException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("onActivityResult: "+requestCode+" "+resultCode);
-        if (requestCode==0){
-            if (resultCode == RESULT_OK){
+        System.out.println("onActivityResult: " + requestCode + " " + resultCode);
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 photoProfile.setImageBitmap(photo);
                 Uri tempUri = getImageUri(getActivity(), photo);
                 uploadImage(getRealPathFromURI(tempUri));
             }
-        }else if (requestCode==1){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 try {
                     Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -452,7 +746,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         }
     }
 
-    private void uploadImage(final String path){
+    private void uploadImage(final String path) {
 
         final String id = sessionHelper.getPreferences(getActivity(), "user_id");
         final String token = sessionHelper.getPreferences(getActivity(), "token_access");
@@ -469,7 +763,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
                     File sourceFile = new File(path);
-                    FileBody fb =  new FileBody(sourceFile, sourceFile.getName(), "image/jpeg", "UTF-8");
+                    FileBody fb = new FileBody(sourceFile, sourceFile.getName(), "image/jpeg", "UTF-8");
                     entity.addPart("file", fb);
 
                     entity.addPart("user_id", new StringBody(id));
@@ -511,12 +805,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 if (getActivity() != null)
                     try {
                         JSONObject result = new JSONObject(s);
-                        if (result.getBoolean("status")){
+                        if (result.getBoolean("status")) {
                             JSONObject urlPhoto = result.getJSONObject("result");
                             String newPath = urlPhoto.getString("avatar").replaceAll("(?<!https:)//", "/");
                             sessionHelper.setPreferences(getActivity(), "profile_picture", newPath);
                             Toast.makeText(getActivity(), "Upload Success", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), "Upload Failed", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
@@ -540,5 +834,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
