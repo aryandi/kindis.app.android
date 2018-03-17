@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -97,7 +98,6 @@ import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.service.PlayerService;
-import co.digdaya.kindis.live.view.activity.Account.ChangeEmail;
 import co.digdaya.kindis.live.view.activity.Account.ChangePassword;
 import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 import co.digdaya.kindis.live.view.activity.Account.TransactionHistory;
@@ -144,9 +144,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     @BindView(R.id.input_email)
     EditTextRegular inputEmail;
     @BindView(R.id.connect_facebook)
-    TextViewBold connectFB;
+    TextViewBold buttonConnectFB;
     @BindView(R.id.connect_twitter)
-    TextViewBold connectTwitter;
+    TextViewBold buttonConnectTwitter;
     @BindView(R.id.input_facebook)
     EditTextRegular inputFacebook;
     @BindView(R.id.input_twitter)
@@ -256,11 +256,11 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         btnEditEmail.setOnClickListener(this);
         btnEditBirthday.setOnClickListener(this);
         btnEditGender.setOnClickListener(this);
-        connectFB.setOnClickListener(this);
-        connectTwitter.setOnClickListener(this);
+        buttonConnectFB.setOnClickListener(this);
+        buttonConnectTwitter.setOnClickListener(this);
 
-        loginFB();
-        loginTwitter();
+        connectFB();
+        connectTwitter();
     }
 
     @Override
@@ -311,10 +311,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     imm.showSoftInput(inputNama, InputMethodManager.SHOW_IMPLICIT);
                     inputNama.requestFocus();
                     isEditName = false;
+                    btnEditName.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
                 } else {
                     inputNama.setEnabled(false);
                     saveProfileInfo();
                     isEditName = true;
+                    btnEditName.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                 }
                 break;
             case R.id.btn_edit_email:
@@ -324,10 +326,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     imm.showSoftInput(inputEmail, InputMethodManager.SHOW_IMPLICIT);
                     inputEmail.requestFocus();
                     isEditEmail = false;
+                    btnEditEmail.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
                 } else {
                     inputEmail.setEnabled(false);
                     saveEmailInfo();
                     isEditEmail = true;
+                    btnEditEmail.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                 }
                 break;
             case R.id.btn_edit_birthdate:
@@ -337,10 +341,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     inputBirthdate.requestFocus();
                     imm.showSoftInput(inputBirthdate, InputMethodManager.SHOW_IMPLICIT);
                     isEditBirthday = false;
+                    btnEditBirthday.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
                 } else {
                     inputBirthdate.setEnabled(false);
                     saveProfileInfo();
                     isEditBirthday = true;
+                    btnEditBirthday.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                 }
                 break;
             case R.id.btn_edit_gender:
@@ -348,11 +354,13 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     male.setEnabled(true);
                     female.setEnabled(true);
                     isEditGender = false;
+                    btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
                 } else {
                     male.setEnabled(false);
                     female.setEnabled(false);
                     saveProfileInfo();
                     isEditGender = true;
+                    btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                 }
                 break;
             case R.id.connect_facebook:
@@ -615,7 +623,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         myAlertDialog.show();
     }
 
-    private void loginFB() {
+    private void connectFB() {
         callbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -629,7 +637,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 System.out.println("loginsosmed : " + object);
                                 System.out.println("loginsosmed : " + response);
                                 try {
-                                    sessionHelper.setPreferences(getActivity(), "login_type", "1");
                                     String fullname = object.getString("name");
                                     String gender = object.getString("gender");
                                     String birth_date = object.optString("birth_date");
@@ -664,7 +671,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             }
         });
 
-        connectFB.setOnClickListener(new View.OnClickListener() {
+        buttonConnectFB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
@@ -672,9 +679,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         });
     }
 
-    private void loginTwitter() {
+    private void connectTwitter() {
         client = new TwitterAuthClient();
-        connectTwitter.setOnClickListener(new View.OnClickListener() {
+        buttonConnectTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     client.authorize(getActivity(), new Callback<TwitterSession>() {
@@ -687,9 +694,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 @Override
                                 public void success(Result<User> result) {
                                     System.out.println("logintwitter" + result.data.email);
-
-                                    sessionHelper.setPreferences(getApplicationContext(), "profile_picture", result.data.profileImageUrl);
-                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "2");
 
                                     String fullname = result.data.name;
                                     String gender = "";
