@@ -36,7 +36,7 @@ public class BottomPlayerFragment extends Fragment {
     TextView title, artist;
     LinearLayout contBottomPlayer;
     PlayerSessionHelper playerSessionHelper;
-
+    private RelativeLayout layoutBottomPlayer;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class BottomPlayerFragment extends Fragment {
         title = (TextView) view.findViewById(R.id.title_player);
         artist = (TextView) view.findViewById(R.id.artist_player);
         contBottomPlayer = (LinearLayout) view.findViewById(R.id.cont_bottom_player);
+        layoutBottomPlayer = (RelativeLayout) view.findViewById(R.id.layout_bottom_player);
 
         playerSessionHelper = new PlayerSessionHelper();
     }
@@ -82,9 +83,14 @@ public class BottomPlayerFragment extends Fragment {
         artist.setText(playerSessionHelper.getPreferences(getActivity(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                openPlayerActivity();
+            }
+        });
+        layoutBottomPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Player.class);
-                startActivity(intent);
+                openPlayerActivity();
             }
         });
 
@@ -106,6 +112,11 @@ public class BottomPlayerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void openPlayerActivity() {
+        Intent intent = new Intent(getActivity(), Player.class);
+        startActivity(intent);
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

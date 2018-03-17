@@ -39,11 +39,14 @@ public class BottomPlayerActivity extends AppCompatActivity {
 
     public int layout;
     public boolean showBottomPlayer;
+    private RelativeLayout layoutBottomPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout);
+
+        layoutBottomPlayer = (RelativeLayout) findViewById(R.id.layout_bottom_player);
         expand = (ImageButton) findViewById(R.id.btn_expand);
         btnPlay = (RelativeLayout) findViewById(R.id.btn_play);
         icPlay = (ImageView) findViewById(R.id.ic_play);
@@ -88,9 +91,14 @@ public class BottomPlayerActivity extends AppCompatActivity {
         artist.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                openPlayerActivity();
+            }
+        });
+        layoutBottomPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BottomPlayerActivity.this, Player.class);
-                startActivity(intent);
+                openPlayerActivity();
             }
         });
 
@@ -112,6 +120,11 @@ public class BottomPlayerActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openPlayerActivity() {
+        Intent intent = new Intent(BottomPlayerActivity.this, Player.class);
+        startActivity(intent);
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
