@@ -88,6 +88,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.custom.EditTextRegular;
+import co.digdaya.kindis.live.custom.TextViewBold;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.ImageFilePath;
@@ -142,10 +143,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     Unbinder unbinder;
     @BindView(R.id.input_email)
     EditTextRegular inputEmail;
-    @BindView(R.id.btn_edit_facebook)
-    ImageButton btnEditFacebook;
-    @BindView(R.id.btn_edit_twitter)
-    ImageButton btnEditTwitter;
+    @BindView(R.id.connect_facebook)
+    TextViewBold connectFB;
+    @BindView(R.id.connect_twitter)
+    TextViewBold connectTwitter;
     @BindView(R.id.input_facebook)
     EditTextRegular inputFacebook;
     @BindView(R.id.input_twitter)
@@ -255,8 +256,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         btnEditEmail.setOnClickListener(this);
         btnEditBirthday.setOnClickListener(this);
         btnEditGender.setOnClickListener(this);
-        btnEditFacebook.setOnClickListener(this);
-        btnEditTwitter.setOnClickListener(this);
+        connectFB.setOnClickListener(this);
+        connectTwitter.setOnClickListener(this);
 
         loginFB();
         loginTwitter();
@@ -354,7 +355,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     isEditGender = true;
                 }
                 break;
-            case R.id.btn_edit_facebook:
+            case R.id.connect_facebook:
                 if (isEditFacebook) {
                     inputFacebook.setEnabled(true);
                     inputFacebook.setSelection(inputFacebook.getText().length());
@@ -366,7 +367,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     saveSocmedInfo();
                     isEditFacebook = true;
                 }
-            case R.id.btn_edit_twitter:
+            case R.id.connect_twitter:
                 if (isEditTwitter) {
                     inputTwitter.setEnabled(true);
                     inputTwitter.setSelection(inputTwitter.getText().length());
@@ -567,10 +568,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     }
                 });
                 break;
-            case R.id.email:
-                Intent intent1 = new Intent(getActivity(), ChangeEmail.class);
-                startActivity(intent1);
-                break;
             case R.id.password:
                 Intent intent2 = new Intent(getActivity(), ChangePassword.class);
                 startActivity(intent2);
@@ -667,7 +664,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             }
         });
 
-        btnEditFacebook.setOnClickListener(new View.OnClickListener() {
+        connectFB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
@@ -677,7 +674,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
     private void loginTwitter() {
         client = new TwitterAuthClient();
-        btnEditTwitter.setOnClickListener(new View.OnClickListener() {
+        connectTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     client.authorize(getActivity(), new Callback<TwitterSession>() {

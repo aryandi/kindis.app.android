@@ -4,6 +4,9 @@
         android:id="@+id/history"
         android:title="Transaction History"/>
     <item
+        android:id="@+id/email"
+        android:title="Change Email"/>
+    <item
         android:id="@+id/password"
         android:title="Change Password"/>
     <item

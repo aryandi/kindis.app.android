@@ -92,7 +92,7 @@ public class ChangeEmail extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.btn_menu:
                 PopupMenu popup = new PopupMenu(this, btnMenu);
-                popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.side_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(this);
                 popup.show();
                 break;

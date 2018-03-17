@@ -251,14 +251,15 @@
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp">
 
                 <co.digdaya.kindis.live.custom.EditTextRegular
                     android:id="@+id/input_facebook"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="44dp"
                     android:background="@drawable/edittext_normal"
                     android:enabled="false"
@@ -270,17 +271,15 @@
                     android:textColor="@drawable/edittext_font_color"
                     android:textSize="14sp" />
 
-                <ImageButton
-                    android:id="@+id/btn_edit_facebook"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
-                    android:layout_toRightOf="@+id/input_facebook"
-                    android:background="@drawable/button_circle_black"
-                    android:src="@drawable/ic_edit" />
+                <co.digdaya.kindis.live.custom.TextViewBold
+                    android:id="@+id/connect_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
+                    android:text="Connect"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_width="wrap_content"
@@ -290,14 +289,16 @@
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
                 <co.digdaya.kindis.live.custom.EditTextRegular
                     android:id="@+id/input_twitter"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="44dp"
                     android:background="@drawable/edittext_normal"
                     android:enabled="false"
@@ -309,17 +310,15 @@
                     android:textColor="@drawable/edittext_font_color"
                     android:textSize="14sp" />
 
-                <ImageButton
-                    android:id="@+id/btn_edit_twitter"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
-                    android:layout_toRightOf="@+id/input_twitter"
-                    android:background="@drawable/button_circle_black"
-                    android:src="@drawable/ic_edit" />
+                <co.digdaya.kindis.live.custom.TextViewBold
+                    android:id="@+id/connect_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
+                    android:text="Connect"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <co.digdaya.kindis.live.custom.ButtonSemiBold
                 android:id="@+id/btn_save"
@@ -330,7 +329,8 @@
                 android:background="@drawable/button_rounded_darkgray"
                 android:text="EDIT"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </ScrollView>
