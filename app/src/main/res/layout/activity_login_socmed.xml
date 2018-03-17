@@ -1,147 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/htab_maincontent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_login_socmed"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/htab_appbar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/htab_collapse_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/bg_sign_in"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:src="@drawable/ic_logo_horz" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="16dp"
-                android:contentInsetLeft="0dp"
-                android:contentInsetStart="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_collapseMode="pin">
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/htab_tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:tabIndicatorColor="@color/medium_sea_green" />
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:id="@+id/cont_sosmed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/cont_sosmed"
+            <ImageButton
+                android:id="@+id/login_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal">
+                android:layout_marginRight="24dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_fb" />
 
-                <ImageButton
-                    android:id="@+id/login_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="24dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_fb" />
-
-                <ImageButton
-                    android:id="@+id/login_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="24dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_twitter" />
-
-                <ImageButton
-                    android:id="@+id/login_google"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_gplus" />
-            </LinearLayout>
-
-            <co.digdaya.kindis.live.custom.TextViewRegular
-                android:id="@+id/label_sign_in"
+            <ImageButton
+                android:id="@+id/login_twitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:text="Or"
-                android:textColor="@color/white"
-                android:textSize="11sp" />
+                android:layout_marginRight="24dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_twitter" />
 
-            <co.digdaya.kindis.live.custom.ButtonSemiBold
-                android:id="@+id/btn_login"
+            <ImageButton
+                android:id="@+id/login_google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_rounded"
-                android:paddingBottom="10dp"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
-                android:paddingTop="10dp"
-                android:text="START USING EMAIL"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <co.digdaya.kindis.live.custom.TextViewRegular
-                    android:id="@+id/text_term"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="I agree to the Terms and Agreements and Privacy Policy"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_gplus" />
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+        <co.digdaya.kindis.live.custom.TextViewRegular
+            android:id="@+id/label_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="Or"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_rounded"
+            android:paddingBottom="10dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingTop="10dp"
+            android:text="START USING EMAIL"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <co.digdaya.kindis.live.custom.TextViewRegular
+                android:id="@+id/text_term"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="I agree to the Terms and Agreements and Privacy Policy"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

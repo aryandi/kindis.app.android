@@ -55,8 +55,15 @@ public class SplashScreen extends AppCompatActivity {
             Log.e("exception", e.toString());
         }*/
 
-        String android_id = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String android_id = "";
+        try {
+            android_id = Settings.Secure.getString(getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sessionHelper = new SessionHelper();
+        sessionHelper.setPreferences(this, "android_id", android_id);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -66,7 +73,6 @@ public class SplashScreen extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.activity_splash_screen);
 
-        sessionHelper = new SessionHelper();
         refreshToken = new RefreshToken(getApplicationContext());
 
         new Handler().postDelayed(new Runnable() {
