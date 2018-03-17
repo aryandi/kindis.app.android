@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.MobileAds;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
@@ -93,6 +94,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         checkPermission = new CheckPermission(this);
         dialogBanner = new DialogBanner(this, dialogBnnr);
         dialogBanner.showDialog();
+
+        MobileAds.initialize(this, getString(R.string.ads_id));
 
         homeFragment = new Home(drawer);
         profileFragment = new Profile(drawer);

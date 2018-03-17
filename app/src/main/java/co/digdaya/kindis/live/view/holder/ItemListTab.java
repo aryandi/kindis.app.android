@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdView;
+
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.custom.ImageViewRounded;
 
@@ -16,15 +18,13 @@ public class ItemListTab extends RecyclerView.ViewHolder {
     public TextView title;
     public TextView btnMore;
     public RecyclerView list;
-    public ImageViewRounded imageAds;
-    public TextView textAds;
+    public AdView imageAds;
 
     public ItemListTab(View itemView) {
         super(itemView);
         title = (TextView) itemView.findViewById(R.id.text_list);
         btnMore = (TextView) itemView.findViewById(R.id.btn_more_list);
         list = (RecyclerView) itemView.findViewById(R.id.list);
-        imageAds = (ImageViewRounded) itemView.findViewById(R.id.image_ads);
-        textAds = (TextView) itemView.findViewById(R.id.text_ads);
+        imageAds = (AdView) itemView.findViewById(R.id.image_ads);
     }
 }

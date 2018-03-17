@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.MobileAds;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -29,5 +30,7 @@ public class MainApplication extends Application {
         Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         instance = this;
         MultiDex.install(this);
+        MobileAds.initialize(this, getString(R.string.ads_id));
+
     }
 }
