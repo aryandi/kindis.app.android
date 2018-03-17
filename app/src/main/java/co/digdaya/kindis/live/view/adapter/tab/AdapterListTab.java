@@ -18,8 +18,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
-import co.digdaya.kindis.live.custom.ImageViewRounded;
-import co.digdaya.kindis.live.helper.ViewHelper;
+import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.model.DataArtist;
 import co.digdaya.kindis.live.model.DataGenre;
@@ -60,17 +59,19 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static final int FOOTER_VIEW = 99;
 
+    SessionHelper sessionHelper;
+
     public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType) {
 
         this.context = context;
         this.tabModel = tabModel;
         this.tabType = tab;
         this.menuType = menuType;
-        MobileAds.initialize(context, context.getString(R.string.ads_id));
+        MobileAds.initialize(context, context.getString(R.string.ads_app_id));
+        sessionHelper = new SessionHelper();
         adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("d5c05cf663576626")
-                .addTestDevice("aa687abf4116c8c7")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(sessionHelper.getPreferences(context, "android_id"))
                 .build();
         switch (tab) {
             case 1:

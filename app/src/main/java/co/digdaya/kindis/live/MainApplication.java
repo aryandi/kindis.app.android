@@ -30,7 +30,6 @@ public class MainApplication extends Application {
         Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         instance = this;
         MultiDex.install(this);
-        MobileAds.initialize(this, getString(R.string.ads_id));
-
+//        MobileAds.initialize(this, getString(R.string.ads_app_id));
     }
 }
