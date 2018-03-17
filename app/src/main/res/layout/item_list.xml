@@ -39,6 +39,7 @@
         android:contentDescription="ImageAds"
         android:src="@drawable/background_emptystate"
         ads:adSize="360x100"
-        ads:adUnitId="@string/ads_id" />
+        ads:adUnitId="@string/ads_id"
+        android:visibility="gone"/>
 
 </RelativeLayout>

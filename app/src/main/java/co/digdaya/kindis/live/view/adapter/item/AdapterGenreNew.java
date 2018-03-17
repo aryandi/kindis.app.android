@@ -30,8 +30,7 @@ public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
     @Override
     public ItemGenre onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre, parent, false);
-        ItemGenre itemGenre = new ItemGenre(view);
-        return itemGenre;
+        return new ItemGenre(view);
     }
 
     @Override

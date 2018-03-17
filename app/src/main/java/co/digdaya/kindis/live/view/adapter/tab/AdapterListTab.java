@@ -240,9 +240,9 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             //  murrotal
             case 3:
-                if (position == tabs.size() - 1) {
-                    showAds(position, imageAds);
-                }
+//                if (position == tabs.size() - 1) {
+//                    showAds(position, imageAds);
+//                }
                 break;
         }
     }
