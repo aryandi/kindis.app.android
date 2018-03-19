@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdView;
 
 import co.digdaya.kindis.live.R;
@@ -26,5 +27,18 @@ public class ItemListTab extends RecyclerView.ViewHolder {
         btnMore = (TextView) itemView.findViewById(R.id.btn_more_list);
         list = (RecyclerView) itemView.findViewById(R.id.list);
         imageAds = (AdView) itemView.findViewById(R.id.image_ads);
+        imageAds.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdLoaded() {
+                imageAds.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int error) {
+                imageAds.setVisibility(View.GONE);
+            }
+
+        });
     }
 }

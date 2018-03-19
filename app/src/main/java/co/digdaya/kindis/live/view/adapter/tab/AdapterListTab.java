@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -192,8 +193,21 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         break;
                 }
             } else if (holder instanceof FooterViewHolder) {
-                FooterViewHolder vh = (FooterViewHolder) holder;
+                final FooterViewHolder vh = (FooterViewHolder) holder;
                 vh.imageAds.loadAd(adRequest);
+                vh.imageAds.setAdListener(new AdListener() {
+
+                    @Override
+                    public void onAdLoaded() {
+                        vh.imageAds.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int error) {
+                        vh.imageAds.setVisibility(View.GONE);
+                    }
+
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,8 +280,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void showAds(int position, AdView imageAds) {
-        imageAds.setVisibility(View.VISIBLE);
+    private void showAds(int position, final AdView imageAds) {
         imageAds.loadAd(adRequest);
 //        if (tabs.size() == position + 1) {
 //            ViewHelper.setMargins(imageAds, getDP(10), 0, getDP(10), getDP(26));
@@ -362,6 +375,19 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         FooterViewHolder(View itemView) {
             super(itemView);
             imageAds = (AdView) itemView.findViewById(R.id.image_ads);
+            imageAds.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdLoaded() {
+                    imageAds.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAdFailedToLoad(int error) {
+                    imageAds.setVisibility(View.GONE);
+                }
+
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
