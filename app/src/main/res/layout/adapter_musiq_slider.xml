@@ -7,8 +7,7 @@
     <ImageView
         android:id="@+id/image_musiq_slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:layout_height="match_parent" />
 
     <co.digdaya.kindis.live.custom.TextViewBold
         android:id="@+id/title"

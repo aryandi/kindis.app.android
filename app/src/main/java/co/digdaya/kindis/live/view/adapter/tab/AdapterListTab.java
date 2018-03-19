@@ -41,6 +41,7 @@ import co.digdaya.kindis.live.view.holder.ItemListTab;
 
 public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final AdRequest adRequest;
+    private final String isPremium;
     private boolean isHavePlaylist;
     private Activity context;
     private TabModel tabModel;
@@ -69,6 +70,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.menuType = menuType;
         MobileAds.initialize(context, context.getString(R.string.ads_app_id));
         sessionHelper = new SessionHelper();
+        isPremium = sessionHelper.getPreferences(context, "is_premium");
         adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice(sessionHelper.getPreferences(context, "android_id"))
@@ -118,18 +120,23 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 final RecyclerView recyclerView = itemListTab.list;
                 AdView imageAds = itemListTab.imageAds;
 
-                if (menuType == 1) {
-                    musiqAdsHandler(position, imageAds);
-                } else if (menuType == 9) {
-                    taklimAdsHandler(position, imageAds);
+                if (isPremium.equals("0")) {
+                    switch (menuType) {
+                        case 1:
+                            musiqAdsHandler(position, imageAds);
+                            break;
+                        case 9:
+                            taklimAdsHandler(position, imageAds);
+                            break;
+                    }
                 }
 
-        if (tabs.get(position).data.length() < 10) {
-            title.setVisibility(View.GONE);
-            btnMore.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
-            imageAds.setVisibility(View.GONE);
-        }
+                if (tabs.get(position).data.length() < 10) {
+                    title.setVisibility(View.GONE);
+                    btnMore.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                    imageAds.setVisibility(View.GONE);
+                }
 
                 title.setText(tabs.get(position).name);
 
@@ -187,7 +194,6 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } else if (holder instanceof FooterViewHolder) {
                 FooterViewHolder vh = (FooterViewHolder) holder;
                 vh.imageAds.loadAd(adRequest);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,6 +276,8 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
+        if (isPremium.equals("1")) return tabs.size();
+
         if (tabs == null) {
             return 0;
         }
@@ -285,7 +293,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        if (position == tabs.size()) {
+        if (isPremium.equals("0") && position == tabs.size()) {
             // This is where we'll add footer.
             return FOOTER_VIEW;
         }

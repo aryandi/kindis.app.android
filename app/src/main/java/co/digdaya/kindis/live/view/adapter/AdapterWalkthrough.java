@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
-import co.digdaya.kindis.live.view.activity.Account.SignInActivity;
 
 /**
  * Created by vincenttp on 1/24/2017.
@@ -28,7 +27,7 @@ public class AdapterWalkthrough extends PagerAdapter {
     }
 
     private int[] img = new int[]{
-            R.drawable.a1, R.drawable.a2, R.drawable.a3
+            R.drawable.slider_walktrough1, R.drawable.slider_walktrough2, R.drawable.slider_walktrough3
     };
 
     private String[] titles = new String[]{

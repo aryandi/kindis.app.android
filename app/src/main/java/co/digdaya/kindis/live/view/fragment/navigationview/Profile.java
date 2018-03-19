@@ -637,14 +637,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 System.out.println("loginsosmed : " + object);
                                 System.out.println("loginsosmed : " + response);
                                 try {
-                                    String fullname = object.getString("name");
-                                    String gender = object.getString("gender");
-                                    String birth_date = object.optString("birth_date");
                                     String type_social = "1";
                                     String app_id = object.getString("id");
-                                    String email = object.getString("email");
-                                    String phone = "";
-//                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                    registerSocialMedia(type_social, app_id);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -695,14 +690,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 public void success(Result<User> result) {
                                     System.out.println("logintwitter" + result.data.email);
 
-                                    String fullname = result.data.name;
-                                    String gender = "";
-                                    String birth_date = "";
                                     String type_social = "2";
                                     String app_id = String.valueOf(twitterSessionResult.data.getUserId());
-                                    String email = result.data.email;
-                                    String phone = "";
-//                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                    registerSocialMedia(type_social, app_id);
                                 }
 
                                 @Override
@@ -720,6 +710,35 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     });
             }
         });
+    }
+
+    private void registerSocialMedia(String type_social, String app_id) {
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
+        param.put("social_type", type_social);
+        param.put("social_id", app_id);
+        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+
+        new VolleyHelper().post(ApiHelper.UPDATE_PROFILE, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                loading.dismiss();
+                Log.d("update_profile", response);
+                if (status) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        if (object.getBoolean("status")) {
+                            sessionHelper.setPreferences(getActivity(), "fullname", inputNama.getText().toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
     }
 
     @Override

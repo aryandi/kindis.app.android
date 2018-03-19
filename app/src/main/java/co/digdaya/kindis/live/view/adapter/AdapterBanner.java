@@ -70,7 +70,7 @@ public class AdapterBanner extends PagerAdapter {
         Glide.with(mContext)
                 .load(image_url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
+//                .centerCrop()
                 .into(imageView);
 
         if (type.equals("infaq")){
