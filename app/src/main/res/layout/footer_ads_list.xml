@@ -11,8 +11,6 @@
         android:layout_height="100dp"
         android:layout_below="@id/list"
         android:layout_marginBottom="26dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:contentDescription="ImageAds"
         android:src="@drawable/background_emptystate"
         android:visibility="gone"

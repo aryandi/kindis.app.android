@@ -73,26 +73,29 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="20dp">
 
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"/>
 
             <co.digdaya.kindis.live.custom.TextViewRegular
                 android:id="@+id/text_term"
+                android:textSize="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@+id/checkbox"
+                android:layout_centerInParent="true"
                 android:text="I agree to the Terms and Agreements and Privacy Policy"
                 android:textColor="@color/white" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

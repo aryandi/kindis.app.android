@@ -34,8 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_below="@id/list"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:contentDescription="ImageAds"
         android:src="@drawable/background_emptystate"
         ads:adSize="360x100"
