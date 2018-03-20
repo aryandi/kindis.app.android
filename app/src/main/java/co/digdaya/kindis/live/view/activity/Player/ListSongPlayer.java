@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live.view.activity.Player;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,8 +24,10 @@ import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.databse.KindisDBHelper;
 import co.digdaya.kindis.live.databse.KindisDBname;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.model.DataSingleOffline;
+import co.digdaya.kindis.live.view.activity.Detail.DetailArtist;
 import co.digdaya.kindis.live.view.adapter.offline.AdapterDetailSongOffline;
 import co.digdaya.kindis.live.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
@@ -121,7 +124,13 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                     @Override
                     public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
-                        new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
+//                        new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
+                        Intent intent = new Intent(ListSongPlayer.this, SongMenu.class);
+                        intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+                        intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+                        intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                        startActivity(intent);
                     }
                 });
             }
@@ -138,7 +147,13 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_menu_play:
-                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false, false).showDialog();
+//                new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, playerSessionHelper.getPreferences(getApplicationContext(), "uid"), playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"), playerSessionHelper.getPreferences(getApplicationContext(), "share_link"), false, false).showDialog();
+                Intent intent = new Intent(ListSongPlayer.this, SongMenu.class);
+                intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+                intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+                intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                startActivity(intent);
                 break;
         }
     }

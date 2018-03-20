@@ -54,6 +54,7 @@ import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.live.util.BackgroundProses.RefreshToken;
 import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.live.util.BaseBottomPlayer.BottomPlayerActivity;
+import co.digdaya.kindis.live.view.activity.Player.SongMenu;
 import co.digdaya.kindis.live.view.activity.Search;
 import co.digdaya.kindis.live.view.adapter.item.AdapterSong;
 import co.digdaya.kindis.live.view.dialog.DialogPayment;
@@ -497,7 +498,13 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
             adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
                 @Override
                 public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
-                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
+//                    new DialogSingleMenu(Detail.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
+                    Intent intent = new Intent(Detail.this, SongMenu.class);
+                    intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+                    intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+                    intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+                    intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                    startActivity(intent);
                 }
             });
         }

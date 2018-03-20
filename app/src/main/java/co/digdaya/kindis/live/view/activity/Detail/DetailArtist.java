@@ -25,8 +25,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.live.util.SpacingItem.MarginItemHorizontal;
+import co.digdaya.kindis.live.view.activity.Player.SongMenu;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.R;
@@ -178,7 +180,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                             for (int i=0; i<album.length(); i++){
                                 JSONObject data = album.getJSONObject(i);
                                 JSONObject smry = data.getJSONObject("summary");
-                                HashMap<String, String> map = new HashMap<String, String>();
+                                HashMap<String, String> map = new HashMap<>();
                                 map.put("uid", smry.getString("uid"));
                                 map.put("title", smry.getString("title"));
                                 map.put("year", smry.getString("year"));
@@ -226,7 +228,13 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
         adapterSong.setOnClickMenuListener(new AdapterSong.OnClickMenuListener() {
             @Override
             public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
-                new DialogSingleMenu(DetailArtist.this, dialogPlaylis, uid, artistID, shareLink, true, false).showDialog();
+//                new DialogSingleMenu(DetailArtist.this, dialogPlaylis, uid, artistID, shareLink, true, false).showDialog();
+                Intent intent = new Intent(DetailArtist.this, SongMenu.class);
+                intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+                intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
+                intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                startActivity(intent);
             }
         });
     }

@@ -167,6 +167,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
             seekBar.setEnabled(false);
+            seekBar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(Player.this, "Harap menjadi user premium untuk menggunakan fitur ini", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         btnNext.setOnClickListener(this);
