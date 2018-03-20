@@ -39,7 +39,7 @@ import me.relex.circleindicator.CircleIndicator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Infaq extends Fragment implements View.OnScrollChangeListener {
+public class Infaq extends Fragment {
     ViewPager imageSlider;
     CircleIndicator indicator;
     DialogLoading loading;
@@ -63,8 +63,8 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
     Handler handler;
 
     int currentPage = 0;
-    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000;
+    final long DELAY_MS = 5000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
 
@@ -181,7 +181,7 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
                                     indicator.setViewPager(imageSlider);
                                     adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
                                     NUM_PAGES = result.length();
-                                    imageSlider.setOnScrollChangeListener(Infaq.this);
+//                                    imageSlider.setOnScrollChangeListener(Infaq.this);
                                     autoSlide();
                                 }
                             }
@@ -252,8 +252,8 @@ public class Infaq extends Fragment implements View.OnScrollChangeListener {
         }, DELAY_MS, PERIOD_MS);
     }
 
-    @Override
-    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-        currentPage = imageSlider.getCurrentItem();
-    }
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        currentPage = imageSlider.getCurrentItem();
+//    }
 }

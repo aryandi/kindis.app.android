@@ -193,6 +193,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         radioGroup = (RadioGroup) view.findViewById(R.id.gender);
         male = (RadioButton) view.findViewById(R.id.male);
         female = (RadioButton) view.findViewById(R.id.female);
+        inputFacebook.setClickable(false);
+        inputTwitter.setClickable(false);
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         sessionHelper = new SessionHelper();
@@ -238,6 +240,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         inputNama.setText(sessionHelper.getPreferences(getActivity(), "fullname"));
         inputEmail.setText((sessionHelper.getPreferences(getActivity(), "email")));
         inputBirthdate.setText(sessionHelper.getPreferences(getActivity(), "birth_date"));
+        inputFacebook.setText(sessionHelper.getPreferences(getActivity(), "email_facebook"));
+        inputTwitter.setText(sessionHelper.getPreferences(getActivity(), "email_twitter"));
         if (sessionHelper.getPreferences(getActivity(), "gender").equals("male")) {
             male.setChecked(true);
             male.setTextColor(Color.parseColor("#000000"));
@@ -639,7 +643,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 try {
                                     String type_social = "1";
                                     String app_id = object.getString("id");
-                                    registerSocialMedia(type_social, app_id);
+                                    String email_social = object.optString("email");
+                                    registerSocialMedia(type_social, app_id, email_social);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -669,7 +674,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         buttonConnectFB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+                loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
             }
         });
     }
@@ -679,40 +684,47 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         buttonConnectTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    client.authorize(getActivity(), new Callback<TwitterSession>() {
-                        @Override
-                        public void success(final Result<TwitterSession> twitterSessionResult) {
-                            TwitterSession twitterSession = twitterSessionResult.data;
+                client.authorize(getActivity(), new Callback<TwitterSession>() {
+                    @Override
+                    public void success(final Result<TwitterSession> twitterSessionResult) {
+                        TwitterSession twitterSession = twitterSessionResult.data;
 
-                            Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
-                            call.enqueue(new Callback<User>() {
-                                @Override
-                                public void success(Result<User> result) {
-                                    System.out.println("logintwitter" + result.data.email);
+                        Call<User> call = Twitter.getApiClient(twitterSession).getAccountService().verifyCredentials(true, false);
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void success(Result<User> result) {
+                                System.out.println("logintwitter" + result.data.email);
 
-                                    String type_social = "2";
-                                    String app_id = String.valueOf(twitterSessionResult.data.getUserId());
-                                    registerSocialMedia(type_social, app_id);
+                                String type_social = "2";
+                                String app_id = String.valueOf(twitterSessionResult.data.getUserId());
+                                String email_social = "";
+                                if (result.data.email != null) {
+                                    email_social = result.data.email;
+                                } else {
+                                    email_social = result.data.screenName;
                                 }
 
-                                @Override
-                                public void failure(TwitterException e) {
-                                    Log.e("twitter login", "failure: " + e.getMessage());
-                                }
-                            });
-                        }
+                                registerSocialMedia(type_social, app_id, email_social);
+                            }
 
-                        @Override
-                        public void failure(TwitterException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void failure(TwitterException e) {
+                                Log.e("twitter login", "failure: " + e.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
-    private void registerSocialMedia(final String type_social, String app_id) {
+    private void registerSocialMedia(final String type_social, String app_id, final String email_social) {
 
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
@@ -724,31 +736,33 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
-                switch (type_social) {
-                    case "1":
-                        buttonConnectFB.setText("Connected");
-                        buttonConnectFB.setTextColor(ContextCompat.getColor(getActivity(), R.color.com_facebook_blue));
-                        buttonConnectFB.setClickable(false);
-                        break;
-                    case "2":
-                        buttonConnectTwitter.setText("Connected");
-                        buttonConnectTwitter.setTextColor(ContextCompat.getColor(getActivity(), R.color.tw__composer_blue));
-                        buttonConnectTwitter.setClickable(false);
-                        break;
-                }
 
                 Log.d("update_profile", response);
                 if (status) {
+
+                    switch (type_social) {
+                        case "1":
+                            buttonConnectFB.setText("Connected");
+                            buttonConnectFB.setTextColor(ContextCompat.getColor(getActivity(), R.color.com_facebook_blue));
+                            buttonConnectFB.setClickable(false);
+                            inputFacebook.setText(email_social);
+                            sessionHelper.setPreferences(getActivity(), "email_facebook", inputNama.getText().toString());
+                            break;
+                        case "2":
+                            buttonConnectTwitter.setText("Connected");
+                            buttonConnectTwitter.setTextColor(ContextCompat.getColor(getActivity(), R.color.tw__composer_blue));
+                            buttonConnectTwitter.setClickable(false);
+                            inputTwitter.setText(email_social);
+                            sessionHelper.setPreferences(getActivity(), "email_twitter", inputNama.getText().toString());
+                            break;
+                    }
+
                     try {
                         JSONObject object = new JSONObject(response);
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                        if (object.getBoolean("status")) {
-                            sessionHelper.setPreferences(getActivity(), "fullname", inputNama.getText().toString());
-                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                 }
             }

@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -297,5 +298,18 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         menuIR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+                Log.d("Activity", "ON RESULT CALLED");
+            }
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
+        }
     }
 }

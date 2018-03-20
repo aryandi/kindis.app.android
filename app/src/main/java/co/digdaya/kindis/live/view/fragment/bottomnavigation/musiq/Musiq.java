@@ -41,7 +41,7 @@ import me.relex.circleindicator.CircleIndicator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
+public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
@@ -66,8 +66,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     Handler handler;
 
     int currentPage = 0;
-    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000;
+    final long DELAY_MS = 5000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
 
@@ -195,7 +195,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                             JSONArray result = object.getJSONArray("result");
                             for (int i=0; i<result.length(); i++){
                                 JSONObject data = result.getJSONObject(i);
-                                HashMap<String, String> map = new HashMap<String, String>();
+                                HashMap<String, String> map = new HashMap<>();
                                 map.put("title", data.getString("title"));
                                 map.put("image", data.getString("image"));
                                 map.put("link", data.getString("click_url"));
@@ -208,7 +208,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                                 if (result.length() > 1) {
                                     indicator.setViewPager(imageSlider);
                                     adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
-                                    imageSlider.setOnScrollChangeListener(Musiq.this);
+//                                    imageSlider.setOnScrollChangeListener(Musiq.this);
                                     autoSlide();
                                 }
                             }
@@ -263,7 +263,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
         };
 
         timer = new Timer(); // This will create a new Thread
-        timer .schedule(new TimerTask() { // task to be scheduled
+        timer.schedule(new TimerTask() { // task to be scheduled
 
             @Override
             public void run() {
@@ -272,8 +272,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
         }, DELAY_MS, PERIOD_MS);
     }
 
-    @Override
-    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-        currentPage = imageSlider.getCurrentItem();
-    }
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        currentPage = imageSlider.getCurrentItem();
+//    }
 }

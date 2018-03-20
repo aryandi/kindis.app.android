@@ -39,7 +39,7 @@ import co.digdaya.kindis.live.view.adapter.tab.AdapterTaklim;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
+public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPager imageSlider;
@@ -63,8 +63,8 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     Handler handler;
 
     int currentPage = 0;
-    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000;
+    final long DELAY_MS = 5000;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
 
@@ -199,7 +199,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                     indicator.setViewPager(imageSlider);
                                     adapterBanner.registerDataSetObserver(indicator.getDataSetObserver());
                                     NUM_PAGES = result.length();
-                                    imageSlider.setOnScrollChangeListener(Taklim.this);
+//                                    imageSlider.setOnScrollChangeListener(Taklim.this);
                                     autoSlide();
                                 }
                             }
@@ -260,10 +260,10 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
         }, DELAY_MS, PERIOD_MS);
     }
 
-    @Override
-    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-        currentPage = imageSlider.getCurrentItem();
-    }
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        currentPage = imageSlider.getCurrentItem();
+//    }
 
 
 }
