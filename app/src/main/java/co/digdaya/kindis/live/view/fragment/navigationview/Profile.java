@@ -661,7 +661,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             @Override
             public void onError(FacebookException error) {
                 //Handle Error event
-                Log.d("FacebookLogin", "error");
+                Log.d("FacebookLogin", "error" + error.getMessage());
                 System.out.println("FacebookLogin" + error.getMessage());
             }
         });
@@ -697,7 +697,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
                                 @Override
                                 public void failure(TwitterException e) {
-
+                                    Log.e("twitter login", "failure: " + e.getMessage());
                                 }
                             });
                         }
@@ -712,7 +712,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         });
     }
 
-    private void registerSocialMedia(String type_social, String app_id) {
+    private void registerSocialMedia(final String type_social, String app_id) {
 
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
@@ -720,10 +720,23 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         param.put("social_id", app_id);
         param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
-        new VolleyHelper().post(ApiHelper.UPDATE_PROFILE, param, new VolleyHelper.HttpListener<String>() {
+        new VolleyHelper().post(ApiHelper.UPDATE_SOCIAL_MEDIA, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
+                switch (type_social) {
+                    case "1":
+                        buttonConnectFB.setText("Connected");
+                        buttonConnectFB.setTextColor(ContextCompat.getColor(getActivity(), R.color.com_facebook_blue));
+                        buttonConnectFB.setClickable(false);
+                        break;
+                    case "2":
+                        buttonConnectTwitter.setText("Connected");
+                        buttonConnectTwitter.setTextColor(ContextCompat.getColor(getActivity(), R.color.tw__composer_blue));
+                        buttonConnectTwitter.setClickable(false);
+                        break;
+                }
+
                 Log.d("update_profile", response);
                 if (status) {
                     try {
@@ -735,6 +748,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+
                 }
             }
         });
@@ -744,6 +759,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        client.onActivityResult(requestCode, resultCode, data);
         System.out.println("onActivityResult: " + requestCode + " " + resultCode);
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
