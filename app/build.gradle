@@ -115,6 +115,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-4'
         exclude group: 'com.android.support', module: 'support_annotations'
     }
+    compile 'com.github.eggheadgames:Siren:1.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
