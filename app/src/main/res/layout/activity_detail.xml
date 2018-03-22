@@ -86,13 +86,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/background"
-        android:paddingBottom="58dp">
+        android:background="@drawable/background">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="45dp">
+            android:paddingTop="45dp"
+            android:paddingBottom="58dp">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_songs"
                 android:layout_width="match_parent"

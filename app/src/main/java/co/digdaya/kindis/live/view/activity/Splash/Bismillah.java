@@ -3,8 +3,14 @@ package co.digdaya.kindis.live.view.activity.Splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.eggheadgames.siren.ISirenListener;
+import com.eggheadgames.siren.Siren;
+import com.eggheadgames.siren.SirenAlertType;
+import com.eggheadgames.siren.SirenVersionCheckType;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
@@ -13,6 +19,7 @@ import co.digdaya.kindis.live.view.activity.Main;
 public class Bismillah extends AppCompatActivity {
     Button enter;
     PlayerSessionHelper playerSessionHelper;
+    private String TAG = "Bismillah";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,55 @@ public class Bismillah extends AppCompatActivity {
         if (playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle").isEmpty()){
             playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
         }
+
+        checkCurrentAppVersion();
     }
+
+    private void checkCurrentAppVersion() {
+        Siren siren = Siren.getInstance(getApplicationContext());
+        siren.setSirenListener(sirenListener);
+        siren.setMajorUpdateAlertType(SirenAlertType.FORCE);
+        siren.setMinorUpdateAlertType(SirenAlertType.OPTION);
+        siren.setPatchUpdateAlertType(SirenAlertType.SKIP);
+        siren.setRevisionUpdateAlertType(SirenAlertType.NONE);
+        siren.setVersionCodeUpdateAlertType(SirenAlertType.SKIP);
+        siren.checkVersion(this, SirenVersionCheckType.IMMEDIATELY,
+                "https://cdn.kindis.co/assets/json/androidVer.json");
+    }
+
+    ISirenListener sirenListener = new ISirenListener() {
+        @Override
+        public void onShowUpdateDialog() {
+            Log.d(TAG, "onShowUpdateDialog");
+        }
+
+        @Override
+        public void onLaunchGooglePlay() {
+            Log.d(TAG, "onLaunchGooglePlay");
+        }
+
+        @Override
+        public void onSkipVersion() {
+            Log.d(TAG, "onSkipVersion");
+        }
+
+        @Override
+        public void onCancel() {
+            Log.d(TAG, "onCancel");
+        }
+
+        @Override
+        public void onDetectNewVersionWithoutAlert(String message) {
+            Log.d(TAG, "onDetectNewVersionWithoutAlert: " + message);
+        }
+
+        @Override
+        public void onError(Exception e) {
+            Log.d(TAG, "onError");
+            e.printStackTrace();
+        }
+    };
+
 
     @Override
     public void onBackPressed() {

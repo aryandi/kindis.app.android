@@ -119,7 +119,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkbox.isChecked()){
+                if (checkbox.isChecked()) {
                     Intent intent;
                     if (TextUtils.isEmpty(sessionHelper.getPreferences(mContext, "email"))) {
                         intent = new Intent(mContext, RegisterActivity.class);
@@ -127,6 +127,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
                         intent = new Intent(mContext, LoginActivity.class);
                     }
                     startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, "Please check T&A and Privacy Policy below", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -188,6 +190,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
                 if (checkbox.isChecked()) {
                     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                     startActivityForResult(signInIntent, 3);
+                } else {
+                    Toast.makeText(mContext, R.string.tna_warning,  Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -215,7 +219,9 @@ public class LoginSocmedActivity extends AppCompatActivity {
                                     String app_id = object.getString("id");
                                     String email = object.getString("email");
                                     String phone = "";
-                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                    String social_name = object.optString("name");
+                                    sessionHelper.setPreferences(getApplicationContext(), "social_name_facebook", social_name);
+                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone, social_name);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -245,8 +251,11 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkbox.isChecked())
+                if (checkbox.isChecked()) {
                     loginManager.logInWithReadPermissions(mContext, Arrays.asList("email", "public_profile"));
+                } else {
+                    Toast.makeText(mContext, R.string.tna_warning, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -256,7 +265,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkbox.isChecked())
+                if (checkbox.isChecked()) {
                     client.authorize(mContext, new Callback<TwitterSession>() {
                         @Override
                         public void success(final Result<TwitterSession> twitterSessionResult) {
@@ -278,7 +287,9 @@ public class LoginSocmedActivity extends AppCompatActivity {
                                     String app_id = String.valueOf(twitterSessionResult.data.getUserId());
                                     String email = result.data.email;
                                     String phone = "";
-                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                                    String social_name = result.data.screenName;
+                                    sessionHelper.setPreferences(getApplicationContext(), "social_name_twitter", social_name);
+                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone, social_name);
                                 }
 
                                 @Override
@@ -294,6 +305,9 @@ public class LoginSocmedActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
                         }
                     });
+                } else {
+                    Toast.makeText(mContext, R.string.tna_warning, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -337,7 +351,9 @@ public class LoginSocmedActivity extends AppCompatActivity {
                 String app_id = acct.getId();
                 String email = acct.getEmail();
                 String phone = "";
-                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone);
+                String social_name = acct.getDisplayName();
+                sessionHelper.setPreferences(getApplicationContext(), "social_name_google", social_name);
+                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone, social_name);
             } else {
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
@@ -346,11 +362,14 @@ public class LoginSocmedActivity extends AppCompatActivity {
         }
     }
 
-    private void loginSocial(final String fullname, final String gender, final String birth_date, final String type_social, final String app_id, final String email, final String phone) {
+    private void loginSocial(final String fullname, final String gender, final String birth_date,
+                             final String type_social, final String app_id, final String email,
+                             final String phone, final String social_name) {
         dialogLoading.showLoading();
         HashMap<String, String> param = new HashMap<>();
         param.put("app_id", app_id);
         param.put("type_social", type_social);
+        param.put("social_name", social_name);
         param.put("keyss", "QUTWnIZTyeMZBi0AI3IiXkgzTATH2Y8PEMACjH3ZUFE%3D");
 
         System.out.println("app_id : " + app_id);
@@ -368,11 +387,12 @@ public class LoginSocmedActivity extends AppCompatActivity {
                             sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("token_access"));
                             sessionHelper.setPreferences(getApplicationContext(), "token_refresh", result.getString("token_refresh"));
                             sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
+                            sessionHelper.setPreferences(getApplicationContext(), "email", email);
                             new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(LoginSocmedActivity.this, Bismillah.class);
                             startActivity(intent);
                         } else {
-                            registerSocial(fullname, type_social, app_id, email);
+                            registerSocial(fullname, type_social, app_id, email, social_name);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -382,13 +402,14 @@ public class LoginSocmedActivity extends AppCompatActivity {
         });
     }
 
-    private void registerSocial(String fullname, String typeSocial, String appId, String email) {
+    private void registerSocial(String fullname, String typeSocial, String appId, String email, String social_name) {
 
         HashMap<String, String> param = new HashMap<>();
         param.put("fullname", fullname);
         param.put("type_social", typeSocial);
         param.put("app_id", appId);
         param.put("email", email);
+        param.put("social_name", social_name);
 
         volleyHelper.post(ApiHelper.REGISTER_SOCIAL, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -404,6 +425,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
                             sessionHelper.setPreferences(getApplicationContext(), "token_access", result.getString("token_access"));
                             sessionHelper.setPreferences(getApplicationContext(), "token_refresh", result.getString("token_refresh"));
                             sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
+                            sessionHelper.setPreferences(getApplicationContext(), "email", result.optString("email"));
                             new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
                             Intent intent = new Intent(mContext, Bismillah.class);
                             startActivity(intent);

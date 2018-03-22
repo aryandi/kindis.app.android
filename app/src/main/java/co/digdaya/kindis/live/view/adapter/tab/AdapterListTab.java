@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
@@ -41,8 +44,10 @@ import co.digdaya.kindis.live.view.holder.ItemListTab;
  */
 
 public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int MAX_ADS = 4;
     private final AdRequest adRequest;
     private final String isPremium;
+    private final String[] ads;
     private boolean isHavePlaylist;
     private Activity context;
     private TabModel tabModel;
@@ -76,6 +81,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice(sessionHelper.getPreferences(context, "android_id"))
                 .build();
+        ads = context.getResources().getStringArray(R.array.ads_ids);
         switch (tab) {
             case 1:
                 tabs = tabModel.tab1;
@@ -119,7 +125,8 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 TextView title = itemListTab.title;
                 TextView btnMore = itemListTab.btnMore;
                 final RecyclerView recyclerView = itemListTab.list;
-                AdView imageAds = itemListTab.imageAds;
+                View imageAds = itemListTab.imageAds;
+                imageAds.setVisibility(View.GONE);
 
                 if (isPremium.equals("0")) {
                     switch (menuType) {
@@ -194,27 +201,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             } else if (holder instanceof FooterViewHolder) {
                 final FooterViewHolder vh = (FooterViewHolder) holder;
-                vh.imageAds.loadAd(adRequest);
-                vh.imageAds.setAdListener(new AdListener() {
-
-                    @Override
-                    public void onAdLoaded() {
-                        vh.imageAds.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int error) {
-                        vh.imageAds.setVisibility(View.GONE);
-                    }
-
-                });
+                vh.imageAds.setVisibility(View.GONE);
+                showAds(0, vh.imageAds);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void musiqAdsHandler(int position, AdView imageAds) {
+    private void musiqAdsHandler(int position, View imageAds) {
         switch (tabType) {
             // discover
             case 1:
@@ -241,7 +236,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void taklimAdsHandler(int position, AdView imageAds) {
+    private void taklimAdsHandler(int position, View imageAds) {
         switch (tabType) {
             // syiar
             case 1:
@@ -268,7 +263,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void adsHandler(int position, AdView imageAds, String album) {
+    private void adsHandler(int position, View imageAds, String album) {
         if (tabs.get(position).name.equals(album)) {
             showAds(position, imageAds);
         }
@@ -280,8 +275,44 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void showAds(int position, final AdView imageAds) {
+    private void showAds(int position, final View adContainer) {
+
+        String ads_id = sessionHelper.getPreferences(context, "ads_id");
+
+        int adsId = 0;
+        if (!ads_id.equals("")){
+            adsId = Integer.parseInt(ads_id);
+        }
+        if (adsId >= MAX_ADS){
+            adsId = 0;
+        }
+
+        final AdView imageAds = new AdView(context);
+
+        imageAds.setAdSize(AdSize.LARGE_BANNER);
+        imageAds.setAdUnitId(ads[adsId]);
         imageAds.loadAd(adRequest);
+        imageAds.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdLoaded() {
+                    adContainer.setVisibility(View.VISIBLE);
+                    imageAds.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAdFailedToLoad(int error) {
+                    adContainer.setVisibility(View.VISIBLE);
+                    imageAds.setVisibility(View.GONE);
+                }
+
+            });
+
+        ((RelativeLayout)adContainer).addView(imageAds);
+        Log.v("ADS", "ads id: "+ ads[adsId] + "id " + adsId);
+
+        adsId++;
+        sessionHelper.setPreferences(context, "ads_id", String.valueOf(adsId));
 //        if (tabs.size() == position + 1) {
 //            ViewHelper.setMargins(imageAds, getDP(10), 0, getDP(10), getDP(26));
 //        }
@@ -370,24 +401,24 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        AdView imageAds;
+        View imageAds;
 
         FooterViewHolder(View itemView) {
             super(itemView);
-            imageAds = (AdView) itemView.findViewById(R.id.image_ads);
-            imageAds.setAdListener(new AdListener() {
-
-                @Override
-                public void onAdLoaded() {
-                    imageAds.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAdFailedToLoad(int error) {
-                    imageAds.setVisibility(View.GONE);
-                }
-
-            });
+            imageAds = itemView.findViewById(R.id.image_ads);
+//            imageAds.setAdListener(new AdListener() {
+//
+//                @Override
+//                public void onAdLoaded() {
+//                    imageAds.setVisibility(View.VISIBLE);
+//                }
+//
+//                @Override
+//                public void onAdFailedToLoad(int error) {
+//                    imageAds.setVisibility(View.GONE);
+//                }
+//
+//            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

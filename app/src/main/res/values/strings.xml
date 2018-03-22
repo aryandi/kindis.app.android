@@ -28,15 +28,19 @@
     <string name="md_client_key">VT-client-gqjNZEwZrA-tGvQj</string>
     <string name="md_secret_key">VT-server-W1j6hQExX51hPp-p8hjiuEKq</string>
 
-    <string name="ads_id">ca-app-pub-9379744418600976/5207896513</string>
     <string name="ads_app_id">ca-app-pub-9379744418600976~4876025922</string>
 
-        <!--<string name="ads_id">ca-app-pub-9379744418600976/2591330286</string>-->
+    <string name="ads_id_1">ca-app-pub-9379744418600976/5207896513</string>
+    <string name="ads_id_2">ca-app-pub-9379744418600976/2591330286</string>
+    <string name="ads_id_3">ca-app-pub-9379744418600976/9544265766</string>
+    <string name="ads_id_4">ca-app-pub-9379744418600976/2971064656</string>
+    <string name="tna_warning"><![CDATA[Please check Term & Agreement and Privacy Policy below]]></string>
 
-    <!--<string name="ads_id">ca-app-pub-9034123794862891/5353847116</string>-->
-    <!--<string name="ads_app_id">ca-app-pub-9034123794862891~2292569507</string>-->
+    <string-array name="ads_ids">
+        <item>ca-app-pub-9379744418600976/5207896513</item>
+        <item>ca-app-pub-9379744418600976/2591330286</item>
+        <item>ca-app-pub-9379744418600976/9544265766</item>
+        <item>ca-app-pub-9379744418600976/2971064656</item>
+    </string-array>
 
-    <!--<string name="ads_id">ca-app-pub-3940256099942544/6300978111</string>-->
-    <!--<string name="ads_app_id">ca-app-pub-9379744418600976~4876025922</string>-->
-    <!--<string name="ads_id">ca-app-pub-9379744418600976/2591330286</string>-->
 </resources>

@@ -103,12 +103,9 @@
 
                 <ImageButton
                     android:id="@+id/btn_edit_name"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
+                    style="@style/buttonEditProfile"
+                    android:layout_toEndOf="@+id/input_nama"
                     android:layout_toRightOf="@+id/input_nama"
-                    android:background="@drawable/button_circle_black"
                     android:src="@drawable/ic_edit" />
 
             </RelativeLayout>
@@ -142,12 +139,9 @@
 
                 <ImageButton
                     android:id="@+id/btn_edit_email"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
+                    style="@style/buttonEditProfile"
+                    android:layout_toEndOf="@+id/input_email"
                     android:layout_toRightOf="@+id/input_email"
-                    android:background="@drawable/button_circle_black"
                     android:src="@drawable/ic_edit" />
 
             </RelativeLayout>
@@ -181,12 +175,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_edit_birthdate"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
+                    style="@style/buttonEditProfile"
                     android:layout_toRightOf="@+id/input_birthday"
-                    android:background="@drawable/button_circle_black"
                     android:src="@drawable/ic_edit" />
 
             </RelativeLayout>
@@ -199,11 +189,14 @@
                 android:textColor="@color/white"
                 android:textSize="11sp" />
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
             <RadioGroup
                 android:id="@+id/gender"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/edittext_normal"
                 android:orientation="horizontal">
 
@@ -232,16 +225,19 @@
                     android:text="FEMALE"
                     android:textSize="14sp" />
 
+
+            </RadioGroup>
+
                 <ImageButton
                     android:id="@+id/btn_edit_gender"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="-24dp"
-                    android:layout_toRightOf="@+id/female"
-                    android:background="@drawable/button_circle_black"
+                    style="@style/buttonEditProfile"
+                    android:layout_toEndOf="@+id/gender"
+                    android:layout_toRightOf="@+id/gender"
+                    android:layout_marginBottom="-5dp"
                     android:src="@drawable/ic_edit" />
-            </RadioGroup>
+
+            </RelativeLayout>
+
 
             <co.digdaya.kindis.live.custom.TextViewBold
                 android:layout_width="wrap_content"
@@ -259,8 +255,8 @@
                 <co.digdaya.kindis.live.custom.EditTextRegular
                     android:id="@+id/input_facebook"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="44dp"
+                    android:layout_weight="1"
                     android:background="@drawable/edittext_normal"
                     android:enabled="false"
                     android:inputType="textPersonName"
@@ -276,8 +272,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:text="Connect"/>
+                    android:text="Connect"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -292,14 +288,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
 
                 <co.digdaya.kindis.live.custom.EditTextRegular
                     android:id="@+id/input_twitter"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="44dp"
+                    android:layout_weight="1"
                     android:background="@drawable/edittext_normal"
                     android:enabled="false"
                     android:inputType="textPersonName"
@@ -315,8 +311,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:text="Connect"/>
+                    android:text="Connect"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -330,7 +326,7 @@
                 android:text="EDIT"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

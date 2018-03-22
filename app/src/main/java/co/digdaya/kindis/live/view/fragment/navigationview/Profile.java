@@ -22,6 +22,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -240,8 +241,16 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         inputNama.setText(sessionHelper.getPreferences(getActivity(), "fullname"));
         inputEmail.setText((sessionHelper.getPreferences(getActivity(), "email")));
         inputBirthdate.setText(sessionHelper.getPreferences(getActivity(), "birth_date"));
-        inputFacebook.setText(sessionHelper.getPreferences(getActivity(), "email_facebook"));
-        inputTwitter.setText(sessionHelper.getPreferences(getActivity(), "email_twitter"));
+        String social_name_facebook = sessionHelper.getPreferences(getActivity(), "social_name_facebook");
+        if (!TextUtils.isEmpty(social_name_facebook) && social_name_facebook != null && !social_name_facebook.equals("null")) {
+            inputFacebook.setText(social_name_facebook);
+            disableFBButton();
+        }
+        String social_name_twitter = sessionHelper.getPreferences(getActivity(), "social_name_twitter");
+        if (!TextUtils.isEmpty(social_name_twitter) && social_name_twitter != null && !social_name_twitter.equals("null")) {
+            inputTwitter.setText(social_name_twitter);
+            disableTwitterButton();
+        }
         if (sessionHelper.getPreferences(getActivity(), "gender").equals("male")) {
             male.setChecked(true);
             male.setTextColor(Color.parseColor("#000000"));
@@ -315,7 +324,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     imm.showSoftInput(inputNama, InputMethodManager.SHOW_IMPLICIT);
                     inputNama.requestFocus();
                     isEditName = false;
-                    btnEditName.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
+                    btnEditName.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checklist));
                 } else {
                     inputNama.setEnabled(false);
                     saveProfileInfo();
@@ -330,7 +339,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     imm.showSoftInput(inputEmail, InputMethodManager.SHOW_IMPLICIT);
                     inputEmail.requestFocus();
                     isEditEmail = false;
-                    btnEditEmail.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
+                    btnEditEmail.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checklist));
                 } else {
                     inputEmail.setEnabled(false);
                     saveEmailInfo();
@@ -345,7 +354,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     inputBirthdate.requestFocus();
                     imm.showSoftInput(inputBirthdate, InputMethodManager.SHOW_IMPLICIT);
                     isEditBirthday = false;
-                    btnEditBirthday.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
+                    btnEditBirthday.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checklist));
                 } else {
                     inputBirthdate.setEnabled(false);
                     saveProfileInfo();
@@ -358,7 +367,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     male.setEnabled(true);
                     female.setEnabled(true);
                     isEditGender = false;
-                    btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_green));
+                    btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_checklist));
                 } else {
                     male.setEnabled(false);
                     female.setEnabled(false);
@@ -367,30 +376,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                 }
                 break;
-            case R.id.connect_facebook:
-                if (isEditFacebook) {
-                    inputFacebook.setEnabled(true);
-                    inputFacebook.setSelection(inputFacebook.getText().length());
-                    inputFacebook.requestFocus();
-                    imm.showSoftInput(inputFacebook, InputMethodManager.SHOW_IMPLICIT);
-                    isEditFacebook = false;
-                } else {
-                    inputFacebook.setEnabled(false);
-                    saveSocmedInfo();
-                    isEditFacebook = true;
-                }
-            case R.id.connect_twitter:
-                if (isEditTwitter) {
-                    inputTwitter.setEnabled(true);
-                    inputTwitter.setSelection(inputTwitter.getText().length());
-                    inputTwitter.requestFocus();
-                    imm.showSoftInput(inputTwitter, InputMethodManager.SHOW_IMPLICIT);
-                    isEditTwitter = false;
-                } else {
-                    inputTwitter.setEnabled(false);
-                    saveSocmedInfo();
-                    isEditTwitter = true;
-                }
+
         }
     }
 
@@ -433,37 +419,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     }
                 }, 1990, 0, 1);
         datePickerDialog.show();
-    }
-
-    private void saveSocmedInfo() {
-
-        loading.show();
-
-        HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
-        param.put("social_type", "1");
-        param.put("social_id", sessionHelper.getPreferences(getActivity(), "email"));
-        param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
-
-        new VolleyHelper().post(ApiHelper.CHANGE_EMAIL, param, new VolleyHelper.HttpListener<String>() {
-            @Override
-            public void onReceive(boolean status, String message, String response) {
-                loading.dismiss();
-                Log.d("update_profile", response);
-                if (status) {
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                        if (object.getBoolean("status")) {
-                            sessionHelper.setPreferences(getActivity(), "email", inputEmail.getText().toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
     }
 
     private void saveEmailInfo() {
@@ -643,8 +598,8 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                                 try {
                                     String type_social = "1";
                                     String app_id = object.getString("id");
-                                    String email_social = object.optString("email");
-                                    registerSocialMedia(type_social, app_id, email_social);
+                                    String social_name = object.optString("name");
+                                    updateSocialMedia(type_social, app_id, social_name);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -697,14 +652,10 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
                                 String type_social = "2";
                                 String app_id = String.valueOf(twitterSessionResult.data.getUserId());
-                                String email_social = "";
-                                if (result.data.email != null) {
-                                    email_social = result.data.email;
-                                } else {
-                                    email_social = result.data.screenName;
-                                }
+                                String social_name = "";
+                                social_name = result.data.screenName;
 
-                                registerSocialMedia(type_social, app_id, email_social);
+                                updateSocialMedia(type_social, app_id, social_name);
                             }
 
                             @Override
@@ -722,14 +673,16 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 });
             }
         });
+
     }
 
-    private void registerSocialMedia(final String type_social, String app_id, final String email_social) {
+    private void updateSocialMedia(final String type_social, String app_id, final String social_name) {
 
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
         param.put("social_type", type_social);
         param.put("social_id", app_id);
+        param.put("social_name", social_name);
         param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.UPDATE_SOCIAL_MEDIA, param, new VolleyHelper.HttpListener<String>() {
@@ -742,18 +695,14 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
                     switch (type_social) {
                         case "1":
-                            buttonConnectFB.setText("Connected");
-                            buttonConnectFB.setTextColor(ContextCompat.getColor(getActivity(), R.color.com_facebook_blue));
-                            buttonConnectFB.setClickable(false);
-                            inputFacebook.setText(email_social);
-                            sessionHelper.setPreferences(getActivity(), "email_facebook", inputNama.getText().toString());
+                            disableFBButton();
+                            inputFacebook.setText(social_name);
+                            sessionHelper.setPreferences(getActivity(), "social_name_facebook", inputNama.getText().toString());
                             break;
                         case "2":
-                            buttonConnectTwitter.setText("Connected");
-                            buttonConnectTwitter.setTextColor(ContextCompat.getColor(getActivity(), R.color.tw__composer_blue));
-                            buttonConnectTwitter.setClickable(false);
-                            inputTwitter.setText(email_social);
-                            sessionHelper.setPreferences(getActivity(), "email_twitter", inputNama.getText().toString());
+                            disableTwitterButton();
+                            inputTwitter.setText(social_name);
+                            sessionHelper.setPreferences(getActivity(), "social_name_twitter", inputNama.getText().toString());
                             break;
                     }
 
@@ -768,6 +717,18 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             }
         });
 
+    }
+
+    private void disableTwitterButton() {
+        buttonConnectTwitter.setText("Connected");
+        buttonConnectTwitter.setTextColor(ContextCompat.getColor(getActivity(), R.color.tw__composer_blue));
+        buttonConnectTwitter.setClickable(false);
+    }
+
+    private void disableFBButton() {
+        buttonConnectFB.setText("Connected");
+        buttonConnectFB.setTextColor(ContextCompat.getColor(getActivity(), R.color.com_facebook_blue));
+        buttonConnectFB.setClickable(false);
     }
 
     @Override

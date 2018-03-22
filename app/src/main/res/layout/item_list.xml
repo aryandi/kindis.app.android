@@ -29,16 +29,25 @@
         android:layout_below="@+id/text_list"
         android:layout_marginBottom="24dp" />
 
-    <com.google.android.gms.ads.AdView
+    <RelativeLayout
         android:id="@+id/image_ads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/list"
         android:layout_centerHorizontal="true"
-        android:contentDescription="ImageAds"
-        android:src="@drawable/background_emptystate"
-        ads:adSize="LARGE_BANNER"
-        ads:adUnitId="@string/ads_id"
-        android:visibility="gone"/>
+        android:src="@drawable/background_emptystate" />
+
+    <!--<com.google.android.gms.ads.AdView-->
+    <!--android:id="@+id/image_ads"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/list"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:contentDescription="ImageAds"-->
+    <!--android:src="@drawable/background_emptystate"-->
+    <!--ads:adSize="LARGE_BANNER"-->
+    <!--ads:adUnitId="@string/ads_id_1"-->
+    <!--android:visibility="gone"/>-->
+
 
 </RelativeLayout>

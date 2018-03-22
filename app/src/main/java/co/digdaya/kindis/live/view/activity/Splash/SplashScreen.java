@@ -33,7 +33,7 @@ public class SplashScreen extends AppCompatActivity {
     SessionHelper sessionHelper;
     RefreshToken refreshToken;
 
-    private String TAG;
+    private String TAG = "Splash Screen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +61,6 @@ public class SplashScreen extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("exception", e.toString());
         }*/
-
-        checkCurrentAppVersion();
 
         String android_id = "";
         try {
@@ -177,51 +175,4 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
     }
-
-    private void checkCurrentAppVersion() {
-        Siren siren = Siren.getInstance(getApplicationContext());
-        siren.setSirenListener(sirenListener);
-        siren.setMajorUpdateAlertType(SirenAlertType.FORCE);
-        siren.setMinorUpdateAlertType(SirenAlertType.OPTION);
-        siren.setPatchUpdateAlertType(SirenAlertType.SKIP);
-        siren.setRevisionUpdateAlertType(SirenAlertType.NONE);
-        siren.setVersionCodeUpdateAlertType(SirenAlertType.SKIP);
-        siren.checkVersion(this, SirenVersionCheckType.IMMEDIATELY,
-                "https://cdn.kindis.co/assets/json/version.json");
-    }
-
-
-    ISirenListener sirenListener = new ISirenListener() {
-        @Override
-        public void onShowUpdateDialog() {
-            Log.d(TAG, "onShowUpdateDialog");
-        }
-
-        @Override
-        public void onLaunchGooglePlay() {
-            Log.d(TAG, "onLaunchGooglePlay");
-        }
-
-        @Override
-        public void onSkipVersion() {
-            Log.d(TAG, "onSkipVersion");
-        }
-
-        @Override
-        public void onCancel() {
-            Log.d(TAG, "onCancel");
-        }
-
-        @Override
-        public void onDetectNewVersionWithoutAlert(String message) {
-            Log.d(TAG, "onDetectNewVersionWithoutAlert: " + message);
-        }
-
-        @Override
-        public void onError(Exception e) {
-            Log.d(TAG, "onError");
-            e.printStackTrace();
-        }
-    };
-
 }

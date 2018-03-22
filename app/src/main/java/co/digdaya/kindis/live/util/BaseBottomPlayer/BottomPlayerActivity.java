@@ -75,6 +75,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
             contBottomPlayer.setVisibility(View.GONE);
             showBottomPlayer = false;
         }else {
+            contBottomPlayer.setVisibility(View.VISIBLE);
             showBottomPlayer = true;
         }
 
