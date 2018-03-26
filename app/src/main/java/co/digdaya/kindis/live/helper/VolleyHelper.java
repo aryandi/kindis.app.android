@@ -63,12 +63,17 @@ public class VolleyHelper {
                                 try {
                                     String responseBody = new String(error.networkResponse.data, "utf-8" );
                                     Log.d("volleyresponse", responseBody);
-                                    JSONObject jsonObject = new JSONObject( responseBody );
+                                    JSONObject jsonObject = new JSONObject( responseBody);
                                     listener.onReceive(true, SUCCESS, jsonObject.toString());
                                 } catch ( JSONException e ) {
                                     e.printStackTrace();
+                                    listener.onReceive(false, "Something Error", "");
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
+                                    listener.onReceive(false, "Something Error", "");
+                                } catch (Exception e){
+                                    e.printStackTrace();
+                                    listener.onReceive(false, "Something Error", "");
                                 }
                             }
                         }
@@ -106,6 +111,9 @@ public class VolleyHelper {
                                 e.printStackTrace();
                                 listener.onReceive(false, "Something Error", "");
                             } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                                listener.onReceive(false, "Something Error", "");
+                            } catch (Exception e){
                                 e.printStackTrace();
                                 listener.onReceive(false, "Something Error", "");
                             }

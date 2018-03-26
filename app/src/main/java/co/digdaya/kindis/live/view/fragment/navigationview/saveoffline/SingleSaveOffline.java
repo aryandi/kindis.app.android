@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
-import co.digdaya.kindis.live.databse.KindisDBHelper;
-import co.digdaya.kindis.live.databse.KindisDBname;
+import co.digdaya.kindis.live.database.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.DataSingleOffline;
 import co.digdaya.kindis.live.util.SpacingItem.SpacingItemGenre;

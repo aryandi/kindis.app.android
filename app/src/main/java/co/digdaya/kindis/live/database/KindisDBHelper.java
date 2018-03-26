@@ -1,4 +1,4 @@
-package co.digdaya.kindis.live.databse;
+package co.digdaya.kindis.live.database;
 
 import android.content.ContentValues;
 import android.content.Context;

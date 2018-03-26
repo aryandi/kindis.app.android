@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import co.digdaya.kindis.live.databse.KindisDBHelper;
-import co.digdaya.kindis.live.databse.KindisDBname;
+import co.digdaya.kindis.live.database.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.service.DownloadService;

@@ -21,15 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
-import co.digdaya.kindis.live.databse.KindisDBHelper;
-import co.digdaya.kindis.live.databse.KindisDBname;
+import co.digdaya.kindis.live.database.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.model.DataSingleOffline;
-import co.digdaya.kindis.live.view.activity.Detail.DetailArtist;
 import co.digdaya.kindis.live.view.adapter.offline.AdapterDetailSongOffline;
-import co.digdaya.kindis.live.view.dialog.DialogSingleMenu;
 import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.live.view.adapter.item.AdapterSong;
 

@@ -294,7 +294,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
 
                                 @Override
                                 public void failure(TwitterException e) {
-
+                                    e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), "failure", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -342,7 +343,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             if (acct != null) {
-                sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
+                if (acct.getPhotoUrl() != null) sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
                 sessionHelper.setPreferences(getApplicationContext(), "login_type", "3");
                 String fullname = acct.getDisplayName();
                 String gender = "";
@@ -408,7 +409,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
         param.put("fullname", fullname);
         param.put("type_social", typeSocial);
         param.put("app_id", appId);
-        param.put("email", email);
+        param.put("email", email == null ? "" : email);
         param.put("social_name", social_name);
 
         volleyHelper.post(ApiHelper.REGISTER_SOCIAL, param, new VolleyHelper.HttpListener<String>() {
@@ -435,6 +436,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Register dengan Social Media Gagal", Toast.LENGTH_SHORT).show();
                 }
             }
         });

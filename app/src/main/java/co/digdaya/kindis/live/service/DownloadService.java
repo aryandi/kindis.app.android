@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import co.digdaya.kindis.live.databse.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.RandomString;

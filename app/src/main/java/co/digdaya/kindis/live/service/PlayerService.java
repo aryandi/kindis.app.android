@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Random;
 
 import co.digdaya.kindis.live.R;
-import co.digdaya.kindis.live.databse.KindisDBHelper;
-import co.digdaya.kindis.live.databse.KindisDBname;
+import co.digdaya.kindis.live.database.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckAppRunning;
 import co.digdaya.kindis.live.helper.Constanta;

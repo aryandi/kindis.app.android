@@ -39,8 +39,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
-import co.digdaya.kindis.live.databse.KindisDBHelper;
-import co.digdaya.kindis.live.databse.KindisDBname;
+import co.digdaya.kindis.live.database.KindisDBHelper;
+import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
@@ -58,7 +58,6 @@ import co.digdaya.kindis.live.view.activity.Player.SongMenu;
 import co.digdaya.kindis.live.view.activity.Search;
 import co.digdaya.kindis.live.view.adapter.item.AdapterSong;
 import co.digdaya.kindis.live.view.dialog.DialogPayment;
-import co.digdaya.kindis.live.view.dialog.DialogSingleMenu;
 
 public class Detail extends BottomPlayerActivity implements View.OnClickListener {
     AppBarLayout appBarLayout;

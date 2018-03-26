@@ -692,27 +692,29 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
                 Log.d("update_profile", response);
                 if (status) {
-
-                    switch (type_social) {
-                        case "1":
-                            disableFBButton();
-                            inputFacebook.setText(social_name);
-                            sessionHelper.setPreferences(getActivity(), "social_name_facebook", inputNama.getText().toString());
-                            break;
-                        case "2":
-                            disableTwitterButton();
-                            inputTwitter.setText(social_name);
-                            sessionHelper.setPreferences(getActivity(), "social_name_twitter", inputNama.getText().toString());
-                            break;
-                    }
-
                     try {
                         JSONObject object = new JSONObject(response);
+
+                        if (object.getBoolean("status")) {
+                            switch (type_social) {
+                                case "1":
+                                    disableFBButton();
+                                    inputFacebook.setText(social_name);
+                                    sessionHelper.setPreferences(getActivity(),
+                                            "social_name_facebook", inputNama.getText().toString());
+                                    break;
+                                case "2":
+                                    disableTwitterButton();
+                                    inputTwitter.setText(social_name);
+                                    sessionHelper.setPreferences(getActivity(),
+                                            "social_name_twitter", inputNama.getText().toString());
+                                    break;
+                            }
+                        }
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         });

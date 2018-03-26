@@ -1,4 +1,4 @@
-package co.digdaya.kindis.live.databse;
+package co.digdaya.kindis.live.database;
 
 /**
  * Created by DELL on 5/11/2017.
