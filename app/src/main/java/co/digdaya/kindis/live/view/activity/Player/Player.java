@@ -25,23 +25,25 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
-import co.digdaya.kindis.live.service.DownloadService;
-import co.digdaya.kindis.live.service.PlayerService;
-import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.PlayerActionHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
-import co.digdaya.kindis.live.view.activity.Premium;
-import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
+import co.digdaya.kindis.live.service.DownloadService;
+import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.live.util.ZoomOutPageTransformer;
+import co.digdaya.kindis.live.view.activity.Premium;
 import co.digdaya.kindis.live.view.adapter.AdapterListSong;
+import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
 
-public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
+public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList, btnShuffle, btnDownload;
     ImageView icPlay;
     ViewPager viewPager;
@@ -66,12 +68,15 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     ArrayList<String> songPlaylist = new ArrayList<>();
 
     PlayerSessionHelper playerSessionHelper = new PlayerSessionHelper();
+    @BindView(R.id.footer_player)
+    RelativeLayout footerPlayer;
     private CheckPermission checkPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        ButterKnife.bind(this);
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
         songPlaylist = new ArrayList<>();
@@ -110,31 +115,31 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         });
 
-        if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")) {
             icPlay.setImageResource(R.drawable.ic_pause_large);
-        }else {
+        } else {
             icPlay.setImageResource(R.drawable.ic_play_large);
         }
 
-        if (index == 1){
+        if (index == 1) {
             imgList.add(playerSessionHelper.getPreferences(getApplicationContext(), "image"));
             adapterListSong = new AdapterListSong(getApplicationContext(), imgList);
             viewPager.setAdapter(adapterListSong);
             viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
             titleActivity.setText("Single");
             subtitleActivity.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
-        }else {
+        } else {
             viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-            if (isOfflineMode){
+            if (isOfflineMode) {
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
-            }else {
-                System.out.println("isshufflebol: "+playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"));
-                if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+            } else {
+                System.out.println("isshufflebol: " + playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"));
+                if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))) {
                     adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getShuffleImageList());
                     viewPager.setAdapter(adapterListSong);
                     btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                     songPlaylist = parseJsonPlaylist.getShuffleSongPlaylist();
-                }else {
+                } else {
                     adapterListSong = new AdapterListSong(getApplicationContext(), parseJsonPlaylist.getImageList());
                     viewPager.setAdapter(adapterListSong);
                     btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
@@ -163,11 +168,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
         });
 
-        if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")){
+        if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")) {
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
             seekBar.setEnabled(false);
-            seekBar.setOnClickListener(new View.OnClickListener() {
+            footerPlayer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(Player.this, "Harap menjadi user premium untuk menggunakan fitur ini", Toast.LENGTH_SHORT).show();
@@ -197,31 +202,31 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         title.setSingleLine(true);
         title.setText(playerSessionHelper.getPreferences(getApplicationContext(), "title"));
         subtitle.setText(playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
-        if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+        if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()) {
             playlistPosition = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition"));
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(PlayerActionHelper.BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiverBroadcastInfo, new IntentFilter(PlayerActionHelper.BROADCAST_INFO));
 
-        String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
-        if (isLooping.equals("true")){
+        String isLooping = "" + playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
+        if (isLooping.equals("true")) {
             btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
-        }else {
+        } else {
             btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
         }
 
-        if (playerSessionHelper.getPreferences(getApplicationContext(), "pause").equals("true")){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "pause").equals("true")) {
             int pos = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "current_pos"));
             seekBar.setProgress(pos);
             txtProgress.setText(getTimeString(pos));
         }
 
-        if (playerSessionHelper.getPreferences(getApplicationContext(), "file").isEmpty()){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "file").isEmpty()) {
             title.setText("No Song");
             subtitle.setText("");
             txtProgress.setText(getTimeString(0));
             txtDuration.setText(getTimeString(0));
-        }else {
+        } else {
             int dur = 0;
             try {
                 dur = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "duration"));
@@ -232,21 +237,21 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             txtDuration.setText(getTimeString(dur));
         }
 
-        if (!playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")){
-            if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()){
+        if (!playerSessionHelper.getPreferences(getApplicationContext(), "index").equals("1")) {
+            if (!playerSessionHelper.getPreferences(getApplicationContext(), "playlistPosition").isEmpty()) {
                 viewPager.setCurrentItem(playlistPosition, true);
             }
         }
 
-        if (index == 1){
+        if (index == 1) {
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
             btnNext.setEnabled(false);
-        }else if (playlistPosition == 0){
+        } else if (playlistPosition == 0) {
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
-        }else if (playlistPosition == index-1){
+        } else if (playlistPosition == index - 1) {
             btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnNext.setEnabled(false);
         }
@@ -262,16 +267,16 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_looping){
-            String isLooping = ""+playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
-            if (isLooping.equals("true")){
+        if (view.getId() == R.id.btn_looping) {
+            String isLooping = "" + playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
+            if (isLooping.equals("true")) {
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "false");
 
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
-            }else{
+            } else {
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                 playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "true");
 
@@ -279,7 +284,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
             }
-        }else if (view.getId() == R.id.btn_songlis){
+        } else if (view.getId() == R.id.btn_songlis) {
             //dialogSingleMenu.showDialog();
             Intent intent = new Intent(this, SongMenu.class);
             intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
@@ -287,38 +292,38 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
             intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
             startActivity(intent);
-        }else if (view.getId() == R.id.btn_list){
+        } else if (view.getId() == R.id.btn_list) {
             Intent intent = new Intent(this, ListSongPlayer.class);
             intent.putExtra("title", titleActivity.getText());
             intent.putExtra("subtitle", subtitleActivity.getText());
             startActivity(intent);
-        }else if (view.getId() == R.id.cont_play){
-            if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
+        } else if (view.getId() == R.id.cont_play) {
+            if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")) {
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "true");
                 icPlay.setImageResource(R.drawable.ic_pause_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY);
                 startService(intent);
-            }else {
+            } else {
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                 icPlay.setImageResource(R.drawable.ic_play_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PAUSE);
                 startService(intent);
             }
-        }else if (view.getId() == R.id.btn_back){
-            viewPager.setCurrentItem(playlistPosition-1, true);
+        } else if (view.getId() == R.id.btn_back) {
+            viewPager.setCurrentItem(playlistPosition - 1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
-        }else if (view.getId() == R.id.btn_next){
-            viewPager.setCurrentItem(playlistPosition+1, true);
+        } else if (view.getId() == R.id.btn_next) {
+            viewPager.setCurrentItem(playlistPosition + 1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
-        }else if (view.getId() == R.id.btn_shuffle){
+        } else if (view.getId() == R.id.btn_shuffle) {
             playlistPosition = 0;
             playerSessionHelper.setPreferences(getApplicationContext(), "playlistPosition", "0");
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnBack.setEnabled(false);
             songPlaylist = new ArrayList<>();
-            if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
+            if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))) {
                 songPlaylist = parseJsonPlaylist.getSongPlaylist();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(parseJsonPlaylist.getImageList().size()));
                 btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
@@ -326,7 +331,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 adapterListSong.notifyDataSetChanged();
                 viewPager.setAdapter(adapterListSong);
                 playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
-            }else {
+            } else {
                 songPlaylist = parseJsonPlaylist.getShuffleSongPlaylist();
                 new PlayerSessionHelper().setPreferences(getApplicationContext(), "index", String.valueOf(parseJsonPlaylist.getShuffleImageList().size()));
                 btnShuffle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
@@ -336,11 +341,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "true");
             }
             nextPlay(0);
-        }else if (view.getId() == R.id.btn_download){
+        } else if (view.getId() == R.id.btn_download) {
 
-            if (checkPermission.checkPermissionStorage()){
+            if (checkPermission.checkPermissionStorage()) {
                 startDownload();
-            }else {
+            } else {
                 checkPermission.showPermissionStorage(2);
             }
         }
@@ -353,18 +358,18 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onPageSelected(int position) {
 
-        if (isChangeViewPager){
-            if (isAccountPremium == 1){
-                if (isOfflineMode){
+        if (isChangeViewPager) {
+            if (isAccountPremium == 1) {
+                if (isOfflineMode) {
                     Intent intent = new Intent(this, PlayerService.class);
                     intent.setAction(PlayerActionHelper.ACTION_PLAY_OFFLINE_NEXT);
                     intent.putExtra("position", position);
                     intent.putExtra("songPlaylist", songPlaylist);
                     startService(intent);
-                }else {
+                } else {
                     nextPlay(position);
                 }
-            }else {
+            } else {
                 if (position > playlistPosition) {
                     nextPlay(position);
                 }
@@ -383,10 +388,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
     }
 
-    private void nextPlay(int position){
-        if (position == songPlaylist.size()) position = songPlaylist.size()-1;
-        if (isInFront && songPlaylist.size() > 0){
-            System.out.println("nextplay player: "+songPlaylist.get(position));
+    private void nextPlay(int position) {
+        if (position == songPlaylist.size()) position = songPlaylist.size() - 1;
+        if (isInFront && songPlaylist.size() > 0) {
+            System.out.println("nextplay player: " + songPlaylist.get(position));
             Intent intent = new Intent(getApplicationContext(), PlayerService.class);
             intent.setAction(PlayerActionHelper.PLAY_PLAYLIST);
             intent.putExtra("from", "Player");
@@ -411,11 +416,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                     seekBar.setProgress(progress);
                 }
             });
-            if (progress==duration){
+            if (progress == duration) {
                 icPlay.setImageResource(R.drawable.ic_play_large);
             }
 
-            if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")){
+            if (playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")) {
                 icPlay.setImageResource(R.drawable.ic_pause_large);
             }
         }
@@ -428,23 +433,23 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             subtitle.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_SUBTITLE));
             playlistPosition = intent.getIntExtra(PlayerActionHelper.BROADCAST_POSITION, 0);
 
-            if (playlistPosition == 0){
+            if (playlistPosition == 0) {
                 btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 btnBack.setEnabled(false);
-            }else {
-                if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")){
+            } else {
+                if (!new SessionHelper().getPreferences(getApplicationContext(), "is_premium").equals("1")) {
                     btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                     btnBack.setEnabled(false);
-                }else {
+                } else {
                     btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                     btnBack.setEnabled(true);
                 }
             }
 
-            if (playlistPosition == (index-1)){
+            if (playlistPosition == (index - 1)) {
                 btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 btnNext.setEnabled(false);
-            }else {
+            } else {
                 btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                 btnNext.setEnabled(true);
             }
@@ -470,14 +475,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==2){
-            if (checkPermission.checkPermissionStorage()){
+        if (requestCode == 2) {
+            if (checkPermission.checkPermissionStorage()) {
                 startDownload();
             }
         }
     }
 
-    private void startDownload(){
+    private void startDownload() {
         Toast.makeText(getApplicationContext(), "Downloading", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, DownloadService.class);
         intent.setAction(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE);
@@ -485,12 +490,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         startService(intent);
     }
 
-    private void listOfflineSong(String fkID){
+    private void listOfflineSong(String fkID) {
         KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_FK+" = "+fkID,null);
-        if (cursor.moveToFirst()){
-            while (cursor.isAfterLast()==false){
+        Cursor cursor = db.rawQuery("select * from " + KindisDBname.TABLE_SINGLE + " WHERE " + KindisDBname.COLUMN_FK + " = " + fkID, null);
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
                 imgList.add(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_IMAGE)));
                 songPlaylist.add(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_ID)));
                 cursor.moveToNext();
