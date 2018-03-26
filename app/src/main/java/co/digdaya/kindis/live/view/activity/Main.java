@@ -80,6 +80,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     DialogGift dialogGift;
     DialogBanner dialogBanner;
+    private boolean is_premium;
 
     public Main() {
     }
@@ -139,6 +140,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         transaction.replace(R.id.cont_main, homeFragment, "home");
         transaction.commit();
 
+        is_premium = sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1");
+
         initSidebar();
 
 //        if (!checkPermission.checkPermission()){
@@ -178,7 +181,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+        if (is_premium){
             profileStatus.setText("PREMIUM");
             profileStatus.setBackground(getDrawable(R.drawable.button_rounded_orange));
         }
@@ -193,7 +196,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void initSidebar(){
-        if (sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1")){
+        if (is_premium){
             menuPremium.setVisibility(View.GONE);
         }
 
@@ -237,10 +240,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_offline){
-            transaction.replace(R.id.cont_main, saveOffline);
+            if (is_premium){
+                transaction.replace(R.id.cont_main, saveOffline);
 
-            icMenuOffline.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-            labelMenuOffline.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+                icMenuOffline.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+                labelMenuOffline.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
+            } else {
+                Intent intent = new Intent(this, Premium.class);
+                startActivity(intent);
+            }
         }else if (view.getId() == R.id.menu_gift) {
             dialogGift = new DialogGift(dialogGft, this);
             dialogGift.showDialog();
