@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:id="@+id/body_premium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logo_horz"/>
+
+        <co.digdaya.kindis.live.custom.TextViewRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="UPGRADE TO PREMIUM"
+            android:textColor="@color/safety_orange"
+            android:textSize="20sp"/>
+
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Untuk menggunakan fitur ini, anda harus user premium."
+            android:textColor="@color/white"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/hr"
+        android:layout_below="@+id/body_premium"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dark_gray"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/hr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:id="@+id/btn_premium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"
+            android:text="UPGRADE NOW"
+            android:textColor="@color/safety_orange"
+            android:textSize="14sp"
+            android:clickable="true"/>
+
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:id="@+id/btn_cancel"
+            android:layout_toLeftOf="@+id/btn_premium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:text="CANCEL"
+            android:textColor="@color/dark_gray"
+            android:textSize="14sp"
+            android:clickable="true" />
+    </RelativeLayout>
+</RelativeLayout>

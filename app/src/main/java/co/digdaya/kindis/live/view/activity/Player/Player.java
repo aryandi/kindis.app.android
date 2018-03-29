@@ -41,7 +41,7 @@ import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
 import co.digdaya.kindis.live.util.ZoomOutPageTransformer;
 import co.digdaya.kindis.live.view.activity.Premium;
 import co.digdaya.kindis.live.view.adapter.AdapterListSong;
-import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
+import co.digdaya.kindis.live.view.dialog.DialogAlertPremium;
 
 public class Player extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     ImageButton hide, btnNext, btnBack, btnLooping, btnMenu, btnList, btnShuffle, btnDownload;
@@ -53,7 +53,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     AppCompatSeekBar seekBar;
 
     Dialog dialogPlaylis, dialogPremium;
-    DialogGetPremium dialogGetPremium;
+    DialogAlertPremium dialogAlertPremium;
     ParseJsonPlaylist parseJsonPlaylist;
 
     int index, playlistPosition, lastPosition;
@@ -81,7 +81,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
         songPlaylist = new ArrayList<>();
 
-        dialogGetPremium = new DialogGetPremium(this, dialogPremium);
+        dialogAlertPremium = new DialogAlertPremium(this, dialogPremium);
         checkPermission = new CheckPermission(this);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
@@ -175,7 +175,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             footerPlayer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(Player.this, "Harap menjadi user premium untuk menggunakan fitur ini", Toast.LENGTH_SHORT).show();
+                    dialogAlertPremium.showDialog();
                 }
             });
         }
