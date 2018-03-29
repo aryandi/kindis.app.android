@@ -114,7 +114,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        return new ItemListTab(view);
+        return new ItemListTab(view, sessionHelper, ads);
     }
 
     @Override
@@ -126,15 +126,20 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 TextView btnMore = itemListTab.btnMore;
                 final RecyclerView recyclerView = itemListTab.list;
                 View imageAds = itemListTab.imageAds;
+                AdView imageAds1 = itemListTab.imageAds1;
+                AdView imageAds2 = itemListTab.imageAds2;
+                AdView imageAds3 = itemListTab.imageAds3;
+                AdView imageAds4 = itemListTab.imageAds4;
+
                 imageAds.setVisibility(View.GONE);
 
                 if (isPremium.equals("0")) {
                     switch (menuType) {
                         case 1:
-                            musiqAdsHandler(position, imageAds);
+                            musiqAdsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4);
                             break;
                         case 9:
-                            taklimAdsHandler(position, imageAds);
+                            taklimAdsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4);
                             break;
                     }
                 }
@@ -201,30 +206,29 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             } else if (holder instanceof FooterViewHolder) {
                 final FooterViewHolder vh = (FooterViewHolder) holder;
-                vh.imageAds.setVisibility(View.GONE);
-                showAds(0, vh.imageAds);
+                showAds(0, vh.imageAds1, vh.imageAds2, vh.imageAds3, vh.imageAds4);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void musiqAdsHandler(int position, View imageAds) {
+    private void musiqAdsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
         switch (tabType) {
             // discover
             case 1:
                 if (isHavePlaylist) {
-                    adsHandler(position, imageAds, "Album");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Album");
                 } else {
-                    adsHandler(position, imageAds, "Artist");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Artist");
                 }
                 break;
             // recently
             case 2:
                 if (isHavePlaylist) {
-                    adsHandler(position, imageAds, "Single");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Single");
                 } else {
-                    adsHandler(position, imageAds, "Played");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Played");
                 }
                 break;
             // genre
@@ -236,22 +240,22 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void taklimAdsHandler(int position, View imageAds) {
+    private void taklimAdsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
         switch (tabType) {
             // syiar
             case 1:
                 if (isHavePlaylist) {
-                    adsHandler(position, imageAds, "Dai");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Dai");
                 } else {
-                    adsHandler(position, imageAds, "Discover");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Discover");
                 }
                 break;
             // kisah
             case 2:
                 if (isHavePlaylist) {
-                    adsHandler(position, imageAds, "Storyteller");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Storyteller");
                 } else {
-                    adsHandler(position, imageAds, "Discover");
+                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Discover");
                 }
                 break;
             //  murrotal
@@ -263,59 +267,71 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private void adsHandler(int position, View imageAds, String album) {
+    private void adsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4, String album) {
         if (tabs.get(position).name.equals(album)) {
-            showAds(position, imageAds);
+            showAds(position, imageAds1, imageAds2, imageAds3, imageAds4);
         }
 //        else if (position == tabs.size() - 1) {
 //            showAds(position, imageAds);
 //        }
         else {
-            imageAds.setVisibility(View.GONE);
+            imageAds1.setVisibility(View.GONE);
+            imageAds2.setVisibility(View.GONE);
+            imageAds3.setVisibility(View.GONE);
+            imageAds4.setVisibility(View.GONE);
         }
     }
 
-    private void showAds(int position, final View adContainer) {
+    private void showAds(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
 
         String ads_id = sessionHelper.getPreferences(context, "ads_id");
 
         int adsId = 0;
-        if (!ads_id.equals("")){
+        if (!ads_id.equals("")) {
             adsId = Integer.parseInt(ads_id);
         }
-        if (adsId >= MAX_ADS){
+        if (adsId >= MAX_ADS) {
             adsId = 0;
         }
 
-        final AdView imageAds = new AdView(context);
+        Log.v("ADS", "showAds: " + adsId);
 
-        imageAds.setAdSize(AdSize.LARGE_BANNER);
-        imageAds.setAdUnitId(ads[adsId]);
-        imageAds.loadAd(adRequest);
-        imageAds.setAdListener(new AdListener() {
+        switch (adsId){
+            case 0 :
+                imageAds1.loadAd(adRequest);
+                imageAds1.setVisibility(View.VISIBLE);
+                imageAds2.setVisibility(View.GONE);
+                imageAds3.setVisibility(View.GONE);
+                imageAds4.setVisibility(View.GONE);
+                break;
 
-                @Override
-                public void onAdLoaded() {
-                    adContainer.setVisibility(View.VISIBLE);
-                    imageAds.setVisibility(View.VISIBLE);
-                }
+            case 1 :
+                imageAds2.loadAd(adRequest);
+                imageAds2.setVisibility(View.VISIBLE);
+                imageAds1.setVisibility(View.GONE);
+                imageAds3.setVisibility(View.GONE);
+                imageAds4.setVisibility(View.GONE);
+                break;
 
-                @Override
-                public void onAdFailedToLoad(int error) {
-                    adContainer.setVisibility(View.VISIBLE);
-                    imageAds.setVisibility(View.GONE);
-                }
+            case 2 :
+                imageAds3.loadAd(adRequest);
+                imageAds3.setVisibility(View.VISIBLE);
+                imageAds1.setVisibility(View.GONE);
+                imageAds2.setVisibility(View.GONE);
+                imageAds4.setVisibility(View.GONE);
+                break;
 
-            });
-
-        ((RelativeLayout)adContainer).addView(imageAds);
-        Log.v("ADS", "ads id: "+ ads[adsId] + "id " + adsId);
+            case 3 :
+                imageAds4.loadAd(adRequest);
+                imageAds4.setVisibility(View.VISIBLE);
+                imageAds1.setVisibility(View.GONE);
+                imageAds2.setVisibility(View.GONE);
+                imageAds3.setVisibility(View.GONE);
+                break;
+        }
 
         adsId++;
         sessionHelper.setPreferences(context, "ads_id", String.valueOf(adsId));
-//        if (tabs.size() == position + 1) {
-//            ViewHelper.setMargins(imageAds, getDP(10), 0, getDP(10), getDP(26));
-//        }
     }
 
     @Override
@@ -401,30 +417,17 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        View imageAds;
+        private final AdView imageAds1;
+        private final AdView imageAds2;
+        private final AdView imageAds3;
+        private final AdView imageAds4;
 
         FooterViewHolder(View itemView) {
             super(itemView);
-            imageAds = itemView.findViewById(R.id.image_ads);
-//            imageAds.setAdListener(new AdListener() {
-//
-//                @Override
-//                public void onAdLoaded() {
-//                    imageAds.setVisibility(View.VISIBLE);
-//                }
-//
-//                @Override
-//                public void onAdFailedToLoad(int error) {
-//                    imageAds.setVisibility(View.GONE);
-//                }
-//
-//            });
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Do whatever you want on clicking the item
-                }
-            });
+            imageAds1 = (AdView) itemView.findViewById(R.id.image_ads_1);
+            imageAds2 = (AdView) itemView.findViewById(R.id.image_ads_2);
+            imageAds3 = (AdView) itemView.findViewById(R.id.image_ads_3);
+            imageAds4 = (AdView) itemView.findViewById(R.id.image_ads_4);
         }
     }
 }

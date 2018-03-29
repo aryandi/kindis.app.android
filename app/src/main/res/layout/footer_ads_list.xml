@@ -1,22 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--<com.google.android.gms.ads.AdView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/image_ads"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_below="@id/list"-->
-        <!--android:layout_marginBottom="26dp"-->
-        <!--android:contentDescription="ImageAds"-->
-        <!--android:src="@drawable/background_emptystate"-->
-        <!--android:visibility="gone"-->
-        <!--ads:adSize="LARGE_BANNER"-->
-        <!--ads:adUnitId="@string/ads_id_1" />-->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/image_ads_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="ImageAds"
+        android:src="@drawable/background_emptystate"
+        android:visibility="gone"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/ads_id_1" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/image_ads_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="ImageAds"
+        android:src="@drawable/background_emptystate"
+        android:visibility="gone"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/ads_id_2" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/image_ads_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="ImageAds"
+        android:src="@drawable/background_emptystate"
+        android:visibility="gone"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/ads_id_3" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/image_ads_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="ImageAds"
+        android:src="@drawable/background_emptystate"
+        android:visibility="gone"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="@string/ads_id_4" />
 
     <RelativeLayout
         android:id="@+id/image_ads"
@@ -24,6 +63,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/list"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/background_emptystate"/>
+        android:src="@drawable/background_emptystate" />
 
 </RelativeLayout>
