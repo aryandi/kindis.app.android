@@ -23,12 +23,13 @@
             android:layout_marginTop="32dp"
             android:text="UPGRADE TO PREMIUM"
             android:textColor="@color/safety_orange"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:visibility="gone"/>
 
         <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Untuk menggunakan fitur ini, anda harus user premium."
+            android:text="Untuk menggunakan fitur ini, anda harus menjadi user premium."
             android:textColor="@color/white"
             android:textSize="24sp"/>
     </LinearLayout>
