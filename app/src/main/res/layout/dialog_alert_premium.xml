@@ -27,6 +27,7 @@
             android:visibility="gone"/>
 
         <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:id="@+id/text_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Untuk menggunakan fitur ini, anda harus menjadi user premium."

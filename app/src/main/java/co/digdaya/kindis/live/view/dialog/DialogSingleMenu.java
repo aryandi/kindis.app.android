@@ -29,14 +29,14 @@ import co.digdaya.kindis.live.view.adapter.AdapterInsertItemPlaylist;
  */
 
 public class DialogSingleMenu implements View.OnClickListener {
-    Activity activity;
-    Dialog dialog;
-    ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
-    AdapterInsertItemPlaylist adapterPlaylist;
-    RecyclerView listViewPlaylist;
-    String uidSingle, artistID, shareLink;
-    Boolean isArtist, isPlaylistOnly;
-    TextView btnGotoArtist, btnShare, btnAddToPlaylist;
+    private Activity activity;
+    private Dialog dialog;
+    private ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
+    private AdapterInsertItemPlaylist adapterPlaylist;
+    private RecyclerView listViewPlaylist;
+    private String uidSingle, artistID, shareLink;
+    private Boolean isArtist, isPlaylistOnly;
+    private TextView btnGotoArtist, btnShare, btnAddToPlaylist;
 
     public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID, String shareLink, Boolean isArtist, Boolean isPlaylistOnly) {
         this.activity = activity;
@@ -96,7 +96,7 @@ public class DialogSingleMenu implements View.OnClickListener {
                             JSONArray playlist = result.getJSONArray("playlist");
                             for (int i=0; i<playlist.length(); i++){
                                 JSONObject data = playlist.getJSONObject(i);
-                                HashMap<String, String> map = new HashMap<String, String>();
+                                HashMap<String, String> map = new HashMap<>();
                                 map.put("playlist_id", data.getString("playlist_id"));
                                 map.put("title", data.getString("playlist_name"));
                                 listPlaylist.add(map);

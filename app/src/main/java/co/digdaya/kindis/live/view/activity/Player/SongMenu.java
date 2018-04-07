@@ -69,7 +69,9 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
         title.setText(getIntent().getStringExtra(Constanta.INTENT_EXTRA_TITLE));
         subtitle.setText(getIntent().getStringExtra(Constanta.INTENT_EXTRA_SUBTITLE));
 
-        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis, getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID), null, null, true, true);
+        dialogSingleMenu = new DialogSingleMenu(this, dialogPlaylis,
+                getIntent().getStringExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID),
+                null, null, true, true);
     }
 
 

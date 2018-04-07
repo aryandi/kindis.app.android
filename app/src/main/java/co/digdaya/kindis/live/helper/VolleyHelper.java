@@ -41,7 +41,7 @@ public class VolleyHelper {
         }
 
         @Override
-        public void retry(VolleyError error) throws VolleyError {
+        public void retry(VolleyError error) {
         }
     };
 

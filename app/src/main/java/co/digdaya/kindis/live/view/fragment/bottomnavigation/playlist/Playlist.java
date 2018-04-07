@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live.view.fragment.bottomnavigation.playlist;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import co.digdaya.kindis.live.helper.CheckConnection;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.view.adapter.item.AdapterPlaylist;
+import co.digdaya.kindis.live.view.dialog.DialogAlertPremium;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +57,9 @@ public class Playlist extends Fragment implements View.OnClickListener {
     ProgressDialog loading;
 
     SessionHelper sessionHelper;
+    private DialogAlertPremium dialogAlertPremium;
+    Dialog dialogPlaylis, dialogPremium;
+
 
     public Playlist() {
         // Required empty public constructor
@@ -193,7 +198,10 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             inputPlaylist.setText("");
                             getPlaylist();
                         }else {
-                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            dialogAlertPremium = new DialogAlertPremium(getActivity(), dialogPremium,
+                                    object.getString("message"));
+                            dialogAlertPremium.showDialog();
+//                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {

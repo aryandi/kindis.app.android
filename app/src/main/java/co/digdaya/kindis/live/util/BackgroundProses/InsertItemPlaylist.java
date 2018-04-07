@@ -1,6 +1,7 @@
 package co.digdaya.kindis.live.util.BackgroundProses;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Dialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,22 +13,25 @@ import java.util.HashMap;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
+import co.digdaya.kindis.live.view.dialog.DialogAlertPremium;
 
 /**
  * Created by vincenttp on 2/24/2017.
  */
 
 public class InsertItemPlaylist {
-    Context context;
+    private Activity activity;
+    private DialogAlertPremium dialogAlertPremium;
+    private Dialog dialogPremium;
 
-    public InsertItemPlaylist(Context context){
-        this.context = context;
+    public InsertItemPlaylist(Activity activity){
+        this.activity = activity;
     }
 
-    public void insertItem(String single, String playlist){
-        Log.d("kontolinsert", single+" : "+playlist);
+    public void insertItem(String single, String playlist) {
+        Log.d("songinsert", single + " : " + playlist);
         HashMap<String, String> param = new HashMap<>();
-        param.put("user_id", new SessionHelper().getPreferences(context, "user_id"));
+        param.put("user_id", new SessionHelper().getPreferences(activity, "user_id"));
         param.put("playlist_id", playlist);
         param.put("songs", "["+single+"]");
 
@@ -39,15 +43,19 @@ public class InsertItemPlaylist {
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("status")){
-                            Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, object.getString("message"),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            dialogAlertPremium = new DialogAlertPremium(activity, dialogPremium,
+                                    object.getString("message"));
+                            dialogAlertPremium.showDialog();
+//                            Toast.makeText(activity, "Something Error", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Something Error", Toast.LENGTH_SHORT).show();
                 }
             }
         });

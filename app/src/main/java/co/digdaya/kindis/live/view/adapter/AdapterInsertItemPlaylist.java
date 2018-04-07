@@ -1,7 +1,7 @@
 package co.digdaya.kindis.live.view.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +21,15 @@ import co.digdaya.kindis.live.view.holder.ItemPlaylist;
  */
 
 public class AdapterInsertItemPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
-    Context context;
-    ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
-    HashMap<String, String> dataPlaylis;
-    String uidSingle;
-    Dialog dialog;
+    private Activity activity;
+    private ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
+    private HashMap<String, String> dataPlaylis;
+    private String uidSingle;
+    private Dialog dialog;
 
-    public AdapterInsertItemPlaylist (Context context, ArrayList<HashMap<String, String>> listPlaylist, String uidSingle, Dialog dialog){
-        this.context = context;
+    public AdapterInsertItemPlaylist (Activity activity, ArrayList<HashMap<String,
+            String>> listPlaylist, String uidSingle, Dialog dialog){
+        this.activity = activity;
         this.listPlaylist = listPlaylist;
         this.uidSingle = uidSingle;
         this.dialog = dialog;
@@ -36,9 +37,9 @@ public class AdapterInsertItemPlaylist extends RecyclerView.Adapter<ItemPlaylist
 
     @Override
     public ItemPlaylist onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_playlist, parent, false);
-        ItemPlaylist item= new ItemPlaylist(view);
-        return item;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_playlist, parent, false);
+        return new ItemPlaylist(view);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class AdapterInsertItemPlaylist extends RecyclerView.Adapter<ItemPlaylist
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new InsertItemPlaylist(context).insertItem(uidSingle, uid);
+                new InsertItemPlaylist(activity).insertItem(uidSingle, uid);
                 dialog.dismiss();
             }
         });

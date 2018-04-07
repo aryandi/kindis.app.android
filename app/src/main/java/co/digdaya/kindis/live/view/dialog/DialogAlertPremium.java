@@ -18,7 +18,7 @@ public class DialogAlertPremium implements View.OnClickListener{
     AlertDialog.Builder alertDialog;
     LayoutInflater li;
     View dialogView;
-    TextView btnCancel, btnPremium;
+    TextView btnCancel, btnPremium, textMessage;
 
     public DialogAlertPremium(Activity activity, Dialog premium){
         this.activity = activity;
@@ -32,6 +32,26 @@ public class DialogAlertPremium implements View.OnClickListener{
 
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
         btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+
+        btnCancel.setOnClickListener(this);
+        btnPremium.setOnClickListener(this);
+    }
+
+    public DialogAlertPremium(Activity activity, Dialog premium, String message){
+        this.activity = activity;
+        this.premium = premium;
+
+        li = LayoutInflater.from(activity);
+        dialogView = li.inflate(R.layout.dialog_alert_premium, null);
+
+        alertDialog = new AlertDialog.Builder(activity);
+        alertDialog.setView(dialogView);
+
+        textMessage = (TextView) dialogView.findViewById(R.id.text_message);
+        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+
+        textMessage.setText(message);
 
         btnCancel.setOnClickListener(this);
         btnPremium.setOnClickListener(this);

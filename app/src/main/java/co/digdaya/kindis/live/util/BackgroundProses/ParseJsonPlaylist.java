@@ -20,19 +20,19 @@ import co.digdaya.kindis.live.helper.PlayerSessionHelper;
  */
 
 public class ParseJsonPlaylist {
-    Context context;
-    String type, json, shuffle;
-    String shfl;
-    boolean update;
-    PlayerSessionHelper playerSessionHelper;
+    private Context context;
+    private String type, json, shuffle;
+    private String shfl;
+    private boolean update;
+    private PlayerSessionHelper playerSessionHelper;
 
-    ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
-    ArrayList<String> songPlaylist = new ArrayList<>();
-    ArrayList<String> imgList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listSong = new ArrayList<HashMap<String, String>>();
+    private ArrayList<String> songPlaylist = new ArrayList<>();
+    private ArrayList<String> imgList = new ArrayList<>();
 
-    ArrayList<HashMap<String, String>> shuffleListSong;
-    ArrayList<String> shufflesongPlaylist;
-    ArrayList<String> shuffleimgList;
+    private ArrayList<HashMap<String, String>> shuffleListSong;
+    private ArrayList<String> shufflesongPlaylist;
+    private ArrayList<String> shuffleimgList;
 
     public ParseJsonPlaylist(Context context, boolean update){
         this.context = context;
@@ -136,7 +136,7 @@ public class ParseJsonPlaylist {
             System.out.println("PLAY_MULTYSOURCE: shuffle");
             Collections.shuffle(shuffleListSong);
             shfl = new Gson().toJson(shuffleListSong);
-            playerSessionHelper.setPreferences(context, "shuffle", shfl);
+            playerSessionHelper.setPreferences(activity, "shuffle", shfl);
         }*/
         shufflePlaylist();
     }
