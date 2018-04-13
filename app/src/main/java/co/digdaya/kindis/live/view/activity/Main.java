@@ -38,7 +38,6 @@ import co.digdaya.kindis.live.view.fragment.navigationview.Privacy;
 import co.digdaya.kindis.live.view.fragment.navigationview.Profile;
 import co.digdaya.kindis.live.view.fragment.navigationview.SaveOffline;
 import co.digdaya.kindis.live.view.fragment.navigationview.Terms;
-import io.fabric.sdk.android.Fabric;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
     SessionHelper sessionHelper;

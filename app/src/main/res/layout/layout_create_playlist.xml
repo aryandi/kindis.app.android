@@ -44,6 +44,6 @@
         android:text="CREATE"
         android:paddingLeft="45dp"
         android:paddingRight="45dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/white"/>
 </LinearLayout>

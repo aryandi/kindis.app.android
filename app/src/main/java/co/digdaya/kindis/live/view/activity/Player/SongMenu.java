@@ -74,7 +74,6 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
                 null, null, true, true);
     }
 
-
     @Override
     public void onClick(View view) {
         Intent intent;

@@ -1,10 +1,12 @@
 package co.digdaya.kindis.live.helper;
 
 import android.graphics.Color;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 /**
@@ -26,5 +28,13 @@ public class TextViewHelper {
         textView.setHighlightColor(Color.TRANSPARENT);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(spannableString, TextView.BufferType.SPANNABLE);
+    }
+
+    public static void setSpanColor(TextView textView, String subtext, int color) {
+        SpannableString str = new SpannableString(textView.getText());
+        int i = textView.getText().toString().indexOf(subtext);
+        textView.setHighlightColor(Color.TRANSPARENT);
+        str.setSpan(new ForegroundColorSpan(color), i, i + subtext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(str, TextView.BufferType.SPANNABLE);
     }
 }

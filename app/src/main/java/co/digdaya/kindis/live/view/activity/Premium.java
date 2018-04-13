@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -18,16 +19,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.custom.TextViewSemiBold;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
+import co.digdaya.kindis.live.helper.TextViewHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.model.PriceListModel;
 import co.digdaya.kindis.live.network.ApiCall;
 import co.digdaya.kindis.live.network.ApiUtil;
 import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
 import co.digdaya.kindis.live.view.dialog.DialogPayment;
-import co.digdaya.kindis.live.view.dialog.DialogPriceList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,11 +49,14 @@ public class Premium extends AppCompatActivity {
     List<PriceListModel.Data> priceList = new ArrayList<>();
 
     ApiCall apiCall;
+    @BindView(R.id.text_message)
+    TextViewSemiBold textMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_premium);
+        ButterKnife.bind(this);
         //new GetPrice().execute();
 
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
@@ -57,6 +64,9 @@ public class Premium extends AppCompatActivity {
         sessionHelper = new SessionHelper();
         random = new Random();
         apiCall = ApiUtil.callService();
+
+        TextViewHelper.setSpanColor(textMessage, "Kindis Premium", ContextCompat
+                .getColor(this, R.color.safety_orange));
 
         getPriceList();
 
@@ -86,22 +96,22 @@ public class Premium extends AppCompatActivity {
         });
     }
 
-    private class GetPrice extends AsyncTask<String, String, String>{
+    private class GetPrice extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String url = sessionHelper.getPreferences(getApplicationContext(), "user_id") +
-                    "&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access") +
+                    "&token_access=" + sessionHelper.getPreferences(getApplicationContext(), "token_access") +
                     "&dev_id=2" +
                     "&client_id=xBc3w11";
             new VolleyHelper().get(ApiHelper.PRICE + url, new VolleyHelper.HttpListener<String>() {
                 @Override
                 public void onReceive(boolean status, String message, String response) {
-                    System.out.println("GetPrice: "+response);
-                    if (status){
+                    System.out.println("GetPrice: " + response);
+                    if (status) {
                         try {
                             JSONObject object = new JSONObject(response);
-                            if (object.getBoolean("status")){
+                            if (object.getBoolean("status")) {
                                 JSONObject result = object.getJSONObject("result");
                                 price = result.getInt("price");
                                 googleCode = result.getString("google_code");
@@ -126,9 +136,9 @@ public class Premium extends AppCompatActivity {
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
             String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
 
-            System.out.println("onActivityResult: "+responseCode);
-            System.out.println("onActivityResult: "+purchaseData);
-            System.out.println("onActivityResult: "+dataSignature);
+            System.out.println("onActivityResult: " + responseCode);
+            System.out.println("onActivityResult: " + purchaseData);
+            System.out.println("onActivityResult: " + dataSignature);
 
             if (resultCode == RESULT_OK) {
                 HashMap<String, String> param = new HashMap<String, String>();
@@ -146,16 +156,16 @@ public class Premium extends AppCompatActivity {
                 param.put("payment_status_msg", "success");
                 param.put("price", sessionHelper.getPreferences(getApplicationContext(), "price"));
                 param.put("trans_time", "");
-                System.out.println("onActivityResult: "+param);
+                System.out.println("onActivityResult: " + param);
 
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {
-                        System.out.println("onActivityResult: "+response);
-                        if (status){
+                        System.out.println("onActivityResult: " + response);
+                        if (status) {
                             try {
                                 JSONObject object = new JSONObject(response);
-                                if (object.getBoolean("status")){
+                                if (object.getBoolean("status")) {
                                     finish();
                                 }
                             } catch (JSONException e) {
@@ -165,18 +175,18 @@ public class Premium extends AppCompatActivity {
                         }
                     }
                 });
-            }else {
+            } else {
                 Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void getPriceList(){
-        String url = ApiHelper.PRICE_LIST+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"&dev_id=2&client_id=xBc3w11&token_access="+sessionHelper.getPreferences(getApplicationContext(), "token_access");
+    private void getPriceList() {
+        String url = ApiHelper.PRICE_LIST + sessionHelper.getPreferences(getApplicationContext(), "user_id") + "&dev_id=2&client_id=xBc3w11&token_access=" + sessionHelper.getPreferences(getApplicationContext(), "token_access");
         apiCall.priceList(url).enqueue(new Callback<PriceListModel>() {
             @Override
             public void onResponse(@NonNull Call<PriceListModel> call, @NonNull Response<PriceListModel> response) {
-                if (response != null && response.body() != null && response.body().status){
+                if (response != null && response.body() != null && response.body().status) {
                     priceList = response.body().result.data;
                     order = response.body().result.order_id;
                 }

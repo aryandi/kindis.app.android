@@ -4,117 +4,117 @@
     android:id="@+id/activity_premium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@drawable/bg_premium"
     tools:context=".view.activity.Premium">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/kindis_picture_premium"
-        android:layout_above="@id/description"/>
-    <ImageView
-        android:id="@+id/ic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/description"
-        android:src="@drawable/img_premium"/>
 
     <co.digdaya.kindis.live.custom.TextViewSemiBold
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/text_message"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="40dp"
         android:paddingLeft="26dp"
+        android:text="UPGRADE TO PREMIUM"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <co.digdaya.kindis.live.custom.TextViewSemiBold
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/list"
-        android:layout_marginBottom="29dp"
-        android:text="Get Premium now"
-        android:textSize="25sp"
-        android:textColor="@color/safety_orange"/>
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="26dp"
+        android:text="Segera update menjadi Kindis Premium untuk mendapatkan kebebasan menggunakan Kindis!"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_activity"
-        android:layout_marginBottom="62dp"
-        android:paddingLeft="26dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:paddingLeft="26dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:src="@drawable/ic_ceklist"/>
+                android:src="@drawable/ic_ceklist" />
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
+                style="@style/text_premium_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="Bisa mendengarkan secara offline"/>
+                android:text="Bisa mendengarkan secara offline" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:src="@drawable/ic_ceklist"/>
+                android:src="@drawable/ic_ceklist" />
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
+                style="@style/text_premium_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="Bebas mengakses semua konten"/>
+                android:text="Bebas mengakses semua konten 24/7" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:src="@drawable/ic_ceklist"/>
+                android:src="@drawable/ic_ceklist" />
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
+                style="@style/text_premium_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="Bebas iklan (kecuali saat mengakses sponsored playlist)"/>
+                android:text="Bebas menyusun hingga 50 playlist " />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:src="@drawable/ic_ceklist"/>
+                android:src="@drawable/ic_ceklist" />
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
+                style="@style/text_premium_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="Bebas menyusun playlist sendiri"/>
+                android:text="Bebas iklan (kecuali sponsored playlist)" />
         </LinearLayout>
     </LinearLayout>
 
@@ -122,29 +122,35 @@
         android:id="@+id/btn_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
         <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_rounded_snow_10"
             android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Upgrade Later"
-            android:textSize="16sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
         <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_rounded_orange_10"
             android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Upgrade Now"
-            android:textSize="16sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 </RelativeLayout>
