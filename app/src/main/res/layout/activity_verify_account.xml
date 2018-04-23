@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:id="@+id/body_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="40dp">
+
+        <co.digdaya.kindis.live.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="VERIFY YOUR ACCOUNT"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <co.digdaya.kindis.live.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="FULL NAME"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_nama"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/edittext_normal"
+                android:inputType="textPersonName"
+                android:paddingBottom="13dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:textColor="@drawable/edittext_font_color"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <co.digdaya.kindis.live.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="EMAIL"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/edittext_normal"
+                android:inputType="textPersonName"
+                android:paddingBottom="13dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:textColor="@drawable/edittext_font_color"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <co.digdaya.kindis.live.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="GENDER"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <RadioGroup
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/edittext_normal"
+                android:orientation="horizontal">
+
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
+                    android:id="@+id/male"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radiobutton_listener"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:checked="true"
+                    android:text="MALE"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <co.digdaya.kindis.live.custom.RadioButtonRegular
+                    android:id="@+id/female"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radiobutton_listener"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="FEMALE"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <co.digdaya.kindis.live.custom.TextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="BIRTHDAY"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <co.digdaya.kindis.live.custom.EditTextRegular
+                android:id="@+id/input_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/edittext_normal"
+                android:paddingBottom="13dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="13dp"
+                android:textColor="@drawable/edittext_font_color"
+                android:textIsSelectable="true"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:id="@+id/btn_send_code"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_rounded_yellow"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="SEND VERIFICATION CODE"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <co.digdaya.kindis.live.custom.TextViewRegular
+            android:id="@+id/text_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <co.digdaya.kindis.live.custom.PinEntryEditText
+            android:id="@+id/txt_pin_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:inputType="text"
+            android:maxLength="8"
+            android:paddingTop="20dp"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:id="@+id/btn_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_rounded_yellow"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="VERIFY"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</ScrollView>

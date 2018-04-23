@@ -10,7 +10,7 @@ import android.view.View;
  */
 
 public class SpacingItemHome extends RecyclerView.ItemDecoration {
-    Context context;
+    private Context context;
 
     public SpacingItemHome(Context context) {
         this.context = context;
@@ -28,7 +28,6 @@ public class SpacingItemHome extends RecyclerView.ItemDecoration {
 
     private int getDP(int dp){
         final float scale = context.getResources().getDisplayMetrics().density;
-        int pixels = (int) (dp * scale + 0.5f);
-        return pixels;
+        return (int) (dp * scale + 0.5f);
     }
 }

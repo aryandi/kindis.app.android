@@ -66,7 +66,7 @@ public class Premium extends AppCompatActivity {
         apiCall = ApiUtil.callService();
 
         TextViewHelper.setSpanColor(textMessage, "Kindis Premium", ContextCompat
-                .getColor(this, R.color.safety_orange));
+                .getColor(this, R.color.yellow));
 
         getPriceList();
 

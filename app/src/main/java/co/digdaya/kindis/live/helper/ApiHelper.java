@@ -1,12 +1,14 @@
 package co.digdaya.kindis.live.helper;
 
+import co.digdaya.kindis.live.BuildConfig;
+
 /**
  * Created by vincenttp on 1/28/2017.
  */
 
 public class ApiHelper {
 //    public static final String BASE_URL = "https://api.kindis.co/";
-    public static final String BASE_URL = "http://api.stg.kindis.co/";
+    public static final String BASE_URL = BuildConfig.BASE_URL;
     public static final String BASE_URL_IMAGE = "https://cdn.kindis.co";
 
     //ads
@@ -77,4 +79,8 @@ public class ApiHelper {
     //offline
     public static final String TOKEN = BASE_URL + "offline/json_token";
     public static final String GET_DATA = BASE_URL + "offline/offline_data";
+
+    public static final String UPDATE_PROFILE_PREMIUM = BASE_URL + "premium/update_profile";
+    public static final String CHECK_PREMIUM = BASE_URL + "premium/profile_checker";
+    public static final String CODE_VERIFY = BASE_URL + "account/code_verify";
 }

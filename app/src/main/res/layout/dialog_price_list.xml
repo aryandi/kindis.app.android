@@ -1,60 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_price_list"
-    android:padding="24dp">
-    <ImageButton
-        android:id="@+id/btn_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_close"
-        android:layout_gravity="end"
-        android:background="@android:color/transparent"/>
-    <co.digdaya.kindis.live.custom.TextViewSemiBold
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Kindis Premium"
-        android:textSize="16sp"
-        android:textColor="@color/safety_orange"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"/>
-
-    <co.digdaya.kindis.live.custom.TextViewRegular
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pilih metode pembayaran"
-        android:textColor="@color/white"/>
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_price_list">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <co.digdaya.kindis.live.custom.ButtonSemiBold
-            android:id="@+id/btn_google"
-            android:layout_width="0dp"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp">
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Google Play"
-            android:textColor="@color/black"
-            android:background="@drawable/button_rounded_snow"
-            android:layout_marginRight="16dp"/>
-        <co.digdaya.kindis.live.custom.ButtonSemiBold
-            android:id="@+id/btn_midtrans"
-            android:layout_width="0dp"
+            android:layout_gravity="end"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_close"
+            android:visibility="gone"/>
+
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Other Method"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Kindis Premium"
+            android:textColor="@color/yellow"
+            android:textSize="16sp" />
+
+        <co.digdaya.kindis.live.custom.TextViewSemiBold
+            android:id="@+id/text_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:gravity="center"
+            android:text="Untuk menjadi Kindis Premium silahkan verifikasi email Anda"
             android:textColor="@color/white"
-            android:background="@drawable/button_rounded_blue"/>
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+        <co.digdaya.kindis.live.custom.ButtonSemiBold
+            android:id="@+id/btn_ok"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_rounded_yellow_10"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="OK"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:nestedScrollingEnabled="false" />
+
+        <co.digdaya.kindis.live.custom.TextViewRegular
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pilih metode pembayaran"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
+                android:id="@+id/btn_google"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded_snow"
+                android:text="Google Play"
+                android:textColor="@color/black" />
+
+            <co.digdaya.kindis.live.custom.ButtonSemiBold
+                android:id="@+id/btn_midtrans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded_blue"
+                android:text="Other Method"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+</ScrollView>

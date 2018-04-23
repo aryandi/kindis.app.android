@@ -65,7 +65,6 @@ public class Playlist extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,6 +111,20 @@ public class Playlist extends Fragment implements View.OnClickListener {
             }
         });
 
+        inputPlaylist.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View arg0, boolean hasfocus) {
+                if (hasfocus) {
+                    contCreatePlaylist.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            contCreatePlaylist.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    },300);
+                }
+            }
+        });
+
         createNewPlaylist.setOnClickListener(this);
     }
 
@@ -127,6 +140,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        contCreatePlaylist.setVisibility(View.GONE);
         if (listPlaylist.isEmpty()){
             setLayout();
         }else {
@@ -261,7 +275,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             listPlaylist.clear();
                             getPlaylist();
                             Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
 
                         }
                     } catch (JSONException e) {

@@ -40,6 +40,7 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
     GooglePayment googlePayment;
     MidtransPayment midtransPayment;
     SessionHelper sessionHelper;
+    private boolean isVerified;
 
     public DialogPriceList(@NonNull Context context, List<PriceListModel.Data> datas, String orderID) {
         super(context);
@@ -61,7 +62,7 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
         btnGoogle = (Button) findViewById(R.id.btn_google);
         btnMidtrans = (Button) findViewById(R.id.btn_midtrans);
 
-        adapterPriceList = new AdapterPriceList(mContext, datas);
+        adapterPriceList = new AdapterPriceList(mContext, datas, isVerified);
         sessionHelper = new SessionHelper();
 
         list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
@@ -102,5 +103,15 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
         String transID = "PRE"+sessionHelper.getPreferences(mContext, "user_id")+new Random().nextInt(89)+10;
         googlePayment = new GooglePayment(getOwnerActivity(), datas.get(i).package_id, orderID);
         midtransPayment = new MidtransPayment(getOwnerActivity(), transID, Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID, "", "1");
+    }
+
+    @Override
+    public void onClickGPay(int i) {
+
+    }
+
+    @Override
+    public void onClickOther(int i) {
+
     }
 }

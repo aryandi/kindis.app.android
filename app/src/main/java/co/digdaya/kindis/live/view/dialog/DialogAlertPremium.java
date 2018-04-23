@@ -3,6 +3,7 @@ package co.digdaya.kindis.live.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.TextViewHelper;
 import co.digdaya.kindis.live.view.activity.Premium;
 
 public class DialogAlertPremium implements View.OnClickListener{
@@ -33,6 +35,9 @@ public class DialogAlertPremium implements View.OnClickListener{
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
         btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
 
+        TextViewHelper.setSpanColor(textMessage, "Kindis Premium", ContextCompat
+                .getColor(activity, R.color.yellow));
+
         btnCancel.setOnClickListener(this);
         btnPremium.setOnClickListener(this);
     }
@@ -52,7 +57,6 @@ public class DialogAlertPremium implements View.OnClickListener{
         btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
 
         textMessage.setText(message);
-
         btnCancel.setOnClickListener(this);
         btnPremium.setOnClickListener(this);
     }

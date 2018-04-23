@@ -10,8 +10,8 @@ import android.view.View;
  */
 
 public class SpacingItemGenre extends RecyclerView.ItemDecoration {
-    Context context;
-    String type;
+    private Context context;
+    private String type;
 
     public SpacingItemGenre(Context context, String type) {
         this.context = context;

@@ -24,4 +24,14 @@ public class Constanta {
     public static final String INTENT_EXTRA_VALUE_ALBUM = "album";
 
     public static final String PLAYERSESSION_ALBUM_ID = "PLAYERSESSION_ALBUM_ID";
+
+    // sha pref key
+    public static final String PREF_USERID = "user_id";
+    public static final String PREF_FULLNAME = "fullname";
+    public static final String PREF_EMAIL = "email";
+    public static final String PREF_BIRTH_DATE = "birth_date";
+    public static final String PREF_GENDER = "gender";
+    public static final String PREF_TOKEN_ACCESS = "token_access";
+    public static final String PREF_TOKEN = "token";
+
 }

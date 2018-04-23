@@ -192,6 +192,10 @@
             android:noHistory="true"/>
 
         <activity android:name=".view.activity.PriceList"
+            android:noHistory="true"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".view.activity.Account.VerifyAccount"
             android:noHistory="true"/>
     </application>
 

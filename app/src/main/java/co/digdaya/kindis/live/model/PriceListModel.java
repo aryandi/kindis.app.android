@@ -28,6 +28,7 @@ public class PriceListModel {
         public String last_update;
         @SerializedName("package_id")
         public String package_id;
+        public boolean isSelected;
     }
 
     public static class Result {

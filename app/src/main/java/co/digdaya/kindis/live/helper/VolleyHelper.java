@@ -71,7 +71,10 @@ public class VolleyHelper {
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                     listener.onReceive(false, "Something Error", "");
-                                } catch (Exception e){
+                                } catch (NullPointerException e){
+                                    e.printStackTrace();
+                                    listener.onReceive(false, "Something Error", "");
+                                } catch(Exception e){
                                     e.printStackTrace();
                                     listener.onReceive(false, "Something Error", "");
                                 }

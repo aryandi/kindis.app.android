@@ -212,7 +212,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
                                 System.out.println("loginsosmed : " + response);
                                 try {
                                     sessionHelper.setPreferences(getApplicationContext(), "login_type", "1");
-                                    String fullname = object.getString("name");
+                                    String fullname = object.optString("name");
                                     String gender = object.getString("gender");
                                     String birth_date = object.optString("birth_date");
                                     String type_social = "1";

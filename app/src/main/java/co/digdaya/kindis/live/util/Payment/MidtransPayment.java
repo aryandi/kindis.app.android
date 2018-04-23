@@ -62,7 +62,7 @@ public class MidtransPayment {
                 if (result.getResponse() != null){
                     System.out.println("Response payment: "+result.getResponse().getPaymentType());
                     System.out.println("Response payment uid: "+sessionHelper.getPreferences(activity, "user_id"));
-                    HashMap<String, String> param = new HashMap<String, String>();
+                    HashMap<String, String> param = new HashMap<>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
                     param.put("dev_id", "2");

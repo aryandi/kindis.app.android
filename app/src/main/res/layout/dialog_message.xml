@@ -35,7 +35,7 @@
             android:clickable="true"
             android:gravity="center"
             android:padding="8dp"
-            android:text="LATER"
+            android:text="CANCEL"
             android:textColor="@color/white"
             android:textSize="12sp" />
 
@@ -45,11 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
-            android:background="@drawable/button_rounded_yellow_10"
+            android:background="@drawable/button_rounded_black_10"
             android:clickable="true"
             android:gravity="center"
             android:padding="8dp"
-            android:text="UPGRADE NOW"
+            android:text="CONFIRM"
             android:textColor="@color/white"
             android:textSize="12sp" />
     </LinearLayout>

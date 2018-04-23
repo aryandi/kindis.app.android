@@ -15,7 +15,6 @@ android {
         multiDexEnabled true
     }
     dexOptions {
-        incremental true
         javaMaxHeapSize "4g"
     }
     buildTypes {
@@ -24,20 +23,33 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+//            applicationIdSuffix ".debug"
+            debuggable true
+        }
     }
     lintOptions {
         checkReleaseBuilds false
     }
     productFlavors {
+
+        staging {
+            applicationIdSuffix '.staging'
+            versionNameSuffix "-staging"
+            buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
+        }
         sandbox {
+            applicationIdSuffix '.sandbox'
+            versionNameSuffix "-sandbox"
             buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/payment/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
         }
 
-        /*production {
-            buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-CLIENT-production-client-key\""
-        }*/
+        production {
+            buildConfigField "String", "BASE_URL", "\"http://api.kindis.co/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -50,10 +62,6 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
-    }
-
-    dexOptions {
-        preDexLibraries false
     }
 }
 
