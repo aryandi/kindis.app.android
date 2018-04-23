@@ -566,7 +566,9 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                         Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                        if (isAdded()) {
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                        }
                     }
                 });
 
