@@ -47,7 +47,7 @@ android {
         }
 
         production {
-            buildConfigField "String", "BASE_URL", "\"http://api.kindis.co/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.kindis.co/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
         }
     }
@@ -69,8 +69,10 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile ('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'support_annotations'

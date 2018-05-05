@@ -39,20 +39,21 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
 
     @Override
     public void onBindViewHolder(ItemPlaylist holder, int position) {
-        TextView title = holder.title;
+        TextView txtTitle = holder.title;
         RelativeLayout click = holder.click;
         final ImageButton menu = holder.menu;
         dataPlaylis = listPlaylist.get(position);
-        title.setText(dataPlaylis.get("title"));
 
         final String uid = dataPlaylis.get("playlist_id");
+        final String title = dataPlaylis.get("title");
+        txtTitle.setText(title);
 
         if (isMyPlaylist.equals("true")){
             menu.setVisibility(View.VISIBLE);
             menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickMenuListener.onClick(uid, menu);
+                    onClickMenuListener.onClick(uid, title, menu);
                 }
             });
         }
@@ -80,6 +81,6 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     }
 
     public interface OnClickMenuListener{
-        void onClick(String uid, ImageButton button);
+        void onClick(String uid, String title, ImageButton button);
     }
 }

@@ -70,6 +70,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
+    private AnalyticHelper analyticHelper;
 
     public Musiq() {
         // Required empty public constructor
@@ -87,7 +88,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        new AnalyticHelper(getActivity()).event("home/music");
+        analyticHelper = new AnalyticHelper(getActivity());
+        analyticHelper.event("home/music");
 
         tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
@@ -203,7 +205,7 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                             }
                             NUM_PAGES = result.length();
                             if (getActivity() != null) {
-                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "music", analyticHelper);
                                 imageSlider.setAdapter(adapterBanner);
                                 if (result.length() > 1) {
                                     indicator.setViewPager(imageSlider);

@@ -23,6 +23,7 @@ import java.util.List;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.database.KindisDBname;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
@@ -54,6 +55,8 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
     ImageButton btnMenuPlay;
     TextView titlePlay;
     TextView subtitlePlay, titleActivity, subtitleActivity;
+    private AnalyticHelper analyticHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +127,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                     public void onClick(String uid, ImageButton imageButton, String artistID, String shareLink) {
 //                        new DialogSingleMenu(ListSongPlayer.this, dialogPlaylis, uid, artistID, shareLink, false, false).showDialog();
                         Intent intent = new Intent(ListSongPlayer.this, SongMenu.class);
+                        intent.putExtra(Constanta.INTENT_EXTRA_ORIGIN, "playlist");
                         intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
                         intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
                         intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
@@ -150,6 +154,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
                 intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
                 intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+                intent.putExtra(Constanta.INTENT_EXTRA_ORIGIN, "playlist");
                 intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
                 startActivity(intent);
                 break;

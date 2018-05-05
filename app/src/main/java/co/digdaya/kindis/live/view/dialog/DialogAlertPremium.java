@@ -34,6 +34,7 @@ public class DialogAlertPremium implements View.OnClickListener{
 
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
         btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+        textMessage = (TextView) dialogView.findViewById(R.id.text_message);
 
         TextViewHelper.setSpanColor(textMessage, "Kindis Premium", ContextCompat
                 .getColor(activity, R.color.yellow));

@@ -13,6 +13,7 @@ import com.eggheadgames.siren.SirenAlertType;
 import com.eggheadgames.siren.SirenVersionCheckType;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.view.activity.Main;
 
@@ -20,6 +21,7 @@ public class Bismillah extends AppCompatActivity {
     Button enter;
     PlayerSessionHelper playerSessionHelper;
     private String TAG = "Bismillah";
+    private AnalyticHelper analyticsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,11 @@ public class Bismillah extends AppCompatActivity {
 
         enter = (Button) findViewById(R.id.btn_enter);
         playerSessionHelper = new PlayerSessionHelper();
+        analyticsHelper = new AnalyticHelper(this);
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                analyticsHelper.authHello("true");
                 Intent intent = new Intent(Bismillah.this, Main.class);
                 startActivity(intent);
             }
@@ -100,6 +104,7 @@ public class Bismillah extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        analyticsHelper.authHello("false");
         finishAffinity();
     }
 }

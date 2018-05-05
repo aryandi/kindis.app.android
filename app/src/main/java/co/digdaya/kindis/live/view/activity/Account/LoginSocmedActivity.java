@@ -1,16 +1,13 @@
 package co.digdaya.kindis.live.view.activity.Account;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +29,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -52,6 +48,7 @@ import butterknife.ButterKnife;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.custom.ButtonSemiBold;
 import co.digdaya.kindis.live.custom.TextViewRegular;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.TextViewHelper;
@@ -59,8 +56,6 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.ProfileInfo;
 import co.digdaya.kindis.live.view.activity.Splash.Bismillah;
 import co.digdaya.kindis.live.view.dialog.DialogLoading;
-import co.digdaya.kindis.live.view.fragment.navigationview.Privacy;
-import co.digdaya.kindis.live.view.fragment.navigationview.Terms;
 import co.digdaya.kindis.live.view.fragment.webview.WebViewActivity;
 import retrofit2.Call;
 
@@ -94,6 +89,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
     TextViewRegular textTerm;
     private GoogleApiClient mGoogleApiClient;
     private LoginSocmedActivity mContext;
+    private AnalyticHelper analyticsHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +101,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
         volleyHelper = new VolleyHelper();
         dialogLoading = new DialogLoading(this);
         sessionHelper = new SessionHelper();
+        analyticsHelper = new AnalyticHelper(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -115,6 +112,16 @@ public class LoginSocmedActivity extends AppCompatActivity {
         loginGoogle();
 
         checkbox.setChecked(true);
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkbox.isChecked()) {
+                    analyticsHelper.loginTerms("true");
+                } else {
+                    analyticsHelper.loginTerms("false");
+                }
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,6 +397,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
                             sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             sessionHelper.setPreferences(getApplicationContext(), "email", email);
                             new ProfileInfo(getApplicationContext()).execute(result.getString("user_id"));
+                            analyticsHelper.loginStep(type_social, "true");
                             Intent intent = new Intent(LoginSocmedActivity.this, Bismillah.class);
                             startActivity(intent);
                         } else {
@@ -398,6 +406,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    analyticsHelper.loginStep(type_social, "false");
                 }
             }
         });

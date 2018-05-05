@@ -28,13 +28,15 @@ import co.digdaya.kindis.live.view.holder.Item;
 public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
     Activity context;
     int from;
+    private RowClickListener rowClickListener;
     DataAlbum dataAlbum;
     List<DataAlbum.Data> datas;
 
-    public AdapterAlbumNew(Activity context, DataAlbum dataAlbum, int from){
+    public AdapterAlbumNew(Activity context, DataAlbum dataAlbum, int from, RowClickListener rowClickListener){
         this.context = context;
         this.dataAlbum = dataAlbum;
         this.from = from;
+        this.rowClickListener = rowClickListener;
 
         if (from == 0){
             datas = dataAlbum.data;
@@ -45,7 +47,6 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
         }
     }
 
-
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
@@ -54,7 +55,7 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, int position) {
+    public void onBindViewHolder(Item holder, final int position) {
         ImageView imageView = holder.imageView;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
@@ -71,9 +72,12 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
 
         final String uid = datas.get(position).uid;
 
+        final int pos = position;
+
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rowClickListener.onRowClick(pos);
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
@@ -89,5 +93,7 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
         return datas.size();
     }
 
-
+    public interface RowClickListener {
+        void onRowClick(int position);
+    }
 }

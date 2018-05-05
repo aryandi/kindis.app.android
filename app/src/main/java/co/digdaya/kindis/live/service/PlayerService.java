@@ -331,7 +331,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             }else {
                 mediaPlayer.reset();
             }
-
             return false;
         }else {
             return true;
@@ -362,7 +361,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         isDataSources = true;
         String song = playerSessionHelper.getPreferences(getApplicationContext(), "file").replace(" ", "%20");
 
-        mediaPlayer.reset();
+        try {
+            mediaPlayer.reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnErrorListener(this);
         try {

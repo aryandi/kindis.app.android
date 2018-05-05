@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckConnection;
 import co.digdaya.kindis.live.helper.SessionHelper;
@@ -59,10 +60,15 @@ public class Playlist extends Fragment implements View.OnClickListener {
     SessionHelper sessionHelper;
     private DialogAlertPremium dialogAlertPremium;
     Dialog dialogPlaylis, dialogPremium;
-
+    private AnalyticHelper analyticHelper;
+    private String origin;
 
     public Playlist() {
         // Required empty public constructor
+    }
+
+    public Playlist(String origin) {
+        this.origin = origin;
     }
 
     @Override
@@ -77,6 +83,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(getActivity());
 
         contCreatePlaylist = (ScrollView) view.findViewById(R.id.layout_create_playlist);
         inputPlaylist = (EditText) view.findViewById(R.id.input_playlist);
@@ -170,7 +177,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                                 JSONObject data = playlist.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("playlist_id", data.getString("playlist_id"));
-                                map.put("title", data.getString("playlist_name"));
+                                map.put("origin", data.getString("playlist_name"));
                                 listPlaylist.add(map);
                             }
 
@@ -196,7 +203,8 @@ public class Playlist extends Fragment implements View.OnClickListener {
     private void createPlaylist(){
         Map<String, String> param = new HashMap<String, String>();
         param.put("user_id", new SessionHelper().getPreferences(getActivity(), "user_id"));
-        param.put("playlist_name", inputPlaylist.getText().toString());
+        final String name = inputPlaylist.getText().toString();
+        param.put("playlist_name", name);
         param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
 
         new VolleyHelper().post(ApiHelper.CREATE_PLAYLIST, param, new VolleyHelper.HttpListener<String>() {
@@ -211,18 +219,20 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             contPlaylist.setVisibility(View.VISIBLE);
                             inputPlaylist.setText("");
                             getPlaylist();
+                            analyticHelper.playlistAction(origin, "create", name, "true");
                         }else {
                             dialogAlertPremium = new DialogAlertPremium(getActivity(), dialogPremium,
                                     object.getString("message"));
                             dialogAlertPremium.showDialog();
+                            analyticHelper.playlistAction(origin, "create", name, "false");
 //                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else {
                     getPlaylist();
+                    analyticHelper.playlistAction(origin, "create", name, "false");
                 }
             }
         });
@@ -242,13 +252,13 @@ public class Playlist extends Fragment implements View.OnClickListener {
     private void menuPlaylist(){
         adapterPlaylist.setOnClickMenuListener(new AdapterPlaylist.OnClickMenuListener() {
             @Override
-            public void onClick(final String uid, ImageButton button) {
+            public void onClick(final String uid, final String title, ImageButton button) {
                 PopupMenu popup = new PopupMenu(getActivity(), button);
                 popup.getMenuInflater().inflate(R.menu.playlist, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId()==R.id.delete){
-                            deletePlaylist(uid);
+                            deletePlaylist(uid, title);
                         }
                         return true;
                     }
@@ -258,7 +268,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void deletePlaylist(String uid){
+    private void deletePlaylist(String uid, final String name){
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionHelper.getPreferences(getActivity(), "user_id"));
         param.put("playlist_id", uid);
@@ -275,12 +285,15 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             listPlaylist.clear();
                             getPlaylist();
                             Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                            analyticHelper.playlistAction(origin, "create", name, "true");
                         } else {
-
+                            analyticHelper.playlistAction(origin, "create", name, "false");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    analyticHelper.playlistAction(origin, "create", name, "false");
                 }
             }
         });

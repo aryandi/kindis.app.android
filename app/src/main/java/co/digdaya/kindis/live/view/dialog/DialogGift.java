@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
@@ -25,6 +26,7 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
  */
 
 public class DialogGift implements View.OnClickListener {
+    private final AnalyticHelper analyticHelper;
     Dialog dialog;
     Dialog dialogGift;
     Activity activity;
@@ -40,6 +42,7 @@ public class DialogGift implements View.OnClickListener {
         this.activity = activity;
 
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(activity);
 
         li = LayoutInflater.from(activity);
         dialogView = li.inflate(R.layout.dialog_gift, null);
@@ -96,8 +99,10 @@ public class DialogGift implements View.OnClickListener {
                                 sessionHelper.setPreferences(activity.getApplicationContext(), "refresh_token", result.getString("refresh_token"));
                                 dialog.dismiss();
                                 Toast.makeText(activity.getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                                analyticHelper.giftGet(inputCode.getText().toString(), "true");
                             }else {
                                 Toast.makeText(activity.getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                                analyticHelper.giftGet(inputCode.getText().toString(), "false");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

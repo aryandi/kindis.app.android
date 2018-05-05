@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.model.PriceListModel;
 import co.digdaya.kindis.live.util.GoogleBilling.IabHelper;
 import co.digdaya.kindis.live.util.GoogleBilling.IabResult;
 import co.digdaya.kindis.live.util.GoogleBilling.Inventory;
@@ -18,12 +19,12 @@ public class GooglePayment {
     IabHelper mHelper;
     String googleCode;
     String dataExtra;
+    private PriceListModel.Data data;
 
     public GooglePayment(Activity activity, String googleCode, String dataExtra) {
         this.activity = activity;
         this.googleCode = googleCode;
         this.dataExtra = dataExtra;
-
         init();
     }
 
@@ -72,7 +73,6 @@ public class GooglePayment {
             = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
-
 
             if (result.isFailure()) {
                 // Handle failure

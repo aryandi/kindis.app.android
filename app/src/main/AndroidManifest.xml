@@ -27,6 +27,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -67,24 +68,21 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
         <activity
             android:name=".view.activity.Account.RegisterActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
         <activity
             android:name=".view.activity.Account.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
         <activity
             android:name=".view.activity.Account.LoginSocmedActivity"
@@ -103,11 +101,14 @@
 
             <intent-filter>
                 <action android:name="kindis" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
+
+                <data
                     android:host="kindis.co"
-                    android:pathPrefix="/user/verification/*" />
+                    android:pathPrefix="/user/verification/*"
+                    android:scheme="http" />
                 <!--<data android:host="example.com" />-->
                 <!--<data android:scheme="https" />-->
                 <!--<data android:pathPattern="/.*" />-->
@@ -188,15 +189,18 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".view.activity.Player.SongMenu"
-            android:noHistory="true"/>
+        <activity
+            android:name=".view.activity.Player.SongMenu"
+            android:noHistory="true" />
 
-        <activity android:name=".view.activity.PriceList"
-            android:noHistory="true"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".view.activity.PriceList"
+            android:launchMode="singleTask"
+            android:noHistory="true" />
 
-        <activity android:name=".view.activity.Account.VerifyAccount"
-            android:noHistory="true"/>
+        <activity
+            android:name=".view.activity.Account.VerifyAccount"
+            android:noHistory="true" />
     </application>
 
 </manifest>

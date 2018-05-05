@@ -20,11 +20,13 @@ import co.digdaya.kindis.live.view.holder.ItemGenre;
 
 public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
     Context context;
-    DataGenre dataGenre;
+    private DataGenre dataGenre;
+    private RowClickListener rowClickListener;
 
-    public AdapterGenreNew(Context context, DataGenre dataGenre) {
+    public AdapterGenreNew(Context context, DataGenre dataGenre, RowClickListener rowClickListener) {
         this.context = context;
         this.dataGenre = dataGenre;
+        this.rowClickListener = rowClickListener;
     }
 
     @Override
@@ -34,21 +36,22 @@ public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
     }
 
     @Override
-    public void onBindViewHolder(ItemGenre holder, final int position) {
+    public void onBindViewHolder(ItemGenre holder, int position) {
         TextView title = holder.title;
         RelativeLayout click = holder.click;
 
         title.setText(dataGenre.data.get(position).title);
-
         final String uid = dataGenre.data.get(position).uid;
+        final int pos = position;
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rowClickListener.onRowClick(pos);
                 Intent intent = new Intent(context, DetailGenre.class);
                 intent.putExtra("uid", uid);
-                intent.putExtra("title", dataGenre.data.get(position).title);
-                intent.putExtra("image", dataGenre.data.get(position).image);
-                intent.putExtra("desc", dataGenre.data.get(position).description);
+                intent.putExtra("title", dataGenre.data.get(pos).title);
+                intent.putExtra("image", dataGenre.data.get(pos).image);
+                intent.putExtra("desc", dataGenre.data.get(pos).description);
                 intent.putExtra("type", "genre");
                 context.startActivity(intent);
             }
@@ -58,5 +61,9 @@ public class AdapterGenreNew extends RecyclerView.Adapter<ItemGenre>{
     @Override
     public int getItemCount() {
         return dataGenre.data.size();
+    }
+
+    public interface RowClickListener {
+        void onRowClick(int position);
     }
 }

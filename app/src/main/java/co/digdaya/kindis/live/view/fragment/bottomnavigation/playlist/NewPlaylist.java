@@ -24,11 +24,9 @@ public class NewPlaylist extends Fragment {
 
     String[] title = {"PRIVATE","PAID"};
 
-
     public NewPlaylist() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

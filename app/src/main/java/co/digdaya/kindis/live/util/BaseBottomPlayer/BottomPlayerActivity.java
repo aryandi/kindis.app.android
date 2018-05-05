@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.helper.PlayerActionHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
@@ -40,6 +42,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
     public int layout;
     public boolean showBottomPlayer;
     private RelativeLayout layoutBottomPlayer;
+    private AnalyticHelper analyticHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
         contBottomPlayer = (LinearLayout) findViewById(R.id.cont_bottom_player);
 
         playerSessionHelper = new PlayerSessionHelper();
+        analyticHelper = new AnalyticHelper(this);
     }
 
     @Override
@@ -80,10 +84,17 @@ public class BottomPlayerActivity extends AppCompatActivity {
         }
 
         if (playerSessionHelper.getPreferences(getApplicationContext(), "pause").equals("true")){
-            int pos = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "current_pos"));
-            int dur = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "duration"));
-            progressBar.setMax(dur);
-            progressBar.setProgress(pos);
+            String current_pos = playerSessionHelper.getPreferences(getApplicationContext(), "current_pos");
+            if (!TextUtils.isEmpty(current_pos)){
+                int pos = Integer.parseInt(current_pos);
+                progressBar.setProgress(pos);
+            }
+            String duration = playerSessionHelper.getPreferences(getApplicationContext(), "duration");
+            if (!TextUtils.isEmpty(duration)){
+                int dur = Integer.parseInt(duration);
+                progressBar.setMax(dur);
+            }
+
         }
     }
 
@@ -93,6 +104,7 @@ public class BottomPlayerActivity extends AppCompatActivity {
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticHelper.playerToogle("Up");
                 openPlayerActivity();
             }
         });

@@ -22,6 +22,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.util.BaseBottomPlayer.BottomPlayerFragment;
 import co.digdaya.kindis.live.view.activity.Search;
@@ -46,6 +47,7 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
 
     ImageButton btnDrawer;
     ImageButton btnSearch;
+    private AnalyticHelper analyticHelper;
 
     public Home() {
     }
@@ -77,6 +79,8 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
         taklimFragment = new Taklim();
         infaqFragment = new Infaq();
         playlistFragment = new NewPlaylist();
+
+        analyticHelper = new AnalyticHelper(getActivity());
 
         AHBottomNavigationItem musiq = new AHBottomNavigationItem(R.string.musiq, R.drawable.ic_explore, R.color.new_white);
         AHBottomNavigationItem taklim = new AHBottomNavigationItem(R.string.taklim, R.drawable.ic_taklim, R.color.new_white);
@@ -152,21 +156,25 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
                 titleToolbar.setText("Explore Musiq");
                 transactionBottomNavigation.replace(R.id.cont_home, musiqFragment);
                 transactionBottomNavigation.commit();
+                analyticHelper.clickNavMenu("music");
                 break;
             case 1:
                 titleToolbar.setText("Explore Taklim");
                 transactionBottomNavigation.replace(R.id.cont_home, taklimFragment);
                 transactionBottomNavigation.commit();
+                analyticHelper.clickNavMenu("taklim");
                 break;
             case 2:
                 titleToolbar.setText("Infaq");
                 transactionBottomNavigation.replace(R.id.cont_home, infaqFragment);
                 transactionBottomNavigation.commit();
+                analyticHelper.clickNavMenu("infaq");
                 break;
             case 3:
                 titleToolbar.setText("Playlist");
                 transactionBottomNavigation.replace(R.id.cont_home, playlistFragment);
                 transactionBottomNavigation.commit();
+                analyticHelper.clickNavMenu("playlist");
                 break;
         }
         return true;

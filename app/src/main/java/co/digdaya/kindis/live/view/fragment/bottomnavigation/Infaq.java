@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.model.InfaqModel;
@@ -33,7 +34,6 @@ import co.digdaya.kindis.live.view.adapter.AdapterBanner;
 import co.digdaya.kindis.live.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.live.view.adapter.item.AdapterInfaq;
 import co.digdaya.kindis.live.view.dialog.DialogLoading;
-import co.digdaya.kindis.live.view.fragment.bottomnavigation.taklim.Taklim;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -67,6 +67,7 @@ public class Infaq extends Fragment {
     final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
+    private AnalyticHelper analyticHelper;
 
     public Infaq() {
         // Required empty public constructor
@@ -83,6 +84,10 @@ public class Infaq extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        analyticHelper = new AnalyticHelper(getActivity());
+        analyticHelper.event("home/infaq");
+
         loading = new DialogLoading(getActivity());
         gson = new Gson();
 
@@ -99,7 +104,7 @@ public class Infaq extends Fragment {
 
         if (responses != null){
             InfaqModel infaqModel = gson.fromJson(responses, InfaqModel.class);
-            adapterInfaq = new AdapterInfaq(infaqModel, getActivity());
+            adapterInfaq = new AdapterInfaq(infaqModel, getActivity(), analyticHelper);
             listViewInfaq.setAdapter(adapterInfaq);
         }else {
             getInfaq();
@@ -146,7 +151,7 @@ public class Infaq extends Fragment {
                 loading.dismisLoading();
                 if (status){
                     infaqModel = gson.fromJson(response, InfaqModel.class);
-                    adapterInfaq = new AdapterInfaq(infaqModel, getActivity());
+                    adapterInfaq = new AdapterInfaq(infaqModel, getActivity(), analyticHelper);
                     listViewInfaq.setAdapter(adapterInfaq);
                     urlMore = infaqModel.next_page;
                 }
@@ -175,7 +180,7 @@ public class Infaq extends Fragment {
                                 listBanner.add(map);
                             }
                             if (getActivity()!=null) {
-                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "infaq");
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "infaq", analyticHelper);
                                 imageSlider.setAdapter(adapterBanner);
                                 if (result.length() > 1) {
                                     indicator.setViewPager(imageSlider);

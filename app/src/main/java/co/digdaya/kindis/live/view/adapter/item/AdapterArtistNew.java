@@ -27,11 +27,13 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
     Activity context;
     DataArtist dataArtist;
     String subtitles;
+    private RowClickListener rowClickListener;
 
-    public AdapterArtistNew (Activity context, DataArtist dataArtist, String subtitle){
+    public AdapterArtistNew(Activity context, DataArtist dataArtist, String subtitle, RowClickListener rowClickListener){
         this.context = context;
         this.dataArtist = dataArtist;
         this.subtitles = subtitle;
+        this.rowClickListener = rowClickListener;
     }
 
 
@@ -42,7 +44,7 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, int position) {
+    public void onBindViewHolder(Item holder, final int position) {
         ImageView imageView = holder.imageView;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
@@ -59,9 +61,11 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
         title.setText(dataArtist.data.get(position).name);
         subTitle.setText(subtitles);
 
+        final int pos = position;
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rowClickListener.onRowClick(pos);
                 Intent intent = new Intent(context.getApplicationContext(), DetailArtist.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
@@ -79,5 +83,9 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    public interface RowClickListener {
+        void onRowClick(int position);
     }
 }

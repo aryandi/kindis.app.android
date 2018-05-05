@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.activity.Detail.DetailInfaq;
@@ -32,11 +33,14 @@ public class AdapterBanner extends PagerAdapter {
     ArrayList<HashMap<String, String>> listBanner;
     HashMap<String, String> dataSinggle;
     String type;
+    private AnalyticHelper analyticHelper;
 
-    public AdapterBanner(Context context, ArrayList<HashMap<String, String>> listBanner, String type) {
+    public AdapterBanner(Context context, ArrayList<HashMap<String, String>> listBanner,
+                         String type, AnalyticHelper analyticHelper) {
         this.mContext = context;
         this.listBanner = listBanner;
         this.type = type;
+        this.analyticHelper = analyticHelper;
         this.layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -73,11 +77,12 @@ public class AdapterBanner extends PagerAdapter {
 //                .centerCrop()
                 .into(imageView);
 
+        final String url = dataSinggle.get("redirect_url");
+        final String uid = dataSinggle.get("uid");
+        final String titlee = dataSinggle.get("title");
+        final String isUrl = dataSinggle.get("is_url");
+
         if (type.equals("infaq")){
-            final String url = dataSinggle.get("redirect_url");
-            final String uid = dataSinggle.get("uid");
-            final String titlee = dataSinggle.get("title");
-            final String isUrl = dataSinggle.get("is_url");
 
             if (isUrl.equals("0")){
                 btnDonate.setText("MORE");
@@ -91,11 +96,13 @@ public class AdapterBanner extends PagerAdapter {
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
                         mContext.startActivity(i);
+                        analyticHelper.contentSlider(type, url, uid, titlee);
                     }else {
                         Intent intent = new Intent(mContext, DetailInfaq.class);
                         intent.putExtra("uid", uid);
                         intent.putExtra("title", titlee);
                         intent.putExtra("image", ApiHelper.BASE_URL_IMAGE+dataSinggle.get("image"));
+                        analyticHelper.contentSlider(type, "internal", uid, titlee);
                         mContext.startActivity(intent);
                     }
                 }
@@ -104,6 +111,7 @@ public class AdapterBanner extends PagerAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    analyticHelper.contentSlider(type, clickUrl, "", titlee);
                     if (clickUrl.contains("kindis:")){
                         handleClickAds(clickUrl);
                     }else {

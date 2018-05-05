@@ -61,7 +61,7 @@ public class Murottal extends Fragment {
 
                     TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
 
-                    adapterListTab = new AdapterListTab(getActivity(), tabModel, 3, 9);
+                    adapterListTab = new AdapterListTab(getActivity(), tabModel, 3, 9, "Murottal", "Taklim");
                     recyclerView.setAdapter(adapterListTab);
                     recyclerView.setNestedScrollingEnabled(false);
                 }

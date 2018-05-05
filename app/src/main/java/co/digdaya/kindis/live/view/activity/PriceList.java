@@ -1,5 +1,6 @@
 package co.digdaya.kindis.live.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +32,7 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.model.PriceListModel;
 import co.digdaya.kindis.live.network.ApiCall;
 import co.digdaya.kindis.live.network.ApiUtil;
+import co.digdaya.kindis.live.util.GoogleBilling.IabHelper;
 import co.digdaya.kindis.live.util.Payment.GooglePayment;
 import co.digdaya.kindis.live.util.Payment.MidtransPayment;
 import co.digdaya.kindis.live.view.activity.Account.VerifyAccount;
@@ -57,6 +58,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
     AdapterPriceList adapterPriceList;
     GooglePayment googlePayment;
+    IabHelper mHelper;
     MidtransPayment midtransPayment;
     SessionHelper sessionHelper;
     ApiCall apiCall;
@@ -66,6 +68,9 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     ButtonSemiBold btnOk;
 
     boolean isVerified = false;
+    private ProgressDialog loading;
+
+    static final String ITEM_SKU = "android.test.purchased";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +84,9 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         btnMidtrans = (Button) findViewById(R.id.btn_midtrans);
 
         sessionHelper = new SessionHelper();
+        loading = new ProgressDialog(this, R.style.MyTheme);
+        loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
+        loading.setCancelable(false);
         apiCall = ApiUtil.callService();
 
         checkPremium();
@@ -90,14 +98,15 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         btnGoogle.setOnClickListener(this);
         btnMidtrans.setOnClickListener(this);
         btnOk.setOnClickListener(this);
-
     }
 
     @Override
     public void onSelected(int i) {
-        String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id") + new Random().nextInt(89) + 10;
+        String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
+                + new Random().nextInt(89) + 10;
         googlePayment = new GooglePayment(this, datas.get(i).package_id, orderID);
-        midtransPayment = new MidtransPayment(this, transID, Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID, "", "1");
+        midtransPayment = new MidtransPayment(this, transID, Integer.parseInt(datas.get(i).price),
+                datas.get(i).name, orderID, "", "1");
     }
 
     @Override
@@ -132,11 +141,13 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getPriceList();
+        checkPremium();
     }
 
     private void getPriceList() {
-        String url = ApiHelper.PRICE_LIST + sessionHelper.getPreferences(getApplicationContext(), "user_id") + "&dev_id=2&client_id=xBc3w11&token_access=" + sessionHelper.getPreferences(getApplicationContext(), "token_access");
+        String url = ApiHelper.PRICE_LIST + sessionHelper.getPreferences(getApplicationContext(),
+                "user_id") + "&dev_id=2&client_id=xBc3w11&token_access="
+                + sessionHelper.getPreferences(getApplicationContext(), "token_access");
         apiCall.priceList(url).enqueue(new Callback<PriceListModel>() {
             @Override
             public void onResponse(Call<PriceListModel> call, Response<PriceListModel> response) {
@@ -144,13 +155,16 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                     datas = response.body().result.data;
                     orderID = response.body().result.order_id;
                     adapterPriceList = new AdapterPriceList(getApplicationContext(), datas, isVerified);
-                    list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                    list.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
+                            LinearLayoutManager.VERTICAL, false));
                     list.setAdapter(adapterPriceList);
                     adapterPriceList.setOnSelectedItem(PriceList.this);
 
-                    String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id") + new Random().nextInt(89) + 10;
+                    String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(),
+                            "user_id") + new Random().nextInt(89) + 10;
                     googlePayment = new GooglePayment(PriceList.this, datas.get(0).package_id, orderID);
-                    midtransPayment = new MidtransPayment(PriceList.this, transID, Integer.parseInt(datas.get(0).price), datas.get(0).name, orderID, "", "1");
+                    midtransPayment = new MidtransPayment(PriceList.this, transID,
+                            Integer.parseInt(datas.get(0).price), datas.get(0).name, orderID, "", "1");
                 }
             }
 
@@ -162,7 +176,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     }
 
     private void checkPremium() {
-//        loading.show();
+        loading.show();
 
         HashMap<String, String> param = new HashMap<>();
         param.put(PREF_USERID, sessionHelper.getPreferences(this, PREF_USERID));
@@ -171,8 +185,8 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         new VolleyHelper().post(ApiHelper.CHECK_PREMIUM, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-//                loading.dismiss();
-                Log.d("update_profile", response);
+                loading.dismiss();
+                Log.d("check_premium", response);
                 if (status) {
                     try {
                         JSONObject object = new JSONObject(response);

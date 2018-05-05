@@ -32,16 +32,18 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     Activity context;
     Dialog dialogPremium;
     DialogGetPremium dialogGetPremium;
+    private RowClickListener rowClickListener;
     DataSingle dataSingle;
     int from;
     List<DataSingle.Data> datas;
 
-    public AdapterSongHorizontal(Activity context, DataSingle dataSingle, int from){
+    public AdapterSongHorizontal(Activity context, DataSingle dataSingle, int from, RowClickListener rowClickListener){
         this.context = context;
         this.dataSingle = dataSingle;
         this.from = from;
 
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
+        this.rowClickListener = rowClickListener;
         if (from == 0){
             datas = dataSingle.data;
         }else if (from == 1){
@@ -57,7 +59,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     }
 
     @Override
-    public void onBindViewHolder(Item holder, final int position) {
+    public void onBindViewHolder(Item holder, int position) {
         ImageView imageView = holder.imageView;
         ImageView badgePremium = holder.badgePremium;
         TextView title = holder.title;
@@ -81,10 +83,12 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
 
         final String uid = datas.get(position).uid;
         final int isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(context, "is_premium"));
+        final int pos = position;
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isAccountPremium == getItemViewType(position) || isAccountPremium == 1){
+                rowClickListener.onRowClick(pos);
+                if (isAccountPremium == getItemViewType(pos) || isAccountPremium == 1){
                     Toast.makeText(context, "Loading . . . ", Toast.LENGTH_LONG).show();
                     new PlayerSessionHelper().setPreferences(context, "index", "1");
                     Intent intent = new Intent(context, PlayerService.class);
@@ -116,5 +120,9 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
             isPremium = Integer.parseInt(datas.get(position).is_premium);
         }
         return isPremium;
+    }
+
+    public interface RowClickListener {
+        void onRowClick(int position);
     }
 }

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
@@ -64,8 +65,9 @@ public class Search extends BottomPlayerActivity {
     Dialog dialogPlaylis;
     ProgressDialog loading;
     Gson gson;
+    private AnalyticHelper analyticHelper;
 
-    public Search(){
+    public Search() {
         layout = R.layout.activity_search;
     }
 
@@ -78,6 +80,8 @@ public class Search extends BottomPlayerActivity {
         search = (EditText) findViewById(R.id.input_search);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         gson = new Gson();
+
+        analyticHelper = new AnalyticHelper(this);
 
         contResult = (LinearLayout) findViewById(R.id.cont_result);
         contAlbum = (LinearLayout) findViewById(R.id.cont_album);
@@ -122,9 +126,9 @@ public class Search extends BottomPlayerActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length()>=1){
+                if (charSequence.length() >= 1) {
                     clear.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     clear.setVisibility(View.INVISIBLE);
                 }
             }
@@ -171,24 +175,25 @@ public class Search extends BottomPlayerActivity {
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
-    private void searching(final String keyword){
-        new VolleyHelper().get(ApiHelper.SEARCH+keyword, new VolleyHelper.HttpListener<String>() {
+    private void searching(final String keyword) {
+        new VolleyHelper().get(ApiHelper.SEARCH + keyword, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
-                Log.d("searchresponsestatus", ""+status);
-                if (status){
+                Log.d("searchresponsestatus", "" + status);
+                if (status) {
                     Log.d("searchresponse", response);
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("status")){
+                        if (object.getBoolean("status")) {
+                            analyticHelper.searchAction(keyword, "true");
                             contResult.setVisibility(View.VISIBLE);
                             keywords.setText(keyword);
                             JSONObject result = object.getJSONObject("result");
                             String json = result.toString();
 
                             JSONArray playlist = result.getJSONArray("playlist");
-                            if (playlist.length()>=1){
+                            if (playlist.length() >= 1) {
                                 contPlaylist.setVisibility(View.VISIBLE);
                                 PlaylistModelSearch dataPlaylist = gson.fromJson(json, PlaylistModelSearch.class);
                                 adapterPlaylistHorizontal = new AdapterPlaylistSearch(Search.this, dataPlaylist);
@@ -197,19 +202,27 @@ public class Search extends BottomPlayerActivity {
                             }
 
                             JSONArray album = result.getJSONArray("album");
-                            if (album.length()>=1){
+                            if (album.length() >= 1) {
                                 DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
                                 contAlbum.setVisibility(View.VISIBLE);
-                                adapterAlbum = new AdapterAlbumNew(Search.this, dataAlbum, 2);
+                                adapterAlbum = new AdapterAlbumNew(Search.this, dataAlbum, 2, new AdapterAlbumNew.RowClickListener() {
+                                    @Override
+                                    public void onRowClick(int position) {
+                                    }
+                                });
                                 listViewAlbum.setAdapter(adapterAlbum);
                                 listViewAlbum.setNestedScrollingEnabled(true);
                             }
 
                             JSONArray single = result.getJSONArray("single");
-                            if (single.length()>=1){
+                            if (single.length() >= 1) {
                                 DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
 
-                                adapterSong = new AdapterSongHorizontal(Search.this, dataSingle, 1);
+                                adapterSong = new AdapterSongHorizontal(Search.this, dataSingle, 1, new AdapterSongHorizontal.RowClickListener() {
+                                    @Override
+                                    public void onRowClick(int position) {
+                                    }
+                                });
                                 contSingle.setVisibility(View.VISIBLE);
                                 listViewSingle.setAdapter(adapterSong);
                                 listViewSingle.setNestedScrollingEnabled(true);
@@ -217,8 +230,8 @@ public class Search extends BottomPlayerActivity {
                             }
 
                             JSONArray artist = result.getJSONArray("artist");
-                            if (artist.length()>=1){
-                                for (int i=0; i<artist.length(); i++){
+                            if (artist.length() >= 1) {
+                                for (int i = 0; i < artist.length(); i++) {
                                     JSONObject data = artist.getJSONObject(i);
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put("uid", data.getString("uid"));
@@ -231,14 +244,17 @@ public class Search extends BottomPlayerActivity {
                                 listViewArtist.setAdapter(adapterArtist);
                                 listViewArtist.setNestedScrollingEnabled(true);
                             }
-                        }else {
+                        } else {
+                            analyticHelper.searchAction(keyword, "false");
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        analyticHelper.searchAction(keyword, "false");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
+                    analyticHelper.searchAction(keyword, "false");
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }

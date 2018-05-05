@@ -66,7 +66,7 @@ public class Genres extends Fragment {
 
                 TabModel model = gson.fromJson(result.toString(), TabModel.class);
 
-                adapterListTab = new AdapterListTab(getActivity(), model, 3, 1);
+                adapterListTab = new AdapterListTab(getActivity(), model, 3, 1, "Genre", "Musiq");
                 recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

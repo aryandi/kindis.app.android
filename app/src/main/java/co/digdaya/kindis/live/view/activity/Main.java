@@ -80,6 +80,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     DialogGift dialogGift;
     DialogBanner dialogBanner;
     private boolean is_premium;
+    private AnalyticHelper analyticHelper;
 
     public Main() {
     }
@@ -107,6 +108,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         cookiesFragment = new Cookies(drawer);
         intelectualFragment = new Intelectual(drawer);
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(this);
 
         //sidebar
         profilePicture = (ImageView) findViewById(R.id.profile_picture);
@@ -221,24 +223,28 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setDefaultSelectedMenuColor();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (view.getId() == R.id.menu_home){
+            analyticHelper.clickMenu("menu", "Home");
             transaction.replace(R.id.cont_main, homeFragment);
-
             icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_notif){
+            analyticHelper.clickMenu("menu", "Notification");
             transaction.replace(R.id.cont_main, notifFragment);
 
             icMenuNotif.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuNotif.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if(view.getId() == R.id.menu_premium) {
+            analyticHelper.clickMenu("menu", "Premium");
             Intent intent = new Intent(this, Premium.class);
             startActivity(intent);
         }else if (view.getId() == R.id.menu_profile){
+            analyticHelper.clickMenu("menu", "Profile");
             transaction.replace(R.id.cont_main, profileFragment);
 
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_offline){
+            analyticHelper.clickMenu("menu", "Save Offline");
             if (is_premium){
                 transaction.replace(R.id.cont_main, saveOffline);
 
@@ -249,25 +255,31 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         }else if (view.getId() == R.id.menu_gift) {
+            analyticHelper.clickMenu("menu", "Gift");
             dialogGift = new DialogGift(dialogGft, this);
             dialogGift.showDialog();
         }else if (view.getId() == R.id.menu_faq){
+            analyticHelper.clickMenu("help", "FAQ");
             transaction.replace(R.id.cont_main, faqFragment);
 
             menuFAQ.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_privacy){
+            analyticHelper.clickMenu("help", "Privacy");
             transaction.replace(R.id.cont_main, privacyFragment);
 
             menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_terms){
+            analyticHelper.clickMenu("help", "Terms");
             transaction.replace(R.id.cont_main, termsFragment);
 
             menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == R.id.menu_cookies){
+            analyticHelper.clickMenu("help", "Cookies");
             transaction.replace(R.id.cont_main, cookiesFragment);
 
             menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }else if (view.getId() == menuIR.getId()){
+            analyticHelper.clickMenu("help", "Rights");
             transaction.replace(R.id.cont_main, intelectualFragment);
             menuIR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
         }

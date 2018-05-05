@@ -19,12 +19,12 @@ import co.digdaya.kindis.live.view.holder.ItemPriceList;
  */
 
 public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
-    Context context;
-    List<PriceListModel.Data> datas;
+    private Context context;
+    private List<PriceListModel.Data> datas;
     private boolean isVerified;
-    OnSelectedItem onSelectedItem;
+    private OnSelectedItem onSelectedItem;
 
-    int tempPositionClick = 99;
+    private int tempPositionClick = 99;
     boolean isFirstLoad = true;
 
     public AdapterPriceList(Context context, List<PriceListModel.Data> datas, boolean isVerified) {

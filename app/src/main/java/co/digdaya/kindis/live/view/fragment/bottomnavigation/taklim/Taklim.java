@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import co.digdaya.kindis.live.view.fragment.bottomnavigation.musiq.Musiq;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import me.relex.circleindicator.CircleIndicator;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
@@ -67,6 +67,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     final long PERIOD_MS = 5000;
     int NUM_PAGES;
     boolean isSlide = false;
+    private AnalyticHelper analyticHelper;
 
     public Taklim() {
         // Required empty public constructor
@@ -83,6 +84,10 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        analyticHelper = new AnalyticHelper(getActivity());
+        analyticHelper.event("home/taklim");
+
         tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
         imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
@@ -193,7 +198,7 @@ public class Taklim extends Fragment implements SwipeRefreshLayout.OnRefreshList
                                 listBanner.add(map);
                             }
                             if (getActivity() != null) {
-                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "");
+                                adapterBanner = new AdapterBanner(getActivity(), listBanner, "taklim", analyticHelper);
                                 imageSlider.setAdapter(adapterBanner);
                                 if (result.length() > 1) {
                                     indicator.setViewPager(imageSlider);

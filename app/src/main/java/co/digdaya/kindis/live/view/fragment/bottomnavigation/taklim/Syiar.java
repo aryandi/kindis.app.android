@@ -63,7 +63,7 @@ public class Syiar extends Fragment {
 
                     TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
 
-                    adapterListTab = new AdapterListTab(getActivity(), tabModel, 1, 9);
+                    adapterListTab = new AdapterListTab(getActivity(), tabModel, 1, 9, "Syiar", "Taklim");
                     recyclerView.setAdapter(adapterListTab);
                     recyclerView.setNestedScrollingEnabled(false);
                 }

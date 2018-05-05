@@ -24,6 +24,7 @@ import co.digdaya.kindis.live.custom.ButtonSemiBold;
 import co.digdaya.kindis.live.custom.EditTextRegular;
 import co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular;
 import co.digdaya.kindis.live.custom.TextViewRegular;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog loading;
     private VolleyHelper volleyHelper;
     private SessionHelper sessionHelper;
+    private AnalyticHelper analyticsHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         mContext = LoginActivity.this;
         volleyHelper = new VolleyHelper();
         sessionHelper = new SessionHelper();
+        analyticsHelper = new AnalyticHelper(this);
 
         loading = new ProgressDialog(mContext, R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticsHelper.loginAuth("true");
                 if (formValidation()) {
                     login();
                 } else {
@@ -137,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                             sessionHelper.setPreferences(mContext, "login_type", "0");
                             sessionHelper.setPreferences(mContext, "expires_in", String.valueOf(result.optInt("expires_in")));
                             new ProfileInfo(mContext).execute(result.getString("user_id"));
+                            analyticsHelper.loginStep("email", "true");
                             Intent intent = new Intent(mContext, Bismillah.class);
                             startActivity(intent);
                         } else {
@@ -147,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 inputEmail.setBackground(getResources().getDrawable(R.drawable.edittext_error));
                             }
+                            analyticsHelper.loginStep("email", "false");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -159,8 +165,15 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         inputEmail.setBackground(getResources().getDrawable(R.drawable.edittext_error));
                     }
+                    analyticsHelper.loginStep("email", "false");
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        analyticsHelper.loginAuth("false");
+        super.onBackPressed();
     }
 }

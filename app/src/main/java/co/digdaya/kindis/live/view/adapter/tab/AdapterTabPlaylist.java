@@ -17,8 +17,8 @@ import co.digdaya.kindis.live.view.fragment.bottomnavigation.playlist.PlaylistPr
  */
 
 public class AdapterTabPlaylist extends FragmentPagerAdapter {
-    Context context;
-    String[] title;
+    private Context context;
+    private String[] title;
 
     public AdapterTabPlaylist(FragmentManager fm, Context context, String[] title) {
         super(fm);
@@ -30,11 +30,9 @@ public class AdapterTabPlaylist extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                //Fragement for Android Tab
-                return new Playlist();
+                return new Playlist(title[0]);
             case 1:
-                //Fragment for Ios Tab
-                return new PlaylistPremium();
+                return new PlaylistPremium(title[1]);
             default:
                 return null;
         }

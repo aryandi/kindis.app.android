@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.custom.TextViewSemiBold;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.TextViewHelper;
@@ -51,6 +52,7 @@ public class Premium extends AppCompatActivity {
     ApiCall apiCall;
     @BindView(R.id.text_message)
     TextViewSemiBold textMessage;
+    private AnalyticHelper analyticHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class Premium extends AppCompatActivity {
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
         btnOk = (TextView) findViewById(R.id.btn_ok);
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(this);
         random = new Random();
         apiCall = ApiUtil.callService();
 
@@ -73,6 +76,7 @@ public class Premium extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticHelper.premiumToogle("false");
                 finish();
             }
         });
@@ -80,6 +84,7 @@ public class Premium extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticHelper.premiumToogle("true");
                 /*if (isGetPrice){
                     transID = "PRE"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+random.nextInt(89)+10;
 
@@ -96,37 +101,37 @@ public class Premium extends AppCompatActivity {
         });
     }
 
-    private class GetPrice extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String url = sessionHelper.getPreferences(getApplicationContext(), "user_id") +
-                    "&token_access=" + sessionHelper.getPreferences(getApplicationContext(), "token_access") +
-                    "&dev_id=2" +
-                    "&client_id=xBc3w11";
-            new VolleyHelper().get(ApiHelper.PRICE + url, new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    System.out.println("GetPrice: " + response);
-                    if (status) {
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.getBoolean("status")) {
-                                JSONObject result = object.getJSONObject("result");
-                                price = result.getInt("price");
-                                googleCode = result.getString("google_code");
-                                order = result.getString("order_id");
-                                isGetPrice = true;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-            return null;
-        }
-    }
+//    private class GetPrice extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String url = sessionHelper.getPreferences(getApplicationContext(), "user_id") +
+//                    "&token_access=" + sessionHelper.getPreferences(getApplicationContext(), "token_access") +
+//                    "&dev_id=2" +
+//                    "&client_id=xBc3w11";
+//            new VolleyHelper().get(ApiHelper.PRICE + url, new VolleyHelper.HttpListener<String>() {
+//                @Override
+//                public void onReceive(boolean status, String message, String response) {
+//                    System.out.println("GetPrice: " + response);
+//                    if (status) {
+//                        try {
+//                            JSONObject object = new JSONObject(response);
+//                            if (object.getBoolean("status")) {
+//                                JSONObject result = object.getJSONObject("result");
+//                                price = result.getInt("price");
+//                                googleCode = result.getString("google_code");
+//                                order = result.getString("order_id");
+//                                isGetPrice = true;
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            });
+//            return null;
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,17 +152,32 @@ public class Premium extends AppCompatActivity {
                 param.put("dev_id", "2");
                 param.put("client_id", "xBc3w11");
                 param.put("package", "1");
-                param.put("trans_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
-                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
+                String transID = sessionHelper.getPreferences(getApplicationContext(), "transID");
+                param.put("trans_id", transID);
+//                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
                 param.put("order", "[]");
-                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "order"));
+                String order_id = sessionHelper.getPreferences(getApplicationContext(), "order");
+                param.put("order_id", order_id);
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
-                param.put("price", sessionHelper.getPreferences(getApplicationContext(), "price"));
+                String price = sessionHelper.getPreferences(getApplicationContext(), "price");
+                param.put("price", price);
                 param.put("trans_time", "");
                 System.out.println("onActivityResult: " + param);
 
+                String productName = "";
+                for (PriceListModel.Data data1 : priceList) {
+                    if (data1.price.equals(price)){
+                        try {
+                            productName = data1.name;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    };
+                }
+//                analyticHelper.premiumSubscribeClick(transID, "standart",order,
+//                        productName,  ,price, "google_play");
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {

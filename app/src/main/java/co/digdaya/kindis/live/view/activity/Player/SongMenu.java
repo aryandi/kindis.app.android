@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
@@ -30,6 +31,7 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
     PlayerSessionHelper playerSessionHelper;
     DialogSingleMenu dialogSingleMenu;
     Dialog dialogPlaylis;
+    private AnalyticHelper analyticHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
         btnGoToAlbum = (LinearLayout) findViewById(R.id.btn_go_to_album);
 
         playerSessionHelper = new PlayerSessionHelper();
+        analyticHelper = new AnalyticHelper(this);
 
         initView();
 
@@ -58,10 +61,10 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
         btnGoToAlbum.setOnClickListener(this);
     }
 
-    private void initView(){
+    private void initView() {
         Glide.with(getApplicationContext())
-                .load(ApiHelper.BASE_URL_IMAGE+getIntent().getStringExtra(Constanta.INTENT_EXTRA_IMAGE))
-                .thumbnail( 0.1f )
+                .load(ApiHelper.BASE_URL_IMAGE + getIntent().getStringExtra(Constanta.INTENT_EXTRA_IMAGE))
+                .thumbnail(0.1f)
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
@@ -77,11 +80,15 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_back:
                 finish();
                 break;
             case R.id.btn_add_to_playlist:
+                analyticHelper.playerAction(getIntent().getStringExtra(Constanta.INTENT_EXTRA_ORIGIN),
+                        "", getIntent().getStringExtra(Constanta.INTENT_EXTRA_CONTENT_ID),
+                        playerSessionHelper.getPreferences(getApplicationContext(), "title"),
+                        "null");
                 dialogSingleMenu.showDialog();
                 break;
             case R.id.btn_save_offline:
@@ -92,6 +99,10 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
                 intent.putExtra(Intent.EXTRA_TEXT, playerSessionHelper.getPreferences(getApplicationContext(), "share_link"));
                 intent.setType("text/plain");
                 startActivity(intent);
+                analyticHelper.shareAction(getIntent().getStringExtra(Constanta.INTENT_EXTRA_ORIGIN),
+                        getIntent().getStringExtra(Constanta.INTENT_EXTRA_CONTENT_ID),
+                        playerSessionHelper.getPreferences(getApplicationContext(), "title"),
+                        "");
                 break;
             case R.id.btn_go_to_artist:
                 intent = new Intent(this, DetailArtist.class);

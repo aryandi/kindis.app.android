@@ -24,6 +24,7 @@ public class PriceListModel {
         public String price;
         @SerializedName("is_discount")
         public String is_discount;
+        public String discount;
         @SerializedName("last_update")
         public String last_update;
         @SerializedName("package_id")

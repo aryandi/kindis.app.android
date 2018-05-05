@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.database.KindisDBname;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerActionHelper;
@@ -71,6 +72,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @BindView(R.id.footer_player)
     RelativeLayout footerPlayer;
     private CheckPermission checkPermission;
+    private AnalyticHelper analyticHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
 
         dialogAlertPremium = new DialogAlertPremium(this, dialogPremium);
         checkPermission = new CheckPermission(this);
+        analyticHelper = new AnalyticHelper(this);
 
         hide = (ImageButton) findViewById(R.id.btn_hide);
         btnNext = (ImageButton) findViewById(R.id.btn_next);
@@ -110,6 +113,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                analyticHelper.playerToogle("down");
                 finish();
                 return;
             }
@@ -268,11 +272,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_looping) {
+            setPlayAnalytics("loop");
             String isLooping = "" + playerSessionHelper.getPreferences(getApplicationContext(), "isLooping");
             if (isLooping.equals("true")) {
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
                 playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "false");
-
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
@@ -290,21 +294,26 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
             intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
             intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
+            intent.putExtra(Constanta.INTENT_EXTRA_ORIGIN, "player");
+            intent.putExtra(Constanta.INTENT_EXTRA_CONTENT_ID, songPlaylist.get(index));
             intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
             startActivity(intent);
         } else if (view.getId() == R.id.btn_list) {
+            analyticHelper.playerToogle("playlist");
             Intent intent = new Intent(this, ListSongPlayer.class);
             intent.putExtra("title", titleActivity.getText());
             intent.putExtra("subtitle", subtitleActivity.getText());
             startActivity(intent);
         } else if (view.getId() == R.id.cont_play) {
             if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")) {
+                analyticHelper.playerToogle("pause");
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "true");
                 icPlay.setImageResource(R.drawable.ic_pause_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY);
                 startService(intent);
             } else {
+                analyticHelper.playerToogle("play");
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                 icPlay.setImageResource(R.drawable.ic_play_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
@@ -312,12 +321,15 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 startService(intent);
             }
         } else if (view.getId() == R.id.btn_back) {
+            setPlayAnalytics("prev");
             viewPager.setCurrentItem(playlistPosition - 1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
         } else if (view.getId() == R.id.btn_next) {
+            setPlayAnalytics("next");
             viewPager.setCurrentItem(playlistPosition + 1, true);
             icPlay.setImageResource(R.drawable.ic_pause_large);
         } else if (view.getId() == R.id.btn_shuffle) {
+            setPlayAnalytics("shuffle");
             playlistPosition = 0;
             playerSessionHelper.setPreferences(getApplicationContext(), "playlistPosition", "0");
             btnBack.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
@@ -349,6 +361,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 checkPermission.showPermissionStorage(2);
             }
         }
+    }
+
+    private void setPlayAnalytics(String playToogle) {
+        analyticHelper.playerAction("player", playToogle, songPlaylist.get(index),
+                playerSessionHelper.getPreferences(getApplicationContext(), "title"), "null");
     }
 
     @Override

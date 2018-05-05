@@ -91,6 +91,7 @@ import butterknife.Unbinder;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.custom.EditTextRegular;
 import co.digdaya.kindis.live.custom.TextViewBold;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.ImageFilePath;
@@ -161,6 +162,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     private CallbackManager callbackManager;
     private LoginManager loginManager;
     private TwitterAuthClient client;
+    private AnalyticHelper analyticHelper;
 
     public Profile() {
     }
@@ -199,6 +201,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(getActivity());
         checkPermission = new CheckPermission(getActivity());
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -313,6 +316,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
             case R.id.btn_edit_photo:
                 if (checkPermission.checkPermission()) {
                     startDialogPhoto(getActivity());
+                    analyticHelper.profileEdit("photo");
                 } else {
                     checkPermission.showPermission(2);
                 }
@@ -330,6 +334,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     saveProfileInfo();
                     isEditName = true;
                     btnEditName.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
+                    analyticHelper.profileEdit("name");
                 }
                 break;
             case R.id.btn_edit_email:
@@ -345,6 +350,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     saveEmailInfo();
                     isEditEmail = true;
                     btnEditEmail.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
+                    analyticHelper.profileEdit("email");
                 }
                 break;
             case R.id.btn_edit_birthdate:
@@ -360,6 +366,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     saveProfileInfo();
                     isEditBirthday = true;
                     btnEditBirthday.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
+                    analyticHelper.profileEdit("birthday");
                 }
                 break;
             case R.id.btn_edit_gender:
@@ -374,6 +381,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     saveProfileInfo();
                     isEditGender = true;
                     btnEditGender.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
+                    analyticHelper.profileEdit("gender");
                 }
                 break;
 
@@ -495,6 +503,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
+                analyticHelper.profileOption("logout");
                 HashMap<String, String> param = new HashMap<>();
                 param.put("uid", sessionHelper.getPreferences(getActivity(), "user_id"));
                 param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
@@ -536,10 +545,12 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 });
                 break;
             case R.id.password:
+                analyticHelper.profileOption("change_password");
                 Intent intent2 = new Intent(getActivity(), ChangePassword.class);
                 startActivity(intent2);
                 break;
             case R.id.history:
+                analyticHelper.profileOption("transaction_history");
                 Intent intent3 = new Intent(getActivity(), TransactionHistory.class);
                 startActivity(intent3);
         }
@@ -631,6 +642,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         buttonConnectFB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticHelper.profileEdit("facebook");
                 loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
             }
         });
@@ -641,6 +653,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         buttonConnectTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticHelper.profileEdit("twitter");
                 client.authorize(getActivity(), new Callback<TwitterSession>() {
                     @Override
                     public void success(final Result<TwitterSession> twitterSessionResult) {

@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.model.DataArtist;
@@ -45,6 +46,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final AdRequest adRequest;
     private final String isPremium;
     private final String[] ads;
+    private final AnalyticHelper analyticHelper;
     private boolean isHavePlaylist;
     private Activity context;
     private TabModel tabModel;
@@ -57,22 +59,27 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private AdapterGenreNew adapterGenre;
 
     private Gson gson;
-    private int menuType, tabType;
+    private int menuType;
+    private String tabName;
+    private String origin;
+    private int tabType;
 
     private String paramMore = "";
 
     private static final int FOOTER_VIEW = 99;
 
-    SessionHelper sessionHelper;
+    private SessionHelper sessionHelper;
 
-    public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType) {
-
+    public AdapterListTab(Activity context, TabModel tabModel, int tab, int menuType, String tabName, String origin) {
         this.context = context;
         this.tabModel = tabModel;
         this.tabType = tab;
         this.menuType = menuType;
+        this.tabName = tabName;
+        this.origin = origin;
         MobileAds.initialize(context, context.getString(R.string.ads_app_id));
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(context);
         isPremium = sessionHelper.getPreferences(context, "is_premium");
         adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -360,9 +367,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void parsePlaylist(String s, RecyclerView recyclerView, int type) {
         String json = "{ \"data\":" + s + "}";
 
-        DataPlaylist playlistModel = gson.fromJson(json, DataPlaylist.class);
-
-        adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(context, playlistModel, type);
+        final DataPlaylist playlistModel = gson.fromJson(json, DataPlaylist.class);
+        adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(context, playlistModel, type,
+                new AdapterPlaylistHorizontal.RowClickListener() {
+            @Override
+            public void onRowClick(int position) {
+                DataPlaylist.Data data = playlistModel.data.get(position);
+                analyticHelper.contentClick(origin, data.uid, "playlist", data.name, "null", tabName);
+            }
+        });
         recyclerView.setAdapter(adapterPlaylistHorizontal);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -370,9 +383,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void parseAlbum(String s, RecyclerView recyclerView) {
         String json = "{ \"data\":" + s + "}";
 
-        DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
+        final DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
         System.out.println("AdapterAlbumNew : " + dataAlbum.data.get(0).title);
-        adapterAlbum = new AdapterAlbumNew(context, dataAlbum, 0);
+        adapterAlbum = new AdapterAlbumNew(context, dataAlbum, 0, new AdapterAlbumNew.RowClickListener() {
+            @Override
+            public void onRowClick(int position) {
+                DataAlbum.Data data = dataAlbum.data.get(position);
+                analyticHelper.contentClick(origin, data.uid, "album", data.title, "null", tabName);
+            }
+        });
         recyclerView.setAdapter(adapterAlbum);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -380,9 +399,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void parseSingle(String s, RecyclerView recyclerView) {
         String json = "{ \"data\":" + s + "}";
 
-        DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
+        final DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
 
-        adapterSong = new AdapterSongHorizontal(context, dataSingle, 0);
+        adapterSong = new AdapterSongHorizontal(context, dataSingle, 0, new AdapterSongHorizontal.RowClickListener() {
+            @Override
+            public void onRowClick(int position) {
+                DataSingle.Data data = dataSingle.data.get(position);
+                analyticHelper.contentClick(origin, data.uid, "single", data.title, "null", tabName);
+            }
+        });
         recyclerView.setAdapter(adapterSong);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -390,9 +415,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void parseArtist(String s, RecyclerView recyclerView, String subtitle) {
         String json = "{ \"data\":" + s + "}";
 
-        DataArtist dataArtist = gson.fromJson(json, DataArtist.class);
+        final DataArtist dataArtist = gson.fromJson(json, DataArtist.class);
 
-        adapterArtistNew = new AdapterArtistNew(context, dataArtist, subtitle);
+        adapterArtistNew = new AdapterArtistNew(context, dataArtist, subtitle, new AdapterArtistNew.RowClickListener() {
+            @Override
+            public void onRowClick(int pos) {
+                DataArtist.Data data = dataArtist.data.get(pos);
+                analyticHelper.contentClick(origin, data.uid, "artist", data.name, "null", tabName);
+            }
+        });
         recyclerView.setAdapter(adapterArtistNew);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -400,9 +431,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void parseGenre(String s, RecyclerView recyclerView) {
         String json = "{ \"data\":" + s + "}";
 
-        DataGenre dataGenre = gson.fromJson(json, DataGenre.class);
+        final DataGenre dataGenre = gson.fromJson(json, DataGenre.class);
 
-        adapterGenre = new AdapterGenreNew(context, dataGenre);
+        adapterGenre = new AdapterGenreNew(context, dataGenre, new AdapterGenreNew.RowClickListener() {
+            @Override
+            public void onRowClick(int position) {
+                DataGenre.Data data = dataGenre.data.get(position);
+                analyticHelper.contentClick(origin, data.uid, "genre", data.title, "null", tabName);
+            }
+        });
         recyclerView.setAdapter(adapterGenre);
         recyclerView.setNestedScrollingEnabled(false);
     }

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 
 /**
@@ -18,11 +19,14 @@ import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 
 public class AdapterWalkthrough extends PagerAdapter {
     Context mContext;
+    private AnalyticHelper analyticHelper;
 
     private LayoutInflater layoutInflater;
+    private int position = 0;
 
-    public AdapterWalkthrough(Context context) {
+    public AdapterWalkthrough(Context context, AnalyticHelper analyticHelper) {
         this.mContext = context;
+        this.analyticHelper = analyticHelper;
         this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -55,10 +59,11 @@ public class AdapterWalkthrough extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, final int position) {
+        this.position = position;
         View view = layoutInflater.inflate(R.layout.adapter_walkthrough, container, false);
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.walkthrough);
-        TextView title = (TextView) view.findViewById(R.id.title_walkthrough);
+        final TextView title = (TextView) view.findViewById(R.id.title_walkthrough);
         TextView btn = (TextView) view.findViewById(R.id.btn_skip);
         TextView subTitle = (TextView) view.findViewById(R.id.subtitle_walkthrough);
 
@@ -72,6 +77,7 @@ public class AdapterWalkthrough extends PagerAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, LoginSocmedActivity.class);
                 mContext.startActivity(intent);
+                analyticHelper.journeySkip(titles[position]);
             }
         });
 

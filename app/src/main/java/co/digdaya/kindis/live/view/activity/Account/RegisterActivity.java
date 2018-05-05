@@ -24,6 +24,7 @@ import co.digdaya.kindis.live.custom.ButtonSemiBold;
 import co.digdaya.kindis.live.custom.EditTextRegular;
 import co.digdaya.kindis.live.custom.ShowHidePasswordEditTextRegular;
 import co.digdaya.kindis.live.custom.TextViewRegular;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.TextViewHelper;
@@ -53,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     private VolleyHelper volleyHelper;
     private SessionHelper sessionHelper;
     private ProgressDialog loading;
+    private AnalyticHelper analyticsHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         volleyHelper = new VolleyHelper();
         sessionHelper = new SessionHelper();
+        analyticsHelper = new AnalyticHelper(this);
 
         loading = new ProgressDialog(mContext, R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -72,6 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analyticsHelper.authRegister("true");
                 if (formValidation()) {
                     if (inputPassword.getText().length() < 8) {
                         Toast.makeText(mContext, "Password must be 8 characters", Toast.LENGTH_SHORT).show();
@@ -147,5 +151,11 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        analyticsHelper.authRegister("false");
+        super.onBackPressed();
     }
 }

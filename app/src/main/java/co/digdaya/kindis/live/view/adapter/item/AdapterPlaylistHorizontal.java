@@ -27,16 +27,19 @@ import co.digdaya.kindis.live.view.holder.Item;
 
 public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     Activity context;
-    Dialog dialogPremium;
-    DialogGetPremium dialogGetPremium;
-    DataPlaylist dataPlaylist;
+    private Dialog dialogPremium;
+    private DialogGetPremium dialogGetPremium;
+    private RowClickListener rowClickListener;
+    private DataPlaylist dataPlaylist;
     int type;
 
-    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist, int type){
+    public AdapterPlaylistHorizontal(Activity context, DataPlaylist dataPlaylist, int type,
+                                     RowClickListener rowClickListener){
         this.context = context;
         this.dataPlaylist = dataPlaylist;
         this.type = type;
         dialogGetPremium = new DialogGetPremium(context, dialogPremium);
+        this.rowClickListener = rowClickListener;
     }
 
     @Override
@@ -47,8 +50,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         }else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_grid, parent, false);
         }
-        Item item= new Item(view);
-        return item;
+        return new Item(view);
     }
 
     @Override
@@ -77,6 +79,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rowClickListener.onRowClick(position);
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", data.uid);
@@ -96,5 +99,9 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
     @Override
     public int getItemViewType(int position) {
         return Integer.parseInt(dataPlaylist.data.get(position).is_premium);
+    }
+
+    public interface RowClickListener {
+        void onRowClick(int position);
     }
 }

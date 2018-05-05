@@ -33,7 +33,12 @@ public class PlaylistPremium extends Fragment{
     RecyclerView recyclerView;
     Gson gson;
     AdapterPlaylistHorizontal adapterPlaylistHorizontal;
+
     public PlaylistPremium() {
+        // Required empty public constructor
+    }
+
+    public PlaylistPremium(String s) {
     }
 
     @Override
@@ -69,7 +74,11 @@ public class PlaylistPremium extends Fragment{
                             JSONArray result = object.getJSONArray("result");
                             String json = "{ \"data\":"+result.toString()+"}";
                             DataPlaylist playlistModel = gson.fromJson(json, DataPlaylist.class);
-                            adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), playlistModel, 5);
+                            adapterPlaylistHorizontal = new AdapterPlaylistHorizontal(getActivity(), playlistModel, 5, new AdapterPlaylistHorizontal.RowClickListener() {
+                                @Override
+                                public void onRowClick(int position) {
+                                }
+                            });
                             recyclerView.setAdapter(adapterPlaylistHorizontal);
                         }
                     } catch (JSONException e) {
