@@ -19,6 +19,7 @@ import java.util.List;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.database.KindisDBname;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.DataSingleOffline;
 import co.digdaya.kindis.live.util.SpacingItem.SpacingItemGenre;
@@ -29,11 +30,13 @@ import co.digdaya.kindis.live.view.adapter.offline.AdapterSongOffline;
  */
 
 public class SingleSaveOffline extends Fragment {
+    private final AnalyticHelper analyticHelper;
     RecyclerView recyclerView;
     List<DataSingleOffline> dataSingleOfflines = new ArrayList<>();
     AdapterSongOffline adapterSongOffline;
 
     public SingleSaveOffline() {
+        analyticHelper = new AnalyticHelper(getActivity());
     }
 
     @Override
@@ -53,6 +56,7 @@ public class SingleSaveOffline extends Fragment {
         }else {
             initEmptyState(view);
         }
+        analyticHelper.swipeOffline("Single");
     }
 
     private boolean getData(){
@@ -85,9 +89,9 @@ public class SingleSaveOffline extends Fragment {
         TextView title, subtitle;
         Button btnRefresh;
 
-        title = (TextView) view.findViewById(R.id.title);
-        subtitle = (TextView) view.findViewById(R.id.subtitle);
-        btnRefresh = (Button) view.findViewById(R.id.btn_refresh);
+        title = view.findViewById(R.id.title);
+        subtitle = view.findViewById(R.id.subtitle);
+        btnRefresh = view.findViewById(R.id.btn_refresh);
 
         subtitle.setVisibility(View.GONE);
         btnRefresh.setVisibility(View.GONE);
@@ -95,7 +99,7 @@ public class SingleSaveOffline extends Fragment {
     }
 
     private void initView(View view){
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_save_offline);
+        recyclerView = view.findViewById(R.id.list_save_offline);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recyclerView.addItemDecoration(new SpacingItemGenre(getActivity(), "more"));
 

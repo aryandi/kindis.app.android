@@ -733,7 +733,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                 }
             }
         });
-
     }
 
     private void disableTwitterButton() {
