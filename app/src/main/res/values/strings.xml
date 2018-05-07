@@ -43,4 +43,6 @@
         <item>ca-app-pub-9379744418600976/2971064656</item>
     </string-array>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>
