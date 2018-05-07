@@ -20,14 +20,12 @@ import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 public class AdapterWalkthrough extends PagerAdapter {
     Context mContext;
     private AnalyticHelper analyticHelper;
-
     private LayoutInflater layoutInflater;
-    private int position = 0;
 
     public AdapterWalkthrough(Context context, AnalyticHelper analyticHelper) {
         this.mContext = context;
         this.analyticHelper = analyticHelper;
-        this.layoutInflater = (LayoutInflater)this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     private int[] img = new int[]{
@@ -38,15 +36,15 @@ public class AdapterWalkthrough extends PagerAdapter {
             "Musiq\nEntertaining\nYour Soul", "Taklim\nEnlightening\nYour Soul", "Infaq\nEnriching\nYour Soul"
     };
 
+    private String[] title_analytics = new String[]{"Musiq", "Taklim", "Infaq"};
+
     private String[] subtitles = new String[]{
             "Explore your favorite Islamic spiritual songs, play it, and let your soul entertained.",
             "Step your finger to reach for spiritual inspiration and let your soul enlightened.",
             "Kindness will never lessen. Do good, and let your soul enriched."
     };
 
-    private String[] btntxt = new String[]{
-            "SKIP", "SKIP", "LET'S GO"
-    };
+    private String[] btntxt = new String[]{"SKIP", "SKIP", "LET'S GO"};
 
     @Override
     public int getCount() {
@@ -60,7 +58,6 @@ public class AdapterWalkthrough extends PagerAdapter {
 
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
-        this.position = position;
         View view = layoutInflater.inflate(R.layout.adapter_walkthrough, container, false);
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.walkthrough);
         final TextView title = (TextView) view.findViewById(R.id.title_walkthrough);
@@ -77,7 +74,7 @@ public class AdapterWalkthrough extends PagerAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, LoginSocmedActivity.class);
                 mContext.startActivity(intent);
-                analyticHelper.journeySkip(titles[position]);
+                analyticHelper.journeySkip(title_analytics[position]);
             }
         });
 

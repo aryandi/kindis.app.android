@@ -203,11 +203,13 @@ public class Search extends BottomPlayerActivity {
 
                             JSONArray album = result.getJSONArray("album");
                             if (album.length() >= 1) {
-                                DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
+                                final DataAlbum dataAlbum = gson.fromJson(json, DataAlbum.class);
                                 contAlbum.setVisibility(View.VISIBLE);
                                 adapterAlbum = new AdapterAlbumNew(Search.this, dataAlbum, 2, new AdapterAlbumNew.RowClickListener() {
                                     @Override
                                     public void onRowClick(int position) {
+                                        DataAlbum.Data data = dataAlbum.data.get(position);
+                                        analyticHelper.contentClick("search", data.uid, "album",data.title, "null", "search");
                                     }
                                 });
                                 listViewAlbum.setAdapter(adapterAlbum);
@@ -216,11 +218,13 @@ public class Search extends BottomPlayerActivity {
 
                             JSONArray single = result.getJSONArray("single");
                             if (single.length() >= 1) {
-                                DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
+                                final DataSingle dataSingle = gson.fromJson(json, DataSingle.class);
 
                                 adapterSong = new AdapterSongHorizontal(Search.this, dataSingle, 1, new AdapterSongHorizontal.RowClickListener() {
                                     @Override
                                     public void onRowClick(int position) {
+                                        DataSingle.Data data = dataSingle.data.get(position);
+                                        analyticHelper.contentClick("search", data.uid, "single",data.title, "null", "search");
                                     }
                                 });
                                 contSingle.setVisibility(View.VISIBLE);

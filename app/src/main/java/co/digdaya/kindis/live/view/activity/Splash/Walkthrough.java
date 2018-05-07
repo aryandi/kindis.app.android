@@ -37,8 +37,7 @@ public class Walkthrough extends AppCompatActivity {
         setContentView(R.layout.activity_walkthrough);
 
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "sangmaneproject.kindis",
+            PackageInfo info = getPackageManager().getPackageInfo("sangmaneproject.kindis",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

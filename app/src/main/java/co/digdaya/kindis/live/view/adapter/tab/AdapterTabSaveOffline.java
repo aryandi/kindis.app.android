@@ -48,7 +48,7 @@ public class AdapterTabSaveOffline extends FragmentStatePagerAdapter {
 
     public View getTabView(int position) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_tab, null);
-        TextView tv = (TextView) v.findViewById(R.id.title_tab);
+        TextView tv = v.findViewById(R.id.title_tab);
         tv.setText(title[position]);
         return v;
     }
