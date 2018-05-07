@@ -22,7 +22,7 @@ public class NewPlaylist extends Fragment {
 
     AdapterTabPlaylist adapterTabPlaylist;
 
-    String[] title = {"PRIVATE","PAID"};
+    String[] titles = {"PRIVATE","PAID"};
 
     public NewPlaylist() {
         // Required empty public constructor
@@ -45,7 +45,7 @@ public class NewPlaylist extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("PRIVATE"));
         tabLayout.addTab(tabLayout.newTab().setText("PAID"));
 
-        adapterTabPlaylist = new AdapterTabPlaylist(getChildFragmentManager(), getActivity(), title);
+        adapterTabPlaylist = new AdapterTabPlaylist(getChildFragmentManager(), getActivity(), titles);
         viewPager.setAdapter(adapterTabPlaylist);
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);

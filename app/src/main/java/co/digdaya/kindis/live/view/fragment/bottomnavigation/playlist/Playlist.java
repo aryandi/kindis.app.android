@@ -61,14 +61,14 @@ public class Playlist extends Fragment implements View.OnClickListener {
     private DialogAlertPremium dialogAlertPremium;
     Dialog dialogPlaylis, dialogPremium;
     private AnalyticHelper analyticHelper;
-    private String origin;
+    private String location;
 
     public Playlist() {
         // Required empty public constructor
     }
 
-    public Playlist(String origin) {
-        this.origin = origin;
+    public Playlist(String location) {
+        this.location = location;
     }
 
     @Override
@@ -85,17 +85,17 @@ public class Playlist extends Fragment implements View.OnClickListener {
         sessionHelper = new SessionHelper();
         analyticHelper = new AnalyticHelper(getActivity());
 
-        contCreatePlaylist = (ScrollView) view.findViewById(R.id.layout_create_playlist);
-        inputPlaylist = (EditText) view.findViewById(R.id.input_playlist);
-        btnCreate = (Button) view.findViewById(R.id.btn_create);
+        contCreatePlaylist = view.findViewById(R.id.layout_create_playlist);
+        inputPlaylist = view.findViewById(R.id.input_playlist);
+        btnCreate = view.findViewById(R.id.btn_create);
 
-        listViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
+        listViewPlaylist = view.findViewById(R.id.list_playlist);
         listViewPlaylist.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        contEmptyState = (LinearLayout) view.findViewById(R.id.empty_state);
-        contPlaylist = (LinearLayout) view.findViewById(R.id.cont_list);
-        createNewPlaylist = (TextView) view.findViewById(R.id.create_new_playlist);
-        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        contEmptyState = view.findViewById(R.id.empty_state);
+        contPlaylist = view.findViewById(R.id.cont_list);
+        createNewPlaylist = view.findViewById(R.id.create_new_playlist);
+        refresh = view.findViewById(R.id.btn_refresh);
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
@@ -177,7 +177,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                                 JSONObject data = playlist.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("playlist_id", data.getString("playlist_id"));
-                                map.put("origin", data.getString("playlist_name"));
+                                map.put("location", data.getString("playlist_name"));
                                 listPlaylist.add(map);
                             }
 
@@ -219,12 +219,12 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             contPlaylist.setVisibility(View.VISIBLE);
                             inputPlaylist.setText("");
                             getPlaylist();
-                            analyticHelper.playlistAction(origin, "create", name, "true");
+                            analyticHelper.playlistAction(location, "create", name, "true");
                         }else {
                             dialogAlertPremium = new DialogAlertPremium(getActivity(), dialogPremium,
                                     object.getString("message"));
                             dialogAlertPremium.showDialog();
-                            analyticHelper.playlistAction(origin, "create", name, "false");
+                            analyticHelper.playlistAction(location, "create", name, "false");
 //                            Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
@@ -232,7 +232,7 @@ public class Playlist extends Fragment implements View.OnClickListener {
                     }
                 }else {
                     getPlaylist();
-                    analyticHelper.playlistAction(origin, "create", name, "false");
+                    analyticHelper.playlistAction(location, "create", name, "false");
                 }
             }
         });
@@ -285,15 +285,15 @@ public class Playlist extends Fragment implements View.OnClickListener {
                             listPlaylist.clear();
                             getPlaylist();
                             Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                            analyticHelper.playlistAction(origin, "create", name, "true");
+                            analyticHelper.playlistAction(location, "delete", name, "true");
                         } else {
-                            analyticHelper.playlistAction(origin, "create", name, "false");
+                            analyticHelper.playlistAction(location, "delete", name, "false");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    analyticHelper.playlistAction(origin, "create", name, "false");
+                    analyticHelper.playlistAction(location, "delete", name, "false");
                 }
             }
         });

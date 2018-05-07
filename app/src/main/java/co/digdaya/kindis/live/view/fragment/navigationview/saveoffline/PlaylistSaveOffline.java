@@ -86,7 +86,7 @@ public class PlaylistSaveOffline extends Fragment {
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_PLAYLIST +" ORDER BY "+KindisDBname.COLUMN_PLAYLIST_ID+" DESC",null);
         if (cursor.moveToFirst()){
-            while (cursor.isAfterLast()==false){
+            while (!cursor.isAfterLast()){
                 DataPlaylistOffline dataAlbumOffline = new DataPlaylistOffline();
                 dataAlbumOffline.setPlaylist_id(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PLAYLIST_ID)));
                 dataAlbumOffline.setPlaylist(cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PLAYLIST)));
