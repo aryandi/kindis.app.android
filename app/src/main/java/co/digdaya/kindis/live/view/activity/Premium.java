@@ -61,8 +61,8 @@ public class Premium extends AppCompatActivity {
         ButterKnife.bind(this);
         //new GetPrice().execute();
 
-        btnCancel = (TextView) findViewById(R.id.btn_cancel);
-        btnOk = (TextView) findViewById(R.id.btn_ok);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnOk = findViewById(R.id.btn_ok);
         sessionHelper = new SessionHelper();
         analyticHelper = new AnalyticHelper(this);
         random = new Random();

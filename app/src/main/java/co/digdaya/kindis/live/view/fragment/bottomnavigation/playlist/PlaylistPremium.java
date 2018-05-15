@@ -54,7 +54,7 @@ public class PlaylistPremium extends Fragment{
         volleyHelper = new VolleyHelper();
         sessionHelper = new SessionHelper();
         gson = new Gson();
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recyclerView.addItemDecoration(new SpacingItemGenre(getActivity(), ""));
         getList();

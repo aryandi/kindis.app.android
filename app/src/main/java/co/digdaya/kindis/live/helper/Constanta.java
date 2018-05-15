@@ -34,4 +34,9 @@ public class Constanta {
     public static final String PREF_GENDER = "gender";
     public static final String PREF_TOKEN_ACCESS = "token_access";
     public static final String PREF_TOKEN = "token";
+    public static final String PREF_DEVICE_ID = "device_id";
+    public static final String PREF_DEVICE_TOKEN = "device_token";
+
+    public static final String PREF_AUTH_LOCATION = "auth_location";
+    public static final String PREF_IS_DEVICE_REGISTERED = "is_device_registered";
 }

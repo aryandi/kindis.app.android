@@ -10,19 +10,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.eggheadgames.siren.ISirenListener;
-import com.eggheadgames.siren.Siren;
-import com.eggheadgames.siren.SirenAlertType;
-import com.eggheadgames.siren.SirenVersionCheckType;
-
+import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckConnection;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.RefreshToken;
@@ -69,8 +65,13 @@ public class SplashScreen extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.i("FCM token", token);
+
         sessionHelper = new SessionHelper();
-        sessionHelper.setPreferences(this, "android_id", android_id);
+        sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_ID, android_id);
+        sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_TOKEN, token);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

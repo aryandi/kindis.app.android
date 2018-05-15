@@ -103,7 +103,7 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
             holder.layout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rounded_gray_10));
         }
         holder.title.setText(datas.get(position).name);
-        holder.price.setText(Utils.currencyFormat(Integer.parseInt(datas.get(position).price)));
+        holder.price.setText(Utils.currencyFormat(Long.parseLong(datas.get(position).price)));
     }
 
     @Override

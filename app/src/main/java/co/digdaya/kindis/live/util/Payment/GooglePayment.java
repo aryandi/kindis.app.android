@@ -15,10 +15,10 @@ import co.digdaya.kindis.live.util.GoogleBilling.Purchase;
  */
 
 public class GooglePayment {
-    Activity activity;
-    IabHelper mHelper;
-    String googleCode;
-    String dataExtra;
+    private Activity activity;
+    private IabHelper mHelper;
+    private String googleCode;
+    private String dataExtra;
     private PriceListModel.Data data;
 
     public GooglePayment(Activity activity, String googleCode, String dataExtra) {
@@ -49,7 +49,7 @@ public class GooglePayment {
                 mPurchaseFinishedListener, dataExtra);
     }
 
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+    private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
             = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result,
                                           Purchase purchase)
@@ -65,11 +65,11 @@ public class GooglePayment {
         }
     };
 
-    public void consumeItem() {
+    private void consumeItem() {
         mHelper.queryInventoryAsync(mReceivedInventoryListener);
     }
 
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+    private IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
             = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
@@ -83,7 +83,7 @@ public class GooglePayment {
         }
     };
 
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+    private IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
             new IabHelper.OnConsumeFinishedListener() {
                 public void onConsumeFinished(Purchase purchase,
                                               IabResult result) {

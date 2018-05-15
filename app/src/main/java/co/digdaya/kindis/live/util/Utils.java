@@ -9,7 +9,7 @@ import java.text.NumberFormat;
  */
 
 public class Utils {
-    public static String currencyFormat(int number){
+    public static String currencyFormat(long number){
         NumberFormat df = NumberFormat.getCurrencyInstance();
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setCurrencySymbol("Rp ");

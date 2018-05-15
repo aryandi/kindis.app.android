@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  */
 
 public class AnalyticHelper {
-    Activity activity;
+    private Activity activity;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     public AnalyticHelper(Activity activity) {
@@ -196,6 +196,12 @@ public class AnalyticHelper {
         bundle.putString("price", price);
         bundle.putString("payment_method", paymentMethod);
         mFirebaseAnalytics.logEvent("premium_subscribe_click", bundle);
+    }
+
+    public void authLocation(String city){
+        Bundle bundle = new Bundle();
+        bundle.putString("city", city);
+        mFirebaseAnalytics.logEvent("auth_location", bundle);
     }
 
 }

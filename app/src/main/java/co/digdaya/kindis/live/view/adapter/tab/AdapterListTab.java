@@ -20,6 +20,7 @@ import java.util.List;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.model.DataArtist;
@@ -83,7 +84,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         isPremium = sessionHelper.getPreferences(context, "is_premium");
         adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(sessionHelper.getPreferences(context, "android_id"))
+                .addTestDevice(sessionHelper.getPreferences(context, Constanta.PREF_DEVICE_ID))
                 .build();
         ads = context.getResources().getStringArray(R.array.ads_ids);
         switch (tab) {

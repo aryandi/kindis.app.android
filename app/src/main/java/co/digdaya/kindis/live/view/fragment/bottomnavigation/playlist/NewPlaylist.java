@@ -38,8 +38,8 @@ public class NewPlaylist extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
-        viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
+        tabLayout = view.findViewById(R.id.htab_tabs);
+        viewPager = view.findViewById(R.id.htab_viewpager);
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setText("PRIVATE"));

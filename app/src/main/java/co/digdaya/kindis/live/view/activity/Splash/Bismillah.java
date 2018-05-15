@@ -12,16 +12,25 @@ import com.eggheadgames.siren.Siren;
 import com.eggheadgames.siren.SirenAlertType;
 import com.eggheadgames.siren.SirenVersionCheckType;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.HashMap;
+
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
+import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
+import co.digdaya.kindis.live.helper.SessionHelper;
+import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.view.activity.Main;
 
 public class Bismillah extends AppCompatActivity {
     Button enter;
     PlayerSessionHelper playerSessionHelper;
     private String TAG = "Bismillah";
-    private AnalyticHelper analyticsHelper;
+    private AnalyticHelper analyticHelper;
+    private SessionHelper sessionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +45,14 @@ public class Bismillah extends AppCompatActivity {
 
         enter = (Button) findViewById(R.id.btn_enter);
         playerSessionHelper = new PlayerSessionHelper();
-        analyticsHelper = new AnalyticHelper(this);
+        analyticHelper = new AnalyticHelper(this);
+        sessionHelper = new SessionHelper();
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                analyticsHelper.authHello("true");
+                getIPAddress();
+                postDeviceId();
+                analyticHelper.authHello("true");
                 Intent intent = new Intent(Bismillah.this, Main.class);
                 startActivity(intent);
             }
@@ -49,7 +61,7 @@ public class Bismillah extends AppCompatActivity {
         playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
         playerSessionHelper.setPreferences(getApplicationContext(), "pause", "false");
 
-        if (playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle").isEmpty()){
+        if (playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle").isEmpty()) {
             playerSessionHelper.setPreferences(getApplicationContext(), "isShuffle", "false");
         }
 
@@ -101,10 +113,60 @@ public class Bismillah extends AppCompatActivity {
         }
     };
 
+    private void postDeviceId() {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_TOKEN_ACCESS));
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_USERID));
+        param.put("device_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_ID));
+        param.put("device_token_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_TOKEN));
+        if (!sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_IS_DEVICE_REGISTERED).equals("true")){
+            new VolleyHelper().post(ApiHelper.DEVICE_ID, param, new VolleyHelper.HttpListener<String>() {
+                @Override
+                public void onReceive(boolean status, String message, String response) {
+                    if (status) {
+                        Log.d("post device id", "onReceive: " + response);
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.optBoolean("status")){
+                                sessionHelper.setPreferences(getApplicationContext(),
+                                        Constanta.PREF_IS_DEVICE_REGISTERED, "true");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void getIPAddress() {
+        new VolleyHelper().get("http://www.ip-api.com/json", new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status) {
+                    Log.d("get ip address", "onReceive: " + response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        String city = object.optString("city");
+                        if (!city.equals(sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_AUTH_LOCATION))) {
+                            sessionHelper.setPreferences(getApplicationContext(), Constanta.PREF_AUTH_LOCATION, city);
+                            analyticHelper.authLocation(city);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                }
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
-        analyticsHelper.authHello("false");
+        analyticHelper.authHello("false");
         finishAffinity();
     }
 }

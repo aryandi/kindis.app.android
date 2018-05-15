@@ -27,14 +27,14 @@ public class ItemPriceList extends RecyclerView.ViewHolder{
 
     public ItemPriceList(View itemView) {
         super(itemView);
-        title = (TextView) itemView.findViewById(R.id.title);
-        price = (TextView) itemView.findViewById(R.id.price);
-        layout = (LinearLayout) itemView.findViewById(R.id.layout_holder);
-        layoutButton = (LinearLayout) itemView.findViewById(R.id.btn_activity);
-        btnGPay = (TextViewSemiBold) itemView.findViewById(R.id.btn_gpay);
-        btnOther = (TextViewSemiBold) itemView.findViewById(R.id.btn_other);
+        title = itemView.findViewById(R.id.title);
+        price = itemView.findViewById(R.id.price);
+        layout = itemView.findViewById(R.id.layout_holder);
+        layoutButton = itemView.findViewById(R.id.btn_activity);
+        btnGPay = itemView.findViewById(R.id.btn_gpay);
+        btnOther = itemView.findViewById(R.id.btn_other);
         space = itemView.findViewById(R.id.space);
-        layoutDiscount = (ConstraintLayout) itemView.findViewById(R.id.layout_discount);
-        textDiscount = (TextViewRegular) itemView.findViewById(R.id.text_discount);
+        layoutDiscount = itemView.findViewById(R.id.layout_discount);
+        textDiscount = itemView.findViewById(R.id.text_discount);
     }
 }

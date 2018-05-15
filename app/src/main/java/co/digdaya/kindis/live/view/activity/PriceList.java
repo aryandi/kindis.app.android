@@ -78,10 +78,10 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         setContentView(R.layout.dialog_price_list);
         ButterKnife.bind(this);
 
-        list = (RecyclerView) findViewById(R.id.list);
-        btnClose = (ImageButton) findViewById(R.id.btn_close);
-        btnGoogle = (Button) findViewById(R.id.btn_google);
-        btnMidtrans = (Button) findViewById(R.id.btn_midtrans);
+        list = findViewById(R.id.list);
+        btnClose = findViewById(R.id.btn_close);
+        btnGoogle = findViewById(R.id.btn_google);
+        btnMidtrans = findViewById(R.id.btn_midtrans);
 
         sessionHelper = new SessionHelper();
         loading = new ProgressDialog(this, R.style.MyTheme);
