@@ -110,13 +110,18 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     }
 
     @Override
-    public void onClickGPay(int i) {
+    public void onClickGooglePay(int i) {
         googlePayment.buyClick();
     }
 
     @Override
-    public void onClickOther(int i) {
+    public void onClickGoPay(int i) {
         midtransPayment.startPayment();
+    }
+
+    @Override
+    public void onClickTransfer(int i) {
+
     }
 
     @Override

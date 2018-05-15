@@ -8,23 +8,39 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:153105834235:android:ae36f6b99ec1ec6b",
+        "mobilesdk_app_id": "1:153105834235:android:3cc7a56fff020217",
         "android_client_info": {
           "package_name": "co.digdaya.kindis.live"
         }
       },
       "oauth_client": [
         {
-          "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "153105834235-a2epdt5gbr8c1omvnfjgpnjsf7uk9cgv.apps.googleusercontent.com",
+          "client_id": "153105834235-mjls8j2atgrpq510fr658v20h7mbk7ie.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "co.digdaya.kindis.live",
-            "certificate_hash": "78b9b97771ce64ac84d27f31aa0ad412a89a0898"
+            "certificate_hash": "17cc75b6ac4f1d94ec0eca7f7be87dd27d471255"
           }
+        },
+        {
+          "client_id": "153105834235-a27ehop1k39n8o7vu8aofgudicjdg1ok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis.live",
+            "certificate_hash": "067a0799769608a3b747713ca38f639270ead585"
+          }
+        },
+        {
+          "client_id": "153105834235-gjmgl7op913fvvdifborae3n1id7kqs4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis.live",
+            "certificate_hash": "d3836a7d7b63f972c2133f71b29853d62b1c70d0"
+          }
+        },
+        {
+          "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "153105834235-dc0c2gpncbg6r8t5bhki0v1qp08c3ogm.apps.googleusercontent.com",
@@ -46,6 +62,123 @@
             {
               "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.digdaya.kindis"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153105834235:android:a994ad666be89306",
+        "android_client_info": {
+          "package_name": "co.digdaya.kindis.live.sandbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153105834235-lkjke0mt298l8d9hsdppiheivpkk7j44.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis.live.sandbox",
+            "certificate_hash": "067a0799769608a3b747713ca38f639270ead585"
+          }
+        },
+        {
+          "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "153105834235-dc0c2gpncbg6r8t5bhki0v1qp08c3ogm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNU1SAcK4WoUVBU-BFNLoANDeZxoj-iF8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.digdaya.kindis"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153105834235:android:59e6e5f62aa22bf2",
+        "android_client_info": {
+          "package_name": "co.digdaya.kindis.live.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153105834235-mvgcich9s52fraqhdcehga7gbgjp29rb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.digdaya.kindis.live.staging",
+            "certificate_hash": "067a0799769608a3b747713ca38f639270ead585"
+          }
+        },
+        {
+          "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "153105834235-dc0c2gpncbg6r8t5bhki0v1qp08c3ogm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNU1SAcK4WoUVBU-BFNLoANDeZxoj-iF8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.digdaya.kindis"
+              }
             }
           ]
         },

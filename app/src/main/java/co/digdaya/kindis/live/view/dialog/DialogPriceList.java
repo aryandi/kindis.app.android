@@ -106,12 +106,17 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
     }
 
     @Override
-    public void onClickGPay(int i) {
+    public void onClickGooglePay(int i) {
 
     }
 
     @Override
-    public void onClickOther(int i) {
+    public void onClickGoPay(int i) {
+
+    }
+
+    @Override
+    public void onClickTransfer(int i) {
 
     }
 }

@@ -148,4 +148,7 @@ public class MidtransPayment {
     public void startPayment(){
         MidtransSDK.getInstance().startPaymentUiFlow(activity);
     }
+
+    public void startGopayPayment(){
+    }
 }

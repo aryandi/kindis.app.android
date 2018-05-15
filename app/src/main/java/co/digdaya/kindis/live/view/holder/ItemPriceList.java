@@ -19,8 +19,9 @@ public class ItemPriceList extends RecyclerView.ViewHolder{
     public TextView price;
     public LinearLayout layout;
     public LinearLayout layoutButton;
-    public TextViewSemiBold btnGPay;
-    public TextViewSemiBold btnOther;
+    public TextViewSemiBold btnGooglePay;
+    public TextViewSemiBold btnGopay;
+    public TextViewSemiBold btnTransferBank;
     public View space;
     public ConstraintLayout layoutDiscount;
     public TextViewRegular textDiscount;
@@ -31,8 +32,9 @@ public class ItemPriceList extends RecyclerView.ViewHolder{
         price = itemView.findViewById(R.id.price);
         layout = itemView.findViewById(R.id.layout_holder);
         layoutButton = itemView.findViewById(R.id.btn_activity);
-        btnGPay = itemView.findViewById(R.id.btn_gpay);
-        btnOther = itemView.findViewById(R.id.btn_other);
+        btnGooglePay = itemView.findViewById(R.id.btn_google_pay);
+        btnGopay = itemView.findViewById(R.id.btn_gopay);
+        btnTransferBank = itemView.findViewById(R.id.btn_transfer_bank);
         space = itemView.findViewById(R.id.space);
         layoutDiscount = itemView.findViewById(R.id.layout_discount);
         textDiscount = itemView.findViewById(R.id.text_discount);

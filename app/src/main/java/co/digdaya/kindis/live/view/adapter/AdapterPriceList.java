@@ -43,16 +43,23 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
                 onClicked(viewType, itemPriceList);
             }
         });
-        itemPriceList.btnGPay.setOnClickListener(new View.OnClickListener() {
+        itemPriceList.btnGooglePay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectedItem.onClickGPay(viewType);
+                onSelectedItem.onClickGooglePay(viewType);
             }
         });
-        itemPriceList.btnOther.setOnClickListener(new View.OnClickListener() {
+        itemPriceList.btnGopay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectedItem.onClickOther(viewType);
+                onSelectedItem.onClickGoPay(viewType);
+            }
+        });
+
+        itemPriceList.btnTransferBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSelectedItem.onClickTransfer(viewType);
             }
         });
         return itemPriceList;
@@ -139,9 +146,11 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
     public interface OnSelectedItem {
         void onSelected(int i);
 
-        void onClickGPay(int i);
+        void onClickGooglePay(int i);
 
-        void onClickOther(int i);
+        void onClickGoPay(int i);
+
+        void onClickTransfer(int i);
     }
 
     public void setOnSelectedItem(OnSelectedItem onSelectedItem) {

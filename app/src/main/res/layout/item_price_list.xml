@@ -61,7 +61,7 @@
             android:visibility="gone">
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
-                android:id="@+id/btn_gpay"
+                android:id="@+id/btn_google_pay"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
@@ -73,15 +73,26 @@
                 android:textSize="12sp" />
 
             <co.digdaya.kindis.live.custom.TextViewSemiBold
-                android:id="@+id/btn_other"
+                android:id="@+id/btn_gopay"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_rounded_black_10"
                 android:gravity="center"
-                android:text="Other Method"
-                android:visibility="invisible"
+                android:text="Go Pay"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <co.digdaya.kindis.live.custom.TextViewSemiBold
+                android:id="@+id/btn_transfer_bank"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded_black_10"
+                android:gravity="center"
+                android:text="Transfer Bank"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
