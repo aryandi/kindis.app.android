@@ -38,32 +38,10 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
-    String transID;
-    String transName;
-    String orderID;
-    String orders;
-    String packages;
-    public final static int GOPAY_PAYMENT = 1;
-    public final static int BANK_TRANSFER_PAYMENT = 2;
+    String transID, transName, orderID, orders, packages;
     int price;
 
-    public MidtransPayment(Activity activity, String transID, int price, String transName,
-                           String orderID, String orders, String packages, int paymentMethod) {
-        init(activity, transID, price, transName, orderID, orders, packages);
-        startPayment();
-//        if (paymentMethod == GOPAY_PAYMENT){
-//            startGopayPayment();
-//        } else if (paymentMethod == BANK_TRANSFER_PAYMENT){
-//            startPermataPayment();
-//        }
-    }
-
-    public MidtransPayment(Activity activity, String transID, int price, String transName,
-                           String orderID, String orders, String packages) {
-        init(activity, transID, price, transName, orderID, orders, packages);
-    }
-
-    private void init(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
+    public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
         this.activity = activity;
         this.transID = transID;
         this.price = price;
@@ -79,13 +57,13 @@ public class MidtransPayment {
     }
 
     private void initMidtransSDK() {
-        SdkUIFlowBuilder.init(activity.getApplicationContext(), BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, new TransactionFinishedCallback() {
+        SdkUIFlowBuilder.init(activity.getApplicationContext(), BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL +"payment/", new TransactionFinishedCallback() {
             @Override
             public void onTransactionFinished(TransactionResult result) {
                 if (result.getResponse() != null){
                     System.out.println("Response payment: "+result.getResponse().getPaymentType());
                     System.out.println("Response payment uid: "+sessionHelper.getPreferences(activity, "user_id"));
-                    HashMap<String, String> param = new HashMap<>();
+                    HashMap<String, String> param = new HashMap<String, String>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
                     param.put("dev_id", "2");
@@ -176,7 +154,7 @@ public class MidtransPayment {
         MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.GO_PAY);
     }
 
-    public void startPermataPayment(){
+    public void startTransferBankPayment(){
         MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.BANK_TRANSFER_PERMATA);
     }
 }

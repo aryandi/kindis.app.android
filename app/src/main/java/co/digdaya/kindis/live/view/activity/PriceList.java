@@ -135,14 +135,15 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     public void onClickGoPay(final int i) {
         final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
                 + new Random().nextInt(89) + 10;
+        midtransPayment = new MidtransPayment(PriceList.this, transID,
+                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                "", "1");
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        midtransPayment = new MidtransPayment(PriceList.this, transID,
-                                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
-                                "", "1", MidtransPayment.GOPAY_PAYMENT);
+                     midtransPayment.startGopayPayment();
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -158,14 +159,15 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     public void onClickTransfer(final int i) {
         final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
                 + new Random().nextInt(89) + 10;
+        midtransPayment = new MidtransPayment(PriceList.this, transID,
+                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                "", "1");
         dialogMessage = new DialogMessage(this, dialog,
-                "Transaksi menggunakan transfer bank akan dikenai biaya 4.0000 per transaksi",
+                "Transaksi menggunakan transfer bank akan dikenai biaya 4.000 per transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        midtransPayment = new MidtransPayment(PriceList.this, transID,
-                                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
-                                "", "1", MidtransPayment.BANK_TRANSFER_PAYMENT);
+                        midtransPayment.startTransferBankPayment();
                     }
                 }, new View.OnClickListener() {
             @Override
