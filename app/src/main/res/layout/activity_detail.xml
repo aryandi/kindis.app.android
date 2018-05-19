@@ -130,7 +130,7 @@
 
 
         <co.digdaya.kindis.live.custom.ButtonSemiBold
-            android:id="@+id/btn_premium"
+            android:id="@+id/btn_confirm"
             android:layout_width="108dp"
             android:layout_height="40dp"
             android:visibility="gone"

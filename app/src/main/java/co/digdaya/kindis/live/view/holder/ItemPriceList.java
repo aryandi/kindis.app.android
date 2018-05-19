@@ -17,8 +17,8 @@ import co.digdaya.kindis.live.custom.TextViewSemiBold;
 public class ItemPriceList extends RecyclerView.ViewHolder{
     public TextView title;
     public TextView price;
-    public LinearLayout layout;
-    public LinearLayout layoutButton;
+    public ConstraintLayout layout;
+    public ConstraintLayout layoutButton;
     public TextViewSemiBold btnGooglePay;
     public TextViewSemiBold btnGopay;
     public TextViewSemiBold btnTransferBank;

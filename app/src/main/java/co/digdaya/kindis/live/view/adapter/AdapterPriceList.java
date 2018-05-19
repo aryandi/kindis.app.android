@@ -35,7 +35,7 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
 
     @Override
     public ItemPriceList onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_price_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_price, parent, false);
         final ItemPriceList itemPriceList = new ItemPriceList(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override

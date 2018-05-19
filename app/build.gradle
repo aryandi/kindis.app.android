@@ -51,7 +51,7 @@ android {
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.kindis.co/\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-allZvvXkj6Jd3gJJ\""
         }
     }
     packagingOptions {
@@ -117,7 +117,7 @@ dependencies {
     }
 
     compile 'de.hdodenhof:circleimageview:2.2.0'
-    compile 'com.midtrans:uikit:1.1.5-SANDBOX'
+    compile 'com.midtrans:uikit:1.19.0'
     compile 'com.google.firebase:firebase-core:15.0.2'
     compile 'com.google.firebase:firebase-messaging:15.0.2'
     compile 'com.firebase:firebase-jobdispatcher:0.8.5'

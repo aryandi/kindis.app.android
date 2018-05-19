@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
         <co.digdaya.kindis.live.custom.TextViewSemiBold
-            android:id="@+id/btn_premium"
+            android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -124,7 +124,7 @@
 
         <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/btn_cancel"
-            android:layout_toLeftOf="@+id/btn_premium"
+            android:layout_toLeftOf="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"

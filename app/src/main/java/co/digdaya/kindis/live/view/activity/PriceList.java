@@ -1,5 +1,6 @@
 package co.digdaya.kindis.live.view.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ import co.digdaya.kindis.live.util.Payment.GooglePayment;
 import co.digdaya.kindis.live.util.Payment.MidtransPayment;
 import co.digdaya.kindis.live.view.activity.Account.VerifyAccount;
 import co.digdaya.kindis.live.view.adapter.AdapterPriceList;
+import co.digdaya.kindis.live.view.dialog.DialogAlertPremium;
+import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
+import co.digdaya.kindis.live.view.dialog.DialogMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +75,8 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     private ProgressDialog loading;
 
     static final String ITEM_SKU = "android.test.purchased";
+    private Dialog dialog;
+    private DialogMessage dialogMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +100,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         TextViewHelper.setSpanColor(textVerify, "Kindis Premium",
                 ContextCompat.getColor(this, R.color.yellow));
 
+        dialog = new Dialog(this);
         btnClose.setOnClickListener(this);
         btnGoogle.setOnClickListener(this);
         btnMidtrans.setOnClickListener(this);
@@ -111,17 +118,59 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
     @Override
     public void onClickGooglePay(int i) {
-        googlePayment.buyClick();
+        dialogMessage = new DialogMessage(this, dialog,
+                "Silahkan memilih pembayaran melalui pulsa atau credit card pada pengaturan Google Pay",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        googlePayment.buyClick();
+                    }
+                }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+            }
+        });
+        dialogMessage.setButtonPositiveHighLight();
+        dialogMessage.showDialog();
     }
 
     @Override
     public void onClickGoPay(int i) {
-        midtransPayment.startPayment();
+        dialogMessage = new DialogMessage(this, dialog,
+                "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        midtransPayment.startGopayPayment();
+                    }
+                }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+            }
+        });
+        dialogMessage.setButtonPositiveHighLight();
+        dialogMessage.showDialog();
     }
 
     @Override
     public void onClickTransfer(int i) {
-
+        dialogMessage = new DialogMessage(this, dialog,
+                "Transaksi menggunakan transfer bank akan dikenai biaya 4.0000 per transaksi",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        midtransPayment.startPermataPayment();
+                    }
+                }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMessage.dismiss();
+            }
+        });
+        dialogMessage.setButtonPositiveHighLight();
+        dialogMessage.showDialog();
     }
 
     @Override
@@ -129,12 +178,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         switch (view.getId()) {
             case R.id.btn_close:
                 finish();
-                break;
-            case R.id.btn_google:
-                googlePayment.buyClick();
-                break;
-            case R.id.btn_midtrans:
-                midtransPayment.startPayment();
                 break;
             case R.id.btn_ok:
                 Intent intent = new Intent(PriceList.this, VerifyAccount.class);

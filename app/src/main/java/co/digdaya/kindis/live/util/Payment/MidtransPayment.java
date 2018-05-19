@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
@@ -150,5 +151,10 @@ public class MidtransPayment {
     }
 
     public void startGopayPayment(){
+        MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.GO_PAY);
+    }
+
+    public void startPermataPayment(){
+        MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.BANK_TRANSFER_PERMATA);
     }
 }

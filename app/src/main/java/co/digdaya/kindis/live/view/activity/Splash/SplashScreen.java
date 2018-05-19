@@ -67,7 +67,6 @@ public class SplashScreen extends AppCompatActivity {
         }
 
         String token = FirebaseInstanceId.getInstance().getToken();
-        Log.i("FCM token", token);
 
         sessionHelper = new SessionHelper();
         sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_ID, android_id);

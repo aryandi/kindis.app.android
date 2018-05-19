@@ -112,7 +112,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         description = (TextView) findViewById(R.id.description);
         backDrop = (ImageView) findViewById(R.id.backdrop);
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
-        btnPremium = (Button) findViewById(R.id.btn_premium);
+        btnPremium = (Button) findViewById(R.id.btn_confirm);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
@@ -542,7 +542,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_premium:
+            case R.id.btn_confirm:
                 if (checkPermission.checkPermissionStorage()){
                     startDownload();
                 } else {

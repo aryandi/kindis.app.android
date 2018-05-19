@@ -33,7 +33,7 @@ public class DialogAlertPremium implements View.OnClickListener{
         alertDialog.setView(dialogView);
 
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+        btnPremium = (TextView) dialogView.findViewById(R.id.btn_confirm);
         textMessage = (TextView) dialogView.findViewById(R.id.text_message);
 
         TextViewHelper.setSpanColor(textMessage, "Kindis Premium", ContextCompat
@@ -55,7 +55,7 @@ public class DialogAlertPremium implements View.OnClickListener{
 
         textMessage = (TextView) dialogView.findViewById(R.id.text_message);
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+        btnPremium = (TextView) dialogView.findViewById(R.id.btn_confirm);
 
         textMessage.setText(message);
         btnCancel.setOnClickListener(this);
@@ -78,7 +78,7 @@ public class DialogAlertPremium implements View.OnClickListener{
             case R.id.btn_cancel:
                 premium.dismiss();
                 break;
-            case R.id.btn_premium:
+            case R.id.btn_confirm:
                 Intent intent = new Intent(activity, Premium.class);
                 activity.startActivity(intent);
                 break;

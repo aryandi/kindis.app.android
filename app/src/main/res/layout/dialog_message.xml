@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/btn_premium"
+            android:layout_toLeftOf="@+id/btn_confirm"
             android:layout_weight="1"
             android:background="@drawable/button_rounded_black_10"
             android:clickable="true"
@@ -40,7 +40,7 @@
             android:textSize="12sp" />
 
         <co.digdaya.kindis.live.custom.TextViewSemiBold
-            android:id="@+id/btn_premium"
+            android:id="@+id/btn_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -54,7 +54,7 @@ public class DialogGetPremium implements View.OnClickListener{
         random = new Random();
 
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        btnPremium = (TextView) dialogView.findViewById(R.id.btn_premium);
+        btnPremium = (TextView) dialogView.findViewById(R.id.btn_confirm);
 
         btnCancel.setOnClickListener(this);
         btnPremium.setOnClickListener(this);
@@ -76,7 +76,7 @@ public class DialogGetPremium implements View.OnClickListener{
             case R.id.btn_cancel:
                 premium.dismiss();
                 break;
-            case R.id.btn_premium:
+            case R.id.btn_confirm:
                 premium.dismiss();
                 String transID = "PRE"+sessionHelper.getPreferences(activity, "user_id")+random.nextInt(89)+10;
                 dialogPayment = new DialogPayment(dialogPay, activity, transID, price, "Akun Premium", googleCode, "", "", "1", "");

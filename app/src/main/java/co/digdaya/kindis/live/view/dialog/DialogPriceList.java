@@ -57,10 +57,10 @@ public class DialogPriceList extends Dialog implements View.OnClickListener, Ada
         setContentView(R.layout.dialog_price_list);
         witdhDialog();
 
-        list = (RecyclerView) findViewById(R.id.list);
-        btnClose = (ImageButton) findViewById(R.id.btn_close);
-        btnGoogle = (Button) findViewById(R.id.btn_google);
-        btnMidtrans = (Button) findViewById(R.id.btn_midtrans);
+        list = findViewById(R.id.list);
+        btnClose = findViewById(R.id.btn_close);
+        btnGoogle = findViewById(R.id.btn_google);
+        btnMidtrans = findViewById(R.id.btn_midtrans);
 
         adapterPriceList = new AdapterPriceList(mContext, datas, isVerified);
         sessionHelper = new SessionHelper();
