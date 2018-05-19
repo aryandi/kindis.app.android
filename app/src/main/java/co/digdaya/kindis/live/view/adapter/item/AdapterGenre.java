@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.holder.ItemGenre;
 
@@ -46,7 +47,7 @@ public class AdapterGenre extends RecyclerView.Adapter<ItemGenre> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, Detail.class);
                 intent.putExtra("uid", uid);
-                intent.putExtra("type", "genre");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "genre");
                 context.startActivity(intent);
             }
         });

@@ -109,21 +109,17 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
     @Override
     public void onSelected(int i) {
-        String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
-                + new Random().nextInt(89) + 10;
-        googlePayment = new GooglePayment(this, datas.get(i).package_id, orderID);
-        midtransPayment = new MidtransPayment(this, transID, Integer.parseInt(datas.get(i).price),
-                datas.get(i).name, orderID, "", "1");
+
     }
 
     @Override
-    public void onClickGooglePay(int i) {
+    public void onClickGooglePay(final int i) {
         dialogMessage = new DialogMessage(this, dialog,
                 "Silahkan memilih pembayaran melalui pulsa atau credit card pada pengaturan Google Pay",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        googlePayment.buyClick();
+                        new GooglePayment(PriceList.this, ITEM_SKU, orderID);
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -136,13 +132,17 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     }
 
     @Override
-    public void onClickGoPay(int i) {
+    public void onClickGoPay(final int i) {
+        final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
+                + new Random().nextInt(89) + 10;
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        midtransPayment.startGopayPayment();
+                        midtransPayment = new MidtransPayment(PriceList.this, transID,
+                                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                                "", "1", MidtransPayment.GOPAY_PAYMENT);
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -155,13 +155,17 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     }
 
     @Override
-    public void onClickTransfer(int i) {
+    public void onClickTransfer(final int i) {
+        final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
+                + new Random().nextInt(89) + 10;
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan transfer bank akan dikenai biaya 4.0000 per transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        midtransPayment.startPermataPayment();
+                        midtransPayment = new MidtransPayment(PriceList.this, transID,
+                                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                                "", "1", MidtransPayment.BANK_TRANSFER_PAYMENT);
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -207,12 +211,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                             LinearLayoutManager.VERTICAL, false));
                     list.setAdapter(adapterPriceList);
                     adapterPriceList.setOnSelectedItem(PriceList.this);
-
-                    String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(),
-                            "user_id") + new Random().nextInt(89) + 10;
-                    googlePayment = new GooglePayment(PriceList.this, datas.get(0).package_id, orderID);
-                    midtransPayment = new MidtransPayment(PriceList.this, transID,
-                            Integer.parseInt(datas.get(0).price), datas.get(0).name, orderID, "", "1");
                 }
             }
 

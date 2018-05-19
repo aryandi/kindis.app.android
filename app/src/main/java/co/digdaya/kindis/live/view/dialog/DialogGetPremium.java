@@ -53,8 +53,8 @@ public class DialogGetPremium implements View.OnClickListener{
         sessionHelper = new SessionHelper();
         random = new Random();
 
-        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        btnPremium = (TextView) dialogView.findViewById(R.id.btn_confirm);
+        btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        btnPremium = dialogView.findViewById(R.id.btn_confirm);
 
         btnCancel.setOnClickListener(this);
         btnPremium.setOnClickListener(this);

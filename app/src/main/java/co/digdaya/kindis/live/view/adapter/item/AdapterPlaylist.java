@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.holder.ItemPlaylist;
 
@@ -64,7 +65,7 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
-                intent.putExtra("type", "playlist");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "playlist");
                 intent.putExtra("isMyPlaylist", isMyPlaylist);
                 context.startActivity(intent);
             }

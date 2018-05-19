@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.model.MoreModel;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.holder.Item;
@@ -67,7 +68,7 @@ public class AdapterMorePlaylist extends RecyclerView.Adapter<Item> {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", playlisMore.result.get(position).uid);
-                intent.putExtra("type", "premium");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "premium");
                 intent.putExtra("isMyPlaylist", "");
                 intent.putExtra("playlisttype", getItemViewType(position));
                 context.startActivity(intent);

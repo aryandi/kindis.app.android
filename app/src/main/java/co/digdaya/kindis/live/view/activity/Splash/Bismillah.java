@@ -14,6 +14,7 @@ import com.eggheadgames.siren.SirenVersionCheckType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import co.digdaya.kindis.live.R;
@@ -119,26 +120,23 @@ public class Bismillah extends AppCompatActivity {
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_USERID));
         param.put("device_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_ID));
         param.put("device_token_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_TOKEN));
-        if (!sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_IS_DEVICE_REGISTERED).equals("true")){
-            new VolleyHelper().post(ApiHelper.DEVICE_ID, param, new VolleyHelper.HttpListener<String>() {
-                @Override
-                public void onReceive(boolean status, String message, String response) {
-                    if (status) {
-                        Log.d("post device id", "onReceive: " + response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.optBoolean("status")){
-                                sessionHelper.setPreferences(getApplicationContext(),
-                                        Constanta.PREF_IS_DEVICE_REGISTERED, "true");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        new VolleyHelper().post(ApiHelper.DEVICE_ID, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status) {
+                    Log.d("post device id", "onReceive: " + response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.optBoolean("status")) {
+                            sessionHelper.setPreferences(getApplicationContext(),
+                                    Constanta.PREF_IS_DEVICE_REGISTERED, "true");
                         }
-                    } else {
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-            });
-        }
+            }
+        });
 
     }
 

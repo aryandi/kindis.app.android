@@ -12,6 +12,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -112,7 +113,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         description = (TextView) findViewById(R.id.description);
         backDrop = (ImageView) findViewById(R.id.backdrop);
         btnPlayAll = (Button) findViewById(R.id.btn_play_all);
-        btnPremium = (Button) findViewById(R.id.btn_confirm);
+        btnPremium = (Button) findViewById(R.id.btn_premium);
         listViewSong = (RecyclerView) findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
@@ -149,7 +150,6 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         }else if (types.equals("playlist")){
             getDetailPlaylist();
         }else if (types.equals("premium")){
-            btnPremium.setVisibility(View.VISIBLE);
             getListPremium();
         }
 
@@ -370,21 +370,22 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             titleDetail.setText(playlist.getString("playlist_name"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", playlist.getString("playlist_name"));
                             playlistID = playlist.getString("uid");
-                            transID = playlist.getString("order_id");
+                            transID = playlist.optString("order_id");
 
                             sessionHelper.setPreferences(getApplicationContext(), "playlistID", playlistID);
-                            sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
-
-                            dialogPayment = new DialogPayment(dialogPay,
-                                    Detail.this,
-                                    transID,
-                                    price,
-                                    "Playlist : "+playlist.getString("playlist_name"),
-                                    googleCode,
-                                    playlist.getString("order_id"),
-                                    playlist.getString("uid"),
-                                    "2",
-                                    playlistID);
+                            if (!TextUtils.isEmpty(transID)){
+                                sessionHelper.setPreferences(getApplicationContext(), "transID", transID);
+                                dialogPayment = new DialogPayment(dialogPay,
+                                        Detail.this,
+                                        transID,
+                                        price,
+                                        "Playlist : "+playlist.getString("playlist_name"),
+                                        googleCode,
+                                        playlist.getString("order_id"),
+                                        playlist.getString("uid"),
+                                        "2",
+                                        playlistID);
+                            }
 
                             isPremium = Integer.parseInt(playlist.getString("is_premium"));
 
@@ -542,7 +543,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_confirm:
+            case R.id.btn_premium:
                 if (checkPermission.checkPermissionStorage()){
                     startDownload();
                 } else {

@@ -54,9 +54,9 @@ public class DialogPayment implements View.OnClickListener {
         alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setView(dialogView);
 
-        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        btnPaymentGoogle = (ImageButton) dialogView.findViewById(R.id.btn_payment_google);
-        btnPaymentMidtrans = (ImageButton) dialogView.findViewById(R.id.btn_payment_midtrans);
+        btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        btnPaymentGoogle = dialogView.findViewById(R.id.btn_payment_google);
+        btnPaymentMidtrans = dialogView.findViewById(R.id.btn_payment_midtrans);
 
         btnCancel.setOnClickListener(this);
         btnPaymentGoogle.setOnClickListener(this);

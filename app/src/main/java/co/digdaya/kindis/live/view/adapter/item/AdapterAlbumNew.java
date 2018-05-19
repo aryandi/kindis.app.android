@@ -21,6 +21,8 @@ import co.digdaya.kindis.live.model.DataAlbum;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.holder.Item;
 
+import static co.digdaya.kindis.live.helper.Constanta.INTENT_EXTRA_TYPE;
+
 /**
  * Created by DELL on 3/31/2017.
  */
@@ -81,7 +83,7 @@ public class AdapterAlbumNew extends RecyclerView.Adapter<Item> {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
-                intent.putExtra("type", "album");
+                intent.putExtra(INTENT_EXTRA_TYPE, "album");
                 context.startActivity(intent);
             }
         });

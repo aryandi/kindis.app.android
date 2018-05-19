@@ -20,6 +20,7 @@ import java.util.HashMap;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.activity.Detail.DetailInfaq;
 
@@ -141,7 +142,7 @@ public class AdapterBanner extends PagerAdapter {
                 Intent intent = new Intent(mContext, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", data[2]);
-                intent.putExtra("type", "premium");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "premium");
                 intent.putExtra("isMyPlaylist", "false");
                 mContext.startActivity(intent);
                 break;

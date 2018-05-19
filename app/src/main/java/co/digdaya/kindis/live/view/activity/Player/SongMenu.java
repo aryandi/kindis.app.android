@@ -108,7 +108,7 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
                 intent = new Intent(this, DetailArtist.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", playerSessionHelper.getPreferences(getApplicationContext(), "artist_id"));
-                intent.putExtra("type", "artist");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "artist");
                 startActivity(intent);
                 break;
             case R.id.btn_go_to_album:

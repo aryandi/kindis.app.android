@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.ApiHelper;
+import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.model.genre.GenreAlbumModel;
 import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.holder.Item;
@@ -70,7 +71,7 @@ public class GenreAlbumAdapter extends RecyclerView.Adapter<Item> {
                 Intent intent = new Intent(activity, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", uid);
-                intent.putExtra("type", "album");
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "album");
                 activity.startActivity(intent);
             }
         });

@@ -60,15 +60,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "co.digdaya.kindis"
               }
+            },
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },
@@ -115,15 +115,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "co.digdaya.kindis"
               }
+            },
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },
@@ -170,15 +170,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "153105834235-2jftsm9rkgel5f2nbtcfgut6drkov97t.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "co.digdaya.kindis"
               }
+            },
+            {
+              "client_id": "153105834235-nv8o3lc4rdhfekiq3le9qcecunk3sp2j.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },

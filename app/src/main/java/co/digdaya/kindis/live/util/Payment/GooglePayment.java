@@ -39,6 +39,7 @@ public class GooglePayment {
                             result);
                 } else {
                     Log.d("billinggoogle", "In-app Billing is set up OK");
+                    buyClick();
                 }
             }
         });
@@ -58,10 +59,12 @@ public class GooglePayment {
                 // Handle error
                 return;
             }
+//            else {
+//                consumeItem();
+//            }
             else if (purchase.getSku().equals("purchased")) {
                 consumeItem();
             }
-
         }
     };
 
@@ -87,6 +90,7 @@ public class GooglePayment {
             new IabHelper.OnConsumeFinishedListener() {
                 public void onConsumeFinished(Purchase purchase,
                                               IabResult result) {
+
                 }
             };
 }

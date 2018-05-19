@@ -38,10 +38,32 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
-    String transID, transName, orderID, orders, packages;
+    String transID;
+    String transName;
+    String orderID;
+    String orders;
+    String packages;
+    public final static int GOPAY_PAYMENT = 1;
+    public final static int BANK_TRANSFER_PAYMENT = 2;
     int price;
 
-    public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
+    public MidtransPayment(Activity activity, String transID, int price, String transName,
+                           String orderID, String orders, String packages, int paymentMethod) {
+        init(activity, transID, price, transName, orderID, orders, packages);
+        startPayment();
+//        if (paymentMethod == GOPAY_PAYMENT){
+//            startGopayPayment();
+//        } else if (paymentMethod == BANK_TRANSFER_PAYMENT){
+//            startPermataPayment();
+//        }
+    }
+
+    public MidtransPayment(Activity activity, String transID, int price, String transName,
+                           String orderID, String orders, String packages) {
+        init(activity, transID, price, transName, orderID, orders, packages);
+    }
+
+    private void init(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
         this.activity = activity;
         this.transID = transID;
         this.price = price;

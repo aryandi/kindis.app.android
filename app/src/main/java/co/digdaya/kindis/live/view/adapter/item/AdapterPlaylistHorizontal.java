@@ -21,6 +21,8 @@ import co.digdaya.kindis.live.view.activity.Detail.Detail;
 import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.live.view.holder.Item;
 
+import static co.digdaya.kindis.live.helper.Constanta.INTENT_EXTRA_TYPE;
+
 /**
  * Created by DELL on 3/30/2017.
  */
@@ -83,7 +85,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
                 Intent intent = new Intent(context, Detail.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("uid", data.uid);
-                intent.putExtra("type", "premium");
+                intent.putExtra(INTENT_EXTRA_TYPE, "premium");
                 intent.putExtra("isMyPlaylist", "");
                 intent.putExtra("playlisttype", getItemViewType(position));
                 context.startActivity(intent);
