@@ -2,6 +2,7 @@ package co.digdaya.kindis.live.util.Payment;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.model.PriceListModel;
@@ -39,7 +40,6 @@ public class GooglePayment {
                             result);
                 } else {
                     Log.d("billinggoogle", "In-app Billing is set up OK");
-                    buyClick();
                 }
             }
         });
@@ -57,11 +57,9 @@ public class GooglePayment {
         {
             if (result.isFailure()) {
                 // Handle error
+                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
                 return;
             }
-//            else {
-//                consumeItem();
-//            }
             else if (purchase.getSku().equals("purchased")) {
                 consumeItem();
             }
@@ -76,7 +74,6 @@ public class GooglePayment {
             = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result,
                                              Inventory inventory) {
-
             if (result.isFailure()) {
                 // Handle failure
             } else {
@@ -90,7 +87,6 @@ public class GooglePayment {
             new IabHelper.OnConsumeFinishedListener() {
                 public void onConsumeFinished(Purchase purchase,
                                               IabResult result) {
-
                 }
             };
 }

@@ -21,7 +21,6 @@ public class ResultPayment extends AsyncTask<String, Void, Void>{
         sessionHelper = new SessionHelper();
     }
 
-
     @Override
     protected Void doInBackground(String... params) {
         try {
@@ -30,6 +29,7 @@ public class ResultPayment extends AsyncTask<String, Void, Void>{
                 JSONObject result = object.getJSONObject("result");
                 sessionHelper.setPreferences(activity, "token_access", result.getString("access_token"));
                 sessionHelper.setPreferences(activity, "refresh_token", result.getString("refresh_token"));
+                sessionHelper.setPreferences(activity, "is_premium", result.getString("is_premium"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

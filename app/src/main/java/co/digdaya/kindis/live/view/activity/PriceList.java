@@ -58,11 +58,8 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
     RecyclerView list;
     ImageButton btnClose;
-    Button btnGoogle, btnMidtrans;
-
     AdapterPriceList adapterPriceList;
     GooglePayment googlePayment;
-    IabHelper mHelper;
     MidtransPayment midtransPayment;
     SessionHelper sessionHelper;
     ApiCall apiCall;
@@ -86,8 +83,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
         list = findViewById(R.id.list);
         btnClose = findViewById(R.id.btn_close);
-        btnGoogle = findViewById(R.id.btn_google);
-        btnMidtrans = findViewById(R.id.btn_midtrans);
 
         sessionHelper = new SessionHelper();
         loading = new ProgressDialog(this, R.style.MyTheme);
@@ -101,25 +96,23 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 ContextCompat.getColor(this, R.color.yellow));
 
         dialog = new Dialog(this);
-        btnClose.setOnClickListener(this);
-        btnGoogle.setOnClickListener(this);
-        btnMidtrans.setOnClickListener(this);
         btnOk.setOnClickListener(this);
     }
 
     @Override
     public void onSelected(int i) {
-
     }
 
     @Override
     public void onClickGooglePay(final int i) {
+        googlePayment = new GooglePayment(PriceList.this, datas.get(i).package_id, orderID);
+//        googlePayment = new GooglePayment(PriceList.this, ITEM_SKU, orderID);
         dialogMessage = new DialogMessage(this, dialog,
                 "Silahkan memilih pembayaran melalui pulsa atau credit card pada pengaturan Google Pay",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new GooglePayment(PriceList.this, ITEM_SKU, orderID);
+                        googlePayment.buyClick();
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -135,15 +128,17 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     public void onClickGoPay(final int i) {
         final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
                 + new Random().nextInt(89) + 10;
+        int price = Integer.parseInt(datas.get(i).price);
+        price = price + (2 * price / 100);
         midtransPayment = new MidtransPayment(PriceList.this, transID,
-                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                price, datas.get(i).name, orderID,
                 "", "1");
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                     midtransPayment.startGopayPayment();
+                        midtransPayment.startGopayPayment();
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -159,8 +154,9 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     public void onClickTransfer(final int i) {
         final String transID = "PRE" + sessionHelper.getPreferences(getApplicationContext(), "user_id")
                 + new Random().nextInt(89) + 10;
+        int price = Integer.parseInt(datas.get(i).price) + 4000;
         midtransPayment = new MidtransPayment(PriceList.this, transID,
-                Integer.parseInt(datas.get(i).price), datas.get(i).name, orderID,
+                price, datas.get(i).name, orderID,
                 "", "1");
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan transfer bank akan dikenai biaya 4.000 per transaksi",
@@ -241,21 +237,24 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 //                        Toast.makeText(PriceList.this, object.getString("message"),
 //                                Toast.LENGTH_SHORT).show();
                         if (object.getBoolean("status")) {
-                            textVerify.setVisibility(View.GONE);
-                            btnOk.setVisibility(View.GONE);
-                            isVerified = true;
+                            setVerifiedLayout(View.GONE, true);
                         } else {
-                            textVerify.setVisibility(View.VISIBLE);
-                            btnOk.setVisibility(View.VISIBLE);
-                            isVerified = false;
+                            setVerifiedLayout(View.VISIBLE, false);
                         }
-                        getPriceList();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        getPriceList();
                     }
+                } else {
+                    setVerifiedLayout(View.GONE, true);
                 }
+                getPriceList();
             }
         });
+    }
+
+    private void setVerifiedLayout(int visible, boolean b) {
+        textVerify.setVisibility(visible);
+        btnOk.setVisibility(visible);
+        isVerified = b;
     }
 }

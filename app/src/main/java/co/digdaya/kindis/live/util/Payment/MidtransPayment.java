@@ -24,6 +24,7 @@ import java.util.Random;
 
 import co.digdaya.kindis.live.BuildConfig;
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
@@ -34,6 +35,7 @@ import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
  */
 
 public class MidtransPayment {
+    private final AnalyticHelper analyticHelper;
     TransactionRequest transactionRequest;
     Activity activity;
     SessionHelper sessionHelper;
@@ -51,6 +53,7 @@ public class MidtransPayment {
         this.packages = packages;
 
         sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(activity);
         random = new Random();
         initMidtransSDK();
         preparePayment();
@@ -63,7 +66,7 @@ public class MidtransPayment {
                 if (result.getResponse() != null){
                     System.out.println("Response payment: "+result.getResponse().getPaymentType());
                     System.out.println("Response payment uid: "+sessionHelper.getPreferences(activity, "user_id"));
-                    HashMap<String, String> param = new HashMap<String, String>();
+                    HashMap<String, String> param = new HashMap<>();
                     param.put("uid", sessionHelper.getPreferences(activity, "user_id"));
                     param.put("token_access", sessionHelper.getPreferences(activity, "token_access"));
                     param.put("dev_id", "2");
@@ -78,6 +81,8 @@ public class MidtransPayment {
                     param.put("price", String.valueOf(price));
                     param.put("trans_time", result.getResponse().getTransactionTime());
 
+
+
                     new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                         @Override
                         public void onReceive(boolean status, String message, String response) {
@@ -86,6 +91,8 @@ public class MidtransPayment {
                                 try {
                                     JSONObject object = new JSONObject(response);
                                     if (object.getBoolean("status")&&packages.equals("1")){
+                                        analyticHelper.premiumSubscribeClick(transID, "standart",orderID,
+                                                transName, "" , String.valueOf(price), "midtrans");
                                         activity.finish();
                                     }
                                 } catch (JSONException e) {
@@ -110,7 +117,7 @@ public class MidtransPayment {
         CustomerDetails customer = new CustomerDetails();
         customer.setFirstName(sessionHelper.getPreferences(activity.getApplicationContext(), "fullname"));
         customer.setEmail(sessionHelper.getPreferences(activity.getApplicationContext(), "email"));
-        customer.setPhone("");
+        customer.setPhone(sessionHelper.getPreferences(activity.getApplicationContext(), "phone"));
         transactionRequest.setCustomerDetails(customer);
 
         UserAddress userAddress = new UserAddress();

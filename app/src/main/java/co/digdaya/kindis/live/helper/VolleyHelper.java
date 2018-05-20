@@ -60,24 +60,29 @@ public class VolleyHelper {
                             listener.onReceive(false, NO_CONNECTION, null);
                         } else {
                             if (error!=null){
-                                try {
-                                    String responseBody = new String(error.networkResponse.data, "utf-8" );
-                                    Log.d("volleyresponse", responseBody);
-                                    JSONObject jsonObject = new JSONObject( responseBody);
-                                    listener.onReceive(true, SUCCESS, jsonObject.toString());
-                                } catch ( JSONException e ) {
-                                    e.printStackTrace();
+                                if (error.networkResponse.statusCode == 404){
                                     listener.onReceive(false, "Something Error", "");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                    listener.onReceive(false, "Something Error", "");
-                                } catch (NullPointerException e){
-                                    e.printStackTrace();
-                                    listener.onReceive(false, "Something Error", "");
-                                } catch(Exception e){
-                                    e.printStackTrace();
-                                    listener.onReceive(false, "Something Error", "");
+                                } else {
+                                    try {
+                                        String responseBody = new String(error.networkResponse.data, "utf-8" );
+                                        Log.d("volleyresponse", responseBody);
+                                        JSONObject jsonObject = new JSONObject( responseBody);
+                                        listener.onReceive(true, SUCCESS, jsonObject.toString());
+                                    } catch ( JSONException e ) {
+                                        e.printStackTrace();
+                                        listener.onReceive(false, "Something Error", "");
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                        listener.onReceive(false, "Something Error", "");
+                                    } catch (NullPointerException e){
+                                        e.printStackTrace();
+                                        listener.onReceive(false, "Something Error", "");
+                                    } catch(Exception e){
+                                        e.printStackTrace();
+                                        listener.onReceive(false, "Something Error", "");
+                                    }
                                 }
+
                             }
                         }
                     }

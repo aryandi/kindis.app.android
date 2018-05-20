@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_price_list">
@@ -10,15 +10,6 @@
         android:orientation="vertical"
         android:paddingTop="24dp"
         android:paddingBottom="24dp">
-
-        <ImageButton
-            android:id="@+id/btn_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_close"
-            android:visibility="gone"/>
 
         <co.digdaya.kindis.live.custom.TextViewSemiBold
             android:id="@+id/text_title"
@@ -63,39 +54,6 @@
             android:layout_marginTop="24dp"
             android:nestedScrollingEnabled="false" />
 
-        <co.digdaya.kindis.live.custom.TextViewRegular
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pilih metode pembayaran"
-            android:textColor="@color/white"
-            android:visibility="gone"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <co.digdaya.kindis.live.custom.ButtonSemiBold
-                android:id="@+id/btn_google"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_rounded_snow"
-                android:text="Google Play"
-                android:textColor="@color/black" />
-
-            <co.digdaya.kindis.live.custom.ButtonSemiBold
-                android:id="@+id/btn_midtrans"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/button_rounded_blue"
-                android:text="Other Method"
-                android:textColor="@color/white" />
-        </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

@@ -138,6 +138,7 @@ public class AdapterPriceList extends RecyclerView.Adapter<ItemPriceList> {
 
             itemPriceList.layoutButton.setVisibility(View.VISIBLE);
             itemPriceList.space.setVisibility(View.GONE);
+            itemPriceList.layout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rounded_yellow_10));
             onSelectedItem.onSelected(i);
         }
 

@@ -152,7 +152,7 @@ public class Premium extends AppCompatActivity {
                 param.put("dev_id", "2");
                 param.put("client_id", "xBc3w11");
                 param.put("package", "1");
-                String transID = sessionHelper.getPreferences(getApplicationContext(), "transID");
+                final String transID = sessionHelper.getPreferences(getApplicationContext(), "transID");
                 param.put("trans_id", transID);
 //                param.put("order_id", sessionHelper.getPreferences(getApplicationContext(), "transID"));
                 param.put("order", "[]");
@@ -161,7 +161,7 @@ public class Premium extends AppCompatActivity {
                 param.put("payment_type", "google_play");
                 param.put("payment_status", "200");
                 param.put("payment_status_msg", "success");
-                String price = sessionHelper.getPreferences(getApplicationContext(), "price");
+                final String price = sessionHelper.getPreferences(getApplicationContext(), "price");
                 param.put("price", price);
                 param.put("trans_time", "");
                 System.out.println("onActivityResult: " + param);
@@ -176,8 +176,7 @@ public class Premium extends AppCompatActivity {
                         }
                     };
                 }
-//                analyticHelper.premiumSubscribeClick(transID, "standart",order,
-//                        productName,  ,price, "google_play");
+                final String finalProductName = productName;
                 new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                     @Override
                     public void onReceive(boolean status, String message, String response) {
@@ -186,6 +185,8 @@ public class Premium extends AppCompatActivity {
                             try {
                                 JSONObject object = new JSONObject(response);
                                 if (object.getBoolean("status")) {
+                                    analyticHelper.premiumSubscribeClick(transID, "standart",order,
+                                            finalProductName, "" ,price, "google_play");
                                     finish();
                                 }
                             } catch (JSONException e) {
