@@ -87,24 +87,24 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         checkPermission = new CheckPermission(this);
         analyticHelper = new AnalyticHelper(this);
 
-        hide = (ImageButton) findViewById(R.id.btn_hide);
-        btnNext = (ImageButton) findViewById(R.id.btn_next);
-        btnBack = (ImageButton) findViewById(R.id.btn_back);
-        btnLooping = (ImageButton) findViewById(R.id.btn_looping);
-        btnMenu = (ImageButton) findViewById(R.id.btn_songlis);
-        btnList = (ImageButton) findViewById(R.id.btn_list);
-        btnShuffle = (ImageButton) findViewById(R.id.btn_shuffle);
-        btnDownload = (ImageButton) findViewById(R.id.btn_download);
-        icPlay = (ImageView) findViewById(R.id.btn_play);
-        viewPager = (ViewPager) findViewById(R.id.list_player);
-        btnPlay = (RelativeLayout) findViewById(R.id.cont_play);
-        txtDuration = (TextView) findViewById(R.id.duration);
-        txtProgress = (TextView) findViewById(R.id.current_time);
-        title = (TextView) findViewById(R.id.title);
-        subtitle = (TextView) findViewById(R.id.subtitle);
-        seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
-        titleActivity = (TextView) findViewById(R.id.title_activity);
-        subtitleActivity = (TextView) findViewById(R.id.subtitle_activity);
+        hide = findViewById(R.id.btn_hide);
+        btnNext = findViewById(R.id.btn_next);
+        btnBack = findViewById(R.id.btn_back);
+        btnLooping = findViewById(R.id.btn_looping);
+        btnMenu = findViewById(R.id.btn_songlis);
+        btnList = findViewById(R.id.btn_list);
+        btnShuffle = findViewById(R.id.btn_shuffle);
+        btnDownload = findViewById(R.id.btn_download);
+        icPlay = findViewById(R.id.btn_play);
+        viewPager = findViewById(R.id.list_player);
+        btnPlay = findViewById(R.id.cont_play);
+        txtDuration = findViewById(R.id.duration);
+        txtProgress = findViewById(R.id.current_time);
+        title = findViewById(R.id.title);
+        subtitle = findViewById(R.id.subtitle);
+        seekBar = findViewById(R.id.seek_bar);
+        titleActivity = findViewById(R.id.title_activity);
+        subtitleActivity = findViewById(R.id.subtitle_activity);
 
         index = Integer.parseInt(playerSessionHelper.getPreferences(getApplicationContext(), "index"));
         isAccountPremium = Integer.parseInt(new SessionHelper().getPreferences(getApplicationContext(), "is_premium"));
@@ -155,10 +155,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                analyticHelper.playerAction("player",
-                        "cut_listen", songPlaylist.get(index),
-                        playerSessionHelper.getPreferences(getApplicationContext(), "title"),
-                        String.valueOf(i));
             }
 
             @Override
@@ -172,6 +168,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 intent.setAction(PlayerActionHelper.ACTION_SEEK);
                 intent.putExtra("progress", seekBar.getProgress());
                 startService(intent);
+                analyticHelper.playerAction("player",
+                        "cut_listen", songPlaylist.get(index),
+                        playerSessionHelper.getPreferences(getApplicationContext(), "title"),
+                        String.valueOf(seekBar.getProgress()));
             }
         });
 

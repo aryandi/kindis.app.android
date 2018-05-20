@@ -39,7 +39,8 @@ public class DialogSingleMenu implements View.OnClickListener {
     private Boolean isArtist, isPlaylistOnly;
     private TextView btnGotoArtist, btnShare, btnAddToPlaylist;
 
-    public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID, String shareLink, Boolean isArtist, Boolean isPlaylistOnly) {
+    public DialogSingleMenu(Activity activity, Dialog dialog, String uidSingle, String artistID,
+                            String shareLink, Boolean isArtist, Boolean isPlaylistOnly) {
         this.activity = activity;
         this.dialog = dialog;
         this.uidSingle = uidSingle;
@@ -62,12 +63,12 @@ public class DialogSingleMenu implements View.OnClickListener {
     }
 
     private void initView(View view){
-        listViewPlaylist = (RecyclerView) view.findViewById(R.id.list_playlist);
+        listViewPlaylist = view.findViewById(R.id.list_playlist);
         listViewPlaylist.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
 
-        btnGotoArtist = (TextView) view.findViewById(R.id.btn_goto_artist);
-        btnShare = (TextView) view.findViewById(R.id.btn_share);
-        btnAddToPlaylist = (TextView) view.findViewById(R.id.btn_add_to_playlist);
+        btnGotoArtist = view.findViewById(R.id.btn_goto_artist);
+        btnShare = view.findViewById(R.id.btn_share);
+        btnAddToPlaylist = view.findViewById(R.id.btn_add_to_playlist);
 
         if (isPlaylistOnly){
             btnGotoArtist.setVisibility(View.GONE);

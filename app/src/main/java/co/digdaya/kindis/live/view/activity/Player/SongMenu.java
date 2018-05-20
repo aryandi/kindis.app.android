@@ -38,15 +38,15 @@ public class SongMenu extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_menu);
 
-        image = (ImageView) findViewById(R.id.image);
-        title = (TextView) findViewById(R.id.title);
-        subtitle = (TextView) findViewById(R.id.subtitle);
-        btnBack = (ImageButton) findViewById(R.id.btn_back);
-        btnAddToPlaylist = (LinearLayout) findViewById(R.id.btn_add_to_playlist);
-        btnSaveOffline = (LinearLayout) findViewById(R.id.btn_save_offline);
-        btnShare = (LinearLayout) findViewById(R.id.btn_share);
-        btnGoToArtist = (LinearLayout) findViewById(R.id.btn_go_to_artist);
-        btnGoToAlbum = (LinearLayout) findViewById(R.id.btn_go_to_album);
+        image = findViewById(R.id.image);
+        title = findViewById(R.id.title);
+        subtitle = findViewById(R.id.subtitle);
+        btnBack = findViewById(R.id.btn_back);
+        btnAddToPlaylist = findViewById(R.id.btn_add_to_playlist);
+        btnSaveOffline = findViewById(R.id.btn_save_offline);
+        btnShare = findViewById(R.id.btn_share);
+        btnGoToArtist = findViewById(R.id.btn_go_to_artist);
+        btnGoToAlbum = findViewById(R.id.btn_go_to_album);
 
         playerSessionHelper = new PlayerSessionHelper();
         analyticHelper = new AnalyticHelper(this);

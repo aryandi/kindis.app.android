@@ -62,20 +62,20 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_song_player);
 
-        btnHide = (ImageButton) findViewById(R.id.btn_hide);
-        labelPlayNext = (TextView) findViewById(R.id.label_play_next);
+        btnHide = findViewById(R.id.btn_hide);
+        labelPlayNext = findViewById(R.id.label_play_next);
 
-        contSingle = (RelativeLayout) findViewById(R.id.cont_single);
-        listViewSong = (RecyclerView) findViewById(R.id.list_songs);
+        contSingle = findViewById(R.id.cont_single);
+        listViewSong = findViewById(R.id.list_songs);
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         listViewSong.setLayoutManager(linearLayoutManager);
 
-        imgSong = (ImageView) findViewById(R.id.image_song);
-        titlePlay = (TextView) findViewById(R.id.title_play);
-        subtitlePlay = (TextView) findViewById(R.id.subtitle_play);
-        btnMenuPlay = (ImageButton) findViewById(R.id.btn_menu_play);
-        titleActivity = (TextView) findViewById(R.id.title_activity);
-        subtitleActivity = (TextView) findViewById(R.id.subtitle_activity);
+        imgSong = findViewById(R.id.image_song);
+        titlePlay = findViewById(R.id.title_play);
+        subtitlePlay = findViewById(R.id.subtitle_play);
+        btnMenuPlay = findViewById(R.id.btn_menu_play);
+        titleActivity = findViewById(R.id.title_activity);
+        subtitleActivity = findViewById(R.id.subtitle_activity);
 
         btnHide.setOnClickListener(this);
         btnMenuPlay.setOnClickListener(this);
@@ -131,7 +131,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
                         intent.putExtra(Constanta.INTENT_EXTRA_IMAGE, playerSessionHelper.getPreferences(getApplicationContext(), "image"));
                         intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
                         intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
-                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                        intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, uid);
                         startActivity(intent);
                     }
                 });

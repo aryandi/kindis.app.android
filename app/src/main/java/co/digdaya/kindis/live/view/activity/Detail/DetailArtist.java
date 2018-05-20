@@ -77,16 +77,16 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        imageSlider = (ViewPager) findViewById(R.id.viewpager_slider);
-        indicator = (CircleIndicator) findViewById(R.id.indicator);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
-        appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
-        titleToolbar = (TextView) findViewById(R.id.title_toolbar);
-        contLabel = (RelativeLayout) findViewById(R.id.cont_label);
-        btnPlayAll = (Button) findViewById(R.id.btn_play_all);
-        listViewAlbum = (RecyclerView) findViewById(R.id.list_album);
-        listViewSong = (RecyclerView) findViewById(R.id.list_songs);
+        imageSlider = findViewById(R.id.viewpager_slider);
+        indicator = findViewById(R.id.indicator);
+        toolbar = findViewById(R.id.toolbar);
+        contFloatingButton = findViewById(R.id.cont_floating_button);
+        appBarLayout = findViewById(R.id.htab_appbar);
+        titleToolbar = findViewById(R.id.title_toolbar);
+        contLabel = findViewById(R.id.cont_label);
+        btnPlayAll = findViewById(R.id.btn_play_all);
+        listViewAlbum = findViewById(R.id.list_album);
+        listViewSong = findViewById(R.id.list_songs);
 
         playerSessionHelper = new PlayerSessionHelper();
 
@@ -234,7 +234,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
                 intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
                 intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
                 intent.putExtra(Constanta.INTENT_EXTRA_ORIGIN, "album");
-                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
+                intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, uid);
                 startActivity(intent);
             }
         });
