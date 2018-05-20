@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
@@ -127,6 +128,7 @@ public class DialogSingleMenu implements View.OnClickListener {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, shareLink);
                 sendIntent.setType("text/plain");
                 activity.startActivity(sendIntent);
+                new AnalyticHelper(activity).shareAction("single menu", uidSingle,"" , "artist");
                 break;
             case R.id.btn_goto_artist:
                 Intent intent = new Intent(activity, DetailArtist.class);

@@ -155,7 +155,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+                analyticHelper.playerAction("player",
+                        "cut_listen", songPlaylist.get(index),
+                        playerSessionHelper.getPreferences(getApplicationContext(), "title"),
+                        String.valueOf(i));
             }
 
             @Override
@@ -306,14 +309,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             startActivity(intent);
         } else if (view.getId() == R.id.cont_play) {
             if (!playerSessionHelper.getPreferences(getApplicationContext(), "isplaying").equals("true")) {
-                analyticHelper.playerToogle("pause");
+                setPlayAnalytics("pause");
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "true");
                 icPlay.setImageResource(R.drawable.ic_pause_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_PLAY);
                 startService(intent);
             } else {
-                analyticHelper.playerToogle("play");
+                setPlayAnalytics("play");
                 playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                 icPlay.setImageResource(R.drawable.ic_play_large);
                 Intent intent = new Intent(Player.this, PlayerService.class);
