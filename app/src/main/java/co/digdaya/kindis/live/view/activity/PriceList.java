@@ -33,13 +33,11 @@ import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.model.PriceListModel;
 import co.digdaya.kindis.live.network.ApiCall;
 import co.digdaya.kindis.live.network.ApiUtil;
-import co.digdaya.kindis.live.util.GoogleBilling.IabHelper;
+import co.digdaya.kindis.live.util.GoogleBilling.SkuDetails;
 import co.digdaya.kindis.live.util.Payment.GooglePayment;
 import co.digdaya.kindis.live.util.Payment.MidtransPayment;
 import co.digdaya.kindis.live.view.activity.Account.VerifyAccount;
 import co.digdaya.kindis.live.view.adapter.AdapterPriceList;
-import co.digdaya.kindis.live.view.dialog.DialogAlertPremium;
-import co.digdaya.kindis.live.view.dialog.DialogGetPremium;
 import co.digdaya.kindis.live.view.dialog.DialogMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +50,7 @@ import static co.digdaya.kindis.live.helper.Constanta.PREF_USERID;
  * Created by vincenttp on 10/31/17.
  */
 
-public class PriceList extends AppCompatActivity implements AdapterPriceList.OnSelectedItem, View.OnClickListener {
+public class PriceList extends AppCompatActivity implements AdapterPriceList.OnSelectedItem, View.OnClickListener, GooglePayment.ResultListener {
     List<PriceListModel.Data> datas;
     String orderID;
 
@@ -89,7 +87,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
         loading.setCancelable(false);
         apiCall = ApiUtil.callService();
-
         checkPremium();
 
         TextViewHelper.setSpanColor(textVerify, "Kindis Premium",
@@ -105,14 +102,14 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
 
     @Override
     public void onClickGooglePay(final int i) {
-        googlePayment = new GooglePayment(PriceList.this, datas.get(i).package_id, orderID);
+//        googlePayment = new GooglePayment(PriceList.this, datas.get(i).package_id, orderID);
 //        googlePayment = new GooglePayment(PriceList.this, ITEM_SKU, orderID);
         dialogMessage = new DialogMessage(this, dialog,
                 "Silahkan memilih pembayaran melalui pulsa atau credit card pada pengaturan Google Pay",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        googlePayment.buyClick();
+                        googlePayment.buyClick(datas.get(i).package_id);
                     }
                 }, new View.OnClickListener() {
             @Override
@@ -195,6 +192,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     }
 
     private void getPriceList() {
+        loading.show();
         String url = ApiHelper.PRICE_LIST + sessionHelper.getPreferences(getApplicationContext(),
                 "user_id") + "&dev_id=2&client_id=xBc3w11&token_access="
                 + sessionHelper.getPreferences(getApplicationContext(), "token_access");
@@ -204,17 +202,13 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 if (response.body().status) {
                     datas = response.body().result.data;
                     orderID = response.body().result.order_id;
-                    adapterPriceList = new AdapterPriceList(getApplicationContext(), datas, isVerified);
-                    list.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
-                            LinearLayoutManager.VERTICAL, false));
-                    list.setAdapter(adapterPriceList);
-                    adapterPriceList.setOnSelectedItem(PriceList.this);
+                    googlePayment = new GooglePayment(PriceList.this, orderID, PriceList.this);
                 }
             }
 
             @Override
             public void onFailure(Call<PriceListModel> call, Throwable t) {
-
+                loading.dismiss();
             }
         });
     }
@@ -256,5 +250,24 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         textVerify.setVisibility(visible);
         btnOk.setVisibility(visible);
         isVerified = b;
+    }
+
+    @Override
+    public void showListDetail(List<SkuDetails> skuDetailsList) {
+        loading.dismiss();
+        for (int i = 0; i < datas.size(); i++) {
+            SkuDetails skuDetails = skuDetailsList.get(i);
+            PriceListModel.Data data = datas.get(i);
+            data.package_id = skuDetails.getSku();
+            String price = skuDetails.getPrice();
+            price = price.replaceAll("\\D+","");
+            data.price = price;
+        }
+        adapterPriceList = new AdapterPriceList(getApplicationContext(), datas, isVerified);
+        list.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
+                LinearLayoutManager.VERTICAL, false));
+        list.setAdapter(adapterPriceList);
+        adapterPriceList.setOnSelectedItem(PriceList.this);
+
     }
 }
