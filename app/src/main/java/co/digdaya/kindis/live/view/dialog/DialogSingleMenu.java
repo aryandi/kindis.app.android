@@ -95,6 +95,7 @@ public class DialogSingleMenu implements View.OnClickListener {
                         if (object.getBoolean("status")){
                             JSONObject result = object.getJSONObject("result");
                             JSONArray playlist = result.getJSONArray("playlist");
+                            listPlaylist.clear();
                             for (int i=0; i<playlist.length(); i++){
                                 JSONObject data = playlist.getJSONObject(i);
                                 HashMap<String, String> map = new HashMap<>();

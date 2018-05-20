@@ -46,7 +46,7 @@ public class AdapterPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
         dataPlaylis = listPlaylist.get(position);
 
         final String uid = dataPlaylis.get("playlist_id");
-        final String title = dataPlaylis.get("title");
+        final String title = dataPlaylis.get("location");
         txtTitle.setText(title);
 
         if (isMyPlaylist.equals("true")){

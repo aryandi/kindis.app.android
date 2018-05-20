@@ -22,7 +22,7 @@ import co.digdaya.kindis.live.view.holder.ItemPlaylist;
 
 public class AdapterInsertItemPlaylist extends RecyclerView.Adapter<ItemPlaylist> {
     private Activity activity;
-    private ArrayList<HashMap<String, String>> listPlaylist = new ArrayList<HashMap<String, String>>();
+    private ArrayList<HashMap<String, String>> listPlaylist;
     private HashMap<String, String> dataPlaylis;
     private String uidSingle;
     private Dialog dialog;

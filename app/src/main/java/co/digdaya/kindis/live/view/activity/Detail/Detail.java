@@ -236,7 +236,6 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             description.setText(summary.getString("description"));
                             playerSessionHelper.setPreferences(getApplicationContext(), "subtitle_player", summary.getString("title"));
 
-
                             Glide.with(getApplicationContext())
                                     .load(ApiHelper.BASE_URL_IMAGE+summary.getString("banner_image"))
                                     .thumbnail( 0.1f )
