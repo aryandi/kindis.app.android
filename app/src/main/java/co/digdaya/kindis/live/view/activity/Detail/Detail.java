@@ -104,17 +104,17 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
-        contFloatingButton = (LinearLayout) findViewById(R.id.cont_floating_button);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        contLabel = (RelativeLayout) findViewById(R.id.cont_label);
-        titleToolbar = (TextView) toolbar.findViewById(R.id.title_toolbar);
-        titleDetail = (TextView) findViewById(R.id.title_detail);
-        description = (TextView) findViewById(R.id.description);
-        backDrop = (ImageView) findViewById(R.id.backdrop);
-        btnPlayAll = (Button) findViewById(R.id.btn_play_all);
-        btnPremium = (Button) findViewById(R.id.btn_premium);
-        listViewSong = (RecyclerView) findViewById(R.id.list_songs);
+        appBarLayout = findViewById(R.id.htab_appbar);
+        contFloatingButton = findViewById(R.id.cont_floating_button);
+        toolbar = findViewById(R.id.toolbar);
+        contLabel = findViewById(R.id.cont_label);
+        titleToolbar = toolbar.findViewById(R.id.title_toolbar);
+        titleDetail = findViewById(R.id.title_detail);
+        description = findViewById(R.id.description);
+        backDrop = findViewById(R.id.backdrop);
+        btnPlayAll = findViewById(R.id.btn_play_all);
+        btnPremium = findViewById(R.id.btn_premium);
+        listViewSong = findViewById(R.id.list_songs);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

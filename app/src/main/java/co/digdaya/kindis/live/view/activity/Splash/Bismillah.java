@@ -44,7 +44,7 @@ public class Bismillah extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        enter = (Button) findViewById(R.id.btn_enter);
+        enter = findViewById(R.id.btn_enter);
         playerSessionHelper = new PlayerSessionHelper();
         analyticHelper = new AnalyticHelper(this);
         sessionHelper = new SessionHelper();

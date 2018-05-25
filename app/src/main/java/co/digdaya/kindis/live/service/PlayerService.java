@@ -104,6 +104,8 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
 
         if (intent!=null){
+            String single_id = intent.getStringExtra("single_id");
+            playerSessionHelper.setPreferences(getApplicationContext(), "single_id", single_id);
             switch (intent.getAction()){
                 case PlayerActionHelper.UPDATE_RESOURCE:
                     playerSessionHelper.setPreferences(getApplicationContext(), "is_offline_mode", "false");
@@ -113,7 +115,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                         playerSessionHelper.setPreferences(getApplicationContext(), "isplaying", "false");
                     }
                     System.out.println("getSongResources update");
-                    getSongResources(intent.getStringExtra("single_id"));
+                    getSongResources(single_id);
                     break;
                 case PlayerActionHelper.ACTION_PLAY:
                     Boolean isOfflineMode = Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "is_offline_mode"));
@@ -145,7 +147,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                     mediaPlayer.seekTo(intent.getIntExtra("progress", mediaPlayer.getCurrentPosition()));
                     break;
                 case PlayerActionHelper.PLAY_MULTYSOURCE:
-                    System.out.println("playall intent: "+intent.getStringExtra("single_id"));
+                    System.out.println("playall intent: "+ single_id);
                     playlistPosition = 0;
                     if (mediaPlayer.isPlaying()){
                         mediaPlayer.stop();
@@ -153,7 +155,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                     }
                     songPlaylist = intent.getStringArrayListExtra("list_uid");
                     System.out.println("getSongResources multi");
-                    getSongResources(intent.getStringExtra("single_id"));
+                    getSongResources(single_id);
                     break;
                 case PlayerActionHelper.ACTION_PLAYBACK:
                     if (mediaPlayer.isPlaying()){
@@ -178,7 +180,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                     }
                     songPlaylist = intent.getStringArrayListExtra("list_uid");
                     System.out.println("getSongResources playlist");
-                    getSongResources(intent.getStringExtra("single_id"));
+                    getSongResources(single_id);
                     break;
                 case PlayerActionHelper.ACTION_NEXT:
                     if (cekSizePlaylist()){
@@ -396,7 +398,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         System.out.println("Paramssongresource : "+single_id+"\n"+sessionHelper.getPreferences(getApplicationContext(), "user_id")+"\n"+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
 
-        playerSessionHelper.setPreferences(getApplicationContext(), "uid", single_id);
+        playerSessionHelper.setPreferences(getApplicationContext(), "single_id", single_id);
         volleyHelper.post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
@@ -419,7 +421,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                                     playMediaPlayer();
                                     title = result.getString("title");
                                     subtitle = result.getString("artist") +" | "+result.getString("album");
-                                    sendBroadcestInfo(result.getString("title"), result.getString("album"), playlistPosition);
+                                    sendBroadcestInfo(title, subtitle, playlistPosition);
                                     if (noti != null) {
                                         updateNotification();
                                     }
@@ -601,6 +603,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
         title = playerSessionHelper.getPreferences(getApplicationContext(), "title");
         subtitle = playerSessionHelper.getPreferences(getApplicationContext(), "subtitle");
+
         sendBroadcestInfo(title, subtitle, playlistPosition);
         if (noti != null) {
             updateNotification();

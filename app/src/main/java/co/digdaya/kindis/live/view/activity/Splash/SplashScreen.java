@@ -22,6 +22,7 @@ import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.RefreshToken;
+import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 
 import static co.digdaya.kindis.live.helper.VolleyHelper.NO_CONNECTION;
 
@@ -115,18 +116,19 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void wasLogin(){
-        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
-        long currentTimeMillis = System.currentTimeMillis()/1000;
-        if (TextUtils.isEmpty(expired_in)) {
-            refreshToken();
-        } else {
-            if (currentTimeMillis > Long.parseLong(expired_in)){
-                refreshToken();
-            } else {
-                Intent i = new Intent(SplashScreen.this, Bismillah.class);
-                startActivity(i);
-            }
-        }
+        refreshToken();
+//        String expired_in = sessionHelper.getPreferences(getApplicationContext(), "expires_in");
+//        long currentTimeMillis = System.currentTimeMillis()/1000;
+//        if (TextUtils.isEmpty(expired_in)) {
+//            refreshToken();
+//        } else {
+//            if (currentTimeMillis > Long.parseLong(expired_in)){
+//                refreshToken();
+//            } else {
+//                Intent i = new Intent(SplashScreen.this, Bismillah.class);
+//                startActivity(i);
+//            }
+//        }
     }
 
     private void refreshToken() {
@@ -168,7 +170,7 @@ public class SplashScreen extends AppCompatActivity {
                         //ToDO create retry dialog
                         Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        Intent i = new Intent(SplashScreen.this, LoginSocmedActivity.class);
                         startActivity(i);
                     }
                 }

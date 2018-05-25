@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import co.digdaya.kindis.live.BuildConfig;
@@ -29,6 +30,7 @@ import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.ResultPayment;
+import co.digdaya.kindis.live.util.GoogleBilling.SkuDetails;
 
 /**
  * Created by DELL on 4/9/2017.
@@ -40,7 +42,12 @@ public class MidtransPayment {
     Activity activity;
     SessionHelper sessionHelper;
     Random random;
-    String transID, transName, orderID, orders, packages;
+    String transID;
+    String transName;
+    String orderID;
+    String orders;
+    String packages;
+    private ResultListener listener;
     int price;
 
     public MidtransPayment(Activity activity, String transID, int price, String transName, String orderID, String orders, String packages) {
@@ -57,6 +64,26 @@ public class MidtransPayment {
         random = new Random();
         initMidtransSDK();
         preparePayment();
+    }
+
+    public MidtransPayment(Activity activity, String transID, int price, String transName,
+                           String orderID, String orders, String packages, ResultListener listener) {
+        this.listener = listener;
+        listener.showLoading();
+        this.activity = activity;
+        this.transID = transID;
+        this.price = price;
+        this.transName = transName;
+        this.orderID = orderID;
+        this.orders = orders;
+        this.packages = packages;
+
+        sessionHelper = new SessionHelper();
+        analyticHelper = new AnalyticHelper(activity);
+        random = new Random();
+        initMidtransSDK();
+        preparePayment();
+        listener.hideLoading();
     }
 
     private void initMidtransSDK() {
@@ -80,8 +107,6 @@ public class MidtransPayment {
                     param.put("payment_status_msg", result.getResponse().getStatusMessage());
                     param.put("price", String.valueOf(price));
                     param.put("trans_time", result.getResponse().getTransactionTime());
-
-
 
                     new VolleyHelper().post(ApiHelper.PAYMENT, param, new VolleyHelper.HttpListener<String>() {
                         @Override
@@ -163,5 +188,10 @@ public class MidtransPayment {
 
     public void startTransferBankPayment(){
         MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.BANK_TRANSFER_PERMATA);
+    }
+
+    public interface ResultListener {
+        void showLoading();
+        void hideLoading();
     }
 }

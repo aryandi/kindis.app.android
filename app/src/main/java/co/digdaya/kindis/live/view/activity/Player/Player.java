@@ -81,7 +81,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         ButterKnife.bind(this);
 
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
-        songPlaylist = new ArrayList<>();
 
         dialogAlertPremium = new DialogAlertPremium(this, dialogPremium);
         checkPermission = new CheckPermission(this);
@@ -169,7 +168,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 intent.putExtra("progress", seekBar.getProgress());
                 startService(intent);
                 analyticHelper.playerAction("player",
-                        "cut_listen", songPlaylist.get(index),
+                        "cut_listen",getSingleId(),
                         playerSessionHelper.getPreferences(getApplicationContext(), "title"),
                         String.valueOf(seekBar.getProgress()));
             }
@@ -298,7 +297,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             intent.putExtra(Constanta.INTENT_EXTRA_TITLE, playerSessionHelper.getPreferences(getApplicationContext(), "title"));
             intent.putExtra(Constanta.INTENT_EXTRA_SUBTITLE, playerSessionHelper.getPreferences(getApplicationContext(), "subtitle"));
             intent.putExtra(Constanta.INTENT_EXTRA_ORIGIN, "player");
-            intent.putExtra(Constanta.INTENT_EXTRA_CONTENT_ID, songPlaylist.get(index));
+            intent.putExtra(Constanta.INTENT_EXTRA_CONTENT_ID, getSingleId());
             intent.putExtra(Constanta.INTENT_ACTION_DOWNLOAD_SINGLE_ID, playerSessionHelper.getPreferences(getApplicationContext(), "uid"));
             startActivity(intent);
         } else if (view.getId() == R.id.btn_list) {
@@ -367,8 +366,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     }
 
     private void setPlayAnalytics(String playToogle) {
-        analyticHelper.playerAction("player", playToogle, songPlaylist.get(index),
+        analyticHelper.playerAction("player", playToogle, getSingleId(),
                 playerSessionHelper.getPreferences(getApplicationContext(), "title"), "null");
+    }
+
+    private String getSingleId(){
+        return playerSessionHelper.getPreferences(getApplicationContext(), "single_id");
     }
 
     @Override

@@ -9,9 +9,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import org.json.JSONException;
@@ -50,7 +50,8 @@ import static co.digdaya.kindis.live.helper.Constanta.PREF_USERID;
  * Created by vincenttp on 10/31/17.
  */
 
-public class PriceList extends AppCompatActivity implements AdapterPriceList.OnSelectedItem, View.OnClickListener, GooglePayment.ResultListener {
+public class PriceList extends AppCompatActivity implements AdapterPriceList.OnSelectedItem,
+        View.OnClickListener, GooglePayment.ResultListener, MidtransPayment.ResultListener {
     List<PriceListModel.Data> datas;
     String orderID;
 
@@ -129,7 +130,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         price = price + (2 * price / 100);
         midtransPayment = new MidtransPayment(PriceList.this, transID,
                 price, datas.get(i).name, orderID,
-                "", "1");
+                "", "1", this);
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
                 new View.OnClickListener() {
@@ -154,7 +155,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         int price = Integer.parseInt(datas.get(i).price) + 4000;
         midtransPayment = new MidtransPayment(PriceList.this, transID,
                 price, datas.get(i).name, orderID,
-                "", "1");
+                "", "1", this);
         dialogMessage = new DialogMessage(this, dialog,
                 "Transaksi menggunakan transfer bank akan dikenai biaya 4.000 per transaksi",
                 new View.OnClickListener() {
@@ -257,11 +258,15 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         loading.dismiss();
         for (int i = 0; i < datas.size(); i++) {
             SkuDetails skuDetails = skuDetailsList.get(i);
-            PriceListModel.Data data = datas.get(i);
-            data.package_id = skuDetails.getSku();
-            String price = skuDetails.getPrice();
-            price = price.replaceAll("\\D+","");
-            data.price = price;
+            if (skuDetails != null) {
+                PriceListModel.Data data = datas.get(i);
+                if (!TextUtils.isEmpty(skuDetails.getSku())) data.package_id = skuDetails.getSku();
+                if (!TextUtils.isEmpty(skuDetails.getPrice())) {
+                    String price = skuDetails.getPrice();
+                    price = price.replaceAll("\\D+", "");
+                    data.price = price;
+                }
+            }
         }
         adapterPriceList = new AdapterPriceList(getApplicationContext(), datas, isVerified);
         list.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
@@ -269,5 +274,15 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         list.setAdapter(adapterPriceList);
         adapterPriceList.setOnSelectedItem(PriceList.this);
 
+    }
+
+    @Override
+    public void showLoading() {
+        loading.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loading.dismiss();
     }
 }

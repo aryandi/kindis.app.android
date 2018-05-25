@@ -2,6 +2,7 @@ package co.digdaya.kindis.live.view.fragment.bottomnavigation.musiq;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -33,6 +34,8 @@ import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckConnection;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
+import co.digdaya.kindis.live.view.activity.Account.LoginActivity;
+import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 import co.digdaya.kindis.live.view.adapter.AdapterBanner;
 import co.digdaya.kindis.live.view.adapter.AdapterBannerEmpty;
 import co.digdaya.kindis.live.view.adapter.tab.AdapterMusiq;
@@ -91,11 +94,11 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
         analyticHelper = new AnalyticHelper(getActivity());
         analyticHelper.event("home/music");
 
-        tabLayout = (TabLayout) view.findViewById(R.id.htab_tabs);
-        viewPager = (ViewPager) view.findViewById(R.id.htab_viewpager);
-        imageSlider = (ViewPager) view.findViewById(R.id.viewpager_slider);
-        indicator = (CircleIndicator) view.findViewById(R.id.indicator);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        tabLayout = view.findViewById(R.id.htab_tabs);
+        viewPager = view.findViewById(R.id.htab_viewpager);
+        imageSlider = view.findViewById(R.id.viewpager_slider);
+        indicator = view.findViewById(R.id.indicator);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         gson = new Gson();
 
         //tab
@@ -104,8 +107,8 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
         tabLayout.addTab(tabLayout.newTab().setText("Recently"));
         tabLayout.addTab(tabLayout.newTab().setText("Genre"));
 
-        emptyState = (NestedScrollView) view.findViewById(R.id.empty_state);
-        refresh = (Button) view.findViewById(R.id.btn_refresh);
+        emptyState = view.findViewById(R.id.empty_state);
+        refresh = view.findViewById(R.id.btn_refresh);
 
         loading = new ProgressDialog(getActivity(), R.style.MyTheme);
         loading.setProgressStyle(android.R.style.Widget_Material_Light_ProgressBar_Large_Inverse);
@@ -171,7 +174,14 @@ public class Musiq extends Fragment implements SwipeRefreshLayout.OnRefreshListe
                                 tab.setCustomView(adapter.getTabView(i));
                             }
                         }else {
-                            setLayout();
+                            String errorMessage = object.getString("message");
+                            if (errorMessage.equals("invalid User") || errorMessage.equals("Invalid User")){
+                                Intent i = new Intent(getActivity().getApplicationContext(), LoginSocmedActivity.class);
+                                startActivity(i);
+                                getActivity().finish();
+                            } else {
+                                setLayout();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
