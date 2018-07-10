@@ -33,13 +33,13 @@ public class ItemListTab extends RecyclerView.ViewHolder {
 
     public ItemListTab(View itemView, SessionHelper sessionHelper, String[] ads) {
         super(itemView);
-        title = (TextView) itemView.findViewById(R.id.text_list);
-        btnMore = (TextView) itemView.findViewById(R.id.btn_more_list);
-        list = (RecyclerView) itemView.findViewById(R.id.list);
+        title = itemView.findViewById(R.id.text_list);
+        btnMore = itemView.findViewById(R.id.btn_more_list);
+        list = itemView.findViewById(R.id.list);
         imageAds = itemView.findViewById(R.id.image_ads);
-        imageAds1 = (AdView) itemView.findViewById(R.id.image_ads_1);
-        imageAds2 = (AdView) itemView.findViewById(R.id.image_ads_2);
-        imageAds3 = (AdView) itemView.findViewById(R.id.image_ads_3);
-        imageAds4 = (AdView) itemView.findViewById(R.id.image_ads_4);
+        imageAds1 = itemView.findViewById(R.id.image_ads_1);
+        imageAds2 = itemView.findViewById(R.id.image_ads_2);
+        imageAds3 = itemView.findViewById(R.id.image_ads_3);
+        imageAds4 = itemView.findViewById(R.id.image_ads_4);
     }
 }

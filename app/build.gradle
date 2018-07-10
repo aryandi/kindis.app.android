@@ -3,7 +3,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     useLibrary 'org.apache.http.legacy'
     configurations.all {
         resolutionStrategy.force 'com.android.support:multidex:1.0.3'
@@ -12,8 +12,8 @@ android {
         applicationId "co.digdaya.kindis.live"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 9
-        versionName "1.1.5"
+        versionCode 22
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -22,7 +22,7 @@ android {
     }
     buildTypes {
         release {
-            debuggable true
+//            debuggable true
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -35,24 +35,30 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
+
+    flavorDimensions "api"
     productFlavors {
 
         staging {
-            applicationIdSuffix '.staging'
+//            applicationIdSuffix '.staging'
             versionNameSuffix "-staging"
             buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
+            dimension "api"
         }
+
         sandbox {
             applicationIdSuffix '.sandbox'
             versionNameSuffix "-sandbox"
             buildConfigField "String", "BASE_URL", "\"http://api.stg.kindis.co/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-j27iOlM_x8GU3PFf\""
+            dimension "api"
         }
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.kindis.co/\""
             buildConfigField "String", "CLIENT_KEY", "\"VT-client-allZvvXkj6Jd3gJJ\""
+            dimension "api"
         }
     }
     packagingOptions {
@@ -71,69 +77,70 @@ android {
 
 dependencies {
 
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile ('com.twitter.sdk.android:twitter:2.3.2@aar') {
+    implementation ('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'support_annotations'
         exclude group: 'com.android.support', module: 'support-4'
     }
-    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
-    compile ('org.apache.httpcomponents:httpmime:4.3') {
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+    implementation ('org.apache.httpcomponents:httpmime:4.3') {
         exclude module: "httpclient"
     }
 //    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile ('me.relex:circleindicator:1.2.2@aar'){
+    implementation ('me.relex:circleindicator:1.2.2@aar'){
         exclude group: 'com.android.support', module: 'support_annotations'
         exclude group: 'com.android.support', module: 'support-4'
     }
-    compile 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:design:25.4.0'
 //    compile 'com.android.support:support-v4:25.4.0'
-    compile ('com.github.scottyab:showhidepasswordedittext:0.8'){
+    implementation ('com.github.scottyab:showhidepasswordedittext:0.8'){
         exclude group: 'com.android.support', module: 'support_annotations'
         exclude group: 'com.android.support', module: 'support-4'
         exclude group: 'com.android.support', module: 'support-7'
         exclude group: 'com.android.support', module: 'support-vector-drawable'
     }
-    compile ('com.aurelhubert:ahbottomnavigation:2.1.0'){
+    implementation ('com.aurelhubert:ahbottomnavigation:2.1.0'){
         exclude group: 'com.android.support', module: 'support_annotations'
         exclude group: 'com.android.support', module: 'support-4'
         exclude group: 'com.android.support', module: 'support-7'
     }
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.32.0'
-    compile ('com.google.android.gms:play-services-auth:15.0.0'){
+    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.32.0'
+    implementation ('com.google.android.gms:play-services-auth:15.0.0'){
         exclude group: 'com.android.support', module: 'support_annotations'
         exclude group: 'com.android.support', module: 'support-4'
     }
-    compile ('com.google.android.gms:play-services-ads:15.0.0'){
+    implementation ('com.google.android.gms:play-services-ads:15.0.0'){
         exclude group: 'com.android.support', module: 'support-4'
         exclude group: 'com.android.support', module: 'support_annotations'
     }
 
-    compile 'de.hdodenhof:circleimageview:2.2.0'
-    releaseCompile 'com.midtrans:uikit:1.19.0'
-    debugCompile 'com.midtrans:uikit:1.19.0-SANDBOX'
-    compile 'com.google.firebase:firebase-core:15.0.2'
-    compile 'com.google.firebase:firebase-messaging:15.0.2'
-    compile 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    releaseImplementation 'com.midtrans:uikit:1.19.0'
+    debugImplementation 'com.midtrans:uikit:1.19.0-SANDBOX'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-messaging:15.0.2'
 
-    compile 'com.android.support.constraint:constraint-layout:1.1.0'
-    testCompile 'junit:junit:4.12'
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.github.eggheadgames:Siren:1.5.2'
+    implementation 'com.github.eggheadgames:Siren:1.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

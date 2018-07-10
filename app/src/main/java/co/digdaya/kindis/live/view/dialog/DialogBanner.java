@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class DialogBanner implements View.OnClickListener {
         new VolleyHelper().get(ApiHelper.ADS_INTERTSTITIAL + sessionHelper.getPreferences(activity, "user_id") + "&token_access=" + sessionHelper.getPreferences(activity, "token_access"), new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
-                System.out.println("bannerAds: "+response);
+                Log.e("dialog banner", "bannerAds: "+response);
                 if (status){
                     try {
                         JSONObject object = new JSONObject(response);

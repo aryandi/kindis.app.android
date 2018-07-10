@@ -14,7 +14,7 @@
             android:id="@+id/list_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="40dp"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

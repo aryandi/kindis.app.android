@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import co.digdaya.kindis.live.BuildConfig;
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
 import co.digdaya.kindis.live.helper.Constanta;
@@ -82,10 +83,16 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         sessionHelper = new SessionHelper();
         analyticHelper = new AnalyticHelper(context);
         isPremium = sessionHelper.getPreferences(context, "is_premium");
-        adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(sessionHelper.getPreferences(context, Constanta.PREF_DEVICE_ID))
-                .build();
+        if (BuildConfig.BUILD_TYPE.equals("release")){
+            adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .build();
+        } else {
+            adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice(sessionHelper.getPreferences(context, Constanta.PREF_DEVICE_ID))
+                    .build();
+        }
         ads = context.getResources().getStringArray(R.array.ads_ids);
         switch (tab) {
             case 1:

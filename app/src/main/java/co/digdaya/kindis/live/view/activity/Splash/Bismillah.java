@@ -32,6 +32,8 @@ public class Bismillah extends AppCompatActivity {
     private String TAG = "Bismillah";
     private AnalyticHelper analyticHelper;
     private SessionHelper sessionHelper;
+    private String type;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,12 @@ public class Bismillah extends AppCompatActivity {
         playerSessionHelper = new PlayerSessionHelper();
         analyticHelper = new AnalyticHelper(this);
         sessionHelper = new SessionHelper();
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            Bundle extras = intent.getExtras();
+            type = extras.getString(Constanta.INTENT_EXTRA_TYPE);
+            id = extras.getString(Constanta.INTENT_EXTRA_ID);
+        }
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +63,9 @@ public class Bismillah extends AppCompatActivity {
                 postDeviceId();
                 analyticHelper.authHello("true");
                 Intent intent = new Intent(Bismillah.this, Main.class);
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, type);
+                intent.putExtra(Constanta.INTENT_EXTRA_ID, id);
+                Log.d(TAG, "type and id: " + type + " " + id);
                 startActivity(intent);
             }
         });
@@ -118,7 +129,7 @@ public class Bismillah extends AppCompatActivity {
         HashMap<String, String> param = new HashMap<>();
         param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_TOKEN_ACCESS));
         param.put("uid", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_USERID));
-        param.put("device_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_ID));
+        param.put("device_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_ANDROID_ID));
         param.put("device_token_id", sessionHelper.getPreferences(getApplicationContext(), Constanta.PREF_DEVICE_TOKEN));
         new VolleyHelper().post(ApiHelper.DEVICE_ID, param, new VolleyHelper.HttpListener<String>() {
             @Override

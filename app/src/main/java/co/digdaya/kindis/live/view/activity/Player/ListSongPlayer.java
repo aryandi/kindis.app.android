@@ -93,7 +93,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
             images = playerSessionHelper.getPreferences(getApplicationContext(), "image");
             btnMenuPlay.setVisibility(View.GONE);
         }else {
-            images = ApiHelper.BASE_URL_IMAGE+playerSessionHelper.getPreferences(getApplicationContext(), "image");
+            images = ApiHelper.BASE_URL_IMAGE + playerSessionHelper.getPreferences(getApplicationContext(), "image");
         }
         Glide.with(getApplicationContext())
                 .load(images)
@@ -114,7 +114,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
             listViewSong.setVisibility(View.VISIBLE);
             if (isOfflineMode){
                 listOfflineSong(playerSessionHelper.getPreferences(getApplicationContext(), "fkid"));
-            }else {
+            } else {
                 if (Boolean.parseBoolean(playerSessionHelper.getPreferences(getApplicationContext(), "isShuffle"))){
                     adapterSong = new AdapterSong(ListSongPlayer.this, parseJsonPlaylist.getShuffleListSong(), "list", parseJsonPlaylist.getShuffleSongPlaylist());
                     listViewSong.setAdapter(adapterSong);
@@ -164,7 +164,7 @@ public class ListSongPlayer extends AppCompatActivity implements View.OnClickLis
     private void listOfflineSong(String fkID){
         KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_FK+" = "+fkID,null);
+        Cursor cursor = db.rawQuery("select * from " + KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_FK+" = "+fkID,null);
         if (cursor.moveToFirst()){
             while (cursor.isAfterLast()==false){
                 DataSingleOffline dataSingleOffline = new DataSingleOffline();

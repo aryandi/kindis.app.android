@@ -384,7 +384,6 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
                     analyticHelper.profileEdit("gender");
                 }
                 break;
-
         }
     }
 
@@ -699,6 +698,7 @@ public class Profile extends Fragment implements View.OnClickListener, PopupMenu
         param.put("social_id", app_id);
         param.put("social_name", social_name);
         param.put("token_access", sessionHelper.getPreferences(getActivity(), "token_access"));
+        param.put("action", "REGISTER");
 
         new VolleyHelper().post(ApiHelper.UPDATE_SOCIAL_MEDIA, param, new VolleyHelper.HttpListener<String>() {
             @Override

@@ -29,7 +29,7 @@ public class ResultPayment extends AsyncTask<String, Void, Void>{
                 JSONObject result = object.getJSONObject("result");
                 sessionHelper.setPreferences(activity, "token_access", result.getString("access_token"));
                 sessionHelper.setPreferences(activity, "refresh_token", result.getString("refresh_token"));
-                sessionHelper.setPreferences(activity, "is_premium", result.getString("is_premium"));
+                sessionHelper.setPreferences(activity, "is_premium", "1 ");
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,7 +24,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +38,13 @@ import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.database.KindisDBHelper;
 import co.digdaya.kindis.live.database.KindisDBname;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
+import co.digdaya.kindis.live.helper.ApiHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
 import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.PlayerActionHelper;
 import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
+import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.service.DownloadService;
 import co.digdaya.kindis.live.service.PlayerService;
 import co.digdaya.kindis.live.util.BackgroundProses.ParseJsonPlaylist;
@@ -73,6 +82,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     RelativeLayout footerPlayer;
     private CheckPermission checkPermission;
     private AnalyticHelper analyticHelper;
+    private String uid;
+    private SessionHelper sessionHelper;
+    private VolleyHelper volleyHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +92,67 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
 
+        sessionHelper = new SessionHelper();
+        volleyHelper = new VolleyHelper();
+
+        uid = getIntent().getStringExtra("uid");
+        if (!TextUtils.isEmpty(uid)) {
+            getSongResources(uid);
+            new PlayerSessionHelper().setPreferences(this, "index", "1");
+            Intent intent = new Intent(this, PlayerService.class);
+            intent.setAction(PlayerActionHelper.UPDATE_RESOURCE);
+            intent.putExtra("single_id", uid);
+            startService(intent);
+        } else {
+            init();
+        }
+    }
+
+    private void getSongResources(String single_id) {
+        System.out.println("getSongResources real");
+        System.out.println("nextplay getSongResources: " + single_id);
+        System.out.println("playall getSongResources: " + single_id);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("single_id", single_id);
+        param.put("uid", sessionHelper.getPreferences(getApplicationContext(), "user_id"));
+        param.put("token_access", sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+
+        System.out.println("Paramssongresource : " + single_id + "\n"
+                + sessionHelper.getPreferences(getApplicationContext(), "user_id")
+                + "\n" + sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+
+        playerSessionHelper.setPreferences(getApplicationContext(), "single_id", single_id);
+        volleyHelper.post(ApiHelper.ITEM_SINGLE, param, new VolleyHelper.HttpListener<String>() {
+            @Override
+            public void onReceive(boolean status, String message, String response) {
+                if (status) {
+                    Log.d("songplayresponse", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("status")) {
+                            JSONObject result = object.getJSONObject("result");
+                            if (!result.getString("file").equals("null")) {
+                                playerSessionHelper.setPreferences(getApplicationContext(), "title", result.getString("title"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "subtitle", result.getString("artist") +" | "+result.getString("album"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "album", result.getString("album"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "file", result.getString("file"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "image", result.getString("image"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "artist_id", result.getString("artist_id"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), "share_link", result.getString("share_link"));
+                                playerSessionHelper.setPreferences(getApplicationContext(), Constanta.PLAYERSESSION_ALBUM_ID, result.getString("album_id"));
+                                init();
+                                onResumeHandler();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void init() {
         parseJsonPlaylist = new ParseJsonPlaylist(getApplicationContext(), false);
 
         dialogAlertPremium = new DialogAlertPremium(this, dialogPremium);
@@ -154,6 +227,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
             }
 
             @Override
@@ -168,7 +242,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 intent.putExtra("progress", seekBar.getProgress());
                 startService(intent);
                 analyticHelper.playerAction("player",
-                        "cut_listen",getSingleId(),
+                        "cut_listen", getSingleId(),
                         playerSessionHelper.getPreferences(getApplicationContext(), "title"),
                         String.valueOf(seekBar.getProgress()));
             }
@@ -194,7 +268,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
         btnPlay.setOnClickListener(this);
         btnShuffle.setOnClickListener(this);
         btnDownload.setOnClickListener(this);
-
         viewPager.addOnPageChangeListener(this);
     }
 
@@ -202,6 +275,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     protected void onResume() {
         super.onResume();
 
+        if (TextUtils.isEmpty(uid)) {
+            onResumeHandler();
+        }
+    }
+
+    private void onResumeHandler() {
         isInFront = true;
         title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         title.setSelected(true);
@@ -261,7 +340,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             btnNext.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
             btnNext.setEnabled(false);
         }
-
         isChangeViewPager = true;
     }
 
@@ -285,7 +363,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             } else {
                 btnLooping.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
                 playerSessionHelper.setPreferences(getApplicationContext(), "isLooping", "true");
-
                 Intent intent = new Intent(Player.this, PlayerService.class);
                 intent.setAction(PlayerActionHelper.ACTION_LOOPING);
                 startService(intent);
@@ -370,7 +447,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
                 playerSessionHelper.getPreferences(getApplicationContext(), "title"), "null");
     }
 
-    private String getSingleId(){
+    private String getSingleId() {
         return playerSessionHelper.getPreferences(getApplicationContext(), "single_id");
     }
 
@@ -452,6 +529,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
     private BroadcastReceiver receiverBroadcastInfo = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             title.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_TITLE));
             subtitle.setText(intent.getStringExtra(PlayerActionHelper.BROADCAST_SUBTITLE));
             playlistPosition = intent.getIntExtra(PlayerActionHelper.BROADCAST_POSITION, 0);
@@ -478,6 +556,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener, V
             }
 
             viewPager.setCurrentItem(playlistPosition, true);
+
+            if (!TextUtils.isEmpty(uid)) {
+                imgList.clear();
+                imgList.add(playerSessionHelper.getPreferences(getApplicationContext(), "image"));
+                adapterListSong.notifyDataSetChanged();
+            }
         }
     };
 

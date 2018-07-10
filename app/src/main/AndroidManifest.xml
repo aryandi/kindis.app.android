@@ -41,7 +41,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id"/>
-
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notif_icon" />
         <service
             android:name=".service.PlayerService"
             android:enabled="true"
@@ -79,39 +81,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".view.activity.Splash.Walkthrough"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".view.activity.Account.SignInActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
-        <activity
-            android:name=".view.activity.Account.RegisterActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
-        <activity
-            android:name=".view.activity.Account.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
-        <activity
-            android:name=".view.activity.Account.LoginSocmedActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -129,13 +98,49 @@
 
                 <data
                     android:host="kindis.co"
-                    android:pathPrefix="/user/verification/*"
                     android:scheme="http" />
-                <!--<data android:host="example.com" />-->
-                <!--<data android:scheme="https" />-->
-                <!--<data android:pathPattern="/.*" />-->
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="kindis" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="kindis.co"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.Splash.Walkthrough"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".view.activity.Account.SignInActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".view.activity.Account.RegisterActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".view.activity.Account.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".view.activity.Account.LoginSocmedActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
             android:name=".view.activity.Account.ForgotPassword"
@@ -205,24 +210,19 @@
             android:name=".view.fragment.webview.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.Detail.DetailOffline" />
-
         <service
             android:name=".service.DownloadService"
             android:enabled="true"
             android:exported="true" />
-
         <activity
             android:name=".view.activity.Player.SongMenu"
             android:noHistory="true" />
-
         <activity
             android:name=".view.activity.PriceList"
             android:launchMode="singleTask"
             android:noHistory="true" />
-
         <activity
             android:name=".view.activity.Account.VerifyAccount"
             android:noHistory="true" />
     </application>
-
 </manifest>

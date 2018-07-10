@@ -33,8 +33,19 @@ import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.Constanta;
+import co.digdaya.kindis.live.helper.PlayerActionHelper;
+import co.digdaya.kindis.live.helper.PlayerSessionHelper;
+import co.digdaya.kindis.live.service.PlayerService;
+import co.digdaya.kindis.live.view.activity.Detail.Detail;
+import co.digdaya.kindis.live.view.activity.Detail.DetailArtist;
 import co.digdaya.kindis.live.view.activity.Main;
+import co.digdaya.kindis.live.view.activity.Player.Player;
+
+import static co.digdaya.kindis.live.helper.Constanta.INTENT_EXTRA_TYPE;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -62,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getData());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -113,10 +124,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      *
      * @param messageBody FCM message body received.
+     * @param data
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, Main.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    private void sendNotification(String messageBody, Map<String, String> data) {
+        String type = data.get("type");
+        String id = data.get("id");
+
+        Intent intent = null;
+
+        switch (type) {
+            case "playlist":
+                intent = new Intent(this, Detail.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", id);
+                intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "premium");
+                intent.putExtra("isMyPlaylist", "");
+//                intent.putExtra("playlisttype", getItemViewType(position));
+                break;
+            case "album":
+                intent = new Intent(this, Detail.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", id);
+                intent.putExtra(INTENT_EXTRA_TYPE, "album");
+                break;
+            case "artist":
+                intent = new Intent(this, DetailArtist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", id);
+                intent.putExtra("type", "artist");
+                break;
+            case "single":
+                intent = new Intent(this, Player.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("uid", id);
+                break;
+        }
+//        Intent intent = new Intent(this, Main.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

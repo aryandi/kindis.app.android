@@ -98,10 +98,10 @@ public class VerifyAccount extends AppCompatActivity {
             }
         });
         String gender = sessionHelper.getPreferences(this, "gender");
-        if (!gender.equals("male")) {
-            male.setChecked(true);
-        } else {
+        if (gender.equals("female")) {
             female.setChecked(true);
+        } else {
+            male.setChecked(true);
         }
 
         inputBirthday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -212,10 +212,9 @@ public class VerifyAccount extends AppCompatActivity {
                                     R.drawable.button_rounded_gray));
                             txtPinEntry.setVisibility(View.VISIBLE);
                             btnVerify.setVisibility(View.VISIBLE);
-                        } else {
-                            Toast.makeText(VerifyAccount.this, object.getString("message"),
-                                    Toast.LENGTH_SHORT).show();
                         }
+                        Toast.makeText(VerifyAccount.this, object.optString("message"),
+                                Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

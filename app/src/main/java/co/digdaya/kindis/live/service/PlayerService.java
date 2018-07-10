@@ -346,11 +346,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void sendBroadcestInfo(String title, String subtitle, int playistPos) {
+    private void sendBroadcestInfo(String title, String subtitle, int playlistPos) {
         Intent intent = new Intent(PlayerActionHelper.BROADCAST_INFO);
         intent.putExtra(PlayerActionHelper.BROADCAST_TITLE, title);
         intent.putExtra(PlayerActionHelper.BROADCAST_SUBTITLE, subtitle);
-        intent.putExtra(PlayerActionHelper.BROADCAST_POSITION, playistPos);
+        intent.putExtra(PlayerActionHelper.BROADCAST_POSITION, playlistPos);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -613,7 +613,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     private void getSongOffline(){
         KindisDBHelper kindisDBHelper = new KindisDBHelper(getApplicationContext());
         SQLiteDatabase db = kindisDBHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+ KindisDBname.TABLE_SINGLE +" WHERE "+KindisDBname.COLUMN_ID+" = "+songPlaylist.get(playlistPosition),null);
+        Cursor cursor = db.rawQuery("select * from " + KindisDBname.TABLE_SINGLE + " WHERE " +KindisDBname.COLUMN_ID+ " = " +songPlaylist.get(playlistPosition),null);
         if (cursor.moveToFirst()){
             while (cursor.isAfterLast()==false){
                 playerSessionHelper.setPreferences(getApplicationContext(), "file", cursor.getString(cursor.getColumnIndex(KindisDBname.COLUMN_PATH)));

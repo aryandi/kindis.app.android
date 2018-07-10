@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import co.digdaya.kindis.live.helper.Constanta;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.VolleyHelper;
 import co.digdaya.kindis.live.util.BackgroundProses.RefreshToken;
-import co.digdaya.kindis.live.view.activity.Account.LoginSocmedActivity;
 
 import static co.digdaya.kindis.live.helper.VolleyHelper.NO_CONNECTION;
 
@@ -31,6 +29,8 @@ public class SplashScreen extends AppCompatActivity {
     RefreshToken refreshToken;
 
     private String TAG = "Splash Screen";
+    private String type;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,14 @@ public class SplashScreen extends AppCompatActivity {
         if (!isTaskRoot()) {
             finish();
             return;
+        }
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            Bundle extras = intent.getExtras();
+            type = extras.getString(Constanta.INTENT_EXTRA_TYPE);
+            id = extras.getString(Constanta.INTENT_EXTRA_ID);
+            Log.d(TAG, "type and id: " + type + " " + id);
         }
 
         /*PackageInfo info;
@@ -60,9 +68,13 @@ public class SplashScreen extends AppCompatActivity {
         }*/
 
         String android_id = "";
+        String device_id = "";
         try {
             android_id = Settings.Secure.getString(getContentResolver(),
                     Settings.Secure.ANDROID_ID);
+            device_id = MD5(android_id);
+            Log.i(TAG, "android_id " + android_id);
+            Log.i(TAG, "device_id " + device_id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +82,9 @@ public class SplashScreen extends AppCompatActivity {
         String token = FirebaseInstanceId.getInstance().getToken();
 
         sessionHelper = new SessionHelper();
-        sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_ID, android_id);
+        sessionHelper.setPreferences(this, Constanta.PREF_ANDROID_ID, android_id);
+        sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_ID, device_id);
+
         sessionHelper.setPreferences(this, Constanta.PREF_DEVICE_TOKEN, token);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -100,6 +114,8 @@ public class SplashScreen extends AppCompatActivity {
                         wasLogin();
                     }else {
                         Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        i.putExtra(Constanta.INTENT_EXTRA_TYPE, type);
+                        i.putExtra(Constanta.INTENT_EXTRA_ID, id);
                         startActivity(i);
                     }
                 }else {
@@ -107,6 +123,20 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, 1000);
+    }
+
+    public String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString().toUpperCase();
+        } catch (java.security.NoSuchAlgorithmException e) {
+        }
+        return null;
     }
 
     private void notLogin(){
@@ -150,10 +180,14 @@ public class SplashScreen extends AppCompatActivity {
                             sessionHelper.setPreferences(getApplicationContext(), "refresh_token", result.getString("refresh_token"));
                             sessionHelper.setPreferences(getApplicationContext(), "expires_in", String.valueOf(result.optInt("expires_in")));
                             Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                            i.putExtra(Constanta.INTENT_EXTRA_TYPE, type);
+                            i.putExtra(Constanta.INTENT_EXTRA_ID, id);
                             startActivity(i);
                         } else {
                             if (refreshToken.refreshToken()) {
                                 Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                                i.putExtra(Constanta.INTENT_EXTRA_TYPE, type);
+                                i.putExtra(Constanta.INTENT_EXTRA_ID, id);
                                 startActivity(i);
                             } else {
                                 Intent i = new Intent(SplashScreen.this, Walkthrough.class);
@@ -162,7 +196,7 @@ public class SplashScreen extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Intent i = new Intent(SplashScreen.this, Bismillah.class);
+                        Intent i = new Intent(SplashScreen.this, Walkthrough.class);
                         startActivity(i);
                     }
                 } else {
@@ -170,7 +204,7 @@ public class SplashScreen extends AppCompatActivity {
                         //ToDO create retry dialog
                         Toast.makeText(SplashScreen.this, "No Connection", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent i = new Intent(SplashScreen.this, LoginSocmedActivity.class);
+                        Intent i = new Intent(SplashScreen.this, Walkthrough.class);
                         startActivity(i);
                     }
                 }

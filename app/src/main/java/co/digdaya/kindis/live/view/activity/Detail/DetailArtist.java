@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     TextView titleToolbar;
     RelativeLayout contLabel;
     Button btnPlayAll;
+    TextView titleSong;
 
     AdapterDetailArtist adapter;
     AdapterAlbum adapterAlbum;
@@ -69,6 +71,9 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     Dialog dialogPlaylis;
     String json;
     PlayerSessionHelper playerSessionHelper;
+    private String uid;
+
+
     public DetailArtist(){
         layout = R.layout.activity_detail_artist;
     }
@@ -87,6 +92,7 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
         btnPlayAll = findViewById(R.id.btn_play_all);
         listViewAlbum = findViewById(R.id.list_album);
         listViewSong = findViewById(R.id.list_songs);
+        titleSong = findViewById(R.id.title_songs);
 
         playerSessionHelper = new PlayerSessionHelper();
 
@@ -152,12 +158,13 @@ public class DetailArtist extends BottomPlayerActivity implements View.OnClickLi
     }
 
     private void getDetail(){
-        new VolleyHelper().get(ApiHelper.ITEM_ARTIST + getIntent().getStringExtra("uid"), new VolleyHelper.HttpListener<String>() {
+        uid = getIntent().getStringExtra("uid");
+        System.out.println("getDetailArtistID: " + uid);
+        new VolleyHelper().get(ApiHelper.ITEM_ARTIST + uid, new VolleyHelper.HttpListener<String>() {
             @Override
             public void onReceive(boolean status, String message, String response) {
                 if (status){
                     System.out.println("getDetailArtist: "+response);
-                    System.out.println("getDetailArtistID: "+getIntent().getStringExtra("uid"));
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONObject result = object.getJSONObject("result");

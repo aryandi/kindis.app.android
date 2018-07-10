@@ -282,7 +282,7 @@ public class Detail extends BottomPlayerActivity implements View.OnClickListener
                             json = singles.toString();
                             for (int i=0; i<singles.length(); i++){
                                 JSONObject data = singles.getJSONObject(i);
-                                HashMap<String, String> map = new HashMap<String, String>();
+                                HashMap<String, String> map = new HashMap<>();
                                 map.put("uid", data.optString("single_id"));
                                 map.put("title", data.optString("title"));
                                 map.put("subtitle", data.optString("artist"));

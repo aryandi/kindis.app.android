@@ -119,11 +119,12 @@ public class MidtransPayment {
                                         analyticHelper.premiumSubscribeClick(transID, "standart",orderID,
                                                 transName, "" , String.valueOf(price), "midtrans");
                                         activity.finish();
+                                        new ResultPayment(activity).execute(response);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                new ResultPayment(activity).execute(response);
+
                                 //new ProfileInfo(activity).execute(sessionHelper.getPreferences(activity, "user_id"));
                             }
 
@@ -183,7 +184,8 @@ public class MidtransPayment {
     }
 
     public void startGopayPayment(){
-        MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.GO_PAY);
+        MidtransSDK.getInstance().startPaymentUiFlow(activity);
+//        MidtransSDK.getInstance().startPaymentUiFlow(activity, PaymentMethod.GO_PAY);
     }
 
     public void startTransferBankPayment(){

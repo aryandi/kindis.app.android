@@ -54,8 +54,7 @@ public class AdapterSongHorizontal extends RecyclerView.Adapter<Item> {
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
-        Item item= new Item(view);
-        return item;
+        return new Item(view);
     }
 
     @Override

@@ -36,7 +36,6 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
         this.rowClickListener = rowClickListener;
     }
 
-
     @Override
     public Item onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_album, parent, false);
@@ -53,8 +52,8 @@ public class AdapterArtistNew extends RecyclerView.Adapter<Item> {
         final String uid = dataArtist.data.get(position).uid;
 
         Glide.with(context)
-                .load(ApiHelper.BASE_URL_IMAGE+dataArtist.data.get(position).image)
-                .thumbnail( 0.1f )
+                .load(ApiHelper.BASE_URL_IMAGE + dataArtist.data.get(position).image)
+                .thumbnail(0.1f)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);

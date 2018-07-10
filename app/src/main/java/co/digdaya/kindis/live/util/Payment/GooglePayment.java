@@ -50,6 +50,7 @@ public class GooglePayment {
             public void onIabSetupFinished(IabResult result)
             {
                 if (!result.isSuccess()) {
+                    listener.showListDetail();
                     Log.d("billinggoogle", "In-app Billing setup failed: " +
                             result);
                 } else {
@@ -78,11 +79,11 @@ public class GooglePayment {
         if (mHelper == null) return;
 
         skuList = new ArrayList<>();
-        skuList.add("co.digdaya.kindis.live.subscribe.weekly");
-        skuList.add("co.digdaya.kindis.live.subscribe.month");
-        skuList.add("co.digdaya.kindis.live.subscibe.3months");
-        skuList.add("co.digdaya.kindis.live.subscribe.6months");
-        skuList.add("co.digdaya.kindis.live.subscribe.year");
+        skuList.add("co.digdaya.kindis.live.subscription.weekly");
+        skuList.add("co.digdaya.kindis.live.subscription.month");
+        skuList.add("co.digdaya.kindis.live.subscription.3months");
+        skuList.add("co.digdaya.kindis.live.subscription.6months");
+        skuList.add("co.digdaya.kindis.live.subscription.year");
 
         mHelper.queryInventoryAsync(true, skuList, mQueryFinishedListener);
     }
@@ -125,6 +126,7 @@ public class GooglePayment {
 
             if (result.isFailure()) {
                 // handle error
+                listener.showListDetail();
                 return;
             } else {
                 List<SkuDetails> skuDetailsList = new ArrayList<>();
@@ -161,5 +163,11 @@ public class GooglePayment {
 
     public interface ResultListener {
         void showListDetail(List<SkuDetails> skuDetailsList);
+
+        void showListDetail();
+    }
+
+    public IabHelper getmHelper() {
+        return mHelper;
     }
 }

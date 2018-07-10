@@ -68,12 +68,12 @@ public class Home extends BottomPlayerFragment implements View.OnClickListener, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bottomNavigation = (AHBottomNavigation) view.findViewById(R.id.bottom_navigation);
-        contHome = (FrameLayout) view.findViewById(R.id.cont_home);
+        bottomNavigation = view.findViewById(R.id.bottom_navigation);
+        contHome = view.findViewById(R.id.cont_home);
 
-        btnDrawer = (ImageButton) view.findViewById(R.id.btn_drawer);
-        btnSearch = (ImageButton) view.findViewById(R.id.btn_search);
-        titleToolbar = (TextView) view.findViewById(R.id.title);
+        btnDrawer = view.findViewById(R.id.btn_drawer);
+        btnSearch = view.findViewById(R.id.btn_search);
+        titleToolbar = view.findViewById(R.id.title);
 
         musiqFragment = new Musiq();
         taklimFragment = new Taklim();

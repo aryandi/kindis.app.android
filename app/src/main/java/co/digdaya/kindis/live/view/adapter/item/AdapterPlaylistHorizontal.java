@@ -61,6 +61,7 @@ public class AdapterPlaylistHorizontal extends RecyclerView.Adapter<Item> {
         ImageView badgePremium = holder.badgePremium;
         TextView title = holder.title;
         TextView subTitle = holder.subtitle;
+        subTitle.setVisibility(View.GONE);
         RelativeLayout click = holder.click;
 
         final DataPlaylist.Data data = dataPlaylist.data.get(position);

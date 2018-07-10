@@ -90,12 +90,13 @@
                 android:layout_height="wrap_content"/>
 
             <co.digdaya.kindis.live.custom.TextViewBold
+                android:id="@+id/title_songs"
                 android:layout_marginTop="16dp"
                 android:paddingLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="SONGS"
+                android:text="SINGLE"
                 android:textColor="@color/white"/>
 
             <android.support.v7.widget.RecyclerView

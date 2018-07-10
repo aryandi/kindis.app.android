@@ -60,9 +60,6 @@ public class VolleyHelper {
                             listener.onReceive(false, NO_CONNECTION, null);
                         } else {
                             if (error!=null){
-                                if (error.networkResponse.statusCode == 404){
-                                    listener.onReceive(false, "Something Error", "");
-                                } else {
                                     try {
                                         String responseBody = new String(error.networkResponse.data, "utf-8" );
                                         Log.d("volleyresponse", responseBody);
@@ -81,8 +78,6 @@ public class VolleyHelper {
                                         e.printStackTrace();
                                         listener.onReceive(false, "Something Error", "");
                                     }
-                                }
-
                             }
                         }
                     }

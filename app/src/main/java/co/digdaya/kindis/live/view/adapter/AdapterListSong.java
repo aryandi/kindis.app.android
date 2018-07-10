@@ -33,8 +33,6 @@ public class AdapterListSong extends PagerAdapter {
         playerSessionHelper = new PlayerSessionHelper();
     }
 
-
-
     @Override
     public int getCount() {
         return imgList.size();
@@ -48,7 +46,7 @@ public class AdapterListSong extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.adapter_list_song, container, false);
-        ImageView imageView = (ImageView) view.findViewById(R.id.item_list_song);
+        ImageView imageView = view.findViewById(R.id.item_list_song);
         String image;
         if (Boolean.parseBoolean(playerSessionHelper.getPreferences(mContext, "is_offline_mode"))){
             image = imgList.get(position);
@@ -57,7 +55,7 @@ public class AdapterListSong extends PagerAdapter {
         }
         Glide.with(mContext)
                 .load(image)
-                .thumbnail( 0.1f )
+                .thumbnail(0.1f)
                 .placeholder(R.drawable.ic_default_img)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()

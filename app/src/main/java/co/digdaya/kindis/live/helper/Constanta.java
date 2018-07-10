@@ -19,6 +19,7 @@ public class Constanta {
     public static final String INTENT_EXTRA_TITLE = "INTENT_EXTRA_TITLE";
     public static final String INTENT_EXTRA_SUBTITLE = "INTENT_EXTRA_SUBTITLE";
     public static final String INTENT_EXTRA_TYPE = "type";
+    public static final String INTENT_EXTRA_ID = "id";
     public static final String INTENT_EXTRA_CONTENT_ID = "INTENT_EXTRA_CONTENT_ID";
     public static final String INTENT_EXTRA_ORIGIN = "INTENT_EXTRA_PLAYER";
 
@@ -34,6 +35,7 @@ public class Constanta {
     public static final String PREF_GENDER = "gender";
     public static final String PREF_TOKEN_ACCESS = "token_access";
     public static final String PREF_TOKEN = "token";
+    public static final String PREF_ANDROID_ID = "android_id";
     public static final String PREF_DEVICE_ID = "device_id";
     public static final String PREF_DEVICE_TOKEN = "device_token";
 

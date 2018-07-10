@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -93,7 +92,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
         TextViewHelper.setSpanColor(textVerify, "Kindis Premium",
                 ContextCompat.getColor(this, R.color.yellow));
 
-        dialog = new Dialog(this);
         btnOk.setOnClickListener(this);
     }
 
@@ -110,6 +108,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        dialogMessage.dismiss();
                         googlePayment.buyClick(datas.get(i).package_id);
                     }
                 }, new View.OnClickListener() {
@@ -119,7 +118,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
             }
         });
         dialogMessage.setButtonPositiveHighLight();
-        dialogMessage.showDialog();
+        if (!isFinishing()) dialogMessage.showDialog();
     }
 
     @Override
@@ -132,10 +131,12 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 price, datas.get(i).name, orderID,
                 "", "1", this);
         dialogMessage = new DialogMessage(this, dialog,
-                "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
+                "Transaksi menggunakan metode ini akan dikenai biaya 4.000 per transaksi",
+//                "Transaksi menggunakan GoPay akan dikenai biaya 2% dari tiap transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        dialogMessage.dismiss();
                         midtransPayment.startGopayPayment();
                     }
                 }, new View.OnClickListener() {
@@ -145,7 +146,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
             }
         });
         dialogMessage.setButtonPositiveHighLight();
-        dialogMessage.showDialog();
+        if (!isFinishing()) dialogMessage.showDialog();
     }
 
     @Override
@@ -157,7 +158,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 price, datas.get(i).name, orderID,
                 "", "1", this);
         dialogMessage = new DialogMessage(this, dialog,
-                "Transaksi menggunakan transfer bank akan dikenai biaya 4.000 per transaksi",
+                "Transaksi menggunakan metode ini akan dikenai biaya 4.000 per transaksi",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -170,7 +171,7 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
             }
         });
         dialogMessage.setButtonPositiveHighLight();
-        dialogMessage.showDialog();
+        if (!isFinishing()) dialogMessage.showDialog();
     }
 
     @Override
@@ -225,7 +226,6 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
             @Override
             public void onReceive(boolean status, String message, String response) {
                 loading.dismiss();
-                Log.d("check_premium", response);
                 if (status) {
                     try {
                         JSONObject object = new JSONObject(response);
@@ -234,9 +234,14 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                         if (object.getBoolean("status")) {
                             setVerifiedLayout(View.GONE, true);
                         } else {
-                            setVerifiedLayout(View.VISIBLE, false);
+                            if (object.optString("error").contains("Unknown method")) {
+                                setVerifiedLayout(View.GONE, true);
+                            } else {
+                                setVerifiedLayout(View.VISIBLE, false);
+                            }
                         }
                     } catch (JSONException e) {
+                        setVerifiedLayout(View.GONE, true);
                         e.printStackTrace();
                     }
                 } else {
@@ -273,7 +278,16 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
                 LinearLayoutManager.VERTICAL, false));
         list.setAdapter(adapterPriceList);
         adapterPriceList.setOnSelectedItem(PriceList.this);
+    }
 
+    @Override
+    public void showListDetail() {
+        loading.dismiss();
+        adapterPriceList = new AdapterPriceList(getApplicationContext(), datas, isVerified);
+        list.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
+                LinearLayoutManager.VERTICAL, false));
+        list.setAdapter(adapterPriceList);
+        adapterPriceList.setOnSelectedItem(PriceList.this);
     }
 
     @Override
@@ -284,5 +298,28 @@ public class PriceList extends AppCompatActivity implements AdapterPriceList.OnS
     @Override
     public void hideLoading() {
         loading.dismiss();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
+        try {
+            if (googlePayment.getmHelper() == null) {
+                return;
+            } else if (!googlePayment.getmHelper().handleActivityResult(requestCode, resultCode, data)) {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        } catch (Exception exception) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (dialogMessage != null){
+            dialogMessage.dismiss();
+        }
+        super.onDestroy();
     }
 }

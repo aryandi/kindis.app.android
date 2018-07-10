@@ -208,7 +208,7 @@ public class Search extends BottomPlayerActivity {
                                 adapterAlbum = new AdapterAlbumNew(Search.this, dataAlbum, 2, new AdapterAlbumNew.RowClickListener() {
                                     @Override
                                     public void onRowClick(int position) {
-                                        DataAlbum.Data data = dataAlbum.data.get(position);
+                                        DataAlbum.Data data = dataAlbum.album.get(position);
                                         analyticHelper.contentClick("search", data.uid, "album",data.title, "null", "search");
                                     }
                                 });
@@ -223,7 +223,7 @@ public class Search extends BottomPlayerActivity {
                                 adapterSong = new AdapterSongHorizontal(Search.this, dataSingle, 1, new AdapterSongHorizontal.RowClickListener() {
                                     @Override
                                     public void onRowClick(int position) {
-                                        DataSingle.Data data = dataSingle.data.get(position);
+                                        DataSingle.Data data = dataSingle.single.get(position);
                                         analyticHelper.contentClick("search", data.uid, "single",data.title, "null", "search");
                                     }
                                 });

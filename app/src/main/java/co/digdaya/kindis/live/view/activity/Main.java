@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +24,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.ads.MobileAds;
 
+import org.w3c.dom.Text;
+
 import co.digdaya.kindis.live.R;
 import co.digdaya.kindis.live.helper.AnalyticHelper;
+import co.digdaya.kindis.live.helper.Constanta;
+import co.digdaya.kindis.live.helper.PlayerActionHelper;
+import co.digdaya.kindis.live.helper.PlayerSessionHelper;
 import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.helper.CheckPermission;
+import co.digdaya.kindis.live.service.PlayerService;
+import co.digdaya.kindis.live.view.activity.Detail.Detail;
+import co.digdaya.kindis.live.view.activity.Detail.DetailArtist;
+import co.digdaya.kindis.live.view.activity.Player.Player;
 import co.digdaya.kindis.live.view.dialog.DialogBanner;
 import co.digdaya.kindis.live.view.dialog.DialogGift;
 import co.digdaya.kindis.live.view.fragment.navigationview.Cookies;
@@ -40,6 +50,7 @@ import co.digdaya.kindis.live.view.fragment.navigationview.SaveOffline;
 import co.digdaya.kindis.live.view.fragment.navigationview.Terms;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "Main";
     SessionHelper sessionHelper;
     DrawerLayout drawer;
     CheckPermission checkPermission;
@@ -90,7 +101,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         checkPermission = new CheckPermission(this);
         dialogBanner = new DialogBanner(this, dialogBnnr);
@@ -111,31 +122,31 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         analyticHelper = new AnalyticHelper(this);
 
         //sidebar
-        profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        fullname = (TextView) findViewById(R.id.fullname);
-        menuHome = (LinearLayout) findViewById(R.id.menu_home);
-        menuProfile = (LinearLayout) findViewById(R.id.menu_profile);
-        menuOffline = (LinearLayout) findViewById(R.id.menu_offline);
-        menuNotif = (LinearLayout) findViewById(R.id.menu_notif);
-        menuPremium = (LinearLayout) findViewById(R.id.menu_premium);
-        menuGift = (LinearLayout) findViewById(R.id.menu_gift);
-        menuFAQ = (TextView) findViewById(R.id.menu_faq);
-        menuPrivacy = (TextView) findViewById(R.id.menu_privacy);
-        menuTerms = (TextView) findViewById(R.id.menu_terms);
-        menuCookies = (TextView) findViewById(R.id.menu_cookies);
-        menuIR = (TextView) findViewById(R.id.menu_ir);
+        profilePicture = findViewById(R.id.profile_picture);
+        fullname = findViewById(R.id.fullname);
+        menuHome = findViewById(R.id.menu_home);
+        menuProfile = findViewById(R.id.menu_profile);
+        menuOffline = findViewById(R.id.menu_offline);
+        menuNotif = findViewById(R.id.menu_notif);
+        menuPremium = findViewById(R.id.menu_premium);
+        menuGift = findViewById(R.id.menu_gift);
+        menuFAQ = findViewById(R.id.menu_faq);
+        menuPrivacy = findViewById(R.id.menu_privacy);
+        menuTerms = findViewById(R.id.menu_terms);
+        menuCookies = findViewById(R.id.menu_cookies);
+        menuIR = findViewById(R.id.menu_ir);
 
-        icMenuHome = (ImageView) findViewById(R.id.ic_menu_home);
-        icMenuNotif = (ImageView) findViewById(R.id.ic_menu_notif);
-        icMenuProfile = (ImageView) findViewById(R.id.ic_menu_profile);
-        icMenuOffline = (ImageView) findViewById(R.id.ic_menu_offline);
+        icMenuHome = findViewById(R.id.ic_menu_home);
+        icMenuNotif = findViewById(R.id.ic_menu_notif);
+        icMenuProfile = findViewById(R.id.ic_menu_profile);
+        icMenuOffline = findViewById(R.id.ic_menu_offline);
 
-        labelMenuHome = (TextView) findViewById(R.id.label_menu_home);
-        labelMenuNotif = (TextView) findViewById(R.id.label_menu_notif);
-        labelMenuProfile = (TextView) findViewById(R.id.label_menu_profile);
-        labelMenuOffline = (TextView) findViewById(R.id.label_menu_offline);
+        labelMenuHome = findViewById(R.id.label_menu_home);
+        labelMenuNotif = findViewById(R.id.label_menu_notif);
+        labelMenuProfile = findViewById(R.id.label_menu_profile);
+        labelMenuOffline = findViewById(R.id.label_menu_offline);
 
-        profileStatus = (Button) findViewById(R.id.profile_status);
+        profileStatus = findViewById(R.id.profile_status);
 
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.cont_main, homeFragment, "home");
@@ -150,7 +161,53 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 //        }
 
         new AnalyticHelper(this);
-        System.out.println("token_access: "+sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+        System.out.println("token_access: " + sessionHelper.getPreferences(getApplicationContext(), "token_access"));
+
+        onNotificationClicked();
+    }
+
+    private void onNotificationClicked() {
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            Bundle extras = intent.getExtras();
+            String type = extras.getString(Constanta.INTENT_EXTRA_TYPE);
+            String id = extras.getString(Constanta.INTENT_EXTRA_ID);
+
+            Log.d(TAG, "type and id: " + type + " " + id);
+
+            if (!TextUtils.isEmpty(type) && !TextUtils.isEmpty(id))
+            switch (type) {
+                case "playlist":
+                    intent = new Intent(this, Detail.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", id);
+                    intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "premium");
+                    intent.putExtra("isMyPlaylist", "");
+//                intent.putExtra("playlisttype", getItemViewType(position));
+                    startActivity(intent);
+                    break;
+                case "album":
+                    intent = new Intent(this, Detail.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", id);
+                    intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "album");
+                    startActivity(intent);
+                    break;
+                case "artist":
+                    intent = new Intent(this, DetailArtist.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", id);
+                    intent.putExtra(Constanta.INTENT_EXTRA_TYPE, "artist");
+                    startActivity(intent);
+                    break;
+                case "single":
+                    intent = new Intent(this, Player.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("uid", id);
+                    startActivity(intent);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -158,7 +215,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (getSupportFragmentManager().findFragmentByTag("home").isVisible()){
+            if (getSupportFragmentManager().findFragmentByTag("home").isVisible()) {
                 if (exit) {
                     this.finishAffinity();
                 } else {
@@ -173,7 +230,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                     }, 3 * 1000);
 
                 }
-            }else {
+            } else {
                 super.onBackPressed();
             }
         }
@@ -182,12 +239,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (is_premium){
+        is_premium = sessionHelper.getPreferences(getApplicationContext(), "is_premium").equals("1");
+        if (is_premium) {
             profileStatus.setText("PREMIUM");
             profileStatus.setBackground(getDrawable(R.drawable.button_rounded_orange));
         }
 
-        if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length()>10){
+        if (sessionHelper.getPreferences(getApplicationContext(), "profile_picture").length() > 10) {
             Glide.with(getApplicationContext())
                     .load(sessionHelper.getPreferences(getApplicationContext(), "profile_picture"))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -196,8 +254,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void initSidebar(){
-        if (is_premium){
+    private void initSidebar() {
+        if (is_premium) {
             menuPremium.setVisibility(View.GONE);
         }
 
@@ -222,30 +280,30 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         setDefaultSelectedMenuColor();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (view.getId() == R.id.menu_home){
+        if (view.getId() == R.id.menu_home) {
             analyticHelper.clickMenu("menu", "Home");
             transaction.replace(R.id.cont_main, homeFragment);
             icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == R.id.menu_notif){
+        } else if (view.getId() == R.id.menu_notif) {
             analyticHelper.clickMenu("menu", "Notification");
             transaction.replace(R.id.cont_main, notifFragment);
 
             icMenuNotif.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuNotif.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if(view.getId() == R.id.menu_premium) {
+        } else if (view.getId() == R.id.menu_premium) {
             analyticHelper.clickMenu("menu", "Premium");
             Intent intent = new Intent(this, Premium.class);
             startActivity(intent);
-        }else if (view.getId() == R.id.menu_profile){
+        } else if (view.getId() == R.id.menu_profile) {
             analyticHelper.clickMenu("menu", "Profile");
             transaction.replace(R.id.cont_main, profileFragment);
 
             icMenuProfile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
             labelMenuProfile.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == R.id.menu_offline){
+        } else if (view.getId() == R.id.menu_offline) {
             analyticHelper.clickMenu("menu", "Save Offline");
-            if (is_premium){
+            if (is_premium) {
                 transaction.replace(R.id.cont_main, saveOffline);
 
                 icMenuOffline.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
@@ -254,31 +312,31 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                 Intent intent = new Intent(this, Premium.class);
                 startActivity(intent);
             }
-        }else if (view.getId() == R.id.menu_gift) {
+        } else if (view.getId() == R.id.menu_gift) {
             analyticHelper.clickMenu("menu", "Gift");
             dialogGift = new DialogGift(dialogGft, this);
             dialogGift.showDialog();
-        }else if (view.getId() == R.id.menu_faq){
+        } else if (view.getId() == R.id.menu_faq) {
             analyticHelper.clickMenu("help", "FAQ");
             transaction.replace(R.id.cont_main, faqFragment);
 
             menuFAQ.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == R.id.menu_privacy){
+        } else if (view.getId() == R.id.menu_privacy) {
             analyticHelper.clickMenu("help", "Privacy");
             transaction.replace(R.id.cont_main, privacyFragment);
 
             menuPrivacy.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == R.id.menu_terms){
+        } else if (view.getId() == R.id.menu_terms) {
             analyticHelper.clickMenu("help", "Terms");
             transaction.replace(R.id.cont_main, termsFragment);
 
             menuTerms.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == R.id.menu_cookies){
+        } else if (view.getId() == R.id.menu_cookies) {
             analyticHelper.clickMenu("help", "Cookies");
             transaction.replace(R.id.cont_main, cookiesFragment);
 
             menuCookies.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
-        }else if (view.getId() == menuIR.getId()){
+        } else if (view.getId() == menuIR.getId()) {
             analyticHelper.clickMenu("help", "Rights");
             transaction.replace(R.id.cont_main, intelectualFragment);
             menuIR.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.jungle_green));
@@ -291,15 +349,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        System.out.println("onRequestPermissionsResultMain: "+permissions+"\n"+grantResults+"\n"+requestCode);
-        if (requestCode==2){
-            if (checkPermission.checkPermission()){
+        System.out.println("onRequestPermissionsResultMain: " + permissions + "\n" + grantResults + "\n" + requestCode);
+        if (requestCode == 2) {
+            if (checkPermission.checkPermission()) {
                 new Profile().startDialogPhoto(this);
             }
         }
     }
 
-    private void setDefaultSelectedMenuColor(){
+    private void setDefaultSelectedMenuColor() {
         icMenuHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.white));
         labelMenuHome.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
 

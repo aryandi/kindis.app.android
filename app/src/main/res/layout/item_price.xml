@@ -90,7 +90,7 @@
                 android:minWidth="60dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Go Pay"
+                android:text="Other Payment"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintLeft_toRightOf="@+id/btn_google_pay"
@@ -111,7 +111,8 @@
                 android:textSize="12sp"
                 app:layout_constraintLeft_toRightOf="@+id/btn_gopay"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 

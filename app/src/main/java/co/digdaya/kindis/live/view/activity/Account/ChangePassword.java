@@ -180,6 +180,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         param.put("current_password", inputCurrentPassword.getText().toString());
         param.put("new_password", inputNewPassword.getText().toString());
         param.put("retype_password", inputRetypePassword.getText().toString());
+        param.put("token_access", sessionHelper.getPreferences(this, "token_access"));
 
         new VolleyHelper().post(ApiHelper.CHANGE_PASSWORD, param, new VolleyHelper.HttpListener<String>() {
             @Override
@@ -192,8 +193,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                         if (object.getBoolean("status")){
                             Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_LONG).show();
                             sessionHelper.setPreferences(getApplicationContext(), "status", "0");
-                            Intent intent = new Intent(ChangePassword.this, LoginSocmedActivity.class);
-                            startActivity(intent);
+                            finish();
                         }else {
                             inputCurrentPassword.setBackground(getResources().getDrawable(R.drawable.edittext_error, null));
                             contCurrent.setVisibility(View.VISIBLE);

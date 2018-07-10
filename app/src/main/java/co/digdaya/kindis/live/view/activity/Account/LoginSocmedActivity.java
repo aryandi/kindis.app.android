@@ -198,7 +198,7 @@ public class LoginSocmedActivity extends AppCompatActivity {
                     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                     startActivityForResult(signInIntent, 3);
                 } else {
-                    Toast.makeText(mContext, R.string.tna_warning,  Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.tna_warning, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -217,21 +217,17 @@ public class LoginSocmedActivity extends AppCompatActivity {
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 System.out.println("loginsosmed : " + object);
                                 System.out.println("loginsosmed : " + response);
-                                try {
-                                    sessionHelper.setPreferences(getApplicationContext(), "login_type", "1");
-                                    String fullname = object.optString("name");
-                                    String gender = object.getString("gender");
-                                    String birth_date = object.optString("birth_date");
-                                    String type_social = "1";
-                                    String app_id = object.getString("id");
-                                    String email = object.getString("email");
-                                    String phone = "";
-                                    String social_name = object.optString("name");
-                                    sessionHelper.setPreferences(getApplicationContext(), "social_name_facebook", social_name);
-                                    loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone, social_name);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                sessionHelper.setPreferences(getApplicationContext(), "login_type", "1");
+                                String fullname = object.optString("name");
+                                String gender = object.optString("gender");
+                                String birth_date = object.optString("birth_date");
+                                String type_social = "1";
+                                String app_id = object.optString("id");
+                                String email = object.optString("email");
+                                String phone = "";
+                                String social_name = object.optString("name");
+                                sessionHelper.setPreferences(getApplicationContext(), "social_name_facebook", social_name);
+                                loginSocial(fullname, gender, birth_date, type_social, app_id, email, phone, social_name);
                             }
                         });
                 Bundle parameters = new Bundle();
@@ -350,7 +346,8 @@ public class LoginSocmedActivity extends AppCompatActivity {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             if (acct != null) {
-                if (acct.getPhotoUrl() != null) sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
+                if (acct.getPhotoUrl() != null)
+                    sessionHelper.setPreferences(getApplicationContext(), "profile_picture", acct.getPhotoUrl().toString());
                 sessionHelper.setPreferences(getApplicationContext(), "login_type", "3");
                 String fullname = acct.getDisplayName();
                 String gender = "";
