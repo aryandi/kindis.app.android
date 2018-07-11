@@ -128,7 +128,6 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
                             playMediaPlayer();
                         }
                     }
-
                     views.setImageViewResource(R.id.btn_play, R.drawable.ic_pause);
                     notificationManager.notify(1, noti.build());
                     break;

@@ -48,7 +48,7 @@ public class Syiar extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_tab);
+        recyclerView = view.findViewById(R.id.list_tab);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         gson = new Gson();
         getJSON();

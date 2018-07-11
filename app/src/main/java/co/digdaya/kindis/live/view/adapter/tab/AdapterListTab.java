@@ -466,10 +466,10 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         FooterViewHolder(View itemView) {
             super(itemView);
-            imageAds1 = (AdView) itemView.findViewById(R.id.image_ads_1);
-            imageAds2 = (AdView) itemView.findViewById(R.id.image_ads_2);
-            imageAds3 = (AdView) itemView.findViewById(R.id.image_ads_3);
-            imageAds4 = (AdView) itemView.findViewById(R.id.image_ads_4);
+            imageAds1 = itemView.findViewById(R.id.image_ads_1);
+            imageAds2 = itemView.findViewById(R.id.image_ads_2);
+            imageAds3 = itemView.findViewById(R.id.image_ads_3);
+            imageAds4 = itemView.findViewById(R.id.image_ads_4);
         }
     }
 }
