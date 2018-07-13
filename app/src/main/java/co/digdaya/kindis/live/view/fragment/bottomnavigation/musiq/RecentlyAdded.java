@@ -15,7 +15,11 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.TabModel;
 import co.digdaya.kindis.live.view.adapter.tab.AdapterListTab;
 
@@ -29,6 +33,8 @@ public class RecentlyAdded extends Fragment {
 
     String json;
     Gson gson;
+    private SessionHelper sessionHelper;
+    private String isPremium;
 
     public RecentlyAdded() {
     }
@@ -50,6 +56,8 @@ public class RecentlyAdded extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.list_tab);
+        sessionHelper = new SessionHelper();
+        isPremium = sessionHelper.getPreferences(getContext(), "is_premium");
 
         gson = new Gson();
 
@@ -65,6 +73,7 @@ public class RecentlyAdded extends Fragment {
                 JSONObject result = object.getJSONObject("result");
 
                 TabModel model = gson.fromJson(result.toString(), TabModel.class);
+                if (isPremium.equals("0")) model.tab2 = getTabWithAds(model.tab2);
 
                 adapterListTab = new AdapterListTab(getActivity(), model, 2, 1, "Recently", "Musiq");
                 recyclerView.setAdapter(adapterListTab);
@@ -74,5 +83,30 @@ public class RecentlyAdded extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<TabModel.Tab> getTabWithAds(List<TabModel.Tab> tabs) {
+        boolean isHavePlaylist = false;
+
+        for (TabModel.Tab tab : tabs) {
+            if (tab.name.equals("Playlist")) {
+                isHavePlaylist = true;
+            }
+        }
+
+        ListIterator<TabModel.Tab> iterator = tabs.listIterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            if (isHavePlaylist && iterator.next().name.equals("Single")
+                    || !isHavePlaylist && iterator.next().name.equals("Played")) {
+                TabModel.Tab tab = new TabModel.Tab();
+                tab.name = "ads";
+                iterator.add(tab);
+            }
+            i++;
+        }
+
+        return tabs;
+
     }
 }

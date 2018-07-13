@@ -9,9 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
@@ -37,7 +40,6 @@ import co.digdaya.kindis.live.view.adapter.item.AdapterArtistNew;
 import co.digdaya.kindis.live.view.adapter.item.AdapterGenreNew;
 import co.digdaya.kindis.live.view.adapter.item.AdapterPlaylistHorizontal;
 import co.digdaya.kindis.live.view.adapter.item.AdapterSongHorizontal;
-import co.digdaya.kindis.live.view.holder.ItemListTab;
 
 /**
  * Created by DELL on 3/31/2017.
@@ -68,7 +70,7 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private String paramMore = "";
 
-    private static final int FOOTER_VIEW = 99;
+    private static final int ADS_VIEW = 99;
 
     private SessionHelper sessionHelper;
 
@@ -97,11 +99,9 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (tab) {
             case 1:
                 tabs = tabModel.tab1;
-                checkHavePlaylist();
                 break;
             case 2:
                 tabs = tabModel.tab2;
-                checkHavePlaylist();
                 break;
             case 3:
                 tabs = tabModel.tab3;
@@ -110,23 +110,15 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         gson = new Gson();
     }
 
-    private void checkHavePlaylist() {
-        for (TabModel.Tab tab1 : tabs) {
-            if (tab1.name.equals("Playlist") && tab1.data.length() == 10) {
-                isHavePlaylist = true;
-            }
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == FOOTER_VIEW) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_ads_list, parent, false);
-            return new FooterViewHolder(v);
+        if (viewType == ADS_VIEW) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list, parent, false);
+            return new AdsViewHolder(v);
         }
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        return new ItemListTab(view, sessionHelper, ads);
+        return new ItemListTab(view);
     }
 
     @Override
@@ -137,30 +129,11 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 TextView title = itemListTab.title;
                 TextView btnMore = itemListTab.btnMore;
                 final RecyclerView recyclerView = itemListTab.list;
-                View imageAds = itemListTab.imageAds;
-                AdView imageAds1 = itemListTab.imageAds1;
-                AdView imageAds2 = itemListTab.imageAds2;
-                AdView imageAds3 = itemListTab.imageAds3;
-                AdView imageAds4 = itemListTab.imageAds4;
-
-                imageAds.setVisibility(View.GONE);
-
-                if (isPremium.equals("0")) {
-                    switch (menuType) {
-                        case 1:
-                            musiqAdsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4);
-                            break;
-                        case 9:
-                            taklimAdsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4);
-                            break;
-                    }
-                }
 
                 if (tabs.get(position).data.length() < 10) {
                     title.setVisibility(View.GONE);
                     btnMore.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
-                    imageAds.setVisibility(View.GONE);
                 }
 
                 title.setText(tabs.get(position).name);
@@ -216,134 +189,12 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         parsePlaylist(tabs.get(position).data, recyclerView, Integer.parseInt(tabs.get(position).type_id));
                         break;
                 }
-            } else if (holder instanceof FooterViewHolder) {
-                final FooterViewHolder vh = (FooterViewHolder) holder;
-                showAds(0, vh.imageAds1, vh.imageAds2, vh.imageAds3, vh.imageAds4);
+            } else if (holder instanceof AdsViewHolder) {
+                final AdsViewHolder vh = (AdsViewHolder) holder;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void musiqAdsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
-        switch (tabType) {
-            // discover
-            case 1:
-                if (isHavePlaylist) {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Album");
-                } else {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Artist");
-                }
-                break;
-            // recently
-            case 2:
-                if (isHavePlaylist) {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Single");
-                } else {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Played");
-                }
-                break;
-            // genre
-            case 3:
-//                if (position == tabs.size() - 1) {
-//                    showAds(position, imageAds);
-//                }
-                break;
-        }
-    }
-
-    private void taklimAdsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
-        switch (tabType) {
-            // syiar
-            case 1:
-                if (isHavePlaylist) {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Dai");
-                } else {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Discover");
-                }
-                break;
-            // kisah
-            case 2:
-                if (isHavePlaylist) {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Storyteller");
-                } else {
-                    adsHandler(position, imageAds1, imageAds2, imageAds3, imageAds4, "Discover");
-                }
-                break;
-            //  murrotal
-            case 3:
-//                if (position == tabs.size() - 1) {
-//                    showAds(position, imageAds);
-//                }
-                break;
-        }
-    }
-
-    private void adsHandler(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4, String album) {
-        if (tabs.get(position).name.equals(album)) {
-            showAds(position, imageAds1, imageAds2, imageAds3, imageAds4);
-        }
-//        else if (position == tabs.size() - 1) {
-//            showAds(position, imageAds);
-//        }
-        else {
-            imageAds1.setVisibility(View.GONE);
-            imageAds2.setVisibility(View.GONE);
-            imageAds3.setVisibility(View.GONE);
-            imageAds4.setVisibility(View.GONE);
-        }
-    }
-
-    private void showAds(int position, AdView imageAds1, AdView imageAds2, AdView imageAds3, AdView imageAds4) {
-
-        String ads_id = sessionHelper.getPreferences(context, "ads_id");
-
-        int adsId = 0;
-        if (!ads_id.equals("")) {
-            adsId = Integer.parseInt(ads_id);
-        }
-        if (adsId >= MAX_ADS) {
-            adsId = 0;
-        }
-
-        Log.v("ADS", "showAds: " + adsId);
-
-        switch (adsId){
-            case 0 :
-                imageAds1.loadAd(adRequest);
-                imageAds1.setVisibility(View.VISIBLE);
-                imageAds2.setVisibility(View.GONE);
-                imageAds3.setVisibility(View.GONE);
-                imageAds4.setVisibility(View.GONE);
-                break;
-
-            case 1 :
-                imageAds2.loadAd(adRequest);
-                imageAds2.setVisibility(View.VISIBLE);
-                imageAds1.setVisibility(View.GONE);
-                imageAds3.setVisibility(View.GONE);
-                imageAds4.setVisibility(View.GONE);
-                break;
-
-            case 2 :
-                imageAds3.loadAd(adRequest);
-                imageAds3.setVisibility(View.VISIBLE);
-                imageAds1.setVisibility(View.GONE);
-                imageAds2.setVisibility(View.GONE);
-                imageAds4.setVisibility(View.GONE);
-                break;
-
-            case 3 :
-                imageAds4.loadAd(adRequest);
-                imageAds4.setVisibility(View.VISIBLE);
-                imageAds1.setVisibility(View.GONE);
-                imageAds2.setVisibility(View.GONE);
-                imageAds3.setVisibility(View.GONE);
-                break;
-        }
-
-        adsId++;
-        sessionHelper.setPreferences(context, "ads_id", String.valueOf(adsId));
     }
 
     @Override
@@ -367,7 +218,9 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         if (isPremium.equals("0") && position == tabs.size()) {
             // This is where we'll add footer.
-            return FOOTER_VIEW;
+            return ADS_VIEW;
+        } else if (tabs.get(position).name.equals("ads")){
+            return ADS_VIEW;
         }
         return Integer.parseInt(tabs.get(position).type_content_id);
     }
@@ -457,19 +310,63 @@ public class AdapterListTab extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return (int) (dp * scale + 0.5f);
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
+    public class AdsViewHolder extends RecyclerView.ViewHolder {
 
-        private final AdView imageAds1;
-        private final AdView imageAds2;
-        private final AdView imageAds3;
-        private final AdView imageAds4;
+        public RelativeLayout adContainer;
 
-        FooterViewHolder(View itemView) {
+        AdsViewHolder(View itemView) {
             super(itemView);
-            imageAds1 = itemView.findViewById(R.id.image_ads_1);
-            imageAds2 = itemView.findViewById(R.id.image_ads_2);
-            imageAds3 = itemView.findViewById(R.id.image_ads_3);
-            imageAds4 = itemView.findViewById(R.id.image_ads_4);
+
+            adContainer = itemView.findViewById(R.id.image_ads);
+            adContainer.setVisibility(View.GONE);
+
+            String ads_id = sessionHelper.getPreferences(context, "ads_id");
+
+            int adsId = 0;
+            if (!ads_id.equals("")){
+                adsId = Integer.parseInt(ads_id);
+            }
+            if (adsId >= MAX_ADS){
+                adsId = 0;
+            }
+
+            final AdView imageAds = new AdView(context);
+
+            imageAds.setAdSize(AdSize.LARGE_BANNER);
+            imageAds.setAdUnitId(ads[adsId]);
+            imageAds.loadAd(adRequest);
+            imageAds.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdLoaded() {
+                    adContainer.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAdFailedToLoad(int error) {
+                    adContainer.setVisibility(View.GONE);
+                }
+
+            });
+
+            adContainer.addView(imageAds);
+            Log.v("ADS", "ads id: "+ ads[adsId] + " id " + adsId);
+
+            adsId++;
+            sessionHelper.setPreferences(context, "ads_id", String.valueOf(adsId));
+        }
+    }
+
+    public class ItemListTab extends RecyclerView.ViewHolder {
+        public TextView title;
+        public TextView btnMore;
+        public RecyclerView list;
+
+        public ItemListTab(View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.text_list);
+            btnMore = itemView.findViewById(R.id.btn_more_list);
+            list = itemView.findViewById(R.id.list);
         }
     }
 }

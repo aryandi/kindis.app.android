@@ -15,7 +15,11 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import co.digdaya.kindis.live.R;
+import co.digdaya.kindis.live.helper.SessionHelper;
 import co.digdaya.kindis.live.model.TabModel;
 import co.digdaya.kindis.live.view.adapter.tab.AdapterListTab;
 
@@ -29,6 +33,8 @@ public class Discover extends Fragment {
 
     String json;
     Gson gson;
+    private SessionHelper sessionHelper;
+    private String isPremium;
 
     public Discover() {
     }
@@ -51,6 +57,8 @@ public class Discover extends Fragment {
         recyclerView = view.findViewById(R.id.list_tab);
         gson = new Gson();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        sessionHelper = new SessionHelper();
+        isPremium = sessionHelper.getPreferences(getContext(), "is_premium");
 
         if (json != null){
             getJSON();
@@ -64,6 +72,7 @@ public class Discover extends Fragment {
                 JSONObject result = object.getJSONObject("result");
                 TabModel tabModel = gson.fromJson(result.toString(), TabModel.class);
                 System.out.println("getJSONitem: "+tabModel.tab1.get(6).name);
+                if (isPremium.equals("0")) tabModel.tab1 = getTabWithAds(tabModel.tab1);
                 adapterListTab = new AdapterListTab(getActivity(), tabModel, 1, 1, "Discover", "Musiq");
                 recyclerView.setAdapter(adapterListTab);
                 recyclerView.setNestedScrollingEnabled(false);
@@ -71,5 +80,29 @@ public class Discover extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<TabModel.Tab> getTabWithAds(List<TabModel.Tab> tabs) {
+        boolean isHavePlaylist = false;
+
+        for (TabModel.Tab tab : tabs) {
+            if (tab.name.equals("Playlist")) {
+                isHavePlaylist = true;
+            }
+        }
+
+        ListIterator<TabModel.Tab> iterator = tabs.listIterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            if (isHavePlaylist && iterator.next().name.equals("Album")
+                    || !isHavePlaylist && iterator.next().name.equals("Artist")) {
+                TabModel.Tab tab = new TabModel.Tab();
+                tab.name = "ads";
+                iterator.add(tab);
+            }
+            i++;
+        }
+
+        return tabs;
     }
 }
