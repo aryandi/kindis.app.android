@@ -23,12 +23,12 @@
             android:src="@drawable/ic_verified"/>
     </RelativeLayout>
 
-    <co.digdaya.kindis.live.custom.TextViewBold
+    <co.digdaya.kindis.live.custom.TextViewRegular
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:text="Maher Zain"
         android:layout_gravity="center_horizontal"/>
@@ -37,7 +37,7 @@
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/white"
         android:text="Deskripsi singkat dari artist ini"
         android:layout_gravity="center_horizontal"/>

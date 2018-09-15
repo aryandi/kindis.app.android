@@ -55,12 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="exitUntilCollapsed">
-                <co.digdaya.kindis.live.custom.TextViewBold
+                <co.digdaya.kindis.live.custom.TextViewRegular
                     android:id="@+id/title_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:gravity="center"
